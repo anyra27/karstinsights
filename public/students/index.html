@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karst Fieldwork · Student Cohort — Solutions Engineers for Your District</title>
+<meta name="description" content="A one-school-year cohort where selected students learn advanced AI workflows and build real tools their district runs on — led by Kevin Bice, Founder of Karst.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://karstinsights.com/students/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Karst">
+<meta property="og:title" content="Karst Fieldwork · Student Cohort">
+<meta property="og:description" content="One school year. One selected student cohort. Real tools in real use — solutions engineers for your district.">
+<meta property="og:url" content="https://karstinsights.com/students/">
+<meta property="og:image" content="https://karstinsights.com/students/assets/og-students.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Karst Fieldwork · Student Cohort">
+<meta name="twitter:description" content="One school year. One selected student cohort. Real tools in real use.">
+<meta name="twitter:image" content="https://karstinsights.com/students/assets/og-students.png">
+<meta name="theme-color" content="#0e0e0c">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Karst Fieldwork · Student Cohort",
+  "url": "https://karstinsights.com/students/",
+  "description": "A one-school-year cohort where selected students learn advanced AI workflows and build real tools their district runs on.",
+  "publisher": { "@type": "Organization", "name": "Karst", "url": "https://karstinsights.com" }
+}
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='none' stroke='%23a98a5f' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='17' fill='none' stroke='%23a98a5f' stroke-width='2.5'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23a98a5f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   KARST FIELDWORK — one premise: the terrain of the work.
+   Warm cream editorial chapters, three deliberate navy acts.
+   ================================================================ */
+:root {
+  /* karst.build tokens — surface system + rich black ink, navy as accent */
+  --cream: #fffcf7;
+  --cream-deep: #f6f4ec;
+  --paper: #fefdfb;
+  --ink: #1a1816;
+  --ink-soft: #3a3632;
+  --navy: #1e2a4a;
+  --night: #0e0e0c;
+  --night-deep: #0a0a09;
+  --night-text: #f0eee6;
+  --taupe: #6e6355;
+  --taupe-soft: #93887a;
+  --silver: #8a919c;
+  --brass: #a8802a;
+  --brass-bright: #c4a070;
+  --teal: #2d5a5a;
+  --rule: rgba(26, 24, 22, 0.12);
+  --rule-soft: rgba(26, 24, 22, 0.07);
+  --rule-night: rgba(240, 238, 230, 0.14);
+  --rule-night-soft: rgba(240, 238, 230, 0.07);
+  --mont: "Montserrat", sans-serif;
+  --inter: "Inter", sans-serif;
+  --serif: "Libre Baskerville", serif;
+  --pad: clamp(24px, 6vw, 96px);
+  --measure: 1120px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+body {
+  font-family: var(--inter);
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+::selection { background: rgba(169, 138, 95, 0.28); }
+
+/* ---------- shared editorial primitives ---------- */
+.wrap { max-width: var(--measure); margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+.eyebrow {
+  font-family: var(--mont);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+.dark .eyebrow { color: rgba(240, 238, 230, 0.4); }
+.eyebrow--brass { color: var(--brass); }
+.serif-i { font-family: var(--serif); font-style: italic; font-weight: 400; }
+.rule-line { border: 0; border-top: 1px solid var(--rule); }
+
+/* ---------- Karst identity cycles (ported from karst.build index.css) ---------- */
+@keyframes sunset-wave { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+@keyframes tempo-left-to-right { 0% { background-position: 200% 50%; } 100% { background-position: 0% 50%; } }
+.text-cycle-karst {
+  /* the "Set the tempo" treatment from karst.build: light navy-lavender
+     progression with symmetric stops, reaching cream only at the peak */
+  background: linear-gradient(
+    90deg,
+    #5a6aaa 0%,
+    #7a82b8 15%,
+    #8a8ec8 28%,
+    #a0b8dc 40%,
+    #d6c9b2 50%,
+    #a0b8dc 60%,
+    #8a8ec8 72%,
+    #7a82b8 85%,
+    #5a6aaa 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: sunset-wave 12s linear infinite;
+}
+.btn-cycle-navy {
+  border-color: transparent;
+  background-color: #0a203c;
+  background-image: linear-gradient(90deg, #1e2a4a, #2d3a6b, #46588f, #2d3a6b, #1e2a4a);
+  background-size: 220% 100%;
+  animation: sunset-wave 14s linear infinite;
+  color: #f5f2ea;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07), 0 14px 30px -22px rgba(5, 20, 40, 0.8);
+}
+.btn-cycle-navy:hover {
+  background-color: #0b2341;
+  color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1), 0 10px 28px -12px rgba(30, 42, 74, 0.5);
+  transform: translateY(-1px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-cycle-karst, .btn-cycle-navy { animation: none; background-position: 30% 50%; }
+}
+
+/* reveal choreography */
+.rv { opacity: 0; transform: translateY(26px); transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+.rv.is-in { opacity: 1; transform: none; }
+.rv-d1 { transition-delay: 0.08s; }
+.rv-d2 { transition-delay: 0.16s; }
+.rv-d3 { transition-delay: 0.24s; }
+.rv-d4 { transition-delay: 0.32s; }
+@media (prefers-reduced-motion: reduce) {
+  .rv { opacity: 1; transform: none; }
+}
+
+/* ---------- header ---------- */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 40;
+  background: rgba(255, 252, 247, 0.86);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+.topbar__in {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.wordmark {
+  white-space: nowrap;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  text-decoration: none;
+  font-family: var(--mont);
+}
+.wordmark__karst { font-weight: 800; font-size: 15px; letter-spacing: 0.22em; }
+.wordmark__field { font-weight: 500; font-size: 11px; letter-spacing: 0.34em; color: var(--taupe); }
+.topnav { margin-left: auto; display: flex; align-items: center; gap: 26px; }
+.topnav a {
+  text-decoration: none;
+  font-family: var(--mont);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: color 0.25s;
+}
+.topnav a:hover { color: var(--ink); }
+.topnav a.btn--solid { color: var(--cream); letter-spacing: 0.22em; }
+.topnav a.btn--solid:hover { color: var(--cream); }
+.btn {
+  display: inline-block;
+  font-family: var(--mont);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 15px 26px;
+  border-radius: 3px;
+  border: 1px solid var(--ink);
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+  cursor: pointer;
+}
+.btn--solid { background: #1a1816; border-color: #1a1816; color: #f0eee6; }
+.btn--solid:hover { background: #0e0e0c; border-color: #0e0e0c; }
+.btn--ghost { background: transparent; border-color: rgba(26, 24, 22, 0.25); color: rgba(26, 24, 22, 0.75); }
+.btn--ghost:hover { border-color: rgba(26, 24, 22, 0.5); color: var(--ink); background: transparent; }
+.btn--sm { padding: 11px 20px; }
+
+/* topbar over the dark hero — flips to light once the page reaches cream */
+.topbar { transition: background 0.45s ease, border-color 0.45s ease; }
+.topbar--dark { background: rgba(14, 14, 12, 0.55); border-bottom-color: rgba(240, 238, 230, 0.09); }
+.topbar--dark .wordmark__karst { color: #f0eee6; }
+.topbar--dark .wordmark__field { color: rgba(240, 238, 230, 0.5); }
+.topbar--dark .topnav a { color: rgba(240, 238, 230, 0.66); }
+.topbar--dark .topnav a:hover { color: #ffffff; }
+.topnav a.btn--solid { white-space: nowrap; transition: opacity 0.45s ease, visibility 0.45s ease, background 0.3s, color 0.3s; }
+.cta-short { display: none; }
+@media (max-width: 680px) {
+  .cta-long { display: none; }
+  .cta-short { display: inline; }
+}
+/* the ask arrives later: no CTA over the opening chapter */
+.topbar--dark .topnav a.btn--solid { opacity: 0; visibility: hidden; pointer-events: none; }
+.season-progress {
+  position: absolute;
+  bottom: -1px; left: 0;
+  height: 1px;
+  width: 0%;
+  background: var(--brass);
+}
+
+/* ---------- argument — the district advantage ---------- */
+.argument { background: var(--cream-deep); border-top: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); }
+.argument__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: clamp(40px, 6vw, 96px);
+  padding: clamp(80px, 10vw, 140px) 0;
+}
+.argument h2 {
+  font-family: var(--mont);
+  font-weight: 400;
+  font-size: clamp(36px, 4.6vw, 64px);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  margin-top: 24px;
+}
+.argument h2 .serif-i { color: var(--taupe); }
+.argument__body { font-size: 17px; color: var(--ink-soft); max-width: 46ch; margin-top: 20px; }
+.factgrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-left: 1px solid var(--rule);
+  border-top: 1px solid var(--rule);
+  align-self: center;
+}
+.fact { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 26px 24px 28px; }
+.fact__label { font-family: var(--mont); font-size: 10px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--navy); }
+.fact__title { font-family: var(--mont); font-weight: 600; font-size: 17px; margin: 10px 0 6px; }
+.fact__note { font-size: 14px; color: var(--taupe); line-height: 1.55; }
+
+/* ---------- dark chapters (shared) ---------- */
+.dark { background: var(--night); color: var(--night-text); position: relative; }
+.dark--deep { background: var(--night-deep); }
+.chapter-cut { height: 1px; background: linear-gradient(90deg, transparent, rgba(168, 128, 42, 0.65) 30%, rgba(168, 128, 42, 0.65) 70%, transparent); opacity: 0.7; }
+.dark h2 {
+  font-family: var(--mont);
+  font-weight: 400;
+  font-size: clamp(30px, 3.8vw, 50px);
+  line-height: 1.14;
+  letter-spacing: -0.005em;
+  margin-top: 22px;
+  color: rgba(255, 255, 255, 0.95);
+}
+.dark h2 .serif-i { color: var(--brass-bright); }
+.dark .chapter-lede { color: rgba(240, 238, 230, 0.6); max-width: 56ch; margin-top: 18px; font-size: 17px; }
+
+/* ---------- the field season — cinematic formation sequence ---------- */
+.formation { position: relative; }
+.formation__track { position: relative; height: calc(730vh + 100vh); }
+.formation__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+.formation__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.formation__layout {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: clamp(40px, 6vh, 70px);
+  pointer-events: none;
+}
+.formation__intro {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  will-change: opacity, transform;
+}
+.formation__title {
+  font-family: var(--mont);
+  font-weight: 300;
+  font-size: clamp(44px, 6.4vw, 96px);
+  line-height: 1.06;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.94);
+  margin-top: 26px;
+}
+.formation__title .serif-i { text-transform: none; letter-spacing: 0; color: var(--brass-bright); }
+/* monochromatic film-grain sparkle, clipped inside the glyphs: two noise
+   plates jump in opposite step rhythms over a quiet silver base */
+.text-sparkle {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.055 0 0 0 0 0.05 0 0 0 0.85 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.3' numOctaves='2' seed='23'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 0.99 0 0 0 0 0.94 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(100deg, #b9bec9 0%, #f4f2ea 38%, #c6cbd5 62%, #ece9df 100%);
+  background-size: 140px 140px, 90px 90px, 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: sparkleGrain 1.1s steps(1) infinite;
+}
+@keyframes sparkleGrain {
+  0%   { background-position: 0 0, 0 0, 30% 50%; }
+  14%  { background-position: 46px 118px, -31px 22px, 30% 50%; }
+  28%  { background-position: 105px 33px, 58px -49px, 30% 50%; }
+  42%  { background-position: 22px 76px, -74px 61px, 30% 50%; }
+  57%  { background-position: 88px 12px, 36px 74px, 30% 50%; }
+  71%  { background-position: 133px 95px, -12px -38px, 30% 50%; }
+  85%  { background-position: 61px 51px, 79px 15px, 30% 50%; }
+  100% { background-position: 0 0, 0 0, 30% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-sparkle { animation: none; }
+}
+.formation__lede {
+  color: rgba(240, 238, 230, 0.45);
+  margin-top: 24px;
+  font-family: var(--mont);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+.formation__canvas { cursor: grab; }
+.formation__canvas.is-dragging { cursor: grabbing; }
+.formation__scrollhint {
+  position: absolute;
+  bottom: clamp(28px, 5vh, 54px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mont);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 230, 0.4);
+}
+.formation__scrollhint span { display: block; width: 1px; height: 34px; background: linear-gradient(180deg, transparent, rgba(196, 160, 112, 0.8)); }
+.formation__copy { position: relative; max-width: 480px; min-height: 200px; transition: opacity 0.6s ease; }
+.formation__sticky.is-intro .formation__copy { opacity: 0; }
+.formation__sticky.is-intro .formation__rail { opacity: 0; }
+.formation__rail { transition: opacity 0.6s ease; }
+.fmove {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fmove.is-active { opacity: 1; transform: none; transition-delay: 0.15s; }
+.fmove__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-bottom: 16px;
+  font-family: var(--mont);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+.fmove__index { color: var(--brass-bright); }
+.fmove__month { color: rgba(240, 238, 230, 0.35); font-size: 10px; }
+.fmove h3 {
+  font-family: var(--mont);
+  font-weight: 500;
+  font-size: clamp(22px, 2.4vw, 32px);
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.95);
+}
+.fmove p { color: rgba(240, 238, 230, 0.58); font-size: 15.5px; max-width: 46ch; margin-top: 10px; }
+.formation__rail {
+  position: absolute;
+  right: var(--pad);
+  top: 50%;
+  transform: translateY(-50%);
+  list-style: none;
+  display: grid;
+  gap: 15px;
+  text-align: right;
+  z-index: 3;
+}
+.formation__rail li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  font-family: var(--mont);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 230, 0.28);
+  transition: color 0.5s ease;
+}
+.formation__rail li::after {
+  content: "";
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 238, 230, 0.35);
+  transition: background 0.5s ease, border-color 0.5s ease;
+}
+.formation__rail li.is-active { color: rgba(240, 238, 230, 0.85); }
+.formation__rail li.is-active::after { background: var(--brass-bright); border-color: var(--brass-bright); }
+.formation__counter {
+  display: none;
+  font-family: var(--mont);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: rgba(240, 238, 230, 0.4);
+}
+
+/* ---------- the standard ---------- */
+.standard { padding: clamp(90px, 11vw, 150px) 0; }
+.standard__head { max-width: 720px; }
+.standard h2 {
+  font-family: var(--mont);
+  font-weight: 400;
+  font-size: clamp(30px, 3.6vw, 46px);
+  line-height: 1.16;
+  margin-top: 22px;
+}
+.standard h2 .serif-i { color: var(--taupe); font-weight: 400; }
+.standard__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 36px;
+  margin-top: clamp(48px, 6vw, 76px);
+  border-top: 1px solid var(--rule);
+}
+.step { padding-top: 26px; position: relative; }
+.step::before {
+  content: "";
+  position: absolute;
+  top: -1px; left: 0;
+  width: 34px; height: 1px;
+  background: var(--brass);
+}
+.step__index { font-family: var(--mont); font-size: 11px; font-weight: 700; letter-spacing: 0.3em; color: var(--brass); }
+.step__title { font-family: var(--mont); font-weight: 700; font-size: 19px; margin: 12px 0 8px; }
+.step__copy { font-size: 15px; color: var(--ink-soft); line-height: 1.6; }
+
+/* ---------- the work (exhibition) ---------- */
+.work { overflow: hidden; }
+.work__head { padding: clamp(90px, 11vw, 150px) 0 clamp(40px, 5vw, 60px); }
+.work__tabs {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid var(--rule-night);
+  border-bottom: 1px solid var(--rule-night);
+}
+.work__tab {
+  appearance: none;
+  background: none;
+  border: 0;
+  border-right: 1px solid var(--rule-night-soft);
+  color: rgba(240, 238, 230, 0.55);
+  font-family: var(--mont);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 18px 26px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s;
+}
+.work__tab:hover { color: var(--cream); }
+.work__tab[aria-selected="true"] { color: var(--cream); }
+.work__tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: var(--brass);
+}
+.work__stage { padding: clamp(44px, 5vw, 64px) 0 clamp(28px, 3vw, 40px); }
+.artifact {
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 3px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.42);
+  overflow: hidden;
+}
+.artifact[hidden] { display: none; }
+.artifact__bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 26px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mont);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--taupe);
+}
+.artifact__bar strong { color: var(--ink); font-weight: 700; }
+.artifact__body { padding: clamp(24px, 3.4vw, 44px) clamp(20px, 3vw, 40px); }
+.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.kpis--four { grid-template-columns: repeat(4, 1fr); gap: 14px; }
+/* the detailed dashboard — the kit exemplar, dots-and-hairlines voice */
+.dash { display: grid; grid-template-columns: 168px minmax(0, 1fr); }
+.dash__side { border-right: 1px solid var(--rule); padding: 22px 18px; }
+.dash__navlabel { font-family: var(--mont); font-size: 9px; font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase; color: var(--taupe-soft); margin: 14px 0 10px; }
+.dash__navlabel:first-child { margin-top: 0; }
+.dash__nav { display: grid; gap: 2px; }
+.dash__nav span, .dash__nav button {
+  font-family: var(--mont);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  padding: 7px 10px;
+  border-radius: 3px;
+  border: 0;
+  border-left: 2px solid transparent;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+}
+.dash__nav button:hover { color: var(--ink); background: rgba(30, 42, 74, 0.04); }
+.dash__nav span.is-on, .dash__nav button.is-on { background: rgba(30, 42, 74, 0.06); border-left-color: var(--navy); color: var(--ink); font-weight: 600; }
+.dash__nav--dim span { color: var(--taupe); font-size: 11px; cursor: default; }
+.dash__main { padding: clamp(18px, 2.4vw, 30px); display: grid; gap: 16px; }
+.dash__top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.dash__title { font-family: var(--mont); font-weight: 600; font-size: 17px; }
+.dash__chips { display: flex; gap: 6px; }
+.dash__chips i, .dash__chips button {
+  font-style: normal;
+  font-family: var(--mont);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 6px 10px;
+  color: var(--taupe);
+  background: none;
+  cursor: pointer;
+  transition: border-color 0.25s, color 0.25s;
+}
+.dash__chips button:hover { color: var(--ink); }
+.dash__chips i.is-on, .dash__chips button.is-on { border-color: var(--navy); color: var(--ink); }
+.dash__grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 16px; }
+.dash__panel { border: 1px solid var(--rule); border-radius: 3px; padding: 16px 18px 12px; }
+.hbar { display: grid; grid-template-columns: 74px minmax(0, 1fr) 26px; align-items: center; gap: 10px; margin: 9px 0; }
+.hbar span { font-family: var(--mont); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.hbar i { display: block; height: 6px; border-radius: 2px; background: linear-gradient(90deg, rgba(30, 42, 74, 0.75), rgba(30, 42, 74, 0.45)); }
+.hbar b { font-family: var(--mont); font-size: 11px; font-weight: 600; color: var(--taupe); text-align: right; }
+.hbar--dim i { background: rgba(30, 42, 74, 0.22); }
+.trow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.3fr) 70px 64px;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-top: 1px solid var(--rule-soft);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.trow > span:first-child { font-family: var(--mont); font-weight: 600; font-size: 12.5px; color: var(--ink); }
+.trow--head { border-top: 0; padding: 4px 0 8px; font-family: var(--mont); font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--taupe-soft); }
+.trow--head span { font: inherit; color: inherit; }
+.spark { width: 60px; height: 16px; }
+.trow em {
+  font-style: normal;
+  font-family: var(--mont);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 5px 4px;
+}
+.trow em.is-good { color: var(--teal); border-color: rgba(45, 90, 90, 0.35); }
+.trow em.is-watch { color: #a54731; border-color: rgba(165, 71, 49, 0.3); }
+.trow em.is-ready { color: var(--brass); border-color: rgba(168, 128, 42, 0.4); }
+.dash__read { font-size: 13.5px; color: var(--ink-soft); border-left: 2px solid var(--brass); padding-left: 14px; }
+.dash__read strong { font-family: var(--mont); font-weight: 600; color: var(--ink); }
+.kpi { border: 1px solid var(--rule); border-radius: 3px; padding: 18px 20px; }
+.kpi__label { font-family: var(--mont); font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--taupe); }
+.kpi__value { font-family: var(--mont); font-weight: 800; font-size: clamp(26px, 3vw, 36px); margin-top: 8px; letter-spacing: -0.01em; }
+.kpi__note { font-size: 12.5px; color: var(--brass); margin-top: 4px; font-weight: 500; }
+.artifact__chartwrap { margin-top: 26px; border: 1px solid var(--rule); border-radius: 3px; padding: 20px 22px 12px; }
+.artifact__chartlabel { font-family: var(--mont); font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--taupe); margin-bottom: 8px; }
+.flow { display: grid; gap: 12px; }
+.flow__row {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr) 120px;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid var(--rule);
+  border-left: 2px solid rgba(168, 128, 42, 0.15);
+  border-radius: 3px;
+  padding: 15px 20px;
+  animation: flowPulse 9s infinite;
+}
+.flow__row:nth-child(1) { animation-delay: 0s; }
+.flow__row:nth-child(2) { animation-delay: 2.25s; }
+.flow__row:nth-child(3) { animation-delay: 4.5s; }
+.flow__row:nth-child(4) { animation-delay: 6.75s; }
+@keyframes flowPulse {
+  0%, 4% { border-left-color: rgba(168, 128, 42, 0.15); background: transparent; }
+  8%, 22% { border-left-color: var(--brass); background: rgba(168, 128, 42, 0.05); }
+  30%, 100% { border-left-color: rgba(168, 128, 42, 0.15); background: transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow__row { animation: none; }
+}
+.flow__stage { font-family: var(--mont); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); }
+.flow__desc { font-size: 14.5px; color: var(--ink-soft); }
+.flow__state { font-family: var(--mont); font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; text-align: right; color: var(--taupe); }
+.flow__row--live .flow__state { color: var(--ink); }
+.brief__points { display: grid; gap: 12px; font-size: 14px; color: var(--ink-soft); align-content: center; }
+.brief__points span { display: block; border-left: 2px solid var(--brass); padding-left: 14px; }
+/* forms & apps mock — a full staff-facing application */
+.app__bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 13px 26px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--cream-deep);
+}
+.app__brand { display: flex; align-items: center; gap: 10px; font-family: var(--mont); font-size: 11.5px; font-weight: 600; color: var(--ink); }
+.app__brand i { width: 8px; height: 8px; border-radius: 50%; background: var(--navy); }
+.app__user { font-family: var(--mont); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--taupe); }
+.app__confirm {
+  margin: 18px clamp(20px, 3vw, 40px) 0;
+  border: 1px solid rgba(45, 90, 90, 0.35);
+  border-radius: 3px;
+  background: rgba(45, 90, 90, 0.06);
+  color: var(--teal);
+  font-size: 13.5px;
+  padding: 12px 16px;
+}
+.app__confirm[hidden] { display: none; }
+.app .appmock { padding: clamp(20px, 3vw, 36px) clamp(20px, 3vw, 40px); }
+.afield__caret { float: right; color: var(--taupe-soft); font-style: normal; font-weight: 400; }
+.afield__input--area { min-height: 74px; line-height: 1.55; }
+.afield__file em { font-style: normal; color: var(--taupe-soft); margin-left: 10px; font-size: 12px; }
+.appmock__submit { border: 0; cursor: pointer; transition: background 0.25s, transform 0.25s; }
+.appmock__submit:hover { background: #0e0e0c; transform: translateY(-1px); }
+.appmock__step { opacity: 1; transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.appmock__after.is-playing .appmock__step { opacity: 0.25; transform: translateX(6px); }
+.appmock__after.is-playing .appmock__step.is-hit { opacity: 1; transform: none; }
+.appmock { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 44px); }
+.appmock__fields { display: grid; gap: 14px; align-content: start; }
+.afield { display: grid; gap: 6px; }
+.afield__label { font-family: var(--mont); font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--taupe); }
+.afield__input { border: 1px solid var(--rule); border-radius: 3px; padding: 12px 14px; font-size: 14.5px; color: var(--ink); background: var(--paper); }
+.achips { display: flex; gap: 8px; }
+.achips i {
+  font-style: normal;
+  font-family: var(--mont);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 9px 14px;
+  color: var(--taupe);
+}
+.achips i.is-on { border-color: var(--brass); color: var(--ink); background: rgba(168, 128, 42, 0.08); }
+.appmock__submit {
+  display: inline-block;
+  justify-self: start;
+  margin-top: 4px;
+  font-family: var(--mont);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  background: #1a1816;
+  color: #f0eee6;
+  border-radius: 3px;
+  padding: 13px 24px;
+}
+.appmock__after { border-left: 1px solid var(--rule); padding-left: clamp(20px, 2.6vw, 38px); align-content: center; display: grid; gap: 16px; }
+.appmock__afterlabel { font-family: var(--mont); font-size: 10px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: var(--brass); }
+.appmock__step { display: flex; gap: 14px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.55; }
+.appmock__step i { font-style: normal; font-family: var(--mont); font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; color: var(--brass); padding-top: 3px; }
+/* presentation mock — the Karst deck exemplar: editorial, board-ready */
+.slide {
+  padding: clamp(30px, 4vw, 64px) clamp(26px, 4.4vw, 72px) clamp(20px, 2.6vw, 36px);
+  display: flex;
+  flex-direction: column;
+  min-height: clamp(340px, 34vw, 520px);
+}
+.slide__eyebrow { font-family: var(--mont); font-size: 10px; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--brass); }
+.slide__title {
+  font-family: var(--mont);
+  font-weight: 300;
+  font-size: clamp(26px, 3.2vw, 44px);
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+  max-width: 24ch;
+  margin: 18px 0 auto;
+  color: var(--ink);
+}
+.slide__title .serif-i { color: var(--taupe); }
+.slide__grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(24px, 3.6vw, 56px); margin-top: clamp(24px, 3vw, 44px); align-items: center; }
+.slide__chart { padding: 0; }
+.slide__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px 28px;
+  margin-top: clamp(26px, 3.4vw, 48px);
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mont);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--taupe);
+}
+.slide__foot b { font-weight: 600; color: var(--ink); }
+.work__caption {
+  padding-bottom: clamp(90px, 11vw, 140px);
+  font-family: var(--mont);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 230, 0.4);
+}
+
+/* ---------- co-led ---------- */
+.coled { padding: clamp(90px, 11vw, 150px) 0; }
+.coled__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(40px, 6vw, 90px);
+  align-items: center;
+}
+.coled h2 {
+  font-family: var(--mont);
+  font-weight: 400;
+  font-size: clamp(30px, 3.4vw, 44px);
+  line-height: 1.18;
+  margin-top: 22px;
+}
+.coled__body { font-size: 17px; color: var(--ink-soft); margin-top: 18px; max-width: 44ch; }
+.leads { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.lead__frame {
+  aspect-ratio: 4 / 5;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  background: var(--cream-deep);
+  border: 1px solid var(--rule);
+}
+.lead__frame img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.02); }
+.lead__frame--seat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 26px;
+  background:
+    repeating-linear-gradient(-45deg, rgba(30,42,74,0.028) 0 1px, transparent 1px 9px),
+    var(--cream-deep);
+}
+.lead__seatmark { width: 52px; height: 52px; }
+.lead__seatlabel { font-family: var(--mont); font-size: 10px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--taupe); line-height: 2; }
+.lead__name { font-family: var(--mont); font-weight: 700; font-size: 16px; margin-top: 16px; }
+.lead__role { font-family: var(--mont); font-size: 10.5px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--taupe); margin-top: 6px; line-height: 1.9; }
+
+/* ---------- designation ---------- */
+.designation { overflow: hidden; }
+.designation__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(48px, 7vw, 110px);
+  padding: clamp(90px, 11vw, 160px) 0;
+  align-items: center;
+}
+/* the record lives in the particle world — no paper card */
+.credmark { text-align: center; }
+.credmark__label {
+  font-family: var(--mont);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 230, 0.4);
+}
+.credmark__name {
+  font-family: var(--mont);
+  font-weight: 600;
+  font-size: clamp(30px, 3.4vw, 44px);
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 16px 0 6px;
+}
+.credmark__sub { color: rgba(240, 238, 230, 0.55); font-size: 16.5px; }
+.credmark__marks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 30px; }
+.mark {
+  border: 1px solid var(--rule-night-soft);
+  border-radius: 3px;
+  padding: 13px 8px 11px;
+  text-align: center;
+  font-family: var(--mont);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 230, 0.35);
+  opacity: 0.35;
+  transform: translateY(6px);
+  transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1), border-color 0.7s, color 0.7s;
+}
+.mark svg { display: block; margin: 0 auto 7px; }
+.credmark.is-in .mark { opacity: 1; transform: none; border-color: rgba(196, 160, 112, 0.45); color: rgba(240, 238, 230, 0.85); }
+.credmark.is-in .mark:nth-child(1) { transition-delay: 0.25s; }
+.credmark.is-in .mark:nth-child(2) { transition-delay: 0.5s; }
+.credmark.is-in .mark:nth-child(3) { transition-delay: 0.75s; }
+.credmark.is-in .mark:nth-child(4) { transition-delay: 1s; }
+.credmark__foot {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule-night-soft);
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  font-family: var(--mont);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 230, 0.4);
+}
+.credmark__foot span:first-child { white-space: nowrap; }
+.designation__standards { list-style: none; display: grid; gap: 0; margin-top: 38px; border-top: 1px solid var(--rule-night); }
+.dstd { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--rule-night-soft); }
+.dstd__index { font-family: var(--mont); font-size: 11px; font-weight: 700; letter-spacing: 0.28em; color: var(--brass-bright); padding-top: 3px; white-space: nowrap; }
+.dstd__title { font-family: var(--mont); font-weight: 700; font-size: 17px; }
+.dstd__copy { color: rgba(240, 238, 230, 0.6); font-size: 14.5px; margin-top: 4px; }
+.designation__legal {
+  padding-bottom: clamp(70px, 8vw, 110px);
+  font-size: 12.5px;
+  color: rgba(240, 238, 230, 0.42);
+  max-width: 62ch;
+}
+
+/* ---------- briefing — invite only, super minimal ---------- */
+.briefing { padding: clamp(100px, 13vw, 170px) 0 clamp(90px, 11vw, 150px); }
+.briefing__center { max-width: 880px; text-align: center; }
+.briefing__center .briefing__body { margin-left: auto; margin-right: auto; max-width: 56ch; }
+.briefing__center .briefing__facts {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 34px;
+}
+.briefing__center .briefing__facts span { gap: 10px; }
+.briefing__cta { margin-top: 40px; }
+.briefing__arrange {
+  margin-top: 22px;
+  font-family: var(--mont);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--taupe-soft);
+}
+.briefing__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(44px, 6vw, 100px);
+}
+.briefing h2 {
+  font-family: var(--mont);
+  font-weight: 400;
+  font-size: clamp(30px, 3.6vw, 46px);
+  line-height: 1.16;
+  margin-top: 22px;
+}
+.briefing h2 .serif-i { color: var(--taupe); font-weight: 400; }
+.briefing__body { font-size: 17px; color: var(--ink-soft); margin-top: 18px; max-width: 44ch; }
+.briefing__facts {
+  margin-top: 34px;
+  display: grid;
+  gap: 12px;
+  font-family: var(--mont);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--taupe);
+}
+.briefing__facts span { display: flex; align-items: center; gap: 12px; }
+.briefing__facts .tick { width: 22px; height: 1px; background: var(--brass); flex: none; }
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 18px; align-content: start; }
+.field { display: grid; gap: 7px; }
+.field--full { grid-column: 1 / -1; }
+.field label {
+  font-family: var(--mont);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--taupe);
+}
+.field input, .field select, .field textarea {
+  font-family: var(--inter);
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  padding: 13px 14px;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.field textarea { resize: vertical; min-height: 96px; }
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none;
+  border-color: var(--brass);
+  box-shadow: 0 0 0 3px rgba(169, 138, 95, 0.18);
+}
+.form__actions { grid-column: 1 / -1; display: grid; gap: 12px; margin-top: 4px; }
+.form__note { font-size: 12.5px; color: var(--taupe-soft); }
+.form__confirm {
+  grid-column: 1 / -1;
+  border: 1px solid rgba(169, 138, 95, 0.5);
+  border-radius: 3px;
+  background: var(--cream-deep);
+  padding: 22px 24px;
+}
+.form__confirm[hidden] { display: none; }
+.form__confirm strong { font-family: var(--mont); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass); display: block; margin-bottom: 8px; }
+.form__confirm p { font-size: 14.5px; color: var(--ink-soft); }
+
+/* ---------- coda — the world closes where it opened ---------- */
+.coda {
+  background: var(--night);
+  color: var(--night-text);
+  text-align: center;
+  padding: clamp(90px, 12vw, 150px) var(--pad) clamp(70px, 9vw, 110px);
+  position: relative;
+}
+.coda__seal { width: 56px; height: 56px; margin: 0 auto 26px; display: block; }
+.coda__wordmark {
+  font-family: var(--mont);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+.coda__wordmark span { font-weight: 400; color: rgba(240, 238, 230, 0.5); letter-spacing: 0.34em; }
+.coda__line { margin-top: 18px; font-size: clamp(17px, 1.8vw, 22px); color: rgba(240, 238, 230, 0.6); }
+.coda__fine {
+  margin-top: 34px;
+  font-family: var(--mont);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 230, 0.32);
+}
+
+/* ---------- the persistent dust field ---------- */
+.world-dust {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* ---------- credential stage (the dust condenses here) ---------- */
+.credmark__stage {
+  width: clamp(280px, 30vw, 420px);
+  height: clamp(280px, 30vw, 420px);
+  margin: 0 auto 4px;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.credmark__stage.is-dragging { cursor: grabbing; }
+.credmark__hint {
+  font-family: var(--mont);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(240, 238, 230, 0.25);
+  margin-bottom: 10px;
+}
+
+/* ---------- first-load entrance ---------- */
+@keyframes riseIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+.formation__intro > * { animation: riseIn 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.formation__intro > *:nth-child(1) { animation-delay: 0.35s; }
+.formation__intro > *:nth-child(2) { animation-delay: 0.5s; }
+.formation__intro > *:nth-child(3) { animation-delay: 0.68s; }
+.formation__intro > *:nth-child(4) { animation-delay: 0.84s; }
+.formation__intro > *:nth-child(5) { animation-delay: 1s; }
+.formation__intro > *:nth-child(6) { animation-delay: 1.3s; }
+
+/* ---------- keyboard focus — brass ring, keyboard-only ---------- */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--brass-bright);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .argument__grid, .coled__grid, .designation__grid, .briefing__grid { grid-template-columns: 1fr; }
+  .standard__grid { grid-template-columns: 1fr 1fr; gap: 34px 30px; }
+  .topnav a:not(.btn) { display: none; }
+  .formation__rail { display: none; }
+  .formation__counter { display: block; margin-bottom: 14px; }
+  .formation__head h2 { font-size: clamp(26px, 6vw, 34px); }
+  .formation__canvas { opacity: 0.75; }
+}
+@media (max-width: 680px) {
+  body { font-size: 16px; }
+  .formation__track { height: calc(660vh + 100svh); }
+  .formation__sticky { height: 100svh; }
+  .formation__layout { padding-top: 110px; padding-bottom: 34px; }
+  .formation__lede { font-size: 9.5px; letter-spacing: 0.22em; }
+  .topnav a.btn--solid { padding: 11px 18px; }
+  .fmove p { font-size: 14.5px; }
+  .standard__grid { grid-template-columns: 1fr; gap: 30px; }
+  .kpis { grid-template-columns: 1fr; }
+  .kpis--four { grid-template-columns: 1fr 1fr; }
+  .dash { grid-template-columns: 1fr; }
+  .dash__side { display: none; }
+  .dash__grid { grid-template-columns: 1fr; }
+  .trow { grid-template-columns: minmax(0, 1fr) 64px; }
+  .trow > span:nth-child(2), .trow .spark { display: none; }
+  .flow__row { grid-template-columns: 1fr; gap: 8px; }
+  .flow__state { text-align: left; }
+  .appmock { grid-template-columns: 1fr; }
+  .appmock__after { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 18px; }
+  .slide__grid { grid-template-columns: 1fr; }
+  .leads { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .credmark__marks { grid-template-columns: 1fr 1fr; }
+  .credmark__foot { flex-direction: column; gap: 8px; align-items: center; }
+  .form { grid-template-columns: 1fr; }
+  .work__tabs { flex-wrap: wrap; }
+  .work__tab { flex: 1 1 40%; padding: 15px 10px; }
+  .factgrid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= header ================= -->
+<header class="topbar">
+  <div class="topbar__in">
+    <a class="wordmark" href="#top" aria-label="Karst Fieldwork">
+      <span class="wordmark__karst">KARST</span>
+      <span class="wordmark__field">FIELDWORK · STUDENTS</span>
+    </a>
+    <nav class="topnav" aria-label="Primary">
+      <a href="#season">The year</a>
+      <a href="#work">The work</a>
+      <a href="#designation">The designation</a>
+      <a class="btn btn--solid btn--sm" href="#briefing"><span class="cta-long">Request an introduction</span><span class="cta-short">Inquire</span></a>
+    </nav>
+  </div>
+  <div class="season-progress" aria-hidden="true"></div>
+</header>
+
+<main id="top">
+
+<!-- ================= the field season — hero ================= -->
+<section class="dark formation" id="season">
+  <div class="formation__track" id="formationTrack">
+    <div class="formation__sticky" id="formationSticky">
+      <canvas class="formation__canvas" id="formationCanvas" aria-hidden="true"></canvas>
+      <div class="wrap formation__layout" id="formationLayout">
+        <div class="formation__intro" id="formationIntro">
+          <p class="eyebrow">Karst Fieldwork · Student cohort</p>
+          <h1 class="formation__title">Build what <span class="serif-i text-sparkle">matters.</span></h1>
+          <p class="formation__lede">One school year · One selected cohort · Tools in real use</p>
+          <div class="formation__scrollhint" aria-hidden="true"><span></span>Scroll</div>
+        </div>
+        <div class="formation__copy" id="formationCopy">
+          <div class="formation__counter" id="formationCounter">01 · 08</div>
+          <div class="fmove is-active">
+            <div class="fmove__meta"><span class="fmove__index">01 · Field</span></div>
+            <h3>Start with a problem you actually see.</h3>
+            <p>The lunch line. The practice rooms nobody can book. The art show that takes a month to hang. The year begins with problems students live with every day.</p>
+          </div>
+          <div class="fmove">
+            <div class="fmove__meta"><span class="fmove__index">02 · Site</span></div>
+            <h3>Choose one worth solving.</h3>
+            <p>Your call: a campus problem, a district problem — or a venture of your own. One per builder, staked and named.</p>
+          </div>
+          <div class="fmove">
+            <div class="fmove__meta"><span class="fmove__index">03 · Survey</span></div>
+            <h3>Gather the evidence.</h3>
+            <p>Talk to the people who feel it. Count what can be counted. The problem becomes visible enough to solve.</p>
+          </div>
+          <div class="fmove">
+            <div class="fmove__meta"><span class="fmove__index">04 · Strata</span></div>
+            <h3>See the system underneath.</h3>
+            <p>Why does it keep happening? Patterns surface, and the right fix becomes clear before anything gets built.</p>
+          </div>
+          <div class="fmove">
+            <div class="fmove__meta"><span class="fmove__index">05 · Channel</span></div>
+            <h3>Build the tool.</h3>
+            <p>An app, a dashboard, a workflow — built with advanced AI practice, working before the session ends.</p>
+          </div>
+          <div class="fmove">
+            <div class="fmove__meta"><span class="fmove__index">06 · Basin</span></div>
+            <h3>Put it in real hands.</h3>
+            <p>Students, teachers, and office staff use it. Feedback lands. The tool becomes part of how the campus runs.</p>
+          </div>
+          <div class="fmove">
+            <div class="fmove__meta"><span class="fmove__index">07 · Current</span></div>
+            <h3>Teach it forward.</h3>
+            <p>Show other students the method, so the building never stops with one person.</p>
+          </div>
+          <div class="fmove">
+            <div class="fmove__meta"><span class="fmove__index">08 · Record</span></div>
+            <h3>Leave with proof.</h3>
+            <p>Shipped tools. A district demo day. The KARST Solutions Engineer designation, earned against a published standard.</p>
+          </div>
+        </div>
+      </div>
+      <ol class="formation__rail" id="formationRail" aria-hidden="true">
+        <li class="is-active">Field</li>
+        <li>Site</li>
+        <li>Survey</li>
+        <li>Strata</li>
+        <li>Channel</li>
+        <li>Basin</li>
+        <li>Current</li>
+        <li>Record</li>
+      </ol>
+    </div>
+  </div>
+</section>
+<div class="chapter-cut" aria-hidden="true"></div>
+
+
+
+<!-- ================= argument ================= -->
+<section class="argument">
+  <div class="wrap">
+    <div class="argument__grid">
+      <div>
+        <p class="eyebrow rv">Why the student cohort</p>
+        <h2 class="rv rv-d1">A year that changes <span class="serif-i">what you can build.</span></h2>
+        <p class="argument__body rv rv-d2">Not a coding club. Not a course about AI. Protected time to solve real problems with advanced AI workflows — for your campus, your district, or a venture of your own. Led by Kevin, sponsored by your district.</p>
+      </div>
+      <div class="factgrid rv rv-d2">
+        <div class="fact">
+          <div class="fact__label">Cadence</div>
+          <div class="fact__title">One school year</div>
+          <div class="fact__note">Monthly working sessions across the school year.</div>
+        </div>
+        <div class="fact">
+          <div class="fact__label">Cohort</div>
+          <div class="fact__title">Selected, cross-campus</div>
+          <div class="fact__note">Nominated by sites, chosen by application.</div>
+        </div>
+        <div class="fact">
+          <div class="fact__label">Ownership</div>
+          <div class="fact__title">District-adopted</div>
+          <div class="fact__note">Tools handed off, documented, and kept.</div>
+        </div>
+        <div class="fact">
+          <div class="fact__label">Record</div>
+          <div class="fact__title">KARST Solutions Engineer</div>
+          <div class="fact__note">Earned through shipped work, not attendance.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= the standard ================= -->
+<section class="standard">
+  <div class="wrap">
+    <div class="standard__head">
+      <p class="eyebrow rv">The cohort standard</p>
+      <h2 class="rv rv-d1">Useful now. <span class="serif-i">Yours to teach.</span></h2>
+    </div>
+    <div class="standard__grid">
+      <div class="step rv">
+        <div class="step__index">01 · ENTER</div>
+        <div class="step__title">Bring a real problem.</div>
+        <p class="step__copy">No simulations. A campus problem, a district problem, or a venture you want to exist.</p>
+      </div>
+      <div class="step rv rv-d1">
+        <div class="step__index">02 · SHIP</div>
+        <div class="step__title">Leave month one with it live.</div>
+        <p class="step__copy">The first working tool is in someone’s hands before the first month is over.</p>
+      </div>
+      <div class="step rv rv-d2">
+        <div class="step__index">03 · COMPOUND</div>
+        <div class="step__title">Build every month.</div>
+        <p class="step__copy">Each session adds a tool, a method, and a stronger builder.</p>
+      </div>
+      <div class="step rv rv-d3">
+        <div class="step__index">04 · TRANSFER</div>
+        <div class="step__title">Teach it forward.</div>
+        <p class="step__copy">Teach the method, present at demo day, and leave with a standard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= the work (dark II) ================= -->
+<div class="chapter-cut" aria-hidden="true"></div>
+<section class="dark dark--deep work" id="work">
+  <div class="wrap work__head">
+    <p class="eyebrow rv">Built by the cohort</p>
+    <h2 class="rv rv-d1">Real problems go in. <span class="serif-i">Real tools come out.</span></h2>
+    <p class="chapter-lede rv rv-d2">You pick the problem — the spring musical, the art show, the tutoring center, the lunch line, or the entrepreneurial lane: a venture of your own, built to the same standard. Every build leaves as a tool someone actually uses.</p>
+  </div>
+  <div class="wrap">
+    <div class="work__tabs rv" role="tablist" aria-label="The cohort kit">
+      <button class="work__tab" role="tab" id="tab-signal" aria-selected="true" aria-controls="panel-signal">01 · Dashboards</button>
+      <button class="work__tab" role="tab" id="tab-flow" aria-selected="false" aria-controls="panel-flow" tabindex="-1">02 · Workflows</button>
+      <button class="work__tab" role="tab" id="tab-app" aria-selected="false" aria-controls="panel-app" tabindex="-1">03 · Apps</button>
+      <button class="work__tab" role="tab" id="tab-deck" aria-selected="false" aria-controls="panel-deck" tabindex="-1">04 · Demo day</button>
+    </div>
+    <div class="work__stage">
+
+      <div class="artifact" role="tabpanel" id="panel-signal" aria-labelledby="tab-signal">
+        <div class="artifact__bar">
+          <span><strong>KARST</strong> · Spring musical</span>
+          <span>Built by the stage crew · Concept mock</span>
+        </div>
+        <div class="dash">
+          <aside class="dash__side">
+            <div class="dash__navlabel">Views</div>
+            <div class="dash__nav" id="dashNav">
+              <button class="is-on" data-view="overview" type="button">Production</button>
+              <button data-view="attendance" type="button">Tickets</button>
+              <button data-view="facilities" type="button">Rehearsals</button>
+            </div>
+            <div class="dash__navlabel">Company</div>
+            <div class="dash__nav dash__nav--dim" aria-hidden="true">
+              <span>Cast · 42</span>
+              <span>Crew · 18</span>
+              <span>Pit · 12</span>
+            </div>
+          </aside>
+          <div class="dash__main">
+            <div class="dash__top">
+              <div class="dash__title" id="dashTitle">Where the district stands</div>
+              <div class="dash__chips" id="dashChips">
+                <button class="is-on" data-period="year" type="button">Full season</button>
+                <button data-period="q90" type="button">30 days</button>
+                <button data-period="d30" type="button">Tech week</button>
+              </div>
+            </div>
+            <div class="kpis kpis--four" id="dashKpis"></div>
+            <div class="dash__grid">
+              <div class="dash__panel">
+                <div class="artifact__chartlabel" id="dashChartLabel">Momentum across the year</div>
+                <svg viewBox="0 0 420 150" width="100%" aria-hidden="true">
+                  <g stroke="rgba(30,42,74,0.08)" stroke-width="1">
+                    <line x1="0" y1="30" x2="420" y2="30"/>
+                    <line x1="0" y1="68" x2="420" y2="68"/>
+                    <line x1="0" y1="106" x2="420" y2="106"/>
+                  </g>
+                  <path id="dashArea" d="" fill="rgba(30,42,74,0.05)" stroke="none"/>
+                  <path id="dashLineA" d="" fill="none" stroke="#1e2a4a" stroke-width="2"/>
+                  <path id="dashLineB" d="" fill="none" stroke="#a8802a" stroke-width="1.5" stroke-dasharray="3 5"/>
+                  <g fill="rgba(110,99,85,0.7)" font-family="Montserrat, sans-serif" font-size="8" letter-spacing="1.5" id="dashTicks"></g>
+                </svg>
+              </div>
+              <div class="dash__panel">
+                <div class="artifact__chartlabel" id="dashBarsLabel">Requests by category</div>
+                <div id="dashBars"></div>
+              </div>
+            </div>
+            <div class="dash__panel">
+              <div class="artifact__chartlabel" id="dashTableLabel">Show signals</div>
+              <div class="trow trow--head" aria-hidden="true"><span>Item</span><span>Signal</span><span>Trend</span><span>Status</span></div>
+              <div id="dashRows"></div>
+            </div>
+            <p class="dash__read" id="dashRead"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="artifact" role="tabpanel" id="panel-flow" aria-labelledby="tab-flow" hidden>
+        <div class="artifact__bar">
+          <span><strong>KARST</strong> · Art show install</span>
+          <span>Student-built workflow · Opens Friday</span>
+        </div>
+        <div class="artifact__body">
+          <div class="flow">
+            <div class="flow__row flow__row--live">
+              <span class="flow__stage">Submitted</span>
+              <span class="flow__desc">Each piece photographed and tagged — artist, medium, size — in one pass.</span>
+              <span class="flow__state">4 min ago</span>
+            </div>
+            <div class="flow__row flow__row--live">
+              <span class="flow__stage">Curated</span>
+              <span class="flow__desc">The jury picks from one gallery view; every artist hears back automatically.</span>
+              <span class="flow__state">This morning</span>
+            </div>
+            <div class="flow__row">
+              <span class="flow__stage">Installed</span>
+              <span class="flow__desc">Wall map generated, labels printed, hanging order handed to the crew.</span>
+              <span class="flow__state">Day 2</span>
+            </div>
+            <div class="flow__row">
+              <span class="flow__stage">Opening</span>
+              <span class="flow__desc">RSVPs counted, walkthrough printed — and a record the next show learns from.</span>
+              <span class="flow__state">Friday</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="artifact" role="tabpanel" id="panel-app" aria-labelledby="tab-app" hidden>
+        <div class="artifact__bar">
+          <span><strong>KARST</strong> · Peer tutoring</span>
+          <span>Student-built app · Matched in 40 seconds</span>
+        </div>
+        <div class="app">
+          <div class="app__bar">
+            <span class="app__brand"><i></i>Tutoring match</span>
+            <span class="app__user">J. Okafor · Junior · North High</span>
+          </div>
+          <div class="app__confirm" id="appConfirm" hidden>Request <strong>#88</strong> matched — tutor confirmed, room booked, counseling dashboard updated.</div>
+          <div class="appmock">
+            <div class="appmock__fields">
+              <div class="afield">
+                <span class="afield__label">Subject</span>
+                <span class="afield__input">Algebra II <b class="afield__caret">▾</b></span>
+              </div>
+              <div class="afield">
+                <span class="afield__label">When</span>
+                <span class="afield__input">Tuesdays · after school</span>
+              </div>
+              <div class="afield">
+                <span class="afield__label">Help with</span>
+                <span class="achips"><i class="is-on">Homework</i><i>Test prep</i><i>Essay review</i><i>AP CS</i></span>
+              </div>
+              <div class="afield">
+                <span class="afield__label">Timing</span>
+                <span class="achips"><i>Whenever</i><i class="is-on">This week</i><i>Before Friday</i></span>
+              </div>
+              <div class="afield">
+                <span class="afield__label">Details</span>
+                <span class="afield__input afield__input--area">Systems of equations quiz Friday. Word problems are fine; graphing solutions is where I get stuck.</span>
+              </div>
+              <div class="afield">
+                <span class="afield__label">Attachment</span>
+                <span class="afield__input afield__file">unit-3-practice.pdf <em>640 KB</em></span>
+              </div>
+              <button class="appmock__submit" id="appSubmit" type="button">Find my tutor</button>
+            </div>
+            <div class="appmock__after" id="appAfter">
+              <div class="appmock__afterlabel">What one request does</div>
+              <div class="appmock__step"><i>01</i>Matched with a trained peer tutor — no awkward asking around.</div>
+              <div class="appmock__step"><i>02</i>A study room books itself; both calendars update.</div>
+              <div class="appmock__step"><i>03</i>Counts on the counseling dashboard the moment it lands.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="artifact" role="tabpanel" id="panel-deck" aria-labelledby="tab-deck" hidden>
+        <div class="artifact__bar">
+          <span><strong>KARST</strong> · Demo day capstone</span>
+          <span>Slide 04 · 12</span>
+        </div>
+        <div class="artifact__body">
+          <div class="slide">
+            <div class="slide__eyebrow">Capstone · Demo day</div>
+            <div class="slide__title">How we cut the average lunch line by <span class="serif-i">four minutes.</span></div>
+            <div class="slide__grid">
+              <div class="slide__chart">
+                <div class="artifact__chartlabel">Average wait · fall to spring</div>
+                <svg viewBox="0 0 320 110" width="100%" aria-hidden="true">
+                  <g stroke="rgba(30,42,74,0.1)" stroke-width="1">
+                    <line x1="0" y1="28" x2="320" y2="28"/>
+                    <line x1="0" y1="58" x2="320" y2="58"/>
+                    <line x1="0" y1="88" x2="320" y2="88"/>
+                  </g>
+                  <path d="M10 40 C 70 44, 130 52, 190 62 S 290 82, 310 88" fill="none" stroke="#1e2a4a" stroke-width="2"/>
+                  <path d="M10 62 C 70 60, 130 56, 190 50 S 290 36, 310 32" fill="none" stroke="#a8802a" stroke-width="1.6" stroke-dasharray="3 5"/>
+                  <circle cx="310" cy="88" r="3" fill="#1e2a4a"/>
+                  <circle cx="310" cy="32" r="3" fill="#a8802a"/>
+                </svg>
+              </div>
+              <div class="brief__points">
+                <span>Timing data from three lunch periods, before and after.</span>
+                <span>The schedule change — and the app that keeps it working.</span>
+                <span>What we would hand the next team to keep it running.</span>
+              </div>
+            </div>
+            <div class="slide__foot">
+              <span><b>KARST</b> · Demo day</span>
+              <span>Evidence attached · Handoff on slide 12</span>
+              <span>04 / 12</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="work__caption">Illustrative student-built artifacts · No live data</p>
+  </div>
+</section>
+<div class="chapter-cut" aria-hidden="true"></div>
+
+<!-- ================= co-led ================= -->
+<section class="coled">
+  <div class="wrap">
+    <div class="coled__grid">
+      <div>
+        <p class="eyebrow rv">Led by Kevin · Sponsored by your district</p>
+        <h2 class="rv rv-d1">The people backing you are in the room.</h2>
+        <p class="coled__body rv rv-d2">Kevin leads the build practice — the same advanced AI workflows the district cohort runs. Your district sponsor clears the path: real problems, real guardrails, real adoption.</p>
+      </div>
+      <div class="leads rv rv-d2">
+        <div class="lead">
+          <div class="lead__frame lead__frame--seat">
+            <svg class="lead__seatmark" viewBox="0 0 52 52" fill="none" aria-hidden="true">
+              <circle cx="26" cy="26" r="24" stroke="#a98a5f" stroke-opacity="0.8" stroke-width="1"/>
+              <circle cx="26" cy="26" r="17" stroke="#a98a5f" stroke-opacity="0.55" stroke-width="1"/>
+              <circle cx="26" cy="26" r="10" stroke="#a98a5f" stroke-opacity="0.35" stroke-width="1"/>
+              <circle cx="26" cy="26" r="2.5" fill="#a98a5f"/>
+            </svg>
+            <span class="lead__seatlabel">This seat is<br>your sponsor's</span>
+          </div>
+          <div class="lead__name">Your district sponsor</div>
+          <div class="lead__role">Access · Guardrails · Adoption</div>
+        </div>
+        <div class="lead">
+          <div class="lead__frame">
+            <img src="assets/kevin-bice.webp" alt="Kevin Bice, Founder of Karst" loading="lazy">
+          </div>
+          <div class="lead__name">Kevin Bice</div>
+          <div class="lead__role">Founder, Karst</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= the designation (dark III) ================= -->
+<div class="chapter-cut" aria-hidden="true"></div>
+<section class="dark designation" id="designation">
+  <div class="wrap">
+    <div class="designation__grid">
+      <div>
+        <p class="eyebrow rv">The designation</p>
+        <h2 class="rv rv-d1">Demonstrated. <span class="serif-i">Not attended.</span></h2>
+        <p class="chapter-lede rv rv-d2">KARST Solutions Engineer is earned against a published four-part standard. The evidence is work in real use.</p>
+        <ol class="designation__standards rv rv-d2">
+          <li class="dstd">
+            <span class="dstd__index">01 · PRACTICE</span>
+            <div>
+              <div class="dstd__title">Run your own practice.</div>
+              <p class="dstd__copy">A documented AI workflow you use for real work — yours, not a worksheet.</p>
+            </div>
+          </li>
+          <li class="dstd">
+            <span class="dstd__index">02 · BUILD</span>
+            <div>
+              <div class="dstd__title">Ship real tools.</div>
+              <p class="dstd__copy">Three or more tools in use at your campus or the district office.</p>
+            </div>
+          </li>
+          <li class="dstd">
+            <span class="dstd__index">03 · TRANSFER</span>
+            <div>
+              <div class="dstd__title">Teach the method.</div>
+              <p class="dstd__copy">One session where other students learn how you build.</p>
+            </div>
+          </li>
+          <li class="dstd">
+            <span class="dstd__index">04 · PRESENT</span>
+            <div>
+              <div class="dstd__title">Demo day.</div>
+              <p class="dstd__copy">A capstone presented to district leadership.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <div class="credmark rv rv-d2" id="credential">
+        <div class="credmark__stage" id="credStage" role="button" tabindex="0" aria-label="The Karst record — drag to spin, click to change its form"></div>
+        <div class="credmark__hint" aria-hidden="true">Drag to spin · Click to change form</div>
+        <div class="credmark__label">Karst credential record · Solutions engineering</div>
+        <div class="credmark__name"><span class="text-cycle-karst">KARST</span> Solutions Engineer</div>
+        <div class="credmark__sub serif-i">Earned through demonstrated work.</div>
+        <div class="credmark__marks" aria-label="Four verified milestones">
+          <div class="mark">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8.5 L6 12.5 L14 3.5" stroke="#c4a070" stroke-width="1.6" fill="none"/></svg>
+            Practice
+          </div>
+          <div class="mark">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8.5 L6 12.5 L14 3.5" stroke="#c4a070" stroke-width="1.6" fill="none"/></svg>
+            Build
+          </div>
+          <div class="mark">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8.5 L6 12.5 L14 3.5" stroke="#c4a070" stroke-width="1.6" fill="none"/></svg>
+            Transfer
+          </div>
+          <div class="mark">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8.5 L6 12.5 L14 3.5" stroke="#c4a070" stroke-width="1.6" fill="none"/></svg>
+            Present
+          </div>
+        </div>
+        <div class="credmark__foot">
+          <span>Verified standard · 4 / 4</span>
+          <span>Issued by Karst · District co-signature available</span>
+        </div>
+      </div>
+    </div>
+    <p class="designation__legal rv">KARST Solutions Engineer is a proprietary professional-learning designation. It does not confer academic credit, licensure, or third-party accreditation; any course credit is your district's decision.</p>
+  </div>
+</section>
+<div class="chapter-cut" aria-hidden="true"></div>
+
+<!-- ================= briefing — invite only ================= -->
+<section class="briefing" id="briefing">
+  <div class="wrap briefing__center">
+    <p class="eyebrow rv">Selection</p>
+    <h2 class="rv rv-d1">One cohort a year. <span class="serif-i">Selected, not enrolled.</span></h2>
+    <p class="briefing__body rv rv-d2">Students apply; sites nominate. Kevin selects a small, cross-campus cohort — each builder with one real problem worth a year.</p>
+    <div class="briefing__facts rv rv-d3">
+      <span><i class="tick"></i>Application + nomination</span>
+      <span><i class="tick"></i>District-sponsored</span>
+      <span><i class="tick"></i>Demo day closes the year</span>
+    </div>
+    <div class="briefing__cta rv rv-d4">
+      <a class="btn btn--solid btn--sm" href="https://karstinsights.com/contact">Request an introduction</a>
+    </div>
+    <p class="briefing__arrange rv rv-d4">Selection runs through your district · Karst Fieldwork</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= coda ================= -->
+<footer class="coda" id="coda">
+  <svg class="coda__seal" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <circle cx="32" cy="32" r="30" stroke="#c4a070" stroke-opacity="0.7" stroke-width="1"/>
+    <circle cx="32" cy="32" r="21" stroke="#c4a070" stroke-opacity="0.45" stroke-width="1"/>
+    <circle cx="32" cy="32" r="12" stroke="#c4a070" stroke-opacity="0.3" stroke-width="1"/>
+    <circle cx="32" cy="32" r="2.5" fill="#c4a070"/>
+  </svg>
+  <div class="coda__wordmark">KARST <span>Fieldwork</span></div>
+  <p class="coda__line serif-i">One real problem enters. A solutions engineer emerges.</p>
+  <p class="coda__fine">A Karst cohort program for students · Arranged through your district</p>
+  <p class="coda__fine"><a href="/privacy" style="color:inherit;text-decoration:underline;">Privacy</a> · <a href="/accessibility" style="color:inherit;text-decoration:underline;">Accessibility</a></p>
+</footer>
+
+<canvas class="world-dust" id="dustCanvas" aria-hidden="true"></canvas>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* --- scroll reveals --- */
+  var revealed = document.querySelectorAll(".rv, .movement, #credential");
+  if ("IntersectionObserver" in window && !reduced) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add("is-in");
+          io.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -10% 0px", threshold: 0.1 });
+    revealed.forEach(function (el) { io.observe(el); });
+  } else {
+    revealed.forEach(function (el) { el.classList.add("is-in"); });
+  }
+
+  /* --- season progress hairline in the header --- */
+  var progress = document.querySelector(".season-progress");
+  function paint() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    var p = max > 0 ? (window.scrollY / max) * 100 : 0;
+    progress.style.width = p + "%";
+  }
+  window.addEventListener("scroll", paint, { passive: true });
+  paint();
+
+  /* --- artifact exhibition tabs --- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".work__tab"));
+  var panels = {
+    "tab-signal": document.getElementById("panel-signal"),
+    "tab-flow": document.getElementById("panel-flow"),
+    "tab-app": document.getElementById("panel-app"),
+    "tab-deck": document.getElementById("panel-deck")
+  };
+  function selectTab(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      panels[t.id].hidden = !on;
+    });
+    tab.focus();
+  }
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener("click", function () { selectTab(tab); });
+    tab.addEventListener("keydown", function (e) {
+      var next = null;
+      if (e.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
+      if (e.key === "ArrowLeft") next = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (e.key === "Home") next = tabs[0];
+      if (e.key === "End") next = tabs[tabs.length - 1];
+      if (next) { e.preventDefault(); selectTab(next); }
+    });
+  });
+
+  /* --- the dashboard is a working surface: views and periods swap the read --- */
+  var DASH = {
+    overview: {
+      title: "Opening night in 12 days",
+      kpis: [
+        ["Tasks on track", "87%", "+6 this week"],
+        ["Budget used", "64%", "Under plan"],
+        ["Costumes fitted", "31/38", "Fittings Tue"],
+        ["Set builds done", "09/11", "Two this weekend"]
+      ],
+      barsLabel: "Open tasks by team",
+      bars: [["Stage crew", 58, "14"], ["Costumes", 44, "11"], ["Lighting", 38, "9"], ["Sound", 30, "7"], ["Props", 22, "5"]],
+      rows: [
+        ["Act II set piece", "Paint call Saturday", "up", "good", "Steady"],
+        ["Mic belt packs", "Two units in repair", "down", "watch", "Watch"],
+        ["Lobby display", "Art class installing", "up", "ready", "Ready"],
+        ["Program printing", "Proof approved", "flat", "good", "Steady"]
+      ],
+      read: "the build is on schedule; the two watch items are mic packs in repair and Saturday's paint call needing six more hands."
+    },
+    attendance: {
+      title: "Tickets, read plainly",
+      kpis: [
+        ["Seats sold", "412", "62% of house"],
+        ["Opening night", "78%", "Nearly there"],
+        ["Sunday matinee", "54%", "Push this week"],
+        ["Revenue", "$3,296", "Ahead of last year"]
+      ],
+      barsLabel: "Sales by night",
+      bars: [["Fri · opening", 72, "186"], ["Saturday", 58, "148"], ["Sun matinee", 30, "78"]],
+      rows: [
+        ["Friday · opening", "Nearly sold out", "up", "good", "Steady"],
+        ["Saturday", "Climbing on its own", "up", "good", "Steady"],
+        ["Sunday matinee", "Needs one more push", "flat", "watch", "Watch"],
+        ["Staff comp block", "Reserved and held", "flat", "ready", "Ready"]
+      ],
+      read: "opening night nearly sells itself; the Sunday matinee needs one more push in the morning bulletin."
+    },
+    facilities: {
+      title: "Rehearsals, this week",
+      kpis: [
+        ["Attendance", "94%", "+3 this month"],
+        ["Scenes off-book", "11/14", "Three to go"],
+        ["Pit sessions", "04", "This week"],
+        ["Tech cues set", "132", "Locked Friday"]
+      ],
+      barsLabel: "Hours by group",
+      bars: [["Cast", 66, "22"], ["Crew", 52, "17"], ["Pit", 40, "13"], ["Tech", 28, "9"]],
+      rows: [
+        ["Act I full run", "Off book, clean", "up", "good", "Steady"],
+        ["Act II transitions", "Cue timing drifting", "down", "watch", "Watch"],
+        ["Pit + cast sync", "First full run Friday", "flat", "ready", "Ready"],
+        ["Understudy pass", "Scheduled Thursday", "flat", "good", "Steady"]
+      ],
+      read: "the company is off book ahead of pace; Act II transitions are the one thing tech week has to fix."
+    }
+  };
+  var SPARKS = {
+    up: "M2 12 L14 11 L26 9 L38 8 L50 5 L58 3",
+    down: "M2 6 L14 7 L26 9 L38 8 L50 11 L58 12",
+    flat: "M2 10 L14 9 L26 9 L38 7 L50 6 L58 6"
+  };
+  var PERIODS = {
+    year: {
+      label: "Momentum across the season",
+      a: "M8 118 C 60 112, 100 104, 150 96 S 250 76, 310 60 S 390 36, 412 30",
+      b: "M8 124 C 60 120, 100 116, 150 110 S 250 98, 310 88 S 390 70, 412 64",
+      ticks: [["AUG", 8], ["OCT", 108], ["JAN", 208], ["MAR", 308], ["MAY", 396]]
+    },
+    q90: {
+      label: "Momentum · last 30 days",
+      a: "M8 96 C 70 92, 130 88, 200 76 S 340 52, 412 40",
+      b: "M8 108 C 70 106, 130 102, 200 96 S 340 80, 412 72",
+      ticks: [["FEB", 8], ["MAR", 145], ["APR", 282], ["MAY", 396]]
+    },
+    d30: {
+      label: "Momentum · tech week",
+      a: "M8 78 C 60 80, 120 72, 190 68 S 330 54, 412 50",
+      b: "M8 92 C 60 94, 120 90, 190 86 S 330 76, 412 70",
+      ticks: [["WK 1", 8], ["WK 2", 140], ["WK 3", 272], ["WK 4", 388]]
+    }
+  };
+  function esc(s) { return String(s); }
+  function renderDash(viewKey, periodKey) {
+    var v = DASH[viewKey], p = PERIODS[periodKey];
+    if (!v || !p) return;
+    document.getElementById("dashTitle").textContent = v.title;
+    document.getElementById("dashKpis").innerHTML = v.kpis.map(function (k) {
+      return '<div class="kpi"><div class="kpi__label">' + esc(k[0]) + '</div><div class="kpi__value">' + esc(k[1]) + '</div><div class="kpi__note">' + esc(k[2]) + "</div></div>";
+    }).join("");
+    document.getElementById("dashChartLabel").textContent = p.label;
+    document.getElementById("dashArea").setAttribute("d", p.a + " L 412 132 L 8 132 Z");
+    document.getElementById("dashLineA").setAttribute("d", p.a);
+    document.getElementById("dashLineB").setAttribute("d", p.b);
+    document.getElementById("dashTicks").innerHTML = p.ticks.map(function (t) {
+      return '<text x="' + t[1] + '" y="146">' + esc(t[0]) + "</text>";
+    }).join("");
+    document.getElementById("dashBarsLabel").textContent = v.barsLabel;
+    document.getElementById("dashBars").innerHTML = v.bars.map(function (b, i) {
+      return '<div class="hbar' + (i === v.bars.length - 1 ? " hbar--dim" : "") + '"><span>' + esc(b[0]) + '</span><i style="width:' + b[1] + '%"></i><b>' + esc(b[2]) + "</b></div>";
+    }).join("");
+    document.getElementById("dashRows").innerHTML = v.rows.map(function (r) {
+      return '<div class="trow"><span>' + esc(r[0]) + "</span><span>" + esc(r[1]) + '</span><svg viewBox="0 0 60 16" class="spark" aria-hidden="true"><path d="' + SPARKS[r[2]] + '" fill="none" stroke="' + (r[3] === "watch" ? "#a54731" : "#1e2a4a") + '" stroke-width="1.5"/></svg><em class="is-' + r[3] + '">' + esc(r[4]) + "</em></div>";
+    }).join("");
+    document.getElementById("dashRead").innerHTML = "<strong>The read:</strong> " + esc(v.read);
+  }
+  var dashView = "overview", dashPeriod = "year";
+  var dashNav = document.getElementById("dashNav"), dashChips = document.getElementById("dashChips");
+  if (dashNav && dashChips) {
+    renderDash(dashView, dashPeriod);
+    dashNav.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-view]");
+      if (!b) return;
+      dashView = b.getAttribute("data-view");
+      dashNav.querySelectorAll("button").forEach(function (x) { x.classList.toggle("is-on", x === b); });
+      renderDash(dashView, dashPeriod);
+    });
+    dashChips.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-period]");
+      if (!b) return;
+      dashPeriod = b.getAttribute("data-period");
+      dashChips.querySelectorAll("button").forEach(function (x) { x.classList.toggle("is-on", x === b); });
+      renderDash(dashView, dashPeriod);
+    });
+  }
+
+  /* --- the application submits (locally): confirmation + routing replay --- */
+  var appSubmit = document.getElementById("appSubmit"),
+      appConfirm = document.getElementById("appConfirm"),
+      appAfter = document.getElementById("appAfter");
+  if (appSubmit && appConfirm && appAfter) {
+    var appSteps = appAfter.querySelectorAll(".appmock__step"), appTimers = [];
+    appSubmit.addEventListener("click", function () {
+      appTimers.forEach(clearTimeout); appTimers = [];
+      appConfirm.hidden = false;
+      if (reduced) {
+        appAfter.classList.remove("is-playing");
+        return;
+      }
+      appAfter.classList.add("is-playing");
+      appSteps.forEach(function (s) { s.classList.remove("is-hit"); });
+      appSteps.forEach(function (s, i) {
+        appTimers.push(setTimeout(function () {
+          s.classList.add("is-hit");
+          if (i === appSteps.length - 1) appTimers.push(setTimeout(function () { appAfter.classList.remove("is-playing"); }, 900));
+        }, 350 + i * 550));
+      });
+    });
+  }
+
+})();
+
+/* --- the field season: one 3D particle body, eight formations, one scroll.
+   Thousands of uniform silver particles orbit in perspective and reform —
+   nebula -> sphere -> lattice -> strata -> torus -> basin -> helix -> seal.
+   Shapes are index-parameterized so morphs flow coherently (no matching
+   pass needed). Uniform color and size; depth carries the dimensionality.
+   Parks offscreen; reduced motion snaps forms and stills the rotation. --- */
+(function () {
+  var canvas = document.getElementById("formationCanvas"),
+      track = document.getElementById("formationTrack"),
+      section = document.querySelector(".formation"),
+      sticky = canvas ? canvas.parentElement : null,
+      intro = document.getElementById("formationIntro");
+  if (!canvas || !track || !sticky) return;
+  var ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var coarse = window.matchMedia("(pointer: coarse)").matches;
+  var moves = document.querySelectorAll(".fmove");
+  var rail = document.querySelectorAll("#formationRail li");
+  var counter = document.getElementById("formationCounter");
+  var STAGES = 8, GOLDEN = 2.399963229728653, PITCH = 0.34;
+  var INTRO_SPAN = 0.075;
+  var w = 0, h = 0, dpr = 1, N = 0, shapes = [], stag = null,
+      progress = 0, targetProgress = 0, running = false, raf = 0, last = 0, time = 0,
+      inView = false, activeStage = -1, queued = false;
+  /* orbit state: auto spin + scroll-coupled turn + drag, all additive */
+  var autoYaw = 0.6, dragYaw = 0, dragPitch = 0, dragVel = 0, dragging = false,
+      dragX = 0, dragY = 0;
+  /* first-load assembly: the body condenses out of a wider scatter, once */
+  var boot = 1, bootStart = 0;
+  /* cursor: eased parallax + soft screen-space repulsion */
+  var curX = -9999, curY = -9999, curEase = 0, curOn = false;
+  var BUCKETS = 6, bucketStyles = [], bucketX = [], bucketY = [], bucketS = [], bucketN = new Array(BUCKETS);
+  function prand(seed) { var x = Math.sin(seed * 9301 + 49297) * 233280; return x - Math.floor(x); }
+  function clamp(v) { return Math.max(0, Math.min(1, v)); }
+  function smooth(v) { var x = clamp(v); return x * x * (3 - 2 * x); }
+  function heldEase(t) { var x = clamp(t); if (x < 0.24) return 0; if (x > 0.76) return 1; return smooth((x - 0.24) / 0.52); }
+  function geom() {
+    var compact = w <= 720;
+    return {
+      cx: w * (compact ? 0.5 : 0.54),
+      cy: h * (compact ? 0.38 : 0.44),
+      R: Math.min(w, h) * (compact ? 0.27 : 0.31)
+    };
+  }
+  /* shape builders — each fills a Float32Array(N*3) in local space */
+  function sField(a, R) {
+    for (var i = 0; i < N; i++) {
+      var t = prand(i * 3 + 1) * Math.PI * 2, u = prand(i * 5 + 2) * 2 - 1, s = Math.sqrt(1 - u * u);
+      var r = R * 1.3 * Math.cbrt(prand(i * 7 + 3));
+      a[i * 3] = Math.cos(t) * s * r;
+      a[i * 3 + 1] = u * r * 0.72;
+      a[i * 3 + 2] = Math.sin(t) * s * r;
+    }
+  }
+  function sSphere(a, R) {
+    for (var i = 0; i < N; i++) {
+      var y = 1 - 2 * (i + 0.5) / N, r = Math.sqrt(Math.max(0, 1 - y * y)), an = i * GOLDEN;
+      a[i * 3] = Math.cos(an) * r * R;
+      a[i * 3 + 1] = y * R;
+      a[i * 3 + 2] = Math.sin(an) * r * R;
+    }
+  }
+  function sLattice(a, R) {
+    var side = Math.ceil(Math.sqrt(N));
+    for (var i = 0; i < N; i++) {
+      var gx = i % side, gz = Math.floor(i / side);
+      a[i * 3] = (gx / (side - 1) - 0.5) * R * 2.7;
+      a[i * 3 + 1] = Math.sin(gx * 0.32) * Math.cos(gz * 0.27) * R * 0.06;
+      a[i * 3 + 2] = (gz / (side - 1) - 0.5) * R * 2.7;
+    }
+  }
+  function sStrata(a, R) {
+    for (var i = 0; i < N; i++) {
+      var L = i % 5, rr = R * 1.08 * Math.sqrt(prand(i * 11 + 3)), an = i * GOLDEN;
+      a[i * 3] = Math.cos(an) * rr;
+      a[i * 3 + 1] = (L - 2) * R * 0.34 + Math.sin(an * 3) * R * 0.015;
+      a[i * 3 + 2] = Math.sin(an) * rr;
+    }
+  }
+  function sTorus(a, R) {
+    var M = R * 0.8, m = R * 0.3;
+    for (var i = 0; i < N; i++) {
+      var u = i * GOLDEN, v = prand(i * 17 + 7) * Math.PI * 2;
+      var ring = M + m * Math.cos(v);
+      a[i * 3] = ring * Math.cos(u);
+      a[i * 3 + 1] = m * Math.sin(v);
+      a[i * 3 + 2] = ring * Math.sin(u);
+    }
+  }
+  function sBasin(a, R) {
+    var RB = R * 1.18;
+    for (var i = 0; i < N; i++) {
+      var rr = RB * Math.sqrt(prand(i * 19 + 3)), an = i * GOLDEN;
+      a[i * 3] = Math.cos(an) * rr;
+      a[i * 3 + 1] = (rr * rr / RB) * 0.62 - R * 0.34;
+      a[i * 3 + 2] = Math.sin(an) * rr;
+    }
+  }
+  function sConstellation(a, R) {
+    /* one practice becomes many holders: a center body, six satellites,
+       and thin bridge arcs carrying the method outward */
+    var SATS = 6, ringR = R * 0.74, coreN = Math.floor(N * 0.22), bridgeN = Math.floor(N * 0.16);
+    for (var i = 0; i < N; i++) {
+      if (i < coreN) {
+        var y = 1 - 2 * (i + 0.5) / coreN, r = Math.sqrt(Math.max(0, 1 - y * y)), an = i * GOLDEN;
+        a[i * 3] = Math.cos(an) * r * R * 0.2;
+        a[i * 3 + 1] = y * R * 0.2;
+        a[i * 3 + 2] = Math.sin(an) * r * R * 0.2;
+      } else if (i < coreN + bridgeN) {
+        var j = i - coreN, sIdx = j % SATS, t = (Math.floor(j / SATS) + 0.5) / Math.max(1, Math.floor(bridgeN / SATS));
+        var sa = sIdx * (Math.PI * 2 / SATS);
+        var bx = Math.cos(sa) * ringR * t, bz = Math.sin(sa) * ringR * t;
+        a[i * 3] = bx;
+        a[i * 3 + 1] = Math.sin(t * Math.PI) * R * 0.1 * (sIdx % 2 ? 1 : -1);
+        a[i * 3 + 2] = bz;
+      } else {
+        var k = i - coreN - bridgeN, satN = N - coreN - bridgeN, s2 = k % SATS, m2 = Math.floor(k / SATS);
+        var perSat = Math.max(1, Math.floor(satN / SATS));
+        var y2 = 1 - 2 * (m2 + 0.5) / perSat, r2 = Math.sqrt(Math.max(0, 1 - y2 * y2)), an2 = k * GOLDEN;
+        var sa2 = s2 * (Math.PI * 2 / SATS);
+        a[i * 3] = Math.cos(sa2) * ringR + Math.cos(an2) * r2 * R * 0.12;
+        a[i * 3 + 1] = y2 * R * 0.12;
+        a[i * 3 + 2] = Math.sin(sa2) * ringR + Math.sin(an2) * r2 * R * 0.12;
+      }
+    }
+  }
+  function sSeal(a, R) {
+    /* RECORD as a ringed planet: a dense body wearing the seal — a broad
+       ring system with a clean Cassini gap. Rotation-symmetric, so it turns
+       serenely under the same yaw as everything else. */
+    var planetN = Math.floor(N * 0.55), shepherdN = Math.floor(N * 0.04);
+    var PR = R * 0.5, RIN = R * 0.7, ROUT = R * 1.26, GAP0 = R * 1.0, GAP1 = R * 1.07;
+    for (var i = 0; i < N; i++) {
+      var ix = i * 3, an = i * GOLDEN;
+      if (i < planetN) {
+        var yy = 1 - 2 * (i + 0.5) / planetN, rr = Math.sqrt(Math.max(0, 1 - yy * yy));
+        a[ix] = Math.cos(an) * rr * PR;
+        a[ix + 1] = yy * PR;
+        a[ix + 2] = Math.sin(an) * rr * PR;
+      } else if (i < planetN + shepherdN) {
+        /* faint shepherd dust just outside the system */
+        var sr = ROUT * (1.05 + prand(i * 19 + 11) * 0.1);
+        a[ix] = Math.cos(an) * sr;
+        a[ix + 1] = (prand(i * 23 + 13) - 0.5) * R * 0.015;
+        a[ix + 2] = Math.sin(an) * sr;
+      } else {
+        /* the rings, denser toward the inner edge, parted by the gap */
+        var dr = RIN + (ROUT - RIN) * Math.pow(prand(i * 29 + 15), 1.35);
+        if (dr > GAP0 && dr < GAP1) {
+          dr = prand(i * 31 + 5) < 0.5 ? GAP0 - prand(i * 37 + 7) * R * 0.02 : GAP1 + prand(i * 41 + 9) * R * 0.02;
+        }
+        a[ix] = Math.cos(an) * dr;
+        a[ix + 1] = (prand(i * 43 + 17) - 0.5) * R * 0.012;
+        a[ix + 2] = Math.sin(an) * dr;
+      }
+    }
+  }
+  function build() {
+    var g = geom();
+    N = coarse ? 3600 : (w > 1600 ? 13000 : 10500);
+    stag = new Float32Array(N);
+    for (var i = 0; i < N; i++) stag[i] = prand(i * 23 + 9);
+    var builders = [sField, sSphere, sLattice, sStrata, sTorus, sBasin, sConstellation, sSeal];
+    shapes = [];
+    for (var b = 0; b < builders.length; b++) {
+      var arr = new Float32Array(N * 3);
+      builders[b](arr, g.R);
+      shapes.push(arr);
+    }
+    for (var k = 0; k < BUCKETS; k++) {
+      bucketStyles[k] = "rgba(214,218,226," + (0.16 + 0.6 * (k / (BUCKETS - 1))).toFixed(3) + ")";
+      bucketX[k] = new Float32Array(N); bucketY[k] = new Float32Array(N); bucketS[k] = new Float32Array(N);
+    }
+  }
+  function fit() {
+    var r = sticky.getBoundingClientRect();
+    w = r.width; h = r.height;
+    dpr = Math.max(1, Math.min(coarse ? 1.5 : 2, window.devicePixelRatio || 1));
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.style.width = w + "px"; canvas.style.height = h + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    build(); updateProgress(); draw();
+  }
+  function shifted(p) { return clamp((p - INTRO_SPAN) / (1 - INTRO_SPAN)); }
+  function stateAt(p) {
+    /* the eight movements complete by 92% of the chapter — RECORD holds */
+    var ps = clamp(shifted(p) / 0.92);
+    if (ps >= 1) return { a: STAGES - 1, b: STAGES - 1, m: 0, stage: STAGES - 1 };
+    var seg = ps * (STAGES - 1), a = Math.min(STAGES - 2, Math.floor(seg)), f = seg - a;
+    return { a: a, b: a + 1, m: reduce ? (f < 0.5 ? 0 : 1) : heldEase(f), stage: f < 0.5 ? a : a + 1 };
+  }
+  function updateActive(value) {
+    var stage = stateAt(value).stage;
+    var introOn = value < INTRO_SPAN * 0.75;
+    sticky.classList.toggle("is-intro", introOn);
+    if (intro) {
+      var ia = 1 - smooth((value - 0.012) / (INTRO_SPAN * 0.75));
+      intro.style.opacity = ia.toFixed(3);
+      intro.style.transform = "translateY(" + (-26 * (1 - ia)).toFixed(1) + "px)";
+      intro.style.visibility = ia < 0.02 ? "hidden" : "visible";
+    }
+    if (stage === activeStage) return;
+    activeStage = stage;
+    for (var i = 0; i < moves.length; i++) moves[i].classList.toggle("is-active", i === stage);
+    for (var j = 0; j < rail.length; j++) rail[j].classList.toggle("is-active", j === stage);
+    if (counter) counter.textContent = "0" + (stage + 1) + " · 08";
+  }
+  function updateProgress() {
+    var r = track.getBoundingClientRect(), vh = window.innerHeight;
+    targetProgress = clamp(-r.top / Math.max(1, r.height - vh));
+    if (reduce) { progress = targetProgress; updateActive(progress); draw(); }
+    else if (activeStage < 0) updateActive(progress);
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    var g = geom(), state = stateAt(progress);
+    /* cursor parallax nudges the camera; drag pitch tilts the body */
+    var par = curOn ? curEase : 0;
+    var cx = g.cx + (curX / Math.max(1, w) - 0.5) * 10 * par;
+    var cy = g.cy + (curY / Math.max(1, h) - 0.5) * 7 * par;
+    var pitch = PITCH + dragPitch + (curOn ? (curY / Math.max(1, h) - 0.5) * 0.04 * par : 0);
+    var cosB = Math.cos(pitch), sinB = Math.sin(pitch);
+    /* background orb lighting: a warm ember and a cold slate glow drift
+       slowly behind the body, plus the soft silver center */
+    var t = time;
+    var ox1 = cx + Math.cos(t * 0.05) * g.R * 1.15, oy1 = cy + Math.sin(t * 0.038) * g.R * 0.7;
+    var ox2 = cx + Math.cos(t * 0.041 + 2.6) * g.R * 1.3, oy2 = cy + Math.sin(t * 0.052 + 1.2) * g.R * 0.85;
+    var breathe = 1 + 0.08 * Math.sin(t * 0.11);
+    var orb1 = ctx.createRadialGradient(ox1, oy1, 0, ox1, oy1, g.R * 1.5 * breathe);
+    orb1.addColorStop(0, "rgba(196,160,112,0.055)");
+    orb1.addColorStop(1, "rgba(196,160,112,0)");
+    ctx.fillStyle = orb1;
+    ctx.fillRect(0, 0, w, h);
+    var orb2 = ctx.createRadialGradient(ox2, oy2, 0, ox2, oy2, g.R * 1.7 * breathe);
+    orb2.addColorStop(0, "rgba(96,118,158,0.06)");
+    orb2.addColorStop(1, "rgba(96,118,158,0)");
+    ctx.fillStyle = orb2;
+    ctx.fillRect(0, 0, w, h);
+    var glow = ctx.createRadialGradient(cx, cy, g.R * 0.1, cx, cy, g.R * 2.1);
+    glow.addColorStop(0, "rgba(226,230,238,0.05)");
+    glow.addColorStop(1, "rgba(226,230,238,0)");
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, w, h);
+    var A = shapes[state.a], B = shapes[state.b], m = state.m;
+    /* the body always answers the scroll: yaw carries a scroll-coupled turn */
+    var yaw = autoYaw + progress * 2.6 + dragYaw;
+    var cosY = Math.cos(yaw), sinY = Math.sin(yaw);
+    var f = g.R * 3.1;
+    var rep = curOn && !dragging && curEase > 0.01;
+    var SIG2 = 2 * 74 * 74;
+    for (var k = 0; k < BUCKETS; k++) bucketN[k] = 0;
+    for (var i = 0; i < N; i++) {
+      var wv = m <= 0 ? 0 : (m >= 1 ? 1 : smooth(clamp((m - stag[i] * 0.15) / 0.85)));
+      var ix = i * 3;
+      var x = A[ix] + (B[ix] - A[ix]) * wv,
+          y = A[ix + 1] + (B[ix + 1] - A[ix + 1]) * wv,
+          z = A[ix + 2] + (B[ix + 2] - A[ix + 2]) * wv;
+      /* pitch then yaw */
+      var y1 = y * cosB - z * sinB, z1 = y * sinB + z * cosB;
+      var x2 = x * cosY + z1 * sinY, z2 = -x * sinY + z1 * cosY;
+      var s = f / (f + z2);
+      if (s <= 0) continue;
+      var px = cx + x2 * s, py = cy + y1 * s;
+      /* a very mild vortex: a whisper of outward room plus a tangential
+         swirl, so particles slide around the cursor rather than flee it */
+      if (rep) {
+        var rdx = px - curX, rdy = py - curY, d2 = rdx * rdx + rdy * rdy;
+        if (d2 < 48400) {
+          var fall = Math.exp(-d2 / SIG2) * curEase;
+          var dist = Math.sqrt(d2) || 1;
+          var radial = 7 * fall, swirl = 14 * fall;
+          px += (rdx / dist) * radial + (-rdy / dist) * swirl;
+          py += (rdy / dist) * radial + (rdx / dist) * swirl;
+        }
+      }
+      if (boot < 1) {
+        var bF = smooth(clamp((boot - stag[i] * 0.35) / 0.65));
+        var scale2 = 2 - bF;
+        px = cx + (px - cx) * scale2;
+        py = cy + (py - cy) * scale2;
+        if (bF < 0.04) continue;
+      }
+      if (px < -4 || px > w + 4 || py < -4 || py > h + 4) continue;
+      var nd = clamp((g.R - z2) / (2 * g.R));
+      var k2 = Math.min(BUCKETS - 1, Math.floor(nd * BUCKETS));
+      var n = bucketN[k2];
+      bucketX[k2][n] = px; bucketY[k2][n] = py; bucketS[k2][n] = Math.max(0.9, Math.min(2.1, 1.35 * s));
+      bucketN[k2] = n + 1;
+    }
+    for (var b = 0; b < BUCKETS; b++) {
+      var cnt = bucketN[b];
+      if (!cnt) continue;
+      ctx.fillStyle = bucketStyles[b];
+      var xs = bucketX[b], ys = bucketY[b], ss = bucketS[b];
+      for (var j = 0; j < cnt; j++) {
+        var sz = ss[j];
+        ctx.fillRect(xs[j] - sz * 0.5, ys[j] - sz * 0.5, sz, sz);
+      }
+    }
+  }
+  function loop(now) {
+    if (!running) return;
+    var dt = last ? Math.min(48, now - last) : 16;
+    last = now;
+    if (!bootStart) bootStart = now;
+    boot = reduce ? 1 : Math.min(1, (now - bootStart) / 1500);
+    time += dt / 1000;
+    autoYaw += dt * 0.00009;
+    /* drag inertia: released spin eases out */
+    if (!dragging && Math.abs(dragVel) > 0.00001) {
+      dragYaw += dragVel * dt;
+      dragVel *= Math.pow(0.94, dt / 16.67);
+    }
+    dragPitch *= dragging ? 1 : Math.pow(0.985, dt / 16.67);
+    curEase += ((curOn ? 1 : 0) - curEase) * (1 - Math.pow(0.9, dt / 16.67));
+    /* tight scroll chase — the reader stays in control */
+    progress += (targetProgress - progress) * (1 - Math.pow(0.88, dt / 16.67));
+    if (Math.abs(targetProgress - progress) < 0.0001) progress = targetProgress;
+    updateActive(progress);
+    draw();
+    raf = requestAnimationFrame(loop);
+  }
+  /* --- drag to orbit (fine pointers; touch keeps native scroll) --- */
+  if (!coarse && !reduce) {
+    sticky.addEventListener("pointerdown", function (e) {
+      if (e.button !== 0 || e.target.closest("a,button")) return;
+      dragging = true; dragVel = 0; dragX = e.clientX; dragY = e.clientY;
+      canvas.classList.add("is-dragging");
+      try { sticky.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    sticky.addEventListener("pointermove", function (e) {
+      var r = sticky.getBoundingClientRect();
+      curX = e.clientX - r.left; curY = e.clientY - r.top; curOn = true;
+      if (!dragging) return;
+      var dx = e.clientX - dragX, dy = e.clientY - dragY;
+      dragX = e.clientX; dragY = e.clientY;
+      dragYaw += dx * 0.005;
+      dragVel = dx * 0.0003;
+      dragPitch = Math.max(-0.35, Math.min(0.35, dragPitch + dy * 0.0022));
+    });
+    function endDrag() { dragging = false; canvas.classList.remove("is-dragging"); }
+    sticky.addEventListener("pointerup", endDrag);
+    sticky.addEventListener("pointercancel", endDrag);
+    sticky.addEventListener("pointerleave", function () { curOn = false; if (dragging) endDrag(); });
+  }
+  function sync() {
+    var should = inView && !document.hidden && !reduce;
+    if (should && !running) { running = true; last = 0; raf = requestAnimationFrame(loop); }
+    else if (!should && running) { running = false; cancelAnimationFrame(raf); }
+  }
+  function queueProgress() {
+    if (!inView || queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; updateProgress(); });
+  }
+  fit();
+  if ("ResizeObserver" in window) new ResizeObserver(fit).observe(sticky);
+  window.addEventListener("scroll", queueProgress, { passive: true });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { inView = e.isIntersecting; updateProgress(); sync(); });
+    }, { threshold: 0.01 }).observe(section);
+  } else { inView = true; updateProgress(); sync(); }
+  document.addEventListener("visibilitychange", sync);
+})();
+
+/* --- the persistent world: the year's dust never leaves the page.
+   When the formation chapter releases, its body dissolves into a sparse
+   sediment field that drifts behind the editorial sections — navy over
+   cream, silver over the dark chapters — and condenses back into the
+   credential seal at the designation. One system, first pixel to last. --- */
+(function () {
+  var canvas = document.getElementById("dustCanvas"),
+      track = document.getElementById("formationTrack"),
+      stage = document.getElementById("credStage"),
+      workSec = document.getElementById("work"),
+      coda = document.getElementById("coda");
+  if (!canvas || !track || !stage) return;
+  var ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var coarse = window.matchMedia("(pointer: coarse)").matches;
+  var GOLDEN = 2.399963229728653, PITCH = 0.52;
+  var cosB = Math.cos(PITCH), sinB = Math.sin(PITCH);
+  var N = coarse ? 900 : 1500;
+  var w = 0, h = 0, dpr = 1, pts = null, stagr = null, shapes = null,
+      running = false, raf = 0, yaw = 0.4, time = 0, last = 0, queued = false, visible = false;
+  /* the credential graphic is interactive: drag spins it, click cycles it */
+  var shapeIdx = 0, shapeNext = 0, shapeBlend = 1,
+      stageYaw = 0, stageVel = 0, sDragging = false, sDragX = 0, sMoved = 0;
+  function prand(seed) { var x = Math.sin(seed * 9301 + 49297) * 233280; return x - Math.floor(x); }
+  function clamp(v) { return Math.max(0, Math.min(1, v)); }
+  function smooth(v) { var x = clamp(v); return x * x * (3 - 2 * x); }
+  function buildShape(kind) {
+    /* unit-radius targets: 0 ringed planet, 1 sphere, 2 torus, 3 constellation */
+    var a = new Float32Array(N * 4);
+    for (var i = 0; i < N; i++) {
+      var o = i * 4, an = i * GOLDEN, gold = 0, x = 0, y = 0, z = 0;
+      if (kind === 0) {
+        var planetN = Math.floor(N * 0.52), PR = 0.44, RIN = 0.62, ROUT = 1.12, GAP0 = 0.88, GAP1 = 0.95;
+        if (i < planetN) {
+          var yy0 = 1 - 2 * (i + 0.5) / planetN, rr0 = Math.sqrt(Math.max(0, 1 - yy0 * yy0));
+          x = Math.cos(an) * rr0 * PR; y = yy0 * PR; z = Math.sin(an) * rr0 * PR;
+          gold = prand(i * 19 + 3) < 0.05 ? 1 : 0;
+        } else {
+          var dr = RIN + (ROUT - RIN) * Math.pow(prand(i * 29 + 15), 1.35);
+          if (dr > GAP0 && dr < GAP1) {
+            dr = prand(i * 31 + 5) < 0.5 ? GAP0 - prand(i * 37 + 7) * 0.02 : GAP1 + prand(i * 41 + 9) * 0.02;
+          }
+          x = Math.cos(an) * dr; y = (prand(i * 31 + 17) - 0.5) * 0.012; z = Math.sin(an) * dr;
+          gold = dr < RIN * 1.18 && prand(i * 37 + 5) < 0.55 ? 1 : 0;
+        }
+      } else if (kind === 1) {
+        var yy = 1 - 2 * (i + 0.5) / N, rr2 = Math.sqrt(Math.max(0, 1 - yy * yy));
+        x = Math.cos(an) * rr2; y = yy; z = Math.sin(an) * rr2;
+        gold = prand(i * 7 + 1) < 0.06 ? 1 : 0;
+      } else if (kind === 2) {
+        var M = 0.72, m2 = 0.3, v = prand(i * 17 + 7) * Math.PI * 2, ring2 = M + m2 * Math.cos(v);
+        x = ring2 * Math.cos(an); y = m2 * Math.sin(v); z = ring2 * Math.sin(an);
+        gold = prand(i * 7 + 1) < 0.06 ? 1 : 0;
+      } else {
+        var SATS = 6, coreN = Math.floor(N * 0.3), ringR = 0.72;
+        if (i < coreN) {
+          var yy2 = 1 - 2 * (i + 0.5) / coreN, rr3 = Math.sqrt(Math.max(0, 1 - yy2 * yy2));
+          x = Math.cos(an) * rr3 * 0.24; y = yy2 * 0.24; z = Math.sin(an) * rr3 * 0.24;
+          gold = prand(i * 7 + 1) < 0.14 ? 1 : 0;
+        } else {
+          var k = i - coreN, s2 = k % SATS, sa2 = s2 * (Math.PI * 2 / SATS);
+          var perSat = Math.max(1, Math.floor((N - coreN) / SATS)), m3 = Math.floor(k / SATS);
+          var yy3 = 1 - 2 * (m3 + 0.5) / perSat, rr4 = Math.sqrt(Math.max(0, 1 - yy3 * yy3));
+          x = Math.cos(sa2) * ringR + Math.cos(an) * rr4 * 0.13;
+          y = yy3 * 0.13;
+          z = Math.sin(sa2) * ringR + Math.sin(an) * rr4 * 0.13;
+        }
+      }
+      a[o] = x; a[o + 1] = y; a[o + 2] = z; a[o + 3] = gold;
+    }
+    return a;
+  }
+  function build() {
+    /* dust home positions (normalized, wrap-drifting) + interactive targets */
+    pts = new Float32Array(N * 4); /* hx, hy, driftSpeed, tone */
+    stagr = new Float32Array(N);
+    for (var i = 0; i < N; i++) {
+      var o = i * 4;
+      pts[o] = prand(i * 13 + 2);
+      pts[o + 1] = prand(i * 29 + 5);
+      pts[o + 2] = 0.004 + prand(i * 31 + 7) * 0.012;
+      pts[o + 3] = prand(i * 43 + 9);
+      stagr[i] = prand(i * 23 + 11);
+    }
+    /* the record holds two forms only: the sphere leads, the ringed planet answers a click */
+    shapes = [buildShape(1), buildShape(0)];
+  }
+  function fit() {
+    w = window.innerWidth; h = window.innerHeight;
+    dpr = Math.max(1, Math.min(coarse ? 1.5 : 2, window.devicePixelRatio || 1));
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (!pts) build();
+    draw();
+  }
+  function zoneRanges() {
+    /* viewport bands where the page runs dark — dust turns silver there */
+    var zones = [];
+    [workSec, coda].forEach(function (el) {
+      if (!el) return;
+      var r = el.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < h) zones.push([r.top, r.bottom]);
+    });
+    return zones;
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    var tr = track.getBoundingClientRect();
+    /* dust wakes as the formation chapter releases */
+    var wake = smooth(clamp((h - tr.bottom) / (h * 0.55)));
+    if (wake <= 0.005) { visible = false; return; }
+    visible = true;
+    var sr = stage.getBoundingClientRect();
+    var sCx = sr.left + sr.width / 2, sCy = sr.top + sr.height / 2, sR = Math.min(sr.width, sr.height) * 0.4;
+    /* the seal condenses while its stage crosses the reading band */
+    var condense = smooth(clamp((h * 0.86 - sCy) / (h * 0.34))) * smooth(clamp((sCy + h * 0.5) / (h * 0.5)));
+    var zones = zoneRanges();
+    /* the graphic never goes edge-on: face-tilted breathing, plus your spin */
+    var yawS = 0.5 + 0.32 * Math.sin(yaw) + stageYaw;
+    var cosY = Math.cos(yawS), sinY = Math.sin(yawS), f = sR * 3.4;
+    var A = shapes[shapeIdx], B = shapes[shapeNext], sb = smooth(shapeBlend);
+    for (var i = 0; i < N; i++) {
+      var o = i * 4;
+      /* home: slow sediment drift, wrapping */
+      var hx = (pts[o] + time * 0.002 * (pts[o + 3] - 0.5)) % 1,
+          hy = (pts[o + 1] + time * pts[o + 2] * 0.06) % 1;
+      if (hx < 0) hx += 1;
+      var px = hx * w, py = hy * h;
+      var gold = 0;
+      var cBlend = smooth(clamp((condense - stagr[i] * 0.18) / 0.82));
+      if (cBlend > 0.001) {
+        var sx = A[o] + (B[o] - A[o]) * sb,
+            sy = A[o + 1] + (B[o + 1] - A[o + 1]) * sb,
+            sz = A[o + 2] + (B[o + 2] - A[o + 2]) * sb;
+        var y1 = sy * cosB - sz * sinB, z1 = sy * sinB + sz * cosB;
+        var x2 = sx * cosY + z1 * sinY, z2 = -sx * sinY + z1 * cosY;
+        var s = f / (f + z2 * sR);
+        var tx = sCx + x2 * sR * s, ty = sCy + y1 * sR * s;
+        px += (tx - px) * cBlend; py += (ty - py) * cBlend;
+        gold = (A[o + 3] + (B[o + 3] - A[o + 3]) * sb) * cBlend;
+      }
+      /* color by the band beneath: navy dust on cream, silver in the dark */
+      var dark = 0;
+      for (var z = 0; z < zones.length; z++) { if (py >= zones[z][0] && py <= zones[z][1]) { dark = 1; break; } }
+      dark = Math.max(dark, cBlend); /* the designation is dark */
+      var alpha = (0.1 + pts[o + 3] * 0.12) * wake;
+      alpha = alpha * (1 - cBlend) + (0.32 + 0.4 * pts[o + 3]) * cBlend;
+      var rgb = dark ? "214,218,226" : "30,42,74";
+      if (gold > 0.4) rgb = "196,160,112";
+      if (!dark) alpha *= 0.75;
+      ctx.fillStyle = "rgba(" + rgb + "," + Math.min(0.85, alpha) + ")";
+      var sz = 1 + pts[o + 3] * 0.6 + cBlend * 0.3;
+      ctx.fillRect(px - sz * 0.5, py - sz * 0.5, sz, sz);
+    }
+  }
+  function loop(now) {
+    if (!running) return;
+    var dt = last ? Math.min(48, now - last) : 16;
+    last = now;
+    time += dt / 1000;
+    yaw += dt * 0.00013;
+    if (shapeBlend < 1) shapeBlend = Math.min(1, shapeBlend + dt / 950);
+    else if (shapeIdx !== shapeNext) shapeIdx = shapeNext;
+    if (!sDragging && Math.abs(stageVel) > 0.00001) {
+      stageYaw += stageVel * dt;
+      stageVel *= Math.pow(0.94, dt / 16.67);
+    }
+    draw();
+    raf = requestAnimationFrame(loop);
+  }
+  function cycleShape() {
+    if (shapeBlend < 1) return;
+    shapeIdx = shapeNext;
+    shapeNext = (shapeNext + 1) % shapes.length;
+    shapeBlend = 0;
+  }
+  /* spin the record by hand; click (or Enter) cycles what it holds */
+  stage.addEventListener("pointerdown", function (e) {
+    sDragging = true; sDragX = e.clientX; sMoved = 0; stageVel = 0;
+    stage.classList.add("is-dragging");
+    try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+  stage.addEventListener("pointermove", function (e) {
+    if (!sDragging) return;
+    var dx = e.clientX - sDragX;
+    sDragX = e.clientX; sMoved += Math.abs(dx);
+    stageYaw += dx * 0.006;
+    stageVel = dx * 0.00035;
+  });
+  function stageUp() {
+    if (!sDragging) return;
+    sDragging = false;
+    stage.classList.remove("is-dragging");
+    if (sMoved < 6 && !reduce) cycleShape();
+  }
+  stage.addEventListener("pointerup", stageUp);
+  stage.addEventListener("pointercancel", stageUp);
+  stage.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (!reduce) cycleShape(); }
+  });
+  function sync() {
+    var should = !document.hidden && !reduce;
+    if (should && !running) { running = true; last = 0; raf = requestAnimationFrame(loop); }
+    else if (!should && running) { running = false; cancelAnimationFrame(raf); }
+  }
+  function queueDraw() {
+    if (!reduce || queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; draw(); });
+  }
+  fit();
+  window.addEventListener("resize", fit);
+  window.addEventListener("scroll", queueDraw, { passive: true });
+  document.addEventListener("visibilitychange", sync);
+  sync();
+  if (reduce) draw();
+})();
+
+/* --- topbar theme: dark glass over the hero, cream once the page goes light --- */
+(function () {
+  var topbar = document.querySelector(".topbar"),
+      track = document.getElementById("formationTrack");
+  if (!topbar || !track) return;
+  var queued = false;
+  function apply() {
+    queued = false;
+    var r = track.getBoundingClientRect();
+    topbar.classList.toggle("topbar--dark", r.bottom > 80);
+  }
+  window.addEventListener("scroll", function () {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(apply);
+  }, { passive: true });
+  apply();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2367 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Claude Ultracode — what it does, how it works, and when to use it. A briefing for people who already build with Claude: dynamic workflows, parallel sub-agents, and the cost of turning it on."
+    />
+    <title>Claude Ultracode · What it does, and when to use it</title>
+    <link rel="canonical" href="https://karstinsights.com/briefings/ultracode/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Karst" />
+    <meta property="og:title" content="Claude Ultracode · A Karst briefing" />
+    <meta property="og:description" content="Dynamic workflows and parallel sub-agents — what they do, and when the depth is worth the cost." />
+    <meta property="og:url" content="https://karstinsights.com/briefings/ultracode/" />
+    <meta property="og:image" content="https://karstinsights.com/briefings/assets/og-ultracode.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Claude Ultracode · A Karst briefing" />
+    <meta name="twitter:description" content="Dynamic workflows and parallel sub-agents — what they do, and when the depth is worth the cost." />
+    <meta name="twitter:image" content="https://karstinsights.com/briefings/assets/og-ultracode.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:ital@1&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ============================================================
+         Karst — design tokens (mirrored from the studio)
+         ============================================================ */
+      :root {
+        --surface: #fffcf7;
+        --card: #fefdfb;
+        --on-surface: #1a1816;
+        --on-surface-variant: #3a3632;
+        --navy: #1e2a4a;
+        --teal: #2d5a5a;
+        --warm: #74614a;
+        --red: #a13d3d;
+        --muted: rgba(58, 54, 50, 0.55);
+        --outline: #818178;
+        --outline-variant: #babab0;
+        --hairline: rgba(0, 48, 107, 0.12);
+
+        --font-headline: "Montserrat", system-ui, sans-serif;
+        --font-body: "Inter", system-ui, sans-serif;
+        --font-label: "Montserrat", system-ui, sans-serif;
+        --font-editorial: "Libre Baskerville", Georgia, serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--surface);
+        color: var(--on-surface);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        cursor: default;
+        min-height: 100vh;
+      }
+      ::selection {
+        background-color: #dce2f0;
+        color: var(--navy);
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+        user-select: none;
+      }
+
+      /* ── Cards ──────────────────────────────────────────────── */
+      .ghost {
+        background: var(--card);
+        border: 1px solid rgba(0, 48, 107, 0.08);
+        border-radius: 3px;
+        box-shadow: 0 2px 8px rgba(0, 48, 107, 0.05),
+          0 1px 2px rgba(0, 0, 0, 0.03);
+        transition: box-shadow 0.25s ease, transform 0.25s ease,
+          border-color 0.25s ease;
+      }
+      .ghost:hover {
+        box-shadow: 0 6px 24px rgba(0, 48, 107, 0.09),
+          0 2px 4px rgba(0, 0, 0, 0.04);
+        transform: translateY(-2px);
+        border-color: rgba(0, 48, 107, 0.15);
+      }
+
+      /* ── Brand gradient text ────────────────────────────────── */
+      .tropical {
+        background: linear-gradient(
+          135deg,
+          #1e2a4a,
+          #4a6a8a,
+          #8a7aaa,
+          #b4848e,
+          #c4a070,
+          #4a6a8a,
+          #1e2a4a
+        );
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: sunset 12s linear infinite;
+      }
+      /* Lean on the photography — the school IS the image. The dark source
+         gets brightened, the scrim thins to nothing through the middle, and
+         the photo's own light shaft does the caustic work. */
+      .tropical-bg {
+        background: #0c1018;
+      }
+      .tropical-bg::before {
+        content: "";
+        position: absolute;
+        inset: -5%;
+        background: url("../assets/fish-school.webp") center 58% / cover;
+        filter: brightness(1.42) saturate(1.12) contrast(1.04);
+        animation: schoolDrift 38s ease-in-out infinite alternate;
+        z-index: 0;
+        border-radius: inherit;
+      }
+      .tropical-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          rgba(10, 13, 22, 0.34) 0%,
+          rgba(10, 13, 22, 0) 24%,
+          rgba(10, 13, 22, 0) 58%,
+          rgba(10, 13, 22, 0.62) 100%
+        );
+        z-index: 1;
+        border-radius: inherit;
+        pointer-events: none;
+      }
+      @keyframes schoolDrift {
+        from { transform: scale(1.02) translateY(0.8%); }
+        to { transform: scale(1.1) translateY(-1.4%); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .tropical-bg::before,
+        .tropical-bg::after {
+          animation: none;
+        }
+      }
+      @keyframes sunset {
+        0% {
+          background-position: 0% 50%;
+        }
+        100% {
+          background-position: 200% 50%;
+        }
+      }
+
+      /* grain overlay for gradient panels */
+      .grain::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.3;
+        mix-blend-mode: overlay;
+        pointer-events: none;
+        border-radius: inherit;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 128px 128px;
+      }
+
+      /* ============================================================
+         Shell — glass nav, stage, floating pill
+         ============================================================ */
+      .glass-nav {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        backdrop-filter: blur(20px);
+        background-color: rgba(255, 252, 247, 0.85);
+        border-bottom: 1px solid rgba(58, 54, 50, 0.08);
+      }
+      .nav-inner {
+        max-width: 80rem;
+        margin: 0 auto;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        gap: 1.75rem;
+        padding: 0 1.25rem;
+      }
+      @media (min-width: 640px) {
+        .nav-inner {
+          padding: 0 2.5rem;
+        }
+      }
+      .wordmark {
+        font-family: var(--font-label);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.42em;
+        text-transform: uppercase;
+        color: var(--navy);
+        white-space: nowrap;
+        flex-shrink: 0;
+        text-decoration: none;
+        transition: opacity 0.2s ease;
+      }
+      a.wordmark:hover {
+        opacity: 0.62;
+      }
+      .wordmark .wm-back {
+        letter-spacing: normal;
+        margin-right: 0.45em;
+        font-weight: 400;
+        display: inline-block;
+      }
+      .nav-title {
+        font-family: var(--font-headline);
+        font-size: 0.875rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        color: var(--on-surface);
+        margin-left: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .nav-count {
+        font-family: var(--font-label);
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(58, 54, 50, 0.4);
+        flex-shrink: 0;
+      }
+      .nav-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 1.5px;
+        background: rgba(30, 42, 74, 0.6);
+        transition: width 0.5s ease;
+      }
+
+      .stage {
+        max-width: 72rem;
+        margin: 0 auto;
+        width: 100%;
+        padding: 3rem 1.25rem 9rem;
+        position: relative;
+        z-index: 1;
+      }
+      @media (min-width: 640px) {
+        .stage {
+          padding: 3rem 2.5rem 9rem;
+        }
+      }
+
+      .slide {
+        display: none;
+      }
+      .slide.active {
+        display: block;
+        animation: slideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .eyebrow {
+        font-family: var(--font-label);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: rgba(30, 42, 74, 0.7);
+        margin: 0 0 1.25rem;
+      }
+
+      h1.headline {
+        font-family: var(--font-headline);
+        font-weight: 300;
+        letter-spacing: -0.025em;
+        line-height: 1.04;
+        color: var(--on-surface);
+        font-size: clamp(2.25rem, 5vw, 3.75rem);
+        margin: 0 0 1.5rem;
+      }
+      h2.heading {
+        font-family: var(--font-headline);
+        font-weight: 300;
+        letter-spacing: -0.015em;
+        line-height: 1.12;
+        color: var(--navy);
+        font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+        margin: 0 0 1.25rem;
+      }
+      h2.heading .accent {
+        font-weight: 500;
+        color: var(--navy);
+      }
+      .serif {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+        line-height: 1.45;
+        color: rgba(58, 54, 50, 0.85);
+        letter-spacing: -0.008em;
+        max-width: 48rem;
+        margin: 0;
+      }
+      .prose {
+        font-family: var(--font-body);
+        color: var(--on-surface-variant);
+        font-size: 1rem;
+        line-height: 1.7;
+        max-width: 44rem;
+      }
+      .max-3xl {
+        max-width: 48rem;
+      }
+      .mb-10 {
+        margin-bottom: 2.5rem;
+      }
+      .mb-8 {
+        margin-bottom: 2rem;
+      }
+      .mt-6 {
+        margin-top: 1.5rem;
+      }
+
+      /* ── Floating pill nav ──────────────────────────────────── */
+      .pill-wrap {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 30;
+        display: flex;
+        justify-content: center;
+        padding: 1rem 1.5rem;
+        pointer-events: none;
+      }
+      .pill {
+        pointer-events: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(186, 186, 176, 0.18);
+        border-radius: 9999px;
+        padding: 0.375rem 0.5rem;
+        transition: all 0.3s ease;
+      }
+      .pill:hover {
+        background: #fff;
+        border-color: rgba(186, 186, 176, 0.35);
+        box-shadow: 0 4px 16px rgba(0, 48, 107, 0.08);
+      }
+      .pill-btn {
+        width: 2.25rem;
+        height: 2.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        border: 1px solid rgba(186, 186, 176, 0.3);
+        background: transparent;
+        color: rgba(58, 54, 50, 0.5);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .pill-btn:hover:not(:disabled) {
+        border-color: rgba(30, 42, 74, 0.4);
+        color: var(--navy);
+        background: rgba(220, 226, 240, 0.4);
+      }
+      .pill-btn:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+      .pill-count {
+        font-family: var(--font-label);
+        font-size: 0.875rem;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        min-width: 3.5ch;
+        text-align: center;
+        color: rgba(58, 54, 50, 0.6);
+      }
+      .dots {
+        display: none;
+        align-items: center;
+        gap: 0.25rem;
+      }
+      @media (min-width: 1024px) {
+        .dots {
+          display: flex;
+        }
+      }
+      .dot-group {
+        display: flex;
+        align-items: center;
+        gap: 0.125rem;
+      }
+      .dot-divider {
+        width: 1px;
+        height: 0.75rem;
+        background: rgba(186, 186, 176, 0.3);
+        margin: 0 0.25rem;
+      }
+      .dot {
+        position: relative;
+        width: 1rem;
+        height: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+      .dot span {
+        display: block;
+        border-radius: 9999px;
+        background: rgba(186, 186, 176, 0.35);
+        width: 0.375rem;
+        height: 0.375rem;
+        transition: all 0.3s ease;
+      }
+      .dot.past span {
+        background: rgba(30, 42, 74, 0.45);
+      }
+      .dot.current span {
+        background: var(--navy);
+        width: 1.25rem;
+        height: 0.375rem;
+      }
+      .dot:hover span {
+        background: rgba(30, 42, 74, 0.7);
+      }
+      .dot-tip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) scale(0.95);
+        margin-bottom: 0.5rem;
+        padding: 0.375rem 0.625rem;
+        border-radius: 6px;
+        background: var(--navy);
+        color: #f0eee6;
+        font-family: var(--font-label);
+        font-size: 11px;
+        font-weight: 500;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      .dot:hover .dot-tip {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+      }
+
+      /* ── reusable content blocks ────────────────────────────── */
+      .grid {
+        display: grid;
+        gap: 1.25rem;
+      }
+      @media (min-width: 768px) {
+        .grid-2 {
+          grid-template-columns: 1fr 1fr;
+        }
+        .grid-3 {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        align-items: center;
+        min-height: 56vh;
+      }
+      @media (min-width: 1024px) {
+        .hero-grid {
+          grid-template-columns: 1.3fr 1fr;
+          gap: 4rem;
+        }
+      }
+
+      .card {
+        border-radius: 3px;
+        padding: 1.75rem;
+        background: var(--card);
+      }
+      .card-eyebrow {
+        font-family: var(--font-label);
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        margin: 0 0 0.5rem;
+      }
+      .card-title {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        font-weight: 400;
+        font-size: 1.35rem;
+        color: var(--navy);
+        margin: 0 0 0.75rem;
+        line-height: 1.2;
+      }
+      .card-body {
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--on-surface-variant);
+        margin: 0;
+      }
+      .card-icon {
+        font-size: 26px;
+        margin-bottom: 0.75rem;
+        display: block;
+      }
+
+      ul.checks {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+      }
+      ul.checks li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        line-height: 1.55;
+        color: var(--on-surface-variant);
+      }
+      ul.checks .material-symbols-outlined {
+        font-size: 18px;
+        margin-top: 1px;
+        flex-shrink: 0;
+      }
+      ul.checks strong {
+        color: var(--navy);
+        font-weight: 600;
+      }
+
+      /* callout */
+      .callout {
+        border-left: 3px solid var(--teal);
+        background: rgba(45, 90, 90, 0.05);
+        border-radius: 0 3px 3px 0;
+        padding: 1rem 1.25rem;
+        margin-top: 1.5rem;
+        max-width: 44rem;
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--on-surface-variant);
+      }
+      .callout b {
+        color: var(--navy);
+      }
+
+      /* Heads-up highlight — louder than a callout, for the one setup step */
+      .heads-up {
+        display: flex;
+        gap: 1.1rem;
+        align-items: flex-start;
+        max-width: 52rem;
+        margin: 0 0 2rem;
+        padding: 1.15rem 1.4rem;
+        border: 1px solid rgba(116, 97, 74, 0.3);
+        border-left: 4px solid var(--warm);
+        border-radius: 3px;
+        background: linear-gradient(
+          180deg,
+          rgba(116, 97, 74, 0.1),
+          rgba(116, 97, 74, 0.045)
+        );
+        box-shadow: 0 2px 12px rgba(116, 97, 74, 0.09);
+      }
+      .heads-up .hu-icon {
+        flex-shrink: 0;
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(116, 97, 74, 0.14);
+        color: var(--warm);
+      }
+      .heads-up .hu-icon .material-symbols-outlined {
+        font-size: 22px;
+      }
+      .heads-up .hu-label {
+        font-family: var(--font-label);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--warm);
+        margin: 0 0 0.35rem;
+      }
+      .heads-up .hu-text {
+        margin: 0;
+        font-size: 0.97rem;
+        line-height: 1.6;
+        color: var(--on-surface-variant);
+      }
+      .heads-up .hu-text b {
+        color: var(--navy);
+      }
+      @media (max-width: 640px) {
+        .heads-up {
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+      }
+
+      /* benchmark bars */
+      .bars {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        max-width: 46rem;
+        margin-top: 0.5rem;
+      }
+      .bar-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-family: var(--font-label);
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        color: var(--on-surface-variant);
+        margin-bottom: 0.5rem;
+      }
+      .bar-label .delta {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        color: var(--navy);
+        font-size: 0.95rem;
+      }
+      .bar-track {
+        position: relative;
+        height: 18px;
+        border-radius: 9999px;
+        background: rgba(30, 42, 74, 0.08);
+        overflow: hidden;
+      }
+      /* Opus 4.7 — a tick marker drawn at its score, over the koi bar */
+      .bar-old {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 2;
+        background: transparent;
+        box-shadow: inset -2px 0 0 0 rgba(26, 24, 22, 0.7);
+        width: 0;
+        transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      /* Opus 4.8 — the achievement bar, filled with the koi */
+      .bar-new {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+        background: url("../assets/ultracode.webp") center / cover;
+        border-radius: 9999px;
+        width: 0;
+        transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+      }
+      .bar-legend {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+        font-family: var(--font-label);
+        font-size: 11px;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+      }
+      .bar-legend i {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+        margin-right: 6px;
+        vertical-align: -1px;
+      }
+
+      /* hero numeral panel */
+      .numeral-panel {
+        position: relative;
+        aspect-ratio: 4 / 5;
+        border-radius: 3px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 2rem;
+        color: #f4f1ea;
+        text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 24px 60px rgba(30, 42, 74, 0.18),
+          0 8px 24px rgba(30, 42, 74, 0.1);
+      }
+      .numeral-panel .from {
+        font-family: var(--font-label);
+        font-size: 11px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        opacity: 0.75;
+        position: relative;
+        z-index: 2;
+      }
+      .numeral-panel .big {
+        font-family: var(--font-headline);
+        font-weight: 300;
+        font-size: clamp(5rem, 12vw, 8rem);
+        line-height: 0.9;
+        letter-spacing: -0.04em;
+        position: relative;
+        z-index: 2;
+      }
+      .numeral-panel .cap {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        font-size: 0.95rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 2;
+        line-height: 1.4;
+      }
+      /* Drifting dust over the gradient panel — light motes catching the light */
+      .dust {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        overflow: hidden;
+        pointer-events: none;
+        border-radius: inherit;
+      }
+      .dust-mote {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 251, 243, 0.95);
+        opacity: 0;
+        will-change: transform, opacity;
+        animation: dustFloat var(--dur, 12s) ease-in-out var(--delay, 0s)
+          infinite;
+      }
+      .dust-mote.soft {
+        filter: blur(1.5px);
+        background: rgba(255, 248, 235, 0.7);
+      }
+      @keyframes dustFloat {
+        0% {
+          transform: translate(0, 0);
+          opacity: 0;
+        }
+        18% {
+          opacity: var(--op, 0.7);
+        }
+        82% {
+          opacity: var(--op, 0.7);
+        }
+        100% {
+          transform: translate(var(--dx, 0px), var(--dy, -60px));
+          opacity: 0;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .dust-mote {
+          opacity: var(--op, 0.5);
+          animation: none;
+        }
+      }
+
+      .pull {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        color: var(--navy);
+        letter-spacing: -0.005em;
+        font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+        line-height: 1.35;
+        max-width: 50rem;
+        margin: 1.5rem 0;
+      }
+      .pull strong {
+        font-style: normal;
+        font-weight: 600;
+      }
+
+      .footer-band {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--hairline);
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+      .footer-band p {
+        font-family: var(--font-label);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .link-row {
+        font-family: var(--font-label);
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: var(--navy);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        margin-top: auto;
+        transition: opacity 0.2s ease;
+      }
+      .link-row:hover {
+        opacity: 0.65;
+      }
+      .card-flex {
+        display: flex;
+        flex-direction: column;
+      }
+      .card-flex .card-body {
+        flex: 1;
+        margin-bottom: 1.25rem;
+      }
+
+      .try-box {
+        margin-top: 1.75rem;
+        max-width: 46rem;
+        border: 1px dashed rgba(30, 42, 74, 0.25);
+        border-radius: 3px;
+        padding: 1.25rem 1.5rem;
+        background: rgba(220, 226, 240, 0.18);
+      }
+      .try-box .tb-label {
+        font-family: var(--font-label);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--teal);
+        margin: 0 0 0.5rem;
+      }
+      .try-box .tb-prompt {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        font-size: 1.05rem;
+        line-height: 1.5;
+        color: var(--navy);
+        margin: 0;
+      }
+
+      /* Four-constants glyph cards (slide 7) */
+      .grid-4-constants {
+        grid-template-columns: 1fr;
+        max-width: 64rem;
+      }
+      @media (min-width: 640px) {
+        .grid-4-constants {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (min-width: 980px) {
+        .grid-4-constants {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      .constant-card {
+        padding: 1.5rem 1.5rem 1.65rem;
+      }
+      .constant-glyph {
+        width: 46px;
+        height: 46px;
+        display: block;
+        margin-bottom: 0.9rem;
+      }
+      .constant-card .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.55rem;
+      }
+      .constant-card .card-body {
+        font-size: 0.85rem;
+      }
+
+      /* ============================================================
+         Bespoke SVG visuals — grammar mirrored from the workshop
+         visuals/ floor: navy/teal/warm/red + cream, the Claude
+         eight-ray spark, cream-fill glyphs at >=1.4px stroke,
+         serif-italic titles, animated path-draws, traveling dots.
+         Animations are scoped to .slide.active so they replay on
+         navigation and stay idle while a slide is hidden.
+         ============================================================ */
+      .viz {
+        width: 100%;
+        height: auto;
+        display: block;
+        max-width: 1080px;
+        margin: 0.5rem auto 0;
+      }
+      .viz--wide {
+        max-width: 1180px;
+      }
+      /* Desktop/mobile diagram swap — mobile variants render near 1:1 so
+         their labels stay legible on a phone instead of shrinking to ~3px. */
+      .viz-m {
+        display: none;
+        width: 100%;
+        height: auto;
+        max-width: 440px;
+        margin: 0.75rem auto 0;
+      }
+      @media (max-width: 860px) {
+        .viz-d {
+          display: none;
+        }
+        .viz-m {
+          display: block;
+        }
+      }
+      .slide.active .v-dot48v {
+        animation: dot48v 6s linear infinite 1.1s;
+      }
+      .slide.active .v-dot47v {
+        animation: dot47v 6s linear infinite 1.1s;
+      }
+      @keyframes dot48v {
+        0% {
+          cy: 70px;
+          opacity: 0;
+          fill: #1e2a4a;
+        }
+        5% {
+          opacity: 1;
+          fill: #1e2a4a;
+        }
+        45% {
+          cy: 310px;
+          fill: #2d5a5a;
+        }
+        85% {
+          cy: 550px;
+          fill: #74614a;
+          opacity: 1;
+        }
+        93% {
+          cy: 550px;
+          opacity: 0;
+        }
+        100% {
+          cy: 70px;
+          opacity: 0;
+        }
+      }
+      @keyframes dot47v {
+        0% {
+          cy: 70px;
+          opacity: 0;
+        }
+        8% {
+          opacity: 0.45;
+        }
+        38% {
+          cy: 250px;
+          opacity: 0.45;
+        }
+        50% {
+          cy: 250px;
+          opacity: 0;
+        }
+        100% {
+          cy: 250px;
+          opacity: 0;
+        }
+      }
+      .v-eyebrow {
+        font-family: var(--font-label);
+        font-weight: 700;
+        letter-spacing: 0.18em;
+      }
+      .v-title {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        font-weight: 400;
+      }
+      .v-bodywrap {
+        font-family: var(--font-body);
+        color: var(--muted);
+        text-align: center;
+      }
+
+      /* base (pre-animation) states */
+      .v-draw {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+      }
+      .v-rise,
+      .v-pop,
+      .v-fade {
+        opacity: 0;
+      }
+      .v-rise {
+        transform-box: fill-box;
+      }
+      .v-pop,
+      .v-spark {
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+
+      /* active states — start the animations */
+      .slide.active .v-draw {
+        animation: vDraw 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards
+          var(--d, 0s);
+      }
+      .slide.active .v-rise {
+        animation: vRise 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards
+          var(--d, 0s);
+      }
+      .slide.active .v-pop {
+        animation: vPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards var(--d, 0s);
+      }
+      .slide.active .v-fade {
+        animation: vFade 0.5s ease forwards var(--d, 0s);
+      }
+      .slide.active .v-spark {
+        animation: vSpark 4.5s ease-in-out infinite var(--d, 0s);
+      }
+      .slide.active .v-dot48 {
+        animation: dot48 6s linear infinite 1.1s;
+      }
+      .slide.active .v-dot47 {
+        animation: dot47 6s linear infinite 1.1s;
+      }
+
+      @keyframes vDraw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      @keyframes vFade {
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes vRise {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes vPop {
+        from {
+          opacity: 0;
+          transform: scale(0.82);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes vSpark {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.85;
+        }
+        50% {
+          transform: scale(1.12);
+          opacity: 1;
+        }
+      }
+      /* Mechanism concept-icons (finlit grammar): small animated SVG that
+         shows the mechanism, sequenced light-up loop, scoped to the active slide */
+      .ic {
+        width: 132px;
+        height: 46px;
+        display: block;
+        margin-bottom: 0.9rem;
+      }
+      .ic-seq {
+        opacity: 0.22;
+      }
+      .slide.active .ic-seq {
+        animation: icSeq 4.6s ease-in-out infinite var(--d, 0s);
+      }
+      @keyframes icSeq {
+        0%,
+        100% {
+          opacity: 0.22;
+        }
+        16%,
+        66% {
+          opacity: 1;
+        }
+        86% {
+          opacity: 0.22;
+        }
+      }
+      /* slide 6 — scale dot-field (a thousand agents shimmering) */
+      .scale-dot {
+        opacity: 0.16;
+      }
+      .slide.active .scale-dot {
+        animation: scaleDot 3.6s ease-in-out infinite var(--d, 0s);
+      }
+      @keyframes scaleDot {
+        0%,
+        100% {
+          opacity: 0.16;
+        }
+        50% {
+          opacity: 0.82;
+        }
+      }
+      /* slide 7 — cost meters (the swing on one switch) */
+      .cost-fill {
+        transform-box: fill-box;
+        transform-origin: left center;
+        transform: scaleX(0);
+      }
+      .slide.active .cost-fill {
+        animation: costFill 4.6s cubic-bezier(0.22, 1, 0.36, 1) infinite
+          var(--d, 0s);
+      }
+      @keyframes costFill {
+        0% {
+          transform: scaleX(0);
+        }
+        30%,
+        78% {
+          transform: scaleX(1);
+        }
+        96%,
+        100% {
+          transform: scaleX(0);
+        }
+      }
+      /* Bright Opus 4.8 dot — travels the full track, color-shifts */
+      @keyframes dot48 {
+        0% {
+          cx: 120px;
+          opacity: 0;
+          fill: #1e2a4a;
+        }
+        5% {
+          opacity: 1;
+          fill: #1e2a4a;
+        }
+        45% {
+          cx: 600px;
+          fill: #2d5a5a;
+        }
+        85% {
+          cx: 1080px;
+          fill: #74614a;
+          opacity: 1;
+        }
+        93% {
+          cx: 1080px;
+          opacity: 0;
+        }
+        100% {
+          cx: 120px;
+          opacity: 0;
+        }
+      }
+      /* Dim Opus 4.7 dot — pauses at the hand-off marker, fades */
+      @keyframes dot47 {
+        0% {
+          cx: 120px;
+          opacity: 0;
+        }
+        8% {
+          opacity: 0.45;
+        }
+        38% {
+          cx: 480px;
+          opacity: 0.45;
+        }
+        50% {
+          cx: 480px;
+          opacity: 0;
+        }
+        100% {
+          cx: 480px;
+          opacity: 0;
+        }
+      }
+
+      /* slide 4 — the ultracode switch (off: one pass / on: the school splits) */
+      .uc-toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.85rem;
+        margin: 0.25rem auto 0;
+      }
+      .uc-toggle-name {
+        font-family: var(--font-label);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--navy);
+      }
+      .uc-switch {
+        position: relative;
+        width: 52px;
+        height: 28px;
+        flex-shrink: 0;
+        border-radius: 9999px;
+        border: 1.5px solid rgba(30, 42, 74, 0.35);
+        background: rgba(30, 42, 74, 0.08);
+        cursor: pointer;
+        padding: 0;
+        transition: background 0.35s ease, border-color 0.35s ease;
+      }
+      .uc-switch:focus-visible {
+        outline: 2px solid var(--teal);
+        outline-offset: 3px;
+      }
+      .uc-switch .uc-knob {
+        position: absolute;
+        top: 2.5px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fffcf7;
+        border: 1.5px solid rgba(30, 42, 74, 0.4);
+        box-sizing: border-box;
+        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+          border-color 0.35s ease;
+      }
+      .uc-switch[aria-checked="true"] {
+        background: var(--navy);
+        border-color: var(--navy);
+      }
+      .uc-switch[aria-checked="true"] .uc-knob {
+        transform: translateX(23px);
+        border-color: #fffcf7;
+      }
+      .uc-state-text {
+        font-family: var(--font-label);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--muted);
+        min-width: 2.4em;
+      }
+      #ucViz .uc-on,
+      #ucViz .uc-off {
+        transition: opacity 0.7s ease;
+      }
+      #ucViz[data-state="off"] .uc-on {
+        opacity: 0;
+      }
+      @media (max-width: 640px) {
+        #ucViz .uc-lbl { font-size: 24px; }
+        .uc-lbl2 { font-size: 22px !important; }
+        .uc-lbl3 { font-size: 26px !important; }
+        #ucCapOff, #ucCapOn { font-size: 30px; }
+      }
+      #ucViz[data-state="on"] .uc-off {
+        opacity: 0;
+      }
+      .uc-meter {
+        transform-box: fill-box;
+        transform-origin: left center;
+        transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        .v-draw {
+          stroke-dashoffset: 0;
+        }
+        .v-rise,
+        .v-pop,
+        .v-fade {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ===================== GLASS NAV ===================== -->
+    <header class="glass-nav">
+      <div class="nav-inner">
+        <a class="wordmark" href="https://karstinsights.com/" aria-label="Karst — home"><span class="wm-back" aria-hidden="true">&lsaquo;</span>Karst</a>
+        <span class="nav-title">Claude Ultracode — Briefing</span>
+        <span class="nav-count" id="navCount">01 / 10</span>
+      </div>
+      <div class="nav-progress" id="navProgress" style="width: 10%"></div>
+    </header>
+
+    <!-- ===================== STAGE ===================== -->
+    <main class="stage" id="stage">
+      <!-- ───────── 1-1 · HERO ───────── -->
+      <section class="slide active" data-chapter="1" data-eyebrow="Welcome">
+        <p class="eyebrow">Ultracode &middot; for people who already build with Claude</p>
+        <div class="hero-grid">
+          <div>
+            <h1 class="headline">
+              Claude can now run a
+              <span class="tropical">team of itself</span>.
+            </h1>
+            <p class="serif" style="max-width: 35rem">
+              Ultracode is the setting that shipped in Claude Code alongside
+              Opus 4.8. Flip it on and a single request can fan out into
+              hundreds of Claudes working in parallel &mdash; then checking each
+              other before anything reaches you.
+            </p>
+            <p class="prose mt-6">
+              You already know how to drive Claude. This is about a new gear:
+              when to let it orchestrate, what it can now finish that it
+              couldn&rsquo;t before, and what that costs.
+            </p>
+          </div>
+          <figure style="margin: 0">
+            <div class="numeral-panel tropical-bg">
+              <div class="dust" id="heroDust" aria-hidden="true"></div>
+              <span class="from">Sub-agents on a single task</span>
+              <span class="big">1,000</span>
+              <span class="cap"
+                >up to &mdash; written, run, and reconciled by Claude itself</span
+              >
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ───────── 1-2 · ONE SENTENCE + TRIAD ───────── -->
+      <section class="slide" data-chapter="1" data-eyebrow="The frame">
+        <p class="eyebrow">The frame</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">What it is, in one sentence.</h2>
+        </div>
+        <p class="pull">
+          Ultracode turns Claude from <strong>one assistant working in
+          order</strong> into a <strong>manager</strong> that splits a job
+          across many copies of itself, has them check each other&rsquo;s work,
+          and hands you the reconciled result.
+        </p>
+
+        <svg class="viz viz-d" viewBox="0 0 1080 330" role="img" aria-label="Three shifts in Ultracode: max effort, parallel agents, self-verification">
+          <line class="v-draw" style="--d: 0.5s" pathLength="1" x1="255" y1="80" x2="825" y2="80" stroke="#1e2a4a" stroke-opacity="0.22" stroke-width="1.5" />
+
+          <!-- 1 · thinks harder (effort bars) -->
+          <g class="v-rise" style="--d: 0.1s">
+            <g transform="translate(200,80)">
+              <rect x="-30" y="2" width="12" height="16" rx="2" fill="#1e2a4a" opacity="0.4" />
+              <rect x="-14" y="-6" width="12" height="24" rx="2" fill="#1e2a4a" opacity="0.62" />
+              <rect x="2" y="-16" width="12" height="34" rx="2" fill="#1e2a4a" opacity="0.82" />
+              <rect x="18" y="-28" width="12" height="46" rx="2" fill="#1e2a4a" />
+              <path d="M 17 -34 l 7 -9 l 7 9" fill="none" stroke="#1e2a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            <text class="v-eyebrow" x="200" y="142" font-size="9" fill="#1e2a4a" letter-spacing="2.6" text-anchor="middle">SHIFT ONE</text>
+            <text class="v-title" x="200" y="170" font-size="22" fill="#1e2a4a" text-anchor="middle">Thinks harder</text>
+            <foreignObject x="75" y="182" width="250" height="64">
+              <div class="v-bodywrap" style="font-size: 12.5px; line-height: 1.5">Pins reasoning to <b>xhigh</b> &mdash; the deepest effort Claude Code offers.</div>
+            </foreignObject>
+          </g>
+
+          <!-- 2 · runs a team (fan) -->
+          <g class="v-rise" style="--d: 0.25s">
+            <g transform="translate(540,80)">
+              <circle cx="-26" cy="0" r="5" fill="#2d5a5a" />
+              <line x1="-21" y1="0" x2="13" y2="-24" stroke="#2d5a5a" stroke-width="1.5" />
+              <line x1="-21" y1="0" x2="13" y2="-8" stroke="#2d5a5a" stroke-width="1.5" />
+              <line x1="-21" y1="0" x2="13" y2="8" stroke="#2d5a5a" stroke-width="1.5" />
+              <line x1="-21" y1="0" x2="13" y2="24" stroke="#2d5a5a" stroke-width="1.5" />
+              <circle cx="18" cy="-24" r="4.5" fill="none" stroke="#2d5a5a" stroke-width="1.6" />
+              <circle cx="18" cy="-8" r="4.5" fill="none" stroke="#2d5a5a" stroke-width="1.6" />
+              <circle cx="18" cy="8" r="4.5" fill="none" stroke="#2d5a5a" stroke-width="1.6" />
+              <circle cx="18" cy="24" r="4.5" fill="none" stroke="#2d5a5a" stroke-width="1.6" />
+            </g>
+            <text class="v-eyebrow" x="540" y="142" font-size="9" fill="#2d5a5a" letter-spacing="2.6" text-anchor="middle">SHIFT TWO</text>
+            <text class="v-title" x="540" y="170" font-size="22" fill="#1e2a4a" text-anchor="middle">Runs a team</text>
+            <foreignObject x="415" y="182" width="250" height="64">
+              <div class="v-bodywrap" style="font-size: 12.5px; line-height: 1.5">Splits big jobs into sub-agents that work at the same time.</div>
+            </foreignObject>
+          </g>
+
+          <!-- 3 · checks itself (converge + verify) -->
+          <g class="v-rise" style="--d: 0.4s">
+            <g transform="translate(880,80)">
+              <path d="M -30 -11 L -9 -11 M -15 -16 L -9 -11 L -15 -6" fill="none" stroke="#74614a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M 30 11 L 9 11 M 15 6 L 9 11 L 15 16" fill="none" stroke="#74614a" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M -11 0 l 6 8 l 16 -18" fill="none" stroke="#74614a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            <text class="v-eyebrow" x="880" y="142" font-size="9" fill="#74614a" letter-spacing="2.6" text-anchor="middle">SHIFT THREE</text>
+            <text class="v-title" x="880" y="170" font-size="22" fill="#1e2a4a" text-anchor="middle">Checks itself</text>
+            <foreignObject x="755" y="182" width="250" height="64">
+              <div class="v-bodywrap" style="font-size: 12.5px; line-height: 1.5">Agents try to refute each other until the answers converge.</div>
+            </foreignObject>
+          </g>
+
+          <text class="v-fade v-title" style="--d: 0.9s" x="540" y="305" font-size="14" fill="rgba(58,54,50,0.6)" text-anchor="middle">
+            Three shifts &mdash; and the rest of this page is where each one earns its tokens.
+          </text>
+        </svg>
+
+        <!-- mobile triad -->
+        <svg class="viz-m" viewBox="0 0 380 432" role="img" aria-label="Three shifts in Ultracode: thinks harder, runs a team, checks itself">
+          <line class="v-draw" style="--d: 0.4s" pathLength="1" x1="52" y1="92" x2="52" y2="298" stroke="#1e2a4a" stroke-opacity="0.2" stroke-width="1.5" />
+          <g class="v-rise" style="--d: 0.1s">
+            <g transform="translate(52,70)">
+              <rect x="-26" y="0" width="10" height="14" rx="2" fill="#1e2a4a" opacity="0.4" />
+              <rect x="-12" y="-7" width="10" height="21" rx="2" fill="#1e2a4a" opacity="0.62" />
+              <rect x="2" y="-15" width="10" height="29" rx="2" fill="#1e2a4a" opacity="0.82" />
+              <rect x="16" y="-25" width="10" height="39" rx="2" fill="#1e2a4a" />
+            </g>
+            <text class="v-eyebrow" x="108" y="50" font-size="10" fill="#1e2a4a" letter-spacing="2" text-anchor="start">SHIFT ONE</text>
+            <text class="v-title" x="108" y="74" font-size="19" fill="#1e2a4a" text-anchor="start">Thinks harder</text>
+            <foreignObject x="106" y="84" width="262" height="50"><div style="font-family: var(--font-body); font-size: 13px; line-height: 1.45; color: var(--muted)">Reasoning pinned to xhigh.</div></foreignObject>
+          </g>
+          <g class="v-rise" style="--d: 0.25s">
+            <g transform="translate(52,195)">
+              <circle cx="-24" cy="0" r="4.5" fill="#2d5a5a" />
+              <line x1="-20" y1="0" x2="12" y2="-20" stroke="#2d5a5a" stroke-width="1.5" />
+              <line x1="-20" y1="0" x2="12" y2="0" stroke="#2d5a5a" stroke-width="1.5" />
+              <line x1="-20" y1="0" x2="12" y2="20" stroke="#2d5a5a" stroke-width="1.5" />
+              <circle cx="16" cy="-20" r="4" fill="none" stroke="#2d5a5a" stroke-width="1.6" />
+              <circle cx="16" cy="0" r="4" fill="none" stroke="#2d5a5a" stroke-width="1.6" />
+              <circle cx="16" cy="20" r="4" fill="none" stroke="#2d5a5a" stroke-width="1.6" />
+            </g>
+            <text class="v-eyebrow" x="108" y="175" font-size="10" fill="#2d5a5a" letter-spacing="2" text-anchor="start">SHIFT TWO</text>
+            <text class="v-title" x="108" y="199" font-size="19" fill="#1e2a4a" text-anchor="start">Runs a team</text>
+            <foreignObject x="106" y="209" width="262" height="50"><div style="font-family: var(--font-body); font-size: 13px; line-height: 1.45; color: var(--muted)">Sub-agents in parallel.</div></foreignObject>
+          </g>
+          <g class="v-rise" style="--d: 0.4s">
+            <g transform="translate(52,320)">
+              <path d="M -26 -9 L -8 -9 M -13 -13 L -8 -9 L -13 -5" fill="none" stroke="#74614a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M 26 9 L 8 9 M 13 5 L 8 9 L 13 13" fill="none" stroke="#74614a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M -9 0 l 5 7 l 13 -15" fill="none" stroke="#74614a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            <text class="v-eyebrow" x="108" y="300" font-size="10" fill="#74614a" letter-spacing="2" text-anchor="start">SHIFT THREE</text>
+            <text class="v-title" x="108" y="324" font-size="19" fill="#1e2a4a" text-anchor="start">Checks itself</text>
+            <foreignObject x="106" y="334" width="262" height="50"><div style="font-family: var(--font-body); font-size: 13px; line-height: 1.45; color: var(--muted)">Agents refute until they agree.</div></foreignObject>
+          </g>
+          <text class="v-fade v-title" style="--d: 0.85s" x="190" y="414" font-size="12.5" fill="rgba(58,54,50,0.6)" text-anchor="middle">Where each one earns its tokens &darr;</text>
+        </svg>
+
+        <p class="prose mt-6" style="margin-left: auto; margin-right: auto; text-align: center">
+          You drive the same way you always have. What changes is how much one
+          prompt can take on.
+        </p>
+      </section>
+      <!-- ───────── 2-1 · WHAT IT IS ───────── -->
+      <section class="slide" data-chapter="2" data-eyebrow="What it is">
+        <p class="eyebrow">What it means &middot; 1 of 4</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">A setting, <span class="accent">not a model.</span></h2>
+          <p class="serif">
+            Ultracode lives in Claude Code&rsquo;s effort menu. Turning it on
+            does two things at once.
+          </p>
+        </div>
+        <div class="grid grid-2" style="max-width: 52rem">
+          <div class="ghost card">
+            <svg class="ic" viewBox="0 0 132 46" aria-label="An effort meter filling to its maximum, xhigh">
+              <line x1="10" y1="38" x2="100" y2="38" stroke="#1e2a4a" stroke-opacity="0.16" stroke-width="1" />
+              <rect class="ic-seq" style="--d: 0s" x="12" y="28" width="10" height="10" rx="2" fill="#1e2a4a" />
+              <rect class="ic-seq" style="--d: 0.22s" x="30" y="22" width="10" height="16" rx="2" fill="#1e2a4a" />
+              <rect class="ic-seq" style="--d: 0.44s" x="48" y="15" width="10" height="23" rx="2" fill="#1e2a4a" />
+              <rect class="ic-seq" style="--d: 0.66s" x="66" y="8" width="10" height="30" rx="2" fill="#1e2a4a" />
+              <rect class="ic-seq" style="--d: 0.88s" x="84" y="2" width="10" height="36" rx="2" fill="#2d5a5a" />
+              <text class="ic-seq" style="--d: 1s" x="104" y="13" font-size="9" font-weight="700" fill="#2d5a5a" font-family="var(--font-label)">xhigh</text>
+            </svg>
+            <h3 class="card-title">1 &middot; Maximum reasoning</h3>
+            <p class="card-body">Effort pinned to <b>xhigh</b> &mdash; the deepest thinking level &mdash; on every request.</p>
+          </div>
+          <div class="ghost card">
+            <svg class="ic" viewBox="0 0 132 46" aria-label="One node fanning out to many parallel agents">
+              <circle cx="16" cy="23" r="3.6" fill="#1e2a4a" />
+              <line x1="20" y1="23" x2="104" y2="7" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.5" />
+              <line x1="20" y1="23" x2="104" y2="15" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.5" />
+              <line x1="20" y1="23" x2="104" y2="23" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.5" />
+              <line x1="20" y1="23" x2="104" y2="31" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.5" />
+              <line x1="20" y1="23" x2="104" y2="39" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.5" />
+              <circle class="ic-seq" style="--d: 0s" cx="108" cy="7" r="3" fill="#2d5a5a" />
+              <circle class="ic-seq" style="--d: 0.16s" cx="108" cy="15" r="3" fill="#2d5a5a" />
+              <circle class="ic-seq" style="--d: 0.32s" cx="108" cy="23" r="3" fill="#2d5a5a" />
+              <circle class="ic-seq" style="--d: 0.48s" cx="108" cy="31" r="3" fill="#2d5a5a" />
+              <circle class="ic-seq" style="--d: 0.64s" cx="108" cy="39" r="3" fill="#2d5a5a" />
+            </svg>
+            <h3 class="card-title">2 &middot; Auto-orchestration</h3>
+            <p class="card-body">Claude splits a big task across <b>parallel sub-agents</b> on its own.</p>
+          </div>
+        </div>
+        <div class="callout">
+          <b>You don&rsquo;t have to flip the switch.</b> Type the word
+          <em>workflow</em> anywhere in a prompt and Claude orchestrates that one
+          task. Ultracode just makes that the default for everything substantial.
+        </div>
+      </section>
+
+      <!-- ───────── 2-2 · HOW IT WORKS (ORCHESTRATION FAN) ───────── -->
+      <section class="slide" data-chapter="2" data-eyebrow="How it works">
+        <p class="eyebrow">What it means &middot; 2 of 4</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">One prompt, <span class="accent">many Claudes.</span></h2>
+          <p class="serif">What actually happens when a workflow fires.</p>
+        </div>
+
+        <!-- The setting, drawn as the thing it is: a switch. Off, one task
+             runs a single straight pass through one Claude. On, the same
+             stream hits the orchestrator and the school splits — parallel
+             lanes through verify, into the same done node. Meters relative. -->
+        <div class="uc-toggle-row">
+          <span class="uc-toggle-name">Ultracode</span>
+          <button id="ucSwitch" class="uc-switch" type="button" role="switch" aria-checked="false" aria-label="Ultracode setting — flips the flow between one pass and a parallel team">
+            <span class="uc-knob" aria-hidden="true"></span>
+          </button>
+          <span class="uc-state-text" id="ucStateTxt">Off</span>
+        </div>
+        <svg id="ucViz" class="viz" data-state="off" viewBox="0 0 1080 420" role="img" aria-label="Animated diagram: with ultracode off, one task travels a single path through one Claude to done; flipped on, the stream splits at an orchestrator into five parallel sub-agent lanes that reconverge through verify into the same done node — the coverage and tokens meters both rise">
+          <!-- routes -->
+          <path id="ucPathOff" class="uc-off" d="M 40 195 H 790" fill="none" stroke="rgba(30,42,74,0.2)" stroke-width="1.4" />
+          <g class="uc-on">
+            <path id="ucLane0" d="M 40 195 H 270 C 360 195 420 65 510 65 C 600 65 600 195 670 195 H 790" fill="none" stroke="rgba(45,90,90,0.22)" stroke-width="1.2" />
+            <path id="ucLane1" d="M 40 195 H 270 C 360 195 420 130 510 130 C 600 130 600 195 670 195 H 790" fill="none" stroke="rgba(45,90,90,0.22)" stroke-width="1.2" />
+            <path id="ucLane2" d="M 40 195 H 270 C 360 195 420 195 510 195 C 600 195 600 195 670 195 H 790" fill="none" stroke="rgba(45,90,90,0.22)" stroke-width="1.2" />
+            <path id="ucLane3" d="M 40 195 H 270 C 360 195 420 260 510 260 C 600 260 600 195 670 195 H 790" fill="none" stroke="rgba(45,90,90,0.22)" stroke-width="1.2" />
+            <path id="ucLane4" d="M 40 195 H 270 C 360 195 420 325 510 325 C 600 325 600 195 670 195 H 790" fill="none" stroke="rgba(45,90,90,0.22)" stroke-width="1.2" />
+          </g>
+          <!-- entry -->
+          <text class="uc-lbl" x="40" y="164" font-size="10.5" fill="rgba(58,54,50,0.6)" letter-spacing="2.4" font-family="var(--font-label)" font-weight="700">ONE TASK</text>
+          <!-- OFF · the single worker -->
+          <g class="uc-off">
+            <circle cx="400" cy="195" r="22" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.6" />
+            <circle cx="400" cy="195" r="3" fill="#1e2a4a" />
+            <line x1="400" y1="184" x2="400" y2="189" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+            <line x1="400" y1="201" x2="400" y2="206" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+            <line x1="389" y1="195" x2="394" y2="195" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+            <line x1="406" y1="195" x2="411" y2="195" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+            <text class="uc-lbl" x="400" y="243" font-size="9.5" fill="#1e2a4a" letter-spacing="2" font-family="var(--font-label)" font-weight="700" text-anchor="middle">ONE CLAUDE</text>
+          </g>
+          <!-- ON · orchestrator, agents, verify -->
+          <g class="uc-on">
+            <circle cx="270" cy="195" r="32" fill="#1e2a4a" fill-opacity="0.04" />
+            <circle cx="270" cy="195" r="24" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.7" />
+            <g transform="translate(270,195)">
+              <g class="v-spark">
+                <circle r="4" fill="#1e2a4a" />
+                <line x1="0" y1="-14" x2="0" y2="-8" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+                <line x1="0" y1="8" x2="0" y2="14" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+                <line x1="-14" y1="0" x2="-8" y2="0" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+                <line x1="8" y1="0" x2="14" y2="0" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+                <line x1="-10" y1="-10" x2="-6" y2="-6" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+                <line x1="6" y1="-6" x2="10" y2="-10" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+                <line x1="-10" y1="10" x2="-6" y2="6" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+                <line x1="6" y1="6" x2="10" y2="10" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+              </g>
+            </g>
+            <text class="uc-lbl" x="270" y="250" font-size="9.5" fill="#1e2a4a" letter-spacing="2" font-family="var(--font-label)" font-weight="700" text-anchor="middle">ORCHESTRATOR</text>
+            <circle cx="510" cy="65" r="13" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.5" /><circle cx="510" cy="65" r="2.6" fill="#2d5a5a" />
+            <circle cx="510" cy="130" r="13" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.5" /><circle cx="510" cy="130" r="2.6" fill="#2d5a5a" />
+            <circle cx="510" cy="195" r="13" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.5" /><circle cx="510" cy="195" r="2.6" fill="#2d5a5a" />
+            <circle cx="510" cy="260" r="13" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.5" /><circle cx="510" cy="260" r="2.6" fill="#2d5a5a" />
+            <circle cx="510" cy="325" r="13" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.5" /><circle cx="510" cy="325" r="2.6" fill="#2d5a5a" />
+            <text class="uc-lbl" x="510" y="366" font-size="9.5" fill="#2d5a5a" letter-spacing="2" font-family="var(--font-label)" font-weight="700" text-anchor="middle">PARALLEL SUB-AGENTS</text>
+            <circle cx="670" cy="195" r="22" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.7" />
+            <g transform="translate(670,195)">
+              <path d="M -7 0 l 4 6 l 11 -13" fill="none" stroke="#2d5a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            <text class="uc-lbl" x="670" y="250" font-size="9.5" fill="#2d5a5a" letter-spacing="2" font-family="var(--font-label)" font-weight="700" text-anchor="middle">REFUTE &rarr; CONVERGE</text>
+          </g>
+          <!-- done (both states) -->
+          <circle cx="790" cy="195" r="19" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.7" />
+          <path d="M 783 195 l 4 5 l 10 -11" fill="none" stroke="#1e2a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <text class="uc-lbl" x="790" y="161" font-size="9.5" fill="#1e2a4a" letter-spacing="2" font-family="var(--font-label)" font-weight="700" text-anchor="middle">DONE</text>
+          <!-- relative meters -->
+          <text class="uc-lbl" x="870" y="128" font-size="10.5" fill="#2d5a5a" letter-spacing="2.4" font-family="var(--font-label)" font-weight="700">COVERAGE</text>
+          <rect x="870" y="138" width="180" height="10" rx="5" fill="rgba(45,90,90,0.12)" />
+          <rect id="ucCov" class="uc-meter" x="870" y="138" width="180" height="10" rx="5" fill="#2d5a5a" style="transform: scaleX(0.34)" />
+          <text class="uc-lbl" x="870" y="192" font-size="10.5" fill="#74614a" letter-spacing="2.4" font-family="var(--font-label)" font-weight="700">TOKENS</text>
+          <rect x="870" y="202" width="180" height="10" rx="5" fill="rgba(116,97,74,0.12)" />
+          <rect id="ucTok" class="uc-meter" x="870" y="202" width="180" height="10" rx="5" fill="#74614a" style="transform: scaleX(0.28)" />
+          <!-- the verdict line, swapping with the state -->
+          <text id="ucCapOff" class="uc-off" x="415" y="410" font-size="15" font-family="var(--font-editorial)" font-style="italic" fill="rgba(58,54,50,0.65)" text-anchor="middle">one mind, one pass</text>
+          <text id="ucCapOn" class="uc-on" x="415" y="410" font-size="15" font-family="var(--font-editorial)" font-style="italic" fill="#2d5a5a" text-anchor="middle">a team of itself &mdash; more coverage, more tokens</text>
+          <!-- moving dots (script) -->
+          <g id="ucDots"></g>
+        </svg>
+        <p class="prose" style="margin-top: 0.4rem; font-size: 0.82rem; color: rgba(58, 54, 50, 0.55)">
+          Flip the switch. Coverage and tokens are shown relative &mdash; the
+          trade ultracode makes is more of both.
+        </p>
+        <p class="prose mt-6">
+          A script Claude writes <em>itself</em> coordinates the run. The agents
+          attack from independent angles, then try to refute each other; the run
+          iterates until the answers converge &mdash; reaching results a single
+          pass can&rsquo;t. On a codebase, your test suite is the bar for
+          &ldquo;done.&rdquo;
+        </p>
+      </section>
+      <!-- ───────── 2-3 · WHAT IT'S FOR ───────── -->
+      <section class="slide" data-chapter="2" data-eyebrow="What it's for">
+        <p class="eyebrow">What it means &middot; 3 of 4</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">Built for <span class="accent">engineer-weeks.</span></h2>
+          <p class="serif">
+            Where the fan-out earns its keep: big, parallelizable jobs with a
+            clear bar for &ldquo;correct.&rdquo;
+          </p>
+        </div>
+        <div class="grid grid-4-constants">
+          <div class="ghost card constant-card v-rise" style="--d: 0.1s">
+            <svg viewBox="0 0 56 56" class="constant-glyph" aria-hidden="true">
+              <rect x="8" y="19" width="15" height="20" rx="2" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.7" />
+              <rect x="33" y="19" width="15" height="20" rx="2" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.7" />
+              <path d="M 24 29 L 32 29 M 28.5 25 L 32.5 29 L 28.5 33" fill="none" stroke="#2d5a5a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h3 class="card-title">Migrations &amp; ports</h3>
+            <p class="card-body">Framework swaps, API deprecations, language ports spanning thousands of files &mdash; carried to a merge.</p>
+          </div>
+          <div class="ghost card constant-card v-rise" style="--d: 0.2s">
+            <svg viewBox="0 0 56 56" class="constant-glyph" aria-hidden="true">
+              <circle cx="25" cy="24" r="12" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.7" />
+              <line x1="19" y1="21" x2="31" y2="21" stroke="#2d5a5a" stroke-width="1.5" stroke-linecap="round" />
+              <line x1="19" y1="25" x2="29" y2="25" stroke="#2d5a5a" stroke-width="1.5" stroke-linecap="round" />
+              <line x1="34" y1="33" x2="45" y2="44" stroke="#1e2a4a" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <h3 class="card-title">Codebase audits</h3>
+            <p class="card-body">Whole-service reads &mdash; quality, dead code, consistency &mdash; in one pass instead of file by file.</p>
+          </div>
+          <div class="ghost card constant-card v-rise" style="--d: 0.3s">
+            <svg viewBox="0 0 56 56" class="constant-glyph" aria-hidden="true">
+              <path d="M 28 9 L 44 15 V 27 a 16 22 0 0 1 -16 22 a 16 22 0 0 1 -16 -22 V 15 Z" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.7" stroke-linejoin="round" />
+              <path d="M 21 27 l 5 5 l 10 -11" fill="none" stroke="#2d5a5a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h3 class="card-title">Bug &amp; security hunts</h3>
+            <p class="card-body">Many agents probe from different angles and try to refute each finding &mdash; fewer false alarms.</p>
+          </div>
+          <div class="ghost card constant-card v-rise" style="--d: 0.4s">
+            <svg viewBox="0 0 56 56" class="constant-glyph" aria-hidden="true">
+              <line x1="11" y1="44" x2="46" y2="44" stroke="#1e2a4a" stroke-width="1.5" stroke-opacity="0.5" stroke-linecap="round" />
+              <line x1="11" y1="44" x2="11" y2="12" stroke="#1e2a4a" stroke-width="1.5" stroke-opacity="0.5" stroke-linecap="round" />
+              <path d="M 12 38 L 22 27 L 30 33 L 45 15" fill="none" stroke="#2d5a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M 39 15 L 45 15 L 45 21" fill="none" stroke="#2d5a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h3 class="card-title">Optimization sweeps</h3>
+            <p class="card-body">Profiler-guided audits across a whole codebase, with the test suite holding the line on correctness.</p>
+          </div>
+        </div>
+        <p class="prose mt-6" style="margin-top: 1.75rem">
+          The common thread: a job too big for one pass, where the answer can be
+          <em>checked</em>. That&rsquo;s exactly what the refute-and-converge loop
+          is for.
+        </p>
+      </section>
+
+      <!-- ───────── 2-4 · WHY IT MATTERS TO A LEADER ───────── -->
+      <section class="slide" data-chapter="2" data-eyebrow="Why it matters to you">
+        <p class="eyebrow">What it means &middot; 4 of 4</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">You won&rsquo;t migrate a codebase. <span class="accent">Here&rsquo;s your version.</span></h2>
+          <p class="serif">
+            Run it yourself or hand it to your team. Either way, here are three
+            jobs &mdash; each one a pile of inputs, a workflow, and a checked
+            answer.
+          </p>
+        </div>
+        <div class="grid grid-3">
+          <div class="ghost card">
+            <svg viewBox="0 0 240 78" style="width: 100%; height: auto; display: block; margin-bottom: 0.95rem" aria-label="A messy dataset goes through a workflow and comes back as a checked summary">
+              <!-- input: data grid -->
+              <rect x="16" y="24" width="26" height="28" rx="2" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.4" />
+              <line x1="16" y1="33" x2="42" y2="33" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" />
+              <line x1="16" y1="43" x2="42" y2="43" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" />
+              <line x1="25" y1="24" x2="25" y2="52" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" />
+              <line x1="34" y1="24" x2="34" y2="52" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" />
+              <path d="M 50 39 L 94 39 M 88 35 L 94 39 L 88 43" fill="none" stroke="#1e2a4a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="100" cy="39" r="3.4" fill="#1e2a4a" />
+              <line x1="103" y1="39" x2="126" y2="23" stroke="#2d5a5a" stroke-width="1.3" /><line x1="103" y1="39" x2="126" y2="39" stroke="#2d5a5a" stroke-width="1.3" /><line x1="103" y1="39" x2="126" y2="55" stroke="#2d5a5a" stroke-width="1.3" />
+              <circle cx="129" cy="23" r="2.6" fill="#2d5a5a" /><circle cx="129" cy="39" r="2.6" fill="#2d5a5a" /><circle cx="129" cy="55" r="2.6" fill="#2d5a5a" />
+              <line x1="132" y1="23" x2="156" y2="39" stroke="#74614a" stroke-width="1.3" /><line x1="132" y1="39" x2="156" y2="39" stroke="#74614a" stroke-width="1.3" /><line x1="132" y1="55" x2="156" y2="39" stroke="#74614a" stroke-width="1.3" />
+              <path d="M 158 39 L 186 39 M 180 35 L 186 39 L 180 43" fill="none" stroke="#1e2a4a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <!-- output: bars + check -->
+              <rect x="194" y="40" width="5" height="12" rx="1" fill="#1e2a4a" opacity="0.55" /><rect x="202" y="33" width="5" height="19" rx="1" fill="#1e2a4a" opacity="0.78" /><rect x="210" y="26" width="5" height="26" rx="1" fill="#1e2a4a" />
+              <circle cx="217" cy="21" r="7" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.3" /><path d="M 214 21 l 2 2.5 l 4 -5" fill="none" stroke="#2d5a5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h3 class="card-title">Make sense of a data dump.</h3>
+            <p class="card-body">Point it at four years of attendance or discipline data &mdash; it cleans, cross-checks, and hands back the anomalies in plain English.</p>
+          </div>
+
+          <div class="ghost card">
+            <svg viewBox="0 0 240 78" style="width: 100%; height: auto; display: block; margin-bottom: 0.95rem" aria-label="A stack of documents goes through a workflow and comes back as one reconciled brief">
+              <!-- input: doc stack -->
+              <rect x="13" y="22" width="22" height="28" rx="2" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.3" stroke-opacity="0.5" />
+              <rect x="17" y="26" width="22" height="28" rx="2" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.3" stroke-opacity="0.72" />
+              <rect x="21" y="30" width="22" height="28" rx="2" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.4" />
+              <line x1="25" y1="39" x2="39" y2="39" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" /><line x1="25" y1="45" x2="39" y2="45" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" />
+              <path d="M 50 39 L 94 39 M 88 35 L 94 39 L 88 43" fill="none" stroke="#1e2a4a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="100" cy="39" r="3.4" fill="#1e2a4a" />
+              <line x1="103" y1="39" x2="126" y2="23" stroke="#2d5a5a" stroke-width="1.3" /><line x1="103" y1="39" x2="126" y2="39" stroke="#2d5a5a" stroke-width="1.3" /><line x1="103" y1="39" x2="126" y2="55" stroke="#2d5a5a" stroke-width="1.3" />
+              <circle cx="129" cy="23" r="2.6" fill="#2d5a5a" /><circle cx="129" cy="39" r="2.6" fill="#2d5a5a" /><circle cx="129" cy="55" r="2.6" fill="#2d5a5a" />
+              <line x1="132" y1="23" x2="156" y2="39" stroke="#74614a" stroke-width="1.3" /><line x1="132" y1="39" x2="156" y2="39" stroke="#74614a" stroke-width="1.3" /><line x1="132" y1="55" x2="156" y2="39" stroke="#74614a" stroke-width="1.3" />
+              <path d="M 158 39 L 186 39 M 180 35 L 186 39 L 180 43" fill="none" stroke="#1e2a4a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <!-- output: single doc + check -->
+              <rect x="192" y="24" width="24" height="30" rx="2" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.4" />
+              <line x1="197" y1="32" x2="211" y2="32" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" /><line x1="197" y1="38" x2="211" y2="38" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" /><line x1="197" y1="44" x2="207" y2="44" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" />
+              <circle cx="217" cy="21" r="7" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.3" /><path d="M 214 21 l 2 2.5 l 4 -5" fill="none" stroke="#2d5a5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h3 class="card-title">Synthesize the stack.</h3>
+            <p class="card-body">Thirty board policies and three reports become one reconciled brief &mdash; every claim traceable to its source.</p>
+          </div>
+
+          <div class="ghost card">
+            <svg viewBox="0 0 240 78" style="width: 100%; height: auto; display: block; margin-bottom: 0.95rem" aria-label="A proposal goes through a workflow where agents refute each other and comes back as a tested decision memo">
+              <!-- input: proposal + question -->
+              <rect x="16" y="24" width="24" height="30" rx="2" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.4" />
+              <line x1="21" y1="33" x2="35" y2="33" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" /><line x1="21" y1="39" x2="35" y2="39" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" /><line x1="21" y1="45" x2="31" y2="45" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" />
+              <circle cx="43" cy="23" r="7.5" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.3" /><text x="43" y="26.5" font-size="9.5" font-weight="700" fill="#2d5a5a" text-anchor="middle" font-family="var(--font-label)">?</text>
+              <path d="M 52 39 L 94 39 M 88 35 L 94 39 L 88 43" fill="none" stroke="#1e2a4a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="100" cy="39" r="3.4" fill="#1e2a4a" />
+              <line x1="103" y1="39" x2="126" y2="23" stroke="#2d5a5a" stroke-width="1.3" /><line x1="103" y1="39" x2="126" y2="39" stroke="#2d5a5a" stroke-width="1.3" /><line x1="103" y1="39" x2="126" y2="55" stroke="#2d5a5a" stroke-width="1.3" />
+              <circle cx="129" cy="23" r="2.6" fill="#2d5a5a" /><circle cx="129" cy="39" r="2.6" fill="#2d5a5a" /><circle cx="129" cy="55" r="2.6" fill="#2d5a5a" />
+              <line x1="132" y1="23" x2="156" y2="39" stroke="#74614a" stroke-width="1.3" /><line x1="132" y1="39" x2="156" y2="39" stroke="#74614a" stroke-width="1.3" /><line x1="132" y1="55" x2="156" y2="39" stroke="#74614a" stroke-width="1.3" />
+              <path d="M 158 39 L 186 39 M 180 35 L 186 39 L 180 43" fill="none" stroke="#1e2a4a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <!-- output: memo + check -->
+              <rect x="192" y="24" width="24" height="30" rx="2" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.4" />
+              <line x1="197" y1="32" x2="211" y2="32" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" /><line x1="197" y1="38" x2="211" y2="38" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" /><line x1="197" y1="44" x2="207" y2="44" stroke="#1e2a4a" stroke-width="1" stroke-opacity="0.5" />
+              <circle cx="217" cy="21" r="7" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.3" /><path d="M 214 21 l 2 2.5 l 4 -5" fill="none" stroke="#2d5a5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h3 class="card-title">Pressure-test a decision.</h3>
+            <p class="card-body">Give it a proposal; agents argue both sides and try to refute each other, so the risks surface before the board does.</p>
+          </div>
+        </div>
+        <p class="prose mt-6">
+          Relevance, plainly: the <em>unit of work</em> changes. One person can
+          take on a job that used to need a team &mdash; and the model checks its
+          own work against the bar you set. Whether you run it or your team does,
+          that&rsquo;s the shift worth planning a year around.
+        </p>
+      </section>
+
+      <!-- ───────── 3-1 · BY THE NUMBERS ───────── -->
+      <section class="slide" data-chapter="3" data-eyebrow="The scale">
+        <p class="eyebrow">The receipts</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">The scale, <span class="accent">in numbers.</span></h2>
+          <p class="serif">
+            How much one prompt can mobilize when ultracode is on.
+          </p>
+        </div>
+        <svg class="viz" viewBox="0 0 1080 252" role="img" aria-label="One orchestrator fanning out into a field of up to a thousand parallel sub-agents">
+          <text class="v-fade uc-lbl2" style="--d: 0.1s" x="34" y="92" font-size="11" fill="#2d5a5a" letter-spacing="2.8" font-family="var(--font-label)" font-weight="700">UP TO</text>
+          <text class="v-fade" style="--d: 0.15s" x="30" y="168" font-size="80" fill="#1e2a4a" font-family="var(--font-editorial)" font-style="italic">1,000</text>
+          <text class="v-fade uc-lbl3" style="--d: 0.2s" x="34" y="200" font-size="13" fill="rgba(58,54,50,0.6)" font-family="var(--font-body)">parallel sub-agents, one job</text>
+
+          <!-- feed lines core -> field -->
+          <line class="v-draw" style="--d: 0.7s" pathLength="1" x1="384" y1="126" x2="468" y2="52" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.4" />
+          <line class="v-draw" style="--d: 0.75s" pathLength="1" x1="384" y1="126" x2="468" y2="108" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.4" />
+          <line class="v-draw" style="--d: 0.8s" pathLength="1" x1="384" y1="126" x2="468" y2="156" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.4" />
+          <line class="v-draw" style="--d: 0.85s" pathLength="1" x1="384" y1="126" x2="468" y2="208" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.4" />
+
+          <!-- orchestrator core -->
+          <g class="v-pop" style="--d: 0.35s">
+            <circle cx="360" cy="126" r="30" fill="#1e2a4a" fill-opacity="0.05" />
+            <circle cx="360" cy="126" r="22" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.6" />
+          </g>
+          <g transform="translate(360,126)">
+            <g class="v-spark" style="--d: 0.5s">
+              <circle r="4" fill="#1e2a4a" />
+              <line x1="0" y1="-13" x2="0" y2="-7" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+              <line x1="0" y1="7" x2="0" y2="13" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+              <line x1="-13" y1="0" x2="-7" y2="0" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+              <line x1="7" y1="0" x2="13" y2="0" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+              <line x1="-9" y1="-9" x2="-5" y2="-5" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+              <line x1="5" y1="-5" x2="9" y2="-9" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+              <line x1="-9" y1="9" x2="-5" y2="5" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+              <line x1="5" y1="5" x2="9" y2="9" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+            </g>
+          </g>
+
+          <!-- field of sub-agent dots (injected by script) -->
+          <g id="scaleDots"></g>
+        </svg>
+        <p class="prose" style="margin-top: 1.25rem">
+          Tens to hundreds run on a typical job, and one request can chain up to
+          three workflows &mdash; understand &rarr; change &rarr; verify. Each
+          agent gets its own context, so the script, not the window, is the limit.
+        </p>
+      </section>
+
+      <!-- ───────── 3-2 · THE CATCH ───────── -->
+      <section class="slide" data-chapter="3" data-eyebrow="The catch">
+        <p class="eyebrow">Before you turn it on</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">It burns <span class="accent">a lot of tokens.</span></h2>
+          <p class="serif">The one honest caveat &mdash; and it&rsquo;s a big one.</p>
+        </div>
+
+        <svg class="viz" viewBox="0 0 1080 188" role="img" aria-label="With ultracode on, token use and time swing from a low normal level to very high">
+          <text class="v-fade uc-lbl2" style="--d: 0.1s" x="296" y="34" font-size="9" letter-spacing="1.8" font-family="var(--font-label)" font-weight="600" fill="rgba(58,54,50,0.5)" text-anchor="middle">NORMAL SESSION</text>
+          <text class="v-fade uc-lbl2" style="--d: 0.6s" x="650" y="34" font-size="9" letter-spacing="1.8" font-family="var(--font-label)" font-weight="700" fill="#74614a" text-anchor="middle">WITH ULTRACODE</text>
+          <line x1="386" y1="44" x2="386" y2="150" stroke="#1e2a4a" stroke-opacity="0.28" stroke-dasharray="3 3" stroke-width="1" />
+
+          <text class="uc-lbl2" x="40" y="72" font-size="10" letter-spacing="2.4" font-family="var(--font-label)" font-weight="700" fill="rgba(58,54,50,0.6)">TOKENS</text>
+          <rect x="210" y="60" width="820" height="14" rx="7" fill="rgba(30,42,74,0.07)" />
+          <rect x="210" y="60" width="176" height="14" rx="7" fill="#1e2a4a" fill-opacity="0.45" />
+          <rect class="cost-fill" style="--d: 0.2s" x="386" y="60" width="520" height="14" rx="7" fill="#74614a" />
+
+          <text class="uc-lbl2" x="40" y="134" font-size="10" letter-spacing="2.4" font-family="var(--font-label)" font-weight="700" fill="rgba(58,54,50,0.6)">TIME</text>
+          <rect x="210" y="122" width="820" height="14" rx="7" fill="rgba(30,42,74,0.07)" />
+          <rect x="210" y="122" width="176" height="14" rx="7" fill="#1e2a4a" fill-opacity="0.45" />
+          <rect class="cost-fill" style="--d: 0.45s" x="386" y="122" width="430" height="14" rx="7" fill="#74614a" />
+        </svg>
+
+        <div class="heads-up">
+          <span class="hu-icon"><span class="material-symbols-outlined">data_usage</span></span>
+          <div class="hu-body">
+            <p class="hu-label">Heads up &middot; cost &amp; speed</p>
+            <p class="hu-text">
+              With ultracode on, a single request can spawn several workflows in
+              a row, each running many agents. It uses
+              <b>substantially more tokens</b> and takes longer than a normal
+              session &mdash; the speed and cost of a session now swing on one
+              switch, not just the model behind it.
+            </p>
+          </div>
+        </div>
+        <p class="prose mt-6">
+          Treat it like heavy machinery: scope the first runs, watch your usage,
+          and reach for it when the job is genuinely large
+          <em>and</em> verifiable &mdash; not for a quick edit or a back-and-forth
+          chat, where it&rsquo;s pure overhead.
+        </p>
+      </section>
+      <!-- ───────── 3-3 · WHEN TO USE ───────── -->
+      <section class="slide" data-chapter="3" data-eyebrow="When to use it">
+        <p class="eyebrow">Judgment call</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">When to reach for it &mdash; <span class="accent">and when not.</span></h2>
+          <p class="serif">The switch is free; the run isn&rsquo;t. Match it to the job.</p>
+        </div>
+        <svg class="viz viz-d" viewBox="0 0 1080 160" role="img" aria-label="A spectrum from quick one-pass tasks, where ultracode is overkill, to big checkable jobs, where it earns its cost">
+          <!-- accent band over the 'reach' half -->
+          <rect x="512" y="98" width="448" height="14" rx="7" fill="#2d5a5a" fill-opacity="0.08" />
+          <!-- axis -->
+          <line x1="140" y1="105" x2="960" y2="105" stroke="#1e2a4a" stroke-opacity="0.2" stroke-width="1.5" />
+          <circle cx="140" cy="105" r="3" fill="#625e5a" /><circle cx="960" cy="105" r="3" fill="#2d5a5a" />
+          <!-- threshold -->
+          <line x1="512" y1="72" x2="512" y2="132" stroke="#2d5a5a" stroke-opacity="0.4" stroke-dasharray="4 4" stroke-width="1.2" />
+          <!-- end labels -->
+          <text x="140" y="90" font-size="9.5" letter-spacing="1.8" font-family="var(--font-label)" font-weight="700" fill="rgba(58,54,50,0.5)">QUICK &middot; ONE-PASS</text>
+          <text x="960" y="90" font-size="9.5" letter-spacing="1.8" font-family="var(--font-label)" font-weight="700" fill="#2d5a5a" text-anchor="end">BIG &middot; CHECKABLE</text>
+          <!-- below-threshold zone labels -->
+          <text x="496" y="130" font-size="9" letter-spacing="1.4" font-family="var(--font-label)" font-weight="600" fill="rgba(58,54,50,0.5)" text-anchor="end">OVERKILL</text>
+          <text x="528" y="130" font-size="9" letter-spacing="1.4" font-family="var(--font-label)" font-weight="700" fill="#2d5a5a">ULTRACODE EARNS IT &rarr;</text>
+          <!-- skip pills -->
+          <g class="v-fade" style="--d: 0.2s">
+            <rect x="194" y="46" width="92" height="24" rx="12" fill="#fffcf7" stroke="#1e2a4a" stroke-opacity="0.18" />
+            <text x="240" y="62" font-size="12.5" font-family="var(--font-body)" fill="rgba(58,54,50,0.65)" text-anchor="middle">quick edit</text>
+            <line x1="240" y1="70" x2="240" y2="100" stroke="#1e2a4a" stroke-opacity="0.14" stroke-width="1" />
+            <circle cx="240" cy="105" r="2.6" fill="#625e5a" />
+          </g>
+          <g class="v-fade" style="--d: 0.3s">
+            <rect x="348" y="46" width="66" height="24" rx="12" fill="#fffcf7" stroke="#1e2a4a" stroke-opacity="0.18" />
+            <text x="381" y="62" font-size="12.5" font-family="var(--font-body)" fill="rgba(58,54,50,0.65)" text-anchor="middle">a chat</text>
+            <line x1="381" y1="70" x2="381" y2="100" stroke="#1e2a4a" stroke-opacity="0.14" stroke-width="1" />
+            <circle cx="381" cy="105" r="2.6" fill="#625e5a" />
+          </g>
+          <!-- reach pills -->
+          <g class="v-fade" style="--d: 0.45s">
+            <rect x="556" y="46" width="86" height="24" rx="12" fill="#fffcf7" stroke="#2d5a5a" stroke-opacity="0.32" />
+            <text x="599" y="62" font-size="12.5" font-family="var(--font-body)" fill="#1e2a4a" text-anchor="middle">migration</text>
+            <line x1="599" y1="70" x2="599" y2="100" stroke="#2d5a5a" stroke-opacity="0.25" stroke-width="1" />
+            <circle cx="599" cy="105" r="2.6" fill="#2d5a5a" />
+          </g>
+          <g class="v-fade" style="--d: 0.55s">
+            <rect x="688" y="46" width="118" height="24" rx="12" fill="#fffcf7" stroke="#2d5a5a" stroke-opacity="0.32" />
+            <text x="747" y="62" font-size="12.5" font-family="var(--font-body)" fill="#1e2a4a" text-anchor="middle">codebase audit</text>
+            <line x1="747" y1="70" x2="747" y2="100" stroke="#2d5a5a" stroke-opacity="0.25" stroke-width="1" />
+            <circle cx="747" cy="105" r="2.6" fill="#2d5a5a" />
+          </g>
+          <g class="v-fade" style="--d: 0.65s">
+            <rect x="852" y="46" width="92" height="24" rx="12" fill="#fffcf7" stroke="#2d5a5a" stroke-opacity="0.32" />
+            <text x="898" y="62" font-size="12.5" font-family="var(--font-body)" fill="#1e2a4a" text-anchor="middle">data triage</text>
+            <line x1="898" y1="70" x2="898" y2="100" stroke="#2d5a5a" stroke-opacity="0.25" stroke-width="1" />
+            <circle cx="898" cy="105" r="2.6" fill="#2d5a5a" />
+          </g>
+        </svg>
+
+        <!-- mobile: stacked zones -->
+        <svg class="viz-m" viewBox="0 0 380 268" role="img" aria-label="Skip ultracode for quick one-pass tasks; reach for it on big checkable jobs">
+          <text x="20" y="30" font-size="13" letter-spacing="1.4" font-family="var(--font-label)" font-weight="700" fill="rgba(58,54,50,0.55)">&larr; SKIP &mdash; OVERKILL</text>
+          <text x="20" y="52" font-size="12" font-style="italic" font-family="var(--font-editorial)" fill="rgba(58,54,50,0.6)">quick &middot; one-pass</text>
+          <g><rect x="20" y="66" width="104" height="28" rx="14" fill="#fffcf7" stroke="#1e2a4a" stroke-opacity="0.18" /><text x="72" y="84" font-size="13.5" font-family="var(--font-body)" fill="rgba(58,54,50,0.7)" text-anchor="middle">quick edit</text></g>
+          <g><rect x="134" y="66" width="80" height="28" rx="14" fill="#fffcf7" stroke="#1e2a4a" stroke-opacity="0.18" /><text x="174" y="84" font-size="13.5" font-family="var(--font-body)" fill="rgba(58,54,50,0.7)" text-anchor="middle">a chat</text></g>
+
+          <line x1="20" y1="124" x2="360" y2="124" stroke="#2d5a5a" stroke-opacity="0.3" stroke-dasharray="4 4" stroke-width="1.2" />
+
+          <text x="20" y="158" font-size="13" letter-spacing="1.4" font-family="var(--font-label)" font-weight="700" fill="#2d5a5a">REACH FOR IT &rarr;</text>
+          <text x="20" y="180" font-size="12" font-style="italic" font-family="var(--font-editorial)" fill="rgba(58,54,50,0.6)">big &middot; checkable</text>
+          <g><rect x="20" y="194" width="104" height="28" rx="14" fill="#fffcf7" stroke="#2d5a5a" stroke-opacity="0.32" /><text x="72" y="212" font-size="13.5" font-family="var(--font-body)" fill="#1e2a4a" text-anchor="middle">migration</text></g>
+          <g><rect x="134" y="194" width="142" height="28" rx="14" fill="#fffcf7" stroke="#2d5a5a" stroke-opacity="0.32" /><text x="205" y="212" font-size="13.5" font-family="var(--font-body)" fill="#1e2a4a" text-anchor="middle">codebase audit</text></g>
+          <g><rect x="20" y="230" width="104" height="28" rx="14" fill="#fffcf7" stroke="#2d5a5a" stroke-opacity="0.32" /><text x="72" y="248" font-size="13.5" font-family="var(--font-body)" fill="#1e2a4a" text-anchor="middle">data triage</text></g>
+        </svg>
+        <p class="prose mt-6">
+          Rule of thumb: if you&rsquo;d hand it to a team and check their work at
+          the end, it&rsquo;s a workflow. If you&rsquo;d just do it yourself in
+          five minutes, it isn&rsquo;t.
+        </p>
+      </section>
+
+      <!-- ───────── 4-1 · TURNING IT ON ───────── -->
+      <section class="slide" data-chapter="4" data-eyebrow="The close">
+        <p class="eyebrow">The close</p>
+        <div class="max-3xl mb-10">
+          <h2 class="heading">Turning it on, <span class="accent">carefully.</span></h2>
+          <p class="serif">Two ways in &mdash; and a sane way to start.</p>
+        </div>
+        <div class="heads-up">
+          <span class="hu-icon"><span class="material-symbols-outlined">toggle_on</span></span>
+          <div class="hu-body">
+            <p class="hu-label">Heads up &middot; is it already on?</p>
+            <p class="hu-text">
+              On Max and Team plans (and through the API) ultracode is
+              <b>on by default</b>; Enterprise needs an admin to enable it.
+              Reports differ &mdash; so check your own effort menu before you
+              assume either way.
+            </p>
+          </div>
+        </div>
+        <div class="grid grid-3">
+          <div class="ghost card">
+            <svg class="ic" viewBox="0 0 132 46" aria-label="The effort menu with ultracode selected at the top">
+              <rect x="10" y="6" width="86" height="11" rx="2.5" fill="#2d5a5a" fill-opacity="0.12" stroke="#2d5a5a" stroke-width="1.2" />
+              <text x="15" y="14.5" font-size="7" font-weight="700" letter-spacing="0.6" fill="#2d5a5a" font-family="var(--font-label)">ULTRACODE</text>
+              <line x1="15" y1="25" x2="74" y2="25" stroke="#1e2a4a" stroke-opacity="0.4" stroke-width="1.4" stroke-linecap="round" />
+              <line x1="15" y1="33" x2="66" y2="33" stroke="#1e2a4a" stroke-opacity="0.25" stroke-width="1.4" stroke-linecap="round" />
+              <line x1="15" y1="41" x2="58" y2="41" stroke="#1e2a4a" stroke-opacity="0.15" stroke-width="1.4" stroke-linecap="round" />
+              <path class="ic-seq" style="--d: 0.2s" d="M 118 11 L 102 11 M 107 7 L 102 11 L 107 15" fill="none" stroke="#2d5a5a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h3 class="card-title">Find the switch.</h3>
+            <p class="card-body">It&rsquo;s in Claude Code&rsquo;s effort menu &mdash; one level past xhigh.</p>
+          </div>
+          <div class="ghost card">
+            <svg class="ic" viewBox="0 0 132 46" aria-label="Typing the word workflow fires a fan of agents">
+              <path d="M 10 17 l 6 6 l -6 6" fill="none" stroke="#1e2a4a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              <rect class="ic-seq" style="--d: 0s" x="24" y="15" width="54" height="16" rx="3" fill="#2d5a5a" fill-opacity="0.12" stroke="#2d5a5a" stroke-width="1.2" />
+              <text x="51" y="26" font-size="8.5" font-weight="700" fill="#2d5a5a" text-anchor="middle" font-family="var(--font-label)">workflow</text>
+              <circle cx="92" cy="23" r="3" fill="#1e2a4a" />
+              <line x1="95" y1="23" x2="116" y2="13" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.6" />
+              <line x1="95" y1="23" x2="116" y2="23" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.6" />
+              <line x1="95" y1="23" x2="116" y2="33" stroke="#2d5a5a" stroke-width="1.2" stroke-opacity="0.6" />
+              <circle class="ic-seq" style="--d: 0.25s" cx="119" cy="13" r="2.6" fill="#2d5a5a" />
+              <circle class="ic-seq" style="--d: 0.35s" cx="119" cy="23" r="2.6" fill="#2d5a5a" />
+              <circle class="ic-seq" style="--d: 0.45s" cx="119" cy="33" r="2.6" fill="#2d5a5a" />
+            </svg>
+            <h3 class="card-title">Or just say &ldquo;workflow.&rdquo;</h3>
+            <p class="card-body">Drop <em>workflow</em> into any prompt to orchestrate one task.</p>
+          </div>
+          <div class="ghost card">
+            <svg class="ic" viewBox="0 0 132 46" aria-label="Concentric rings narrowing to a single scoped target">
+              <circle cx="34" cy="23" r="18" fill="none" stroke="#1e2a4a" stroke-width="1.3" stroke-opacity="0.18" />
+              <circle cx="34" cy="23" r="11" fill="none" stroke="#1e2a4a" stroke-width="1.3" stroke-opacity="0.38" />
+              <circle class="ic-seq" style="--d: 0.2s" cx="34" cy="23" r="4" fill="#2d5a5a" />
+              <text x="62" y="27" font-size="9" font-style="italic" fill="rgba(58,54,50,0.6)" font-family="var(--font-editorial)">one bounded job</text>
+            </svg>
+            <h3 class="card-title">Start scoped.</h3>
+            <p class="card-body">Point the first run at one job &mdash; and watch the spend.</p>
+          </div>
+        </div>
+        <div class="try-box">
+          <p class="tb-label">Try this first</p>
+          <p class="tb-prompt">
+            &ldquo;Use a workflow to audit this repo for security issues. Have
+            independent agents verify each finding before you report it.&rdquo;
+          </p>
+        </div>
+      </section>
+
+      <!-- ───────── 4-2 · SOURCES ───────── -->
+      <section class="slide" data-chapter="4" data-eyebrow="Sources">
+        <p class="eyebrow">The close</p>
+        <div class="max-3xl mb-10">
+          <h2 class="heading">Where this <span class="accent">came from.</span></h2>
+          <p class="serif">
+            Everything here traces to Anthropic&rsquo;s own announcement and the
+            Claude Code documentation.
+          </p>
+        </div>
+        <div class="grid grid-3">
+          <a class="ghost card card-flex" href="https://claude.com/blog/introducing-dynamic-workflows-in-claude-code" target="_blank" rel="noopener noreferrer">
+            <p class="card-eyebrow" style="color: var(--teal)">The announcement</p>
+            <h3 class="card-title">Dynamic Workflows in Claude Code</h3>
+            <p class="card-body">Anthropic&rsquo;s post on what shipped &mdash; the source for the orchestrator, the 1,000-agent cap, and the refute-and-converge loop.</p>
+            <span class="link-row">Read it <span class="material-symbols-outlined" style="font-size:15px">arrow_outward</span></span>
+          </a>
+          <a class="ghost card card-flex" href="https://code.claude.com/docs" target="_blank" rel="noopener noreferrer">
+            <p class="card-eyebrow" style="color: var(--navy)">The setting</p>
+            <h3 class="card-title">Claude Code docs</h3>
+            <p class="card-body">Where ultracode lives in the effort menu, plan availability, and how workflows are scripted and run.</p>
+            <span class="link-row">Open the docs <span class="material-symbols-outlined" style="font-size:15px">arrow_outward</span></span>
+          </a>
+          <div class="ghost card card-flex">
+            <p class="card-eyebrow" style="color: var(--warm)">For the room</p>
+            <h3 class="card-title">Bring it to your team.</h3>
+            <p class="card-body">Which of your big, checkable jobs &mdash; a migration, an audit &mdash; is worth a scoped first workflow run? Start there, and watch the spend.</p>
+            <span class="link-row" style="color: var(--muted)">Discussion <span class="material-symbols-outlined" style="font-size:15px">forum</span></span>
+          </div>
+        </div>
+        <div class="footer-band">
+          <p>Karst &middot; Claude Ultracode Briefing &middot; May 2026</p>
+          <p>Prepared by Karst</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================== FLOATING PILL NAV ===================== -->
+    <div class="pill-wrap">
+      <div class="pill">
+        <button class="pill-btn" id="prevBtn" aria-label="Previous">
+          <span class="material-symbols-outlined" style="font-size: 18px">chevron_left</span>
+        </button>
+        <span class="pill-count" id="pillCount">1/10</span>
+        <div class="dots" id="dots"></div>
+        <button class="pill-btn" id="nextBtn" aria-label="Next">
+          <span class="material-symbols-outlined" style="font-size: 18px">chevron_right</span>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      /* Populate slide 6's scale field with a grid of sub-agent dots */
+      (function () {
+        var f = document.getElementById('scaleDots');
+        if (!f) return;
+        var cols = 24, rows = 8, x0 = 470, y0 = 46, dx = 24, dy = 24;
+        var rand = function (i) { var x = Math.sin(i * 12.9898) * 43758.5453; return x - Math.floor(x); };
+        var frag = document.createDocumentFragment();
+        var n = 0;
+        for (var r = 0; r < rows; r++) {
+          for (var c = 0; c < cols; c++) {
+            var d = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            d.setAttribute('class', 'scale-dot');
+            d.setAttribute('cx', x0 + c * dx);
+            d.setAttribute('cy', y0 + r * dy);
+            d.setAttribute('r', '2.4');
+            d.setAttribute('fill', '#2d5a5a');
+            d.style.setProperty('--d', (rand(n + 1) * 3.4).toFixed(2) + 's');
+            frag.appendChild(d);
+            n++;
+          }
+        }
+        f.appendChild(frag);
+      })();
+
+      /* Populate the hero panel with drifting dust motes */
+      (function () {
+        var host = document.getElementById('heroDust');
+        if (!host) return;
+        var COUNT = 72;
+        var rand = function (min, max) { return min + Math.random() * (max - min); };
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < COUNT; i++) {
+          var soft = Math.random() < 0.16;
+          var size = soft ? rand(3.5, 6.5) : rand(0.8, 2.6);
+          var dur = rand(9, 20);
+          var m = document.createElement('span');
+          m.className = 'dust-mote' + (soft ? ' soft' : '');
+          m.style.left = rand(0, 100) + '%';
+          m.style.top = rand(0, 100) + '%';
+          m.style.width = size.toFixed(2) + 'px';
+          m.style.height = size.toFixed(2) + 'px';
+          m.style.setProperty('--op', (soft ? rand(0.18, 0.4) : rand(0.35, 0.95)).toFixed(2));
+          m.style.setProperty('--dur', dur.toFixed(1) + 's');
+          m.style.setProperty('--delay', (-rand(0, dur)).toFixed(1) + 's');
+          m.style.setProperty('--dx', rand(-28, 28).toFixed(0) + 'px');
+          m.style.setProperty('--dy', rand(-110, -45).toFixed(0) + 'px');
+          frag.appendChild(m);
+        }
+        host.appendChild(frag);
+      })();
+
+      /* ── The Ultracode switch — a setting, drawn as the thing it is.
+         Off: one task, one Claude, one pass. On: the school splits — five
+         parallel lanes through verify into the same done node. Dots in
+         flight keep their route; new spawns follow the new state. Auto-flips
+         ON once, ~1.8s after the slide is first seen; manual after that. ── */
+      (function () {
+        var sw = document.getElementById('ucSwitch');
+        var viz = document.getElementById('ucViz');
+        if (!sw || !viz) return;
+        var stateTxt = document.getElementById('ucStateTxt');
+        var cov = document.getElementById('ucCov');
+        var tok = document.getElementById('ucTok');
+        var layer = document.getElementById('ucDots');
+        var pathOff = document.getElementById('ucPathOff');
+        var lanes = [0, 1, 2, 3, 4].map(function (i) {
+          return document.getElementById('ucLane' + i);
+        });
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var SVGNS = 'http://www.w3.org/2000/svg';
+
+        var on = false;
+        var METERS = { off: { cov: 0.34, tok: 0.28 }, on: { cov: 0.92, tok: 0.88 } };
+        var meterNow = { cov: METERS.off.cov, tok: METERS.off.tok };
+
+        // strip the agent's static scaleX styling — JS drives width directly
+        cov.removeAttribute('style');
+        tok.removeAttribute('style');
+
+        function applyMeters() {
+          cov.setAttribute('width', (180 * meterNow.cov).toFixed(1));
+          tok.setAttribute('width', (180 * meterNow.tok).toFixed(1));
+        }
+        function setState(next) {
+          on = next;
+          viz.setAttribute('data-state', on ? 'on' : 'off');
+          sw.setAttribute('aria-checked', on ? 'true' : 'false');
+          if (stateTxt) stateTxt.textContent = on ? 'On' : 'Off';
+          if (reduce) {
+            meterNow = { cov: METERS[on ? 'on' : 'off'].cov, tok: METERS[on ? 'on' : 'off'].tok };
+            applyMeters();
+          }
+        }
+        sw.addEventListener('click', function () { setState(!on); });
+        sw.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') { setState(!on); e.preventDefault(); e.stopPropagation(); }
+        });
+
+        if (reduce) {
+          // settled: ON diagram, no dot motion; the switch still works.
+          setState(true);
+          return;
+        }
+        applyMeters();
+
+        var laneLens = lanes.map(function (p) { return p.getTotalLength(); });
+        var offLen = pathOff.getTotalLength();
+        var dots = [];
+        var lastSpawn = 0;
+        var laneIdx = 0;
+        var TRAVEL = 3700;
+        var running = false, raf = 0, firstSeen = 0, autoFlipped = false;
+
+        function spawn(now) {
+          var c = document.createElementNS(SVGNS, 'circle');
+          c.setAttribute('r', on ? 3.4 : 4);
+          c.setAttribute('fill', on ? '#2d5a5a' : '#1e2a4a');
+          c.setAttribute('opacity', '0');
+          layer.appendChild(c);
+          var d = { el: c, born: now, onRoute: on, lane: 0, phase: Math.random() * Math.PI * 2 };
+          if (on) { d.lane = laneIdx; laneIdx = (laneIdx + 1) % lanes.length; }
+          dots.push(d);
+        }
+        function tick(now) {
+          if (!firstSeen) firstSeen = now;
+          if (!autoFlipped && now - firstSeen > 1800) {
+            autoFlipped = true;
+            setState(true);
+          }
+          // meters ease toward target
+          var tgt = METERS[on ? 'on' : 'off'];
+          meterNow.cov += (tgt.cov - meterNow.cov) * 0.06;
+          meterNow.tok += (tgt.tok - meterNow.tok) * 0.06;
+          applyMeters();
+          // spawn cadence: denser when parallel
+          if (!lastSpawn) lastSpawn = now;
+          if (now - lastSpawn >= (on ? 300 : 520)) {
+            lastSpawn = now;
+            spawn(now);
+          }
+          for (var i = dots.length - 1; i >= 0; i--) {
+            var d = dots[i];
+            var f = (now - d.born) / TRAVEL;
+            if (f >= 1) { d.el.remove(); dots.splice(i, 1); continue; }
+            var path = d.onRoute ? lanes[d.lane] : pathOff;
+            var len = d.onRoute ? laneLens[d.lane] : offLen;
+            var p = path.getPointAtLength(f * len);
+            var y = p.y;
+            // the schooling wobble — alive, slight, perpendicular
+            if (d.onRoute) y += Math.sin(now * 0.004 + d.phase) * 2;
+            d.el.setAttribute('cx', p.x);
+            d.el.setAttribute('cy', y);
+            var fade = f < 0.05 ? f / 0.05 : f > 0.93 ? (1 - f) / 0.07 : 1;
+            d.el.setAttribute('opacity', (0.85 * fade).toFixed(2));
+          }
+          if (running) raf = requestAnimationFrame(tick);
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            running = e.isIntersecting;
+            if (running) {
+              lastSpawn = 0;
+              cancelAnimationFrame(raf);
+              raf = requestAnimationFrame(tick);
+            } else {
+              cancelAnimationFrame(raf);
+            }
+          });
+        }, { threshold: 0.2 });
+        io.observe(viz);
+      })();
+
+      (function () {
+        var slides = Array.prototype.slice.call(
+          document.querySelectorAll(".slide")
+        );
+        var total = slides.length;
+        var index = 0;
+
+        var navCount = document.getElementById("navCount");
+        var navProgress = document.getElementById("navProgress");
+        var pillCount = document.getElementById("pillCount");
+        var prevBtn = document.getElementById("prevBtn");
+        var nextBtn = document.getElementById("nextBtn");
+        var dotsWrap = document.getElementById("dots");
+
+        function pad(n) {
+          return String(n).padStart(2, "0");
+        }
+
+        // Build grouped progress dots (by data-chapter)
+        var dotEls = [];
+        var lastChapter = null;
+        slides.forEach(function (slide, i) {
+          var chapter = slide.getAttribute("data-chapter");
+          if (chapter !== lastChapter) {
+            if (lastChapter !== null) {
+              var div = document.createElement("span");
+              div.className = "dot-divider";
+              dotsWrap.appendChild(div);
+            }
+            lastChapter = chapter;
+          }
+          var btn = document.createElement("button");
+          btn.className = "dot";
+          btn.type = "button";
+          var inner = document.createElement("span");
+          var tip = document.createElement("span");
+          tip.className = "dot-tip";
+          tip.textContent = slide.getAttribute("data-eyebrow") || "";
+          btn.appendChild(inner);
+          btn.appendChild(tip);
+          btn.addEventListener("click", function () {
+            goTo(i);
+          });
+          dotsWrap.appendChild(btn);
+          dotEls.push(btn);
+        });
+
+        function animateBars(slide) {
+          var bars = slide.querySelectorAll(".bar-old, .bar-new");
+          bars.forEach(function (bar) {
+            bar.style.width = "0";
+          });
+          // next frame -> grow to target
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              bars.forEach(function (bar) {
+                bar.style.width = bar.getAttribute("data-pct") + "%";
+              });
+            });
+          });
+        }
+
+        function render() {
+          slides.forEach(function (s, i) {
+            s.classList.toggle("active", i === index);
+          });
+          navCount.textContent = pad(index + 1) + " / " + pad(total);
+          pillCount.textContent = index + 1 + "/" + total;
+          navProgress.style.width = ((index + 1) / total) * 100 + "%";
+          prevBtn.disabled = index === 0;
+          nextBtn.disabled = index === total - 1;
+          dotEls.forEach(function (d, i) {
+            d.classList.toggle("current", i === index);
+            d.classList.toggle("past", i < index);
+          });
+          var active = slides[index];
+          if (active.querySelector(".bar-track")) animateBars(active);
+          window.scrollTo({ top: 0, behavior: "instant" });
+        }
+
+        function goTo(i) {
+          index = Math.max(0, Math.min(total - 1, i));
+          render();
+        }
+
+        prevBtn.addEventListener("click", function () {
+          goTo(index - 1);
+        });
+        nextBtn.addEventListener("click", function () {
+          goTo(index + 1);
+        });
+        document.addEventListener("keydown", function (e) {
+          if (
+            e.target instanceof HTMLElement &&
+            ["INPUT", "TEXTAREA", "SELECT"].indexOf(e.target.tagName) !== -1
+          )
+            return;
+          if (e.key === "ArrowRight") goTo(index + 1);
+          if (e.key === "ArrowLeft") goTo(index - 1);
+        });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>

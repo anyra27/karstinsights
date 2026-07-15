@@ -1,0 +1,2319 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Claude Opus 4.8 — a plain-English briefing for school district leadership teams. What changed, what it means for your work, and what stays the same."
+    />
+    <title>Claude Opus 4.8 · A Briefing for School Leaders</title>
+    <link rel="canonical" href="https://karstinsights.com/briefings/opus-4-8/" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Karst" />
+    <meta property="og:title" content="Claude Opus 4.8 · A briefing for school leaders" />
+    <meta property="og:description" content="A plain-English read on the upgrade — what it means for your work, and what stays the same." />
+    <meta property="og:url" content="https://karstinsights.com/briefings/opus-4-8/" />
+    <meta property="og:image" content="https://karstinsights.com/briefings/assets/og-opus-4-8.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Claude Opus 4.8 · A briefing for school leaders" />
+    <meta name="twitter:description" content="A plain-English read on the upgrade — what it means for your work, and what stays the same." />
+    <meta name="twitter:image" content="https://karstinsights.com/briefings/assets/og-opus-4-8.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:ital@1&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ============================================================
+         Karst — design tokens (mirrored from the studio)
+         ============================================================ */
+      :root {
+        --surface: #fffcf7;
+        --card: #fefdfb;
+        --on-surface: #1a1816;
+        --on-surface-variant: #3a3632;
+        --navy: #1e2a4a;
+        --teal: #2d5a5a;
+        --warm: #74614a;
+        --red: #a13d3d;
+        --muted: rgba(58, 54, 50, 0.55);
+        --outline: #818178;
+        --outline-variant: #babab0;
+        --hairline: rgba(0, 48, 107, 0.12);
+
+        --font-headline: "Montserrat", system-ui, sans-serif;
+        --font-body: "Inter", system-ui, sans-serif;
+        --font-label: "Montserrat", system-ui, sans-serif;
+        --font-editorial: "Libre Baskerville", Georgia, serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--surface);
+        color: var(--on-surface);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        cursor: default;
+        min-height: 100vh;
+      }
+      ::selection {
+        background-color: #dce2f0;
+        color: var(--navy);
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+        user-select: none;
+      }
+
+      /* ── Cards ──────────────────────────────────────────────── */
+      .ghost {
+        background: var(--card);
+        border: 1px solid rgba(0, 48, 107, 0.08);
+        border-radius: 3px;
+        box-shadow: 0 2px 8px rgba(0, 48, 107, 0.05),
+          0 1px 2px rgba(0, 0, 0, 0.03);
+        transition: box-shadow 0.25s ease, transform 0.25s ease,
+          border-color 0.25s ease;
+      }
+      .ghost:hover {
+        box-shadow: 0 6px 24px rgba(0, 48, 107, 0.09),
+          0 2px 4px rgba(0, 0, 0, 0.04);
+        transform: translateY(-2px);
+        border-color: rgba(0, 48, 107, 0.15);
+      }
+
+      /* ── Brand gradient text ────────────────────────────────── */
+      .tropical {
+        background: linear-gradient(
+          135deg,
+          #1e2a4a,
+          #4a6a8a,
+          #8a7aaa,
+          #b4848e,
+          #c4a070,
+          #4a6a8a,
+          #1e2a4a
+        );
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        animation: sunset 12s linear infinite;
+      }
+      /* Living stone — the crystal drifts, a glint of light wanders across
+         the facets, the scrim stays put so the type always reads. */
+      .tropical-bg {
+        background: #10141f;
+      }
+      .tropical-bg::before {
+        content: "";
+        position: absolute;
+        inset: -5%;
+        background: url("../assets/emerald-crystal.webp") center / cover;
+        animation: crystalDrift 38s ease-in-out infinite alternate;
+        z-index: 0;
+        border-radius: inherit;
+      }
+      .tropical-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          radial-gradient(closest-side, rgba(255, 250, 230, 0.22), rgba(255, 250, 230, 0) 72%),
+          linear-gradient(
+            180deg,
+            rgba(18, 20, 34, 0.42) 0%,
+            rgba(18, 20, 34, 0.28) 42%,
+            rgba(18, 20, 34, 0.74) 100%
+          );
+        background-size: 40% 32%, 100% 100%;
+        background-repeat: no-repeat;
+        background-position: 18% 22%, 0 0;
+        animation: crystalGlint 21s ease-in-out infinite alternate;
+        z-index: 1;
+        border-radius: inherit;
+        pointer-events: none;
+      }
+      @keyframes crystalDrift {
+        from { transform: scale(1) translateY(0); }
+        to { transform: scale(1.075) translateY(-1.6%); }
+      }
+      @keyframes crystalGlint {
+        to { background-position: 74% 46%, 0 0; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .tropical-bg::before,
+        .tropical-bg::after {
+          animation: none;
+        }
+      }
+      @keyframes sunset {
+        0% {
+          background-position: 0% 50%;
+        }
+        100% {
+          background-position: 200% 50%;
+        }
+      }
+
+      /* grain overlay for gradient panels */
+      .grain::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.3;
+        mix-blend-mode: overlay;
+        pointer-events: none;
+        border-radius: inherit;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 128px 128px;
+      }
+
+      /* ============================================================
+         Shell — glass nav, stage, floating pill
+         ============================================================ */
+      .glass-nav {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        backdrop-filter: blur(20px);
+        background-color: rgba(255, 252, 247, 0.85);
+        border-bottom: 1px solid rgba(58, 54, 50, 0.08);
+      }
+      .nav-inner {
+        max-width: 80rem;
+        margin: 0 auto;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        gap: 1.75rem;
+        padding: 0 1.25rem;
+      }
+      @media (min-width: 640px) {
+        .nav-inner {
+          padding: 0 2.5rem;
+        }
+      }
+      .wordmark {
+        font-family: var(--font-label);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.42em;
+        text-transform: uppercase;
+        color: var(--navy);
+        white-space: nowrap;
+        flex-shrink: 0;
+        text-decoration: none;
+        transition: opacity 0.2s ease;
+      }
+      a.wordmark:hover {
+        opacity: 0.62;
+      }
+      .wordmark .wm-back {
+        letter-spacing: normal;
+        margin-right: 0.45em;
+        font-weight: 400;
+        display: inline-block;
+      }
+      .nav-title {
+        font-family: var(--font-headline);
+        font-size: 0.875rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        color: var(--on-surface);
+        margin-left: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .nav-count {
+        font-family: var(--font-label);
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(58, 54, 50, 0.4);
+        flex-shrink: 0;
+      }
+      .nav-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 1.5px;
+        background: rgba(30, 42, 74, 0.6);
+        transition: width 0.5s ease;
+      }
+
+      .stage {
+        max-width: 72rem;
+        margin: 0 auto;
+        width: 100%;
+        padding: 3rem 1.25rem 9rem;
+        position: relative;
+        z-index: 1;
+      }
+      @media (min-width: 640px) {
+        .stage {
+          padding: 3rem 2.5rem 9rem;
+        }
+      }
+
+      .slide {
+        display: none;
+      }
+      .slide.active {
+        display: block;
+        animation: slideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .eyebrow {
+        font-family: var(--font-label);
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: rgba(30, 42, 74, 0.7);
+        margin: 0 0 1.25rem;
+      }
+
+      h1.headline {
+        font-family: var(--font-headline);
+        font-weight: 300;
+        letter-spacing: -0.025em;
+        line-height: 1.04;
+        color: var(--on-surface);
+        font-size: clamp(2.25rem, 5vw, 3.75rem);
+        margin: 0 0 1.5rem;
+      }
+      h2.heading {
+        font-family: var(--font-headline);
+        font-weight: 300;
+        letter-spacing: -0.015em;
+        line-height: 1.12;
+        color: var(--navy);
+        font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+        margin: 0 0 1.25rem;
+      }
+      h2.heading .accent {
+        font-weight: 500;
+        color: var(--navy);
+      }
+      .serif {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+        line-height: 1.45;
+        color: rgba(58, 54, 50, 0.85);
+        letter-spacing: -0.008em;
+        max-width: 48rem;
+        margin: 0;
+      }
+      .prose {
+        font-family: var(--font-body);
+        color: var(--on-surface-variant);
+        font-size: 1rem;
+        line-height: 1.7;
+        max-width: 44rem;
+      }
+      .max-3xl {
+        max-width: 48rem;
+      }
+      .mb-10 {
+        margin-bottom: 2.5rem;
+      }
+      .mb-8 {
+        margin-bottom: 2rem;
+      }
+      .mt-6 {
+        margin-top: 1.5rem;
+      }
+
+      /* ── Floating pill nav ──────────────────────────────────── */
+      .pill-wrap {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 30;
+        display: flex;
+        justify-content: center;
+        padding: 1rem 1.5rem;
+        pointer-events: none;
+      }
+      .pill {
+        pointer-events: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(186, 186, 176, 0.18);
+        border-radius: 9999px;
+        padding: 0.375rem 0.5rem;
+        transition: all 0.3s ease;
+      }
+      .pill:hover {
+        background: #fff;
+        border-color: rgba(186, 186, 176, 0.35);
+        box-shadow: 0 4px 16px rgba(0, 48, 107, 0.08);
+      }
+      .pill-btn {
+        width: 2.25rem;
+        height: 2.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        border: 1px solid rgba(186, 186, 176, 0.3);
+        background: transparent;
+        color: rgba(58, 54, 50, 0.5);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .pill-btn:hover:not(:disabled) {
+        border-color: rgba(30, 42, 74, 0.4);
+        color: var(--navy);
+        background: rgba(220, 226, 240, 0.4);
+      }
+      .pill-btn:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+      .pill-count {
+        font-family: var(--font-label);
+        font-size: 0.875rem;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        min-width: 3.5ch;
+        text-align: center;
+        color: rgba(58, 54, 50, 0.6);
+      }
+      .dots {
+        display: none;
+        align-items: center;
+        gap: 0.25rem;
+      }
+      @media (min-width: 1024px) {
+        .dots {
+          display: flex;
+        }
+      }
+      .dot-group {
+        display: flex;
+        align-items: center;
+        gap: 0.125rem;
+      }
+      .dot-divider {
+        width: 1px;
+        height: 0.75rem;
+        background: rgba(186, 186, 176, 0.3);
+        margin: 0 0.25rem;
+      }
+      .dot {
+        position: relative;
+        width: 1rem;
+        height: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+      }
+      .dot span {
+        display: block;
+        border-radius: 9999px;
+        background: rgba(186, 186, 176, 0.35);
+        width: 0.375rem;
+        height: 0.375rem;
+        transition: all 0.3s ease;
+      }
+      .dot.past span {
+        background: rgba(30, 42, 74, 0.45);
+      }
+      .dot.current span {
+        background: var(--navy);
+        width: 1.25rem;
+        height: 0.375rem;
+      }
+      .dot:hover span {
+        background: rgba(30, 42, 74, 0.7);
+      }
+      .dot-tip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) scale(0.95);
+        margin-bottom: 0.5rem;
+        padding: 0.375rem 0.625rem;
+        border-radius: 6px;
+        background: var(--navy);
+        color: #f0eee6;
+        font-family: var(--font-label);
+        font-size: 11px;
+        font-weight: 500;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      .dot:hover .dot-tip {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+      }
+
+      /* ── reusable content blocks ────────────────────────────── */
+      .grid {
+        display: grid;
+        gap: 1.25rem;
+      }
+      @media (min-width: 768px) {
+        .grid-2 {
+          grid-template-columns: 1fr 1fr;
+        }
+        .grid-3 {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        align-items: center;
+        min-height: 56vh;
+      }
+      @media (min-width: 1024px) {
+        .hero-grid {
+          grid-template-columns: 1.3fr 1fr;
+          gap: 4rem;
+        }
+      }
+
+      .card {
+        border-radius: 3px;
+        padding: 1.75rem;
+        background: var(--card);
+      }
+      .card-eyebrow {
+        font-family: var(--font-label);
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        margin: 0 0 0.5rem;
+      }
+      .card-title {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        font-weight: 400;
+        font-size: 1.35rem;
+        color: var(--navy);
+        margin: 0 0 0.75rem;
+        line-height: 1.2;
+      }
+      .card-body {
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--on-surface-variant);
+        margin: 0;
+      }
+      .card-icon {
+        font-size: 26px;
+        margin-bottom: 0.75rem;
+        display: block;
+      }
+
+      ul.checks {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.85rem;
+      }
+      ul.checks li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        line-height: 1.55;
+        color: var(--on-surface-variant);
+      }
+      ul.checks .material-symbols-outlined {
+        font-size: 18px;
+        margin-top: 1px;
+        flex-shrink: 0;
+      }
+      ul.checks strong {
+        color: var(--navy);
+        font-weight: 600;
+      }
+
+      /* callout */
+      .callout {
+        border-left: 3px solid var(--teal);
+        background: rgba(45, 90, 90, 0.05);
+        border-radius: 0 3px 3px 0;
+        padding: 1rem 1.25rem;
+        margin-top: 1.5rem;
+        max-width: 44rem;
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--on-surface-variant);
+      }
+      .callout b {
+        color: var(--navy);
+      }
+
+      /* Heads-up highlight — louder than a callout, for the one setup step */
+      .heads-up {
+        display: flex;
+        gap: 1.1rem;
+        align-items: flex-start;
+        max-width: 52rem;
+        margin: 0 0 2rem;
+        padding: 1.15rem 1.4rem;
+        border: 1px solid rgba(116, 97, 74, 0.3);
+        border-left: 4px solid var(--warm);
+        border-radius: 3px;
+        background: linear-gradient(
+          180deg,
+          rgba(116, 97, 74, 0.1),
+          rgba(116, 97, 74, 0.045)
+        );
+        box-shadow: 0 2px 12px rgba(116, 97, 74, 0.09);
+      }
+      .heads-up .hu-icon {
+        flex-shrink: 0;
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(116, 97, 74, 0.14);
+        color: var(--warm);
+      }
+      .heads-up .hu-icon .material-symbols-outlined {
+        font-size: 22px;
+      }
+      .heads-up .hu-label {
+        font-family: var(--font-label);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--warm);
+        margin: 0 0 0.35rem;
+      }
+      .heads-up .hu-text {
+        margin: 0;
+        font-size: 0.97rem;
+        line-height: 1.6;
+        color: var(--on-surface-variant);
+      }
+      .heads-up .hu-text b {
+        color: var(--navy);
+      }
+      @media (max-width: 640px) {
+        .heads-up {
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+      }
+
+      /* benchmark bars */
+      .bars {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        max-width: 46rem;
+        margin-top: 0.5rem;
+      }
+      .bar-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-family: var(--font-label);
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        color: var(--on-surface-variant);
+        margin-bottom: 0.5rem;
+      }
+      .bar-label .delta {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        color: var(--navy);
+        font-size: 0.95rem;
+      }
+      .bar-track {
+        position: relative;
+        height: 18px;
+        border-radius: 9999px;
+        background: rgba(30, 42, 74, 0.08);
+        overflow: hidden;
+      }
+      /* Opus 4.7 — a tick marker drawn at its score, over the koi bar */
+      .bar-old {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 2;
+        background: transparent;
+        box-shadow: inset -2px 0 0 0 rgba(26, 24, 22, 0.7);
+        width: 0;
+        transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      /* Opus 4.8 — the achievement bar, filled with the koi */
+      .bar-new {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+        background: url("../assets/opus-4-8.webp") center / cover;
+        border-radius: 9999px;
+        width: 0;
+        transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+      }
+      .bar-legend {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+        font-family: var(--font-label);
+        font-size: 11px;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+      }
+      .bar-legend i {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 3px;
+        margin-right: 6px;
+        vertical-align: -1px;
+      }
+
+      /* hero numeral panel */
+      .numeral-panel {
+        position: relative;
+        aspect-ratio: 4 / 5;
+        border-radius: 3px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 2rem;
+        color: #f4f1ea;
+        text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 24px 60px rgba(30, 42, 74, 0.18),
+          0 8px 24px rgba(30, 42, 74, 0.1);
+      }
+      .numeral-panel .from {
+        font-family: var(--font-label);
+        font-size: 11px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        opacity: 0.75;
+        position: relative;
+        z-index: 2;
+      }
+      .numeral-panel .big {
+        font-family: var(--font-headline);
+        font-weight: 300;
+        font-size: clamp(5rem, 12vw, 8rem);
+        line-height: 0.9;
+        letter-spacing: -0.04em;
+        position: relative;
+        z-index: 2;
+      }
+      .numeral-panel .cap {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        font-size: 0.95rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 2;
+        line-height: 1.4;
+      }
+      /* Drifting dust over the gradient panel — light motes catching the light */
+      .dust {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        overflow: hidden;
+        pointer-events: none;
+        border-radius: inherit;
+      }
+      .dust-mote {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 251, 243, 0.95);
+        opacity: 0;
+        will-change: transform, opacity;
+        animation: dustFloat var(--dur, 12s) ease-in-out var(--delay, 0s)
+          infinite;
+      }
+      .dust-mote.soft {
+        filter: blur(1.5px);
+        background: rgba(255, 248, 235, 0.7);
+      }
+      @keyframes dustFloat {
+        0% {
+          transform: translate(0, 0);
+          opacity: 0;
+        }
+        18% {
+          opacity: var(--op, 0.7);
+        }
+        82% {
+          opacity: var(--op, 0.7);
+        }
+        100% {
+          transform: translate(var(--dx, 0px), var(--dy, -60px));
+          opacity: 0;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .dust-mote {
+          opacity: var(--op, 0.5);
+          animation: none;
+        }
+      }
+
+      .pull {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        color: var(--navy);
+        letter-spacing: -0.005em;
+        font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+        line-height: 1.35;
+        max-width: 50rem;
+        margin: 1.5rem 0;
+      }
+      .pull strong {
+        font-style: normal;
+        font-weight: 600;
+      }
+
+      .footer-band {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--hairline);
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+      .footer-band p {
+        font-family: var(--font-label);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .link-row {
+        font-family: var(--font-label);
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: var(--navy);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        margin-top: auto;
+        transition: opacity 0.2s ease;
+      }
+      .link-row:hover {
+        opacity: 0.65;
+      }
+      .card-flex {
+        display: flex;
+        flex-direction: column;
+      }
+      .card-flex .card-body {
+        flex: 1;
+        margin-bottom: 1.25rem;
+      }
+
+      .try-box {
+        margin-top: 1.75rem;
+        max-width: 46rem;
+        border: 1px dashed rgba(30, 42, 74, 0.25);
+        border-radius: 3px;
+        padding: 1.25rem 1.5rem;
+        background: rgba(220, 226, 240, 0.18);
+      }
+      .try-box .tb-label {
+        font-family: var(--font-label);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--teal);
+        margin: 0 0 0.5rem;
+      }
+      .try-box .tb-prompt {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        font-size: 1.05rem;
+        line-height: 1.5;
+        color: var(--navy);
+        margin: 0;
+      }
+
+      /* Four-constants glyph cards (slide 7) */
+      .grid-4-constants {
+        grid-template-columns: 1fr;
+        max-width: 64rem;
+      }
+      @media (min-width: 640px) {
+        .grid-4-constants {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (min-width: 980px) {
+        .grid-4-constants {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      .constant-card {
+        padding: 1.5rem 1.5rem 1.65rem;
+      }
+      .constant-glyph {
+        width: 46px;
+        height: 46px;
+        display: block;
+        margin-bottom: 0.9rem;
+      }
+      .constant-card .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.55rem;
+      }
+      .constant-card .card-body {
+        font-size: 0.85rem;
+      }
+
+      /* ============================================================
+         Bespoke SVG visuals — grammar mirrored from the workshop
+         visuals/ floor: navy/teal/warm/red + cream, the Claude
+         eight-ray spark, cream-fill glyphs at >=1.4px stroke,
+         serif-italic titles, animated path-draws, traveling dots.
+         Animations are scoped to .slide.active so they replay on
+         navigation and stay idle while a slide is hidden.
+         ============================================================ */
+      .viz {
+        width: 100%;
+        height: auto;
+        display: block;
+        max-width: 1080px;
+        margin: 0.5rem auto 0;
+      }
+      .viz--wide {
+        max-width: 1180px;
+      }
+      /* Desktop/mobile diagram swap — mobile variants render near 1:1 so
+         their labels stay legible on a phone instead of shrinking to ~3px. */
+      .viz-m {
+        display: none;
+        width: 100%;
+        height: auto;
+        max-width: 440px;
+        margin: 0.75rem auto 0;
+      }
+      @media (max-width: 860px) {
+        .viz-d {
+          display: none;
+        }
+        .viz-m {
+          display: block;
+        }
+      }
+      .slide.active .v-dot48v {
+        animation: dot48v 6s linear infinite 1.1s;
+      }
+      .slide.active .v-dot47v {
+        animation: dot47v 6s linear infinite 1.1s;
+      }
+      @keyframes dot48v {
+        0% {
+          cy: 70px;
+          opacity: 0;
+          fill: #1e2a4a;
+        }
+        5% {
+          opacity: 1;
+          fill: #1e2a4a;
+        }
+        45% {
+          cy: 310px;
+          fill: #2d5a5a;
+        }
+        85% {
+          cy: 550px;
+          fill: #74614a;
+          opacity: 1;
+        }
+        93% {
+          cy: 550px;
+          opacity: 0;
+        }
+        100% {
+          cy: 70px;
+          opacity: 0;
+        }
+      }
+      @keyframes dot47v {
+        0% {
+          cy: 70px;
+          opacity: 0;
+        }
+        8% {
+          opacity: 0.45;
+        }
+        38% {
+          cy: 250px;
+          opacity: 0.45;
+        }
+        50% {
+          cy: 250px;
+          opacity: 0;
+        }
+        100% {
+          cy: 250px;
+          opacity: 0;
+        }
+      }
+      .v-eyebrow {
+        font-family: var(--font-label);
+        font-weight: 700;
+        letter-spacing: 0.18em;
+      }
+      .v-title {
+        font-family: var(--font-editorial);
+        font-style: italic;
+        font-weight: 400;
+      }
+      .v-bodywrap {
+        font-family: var(--font-body);
+        color: var(--muted);
+        text-align: center;
+      }
+
+      /* base (pre-animation) states */
+      .v-draw {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+      }
+      .v-rise,
+      .v-pop,
+      .v-fade {
+        opacity: 0;
+      }
+      .v-rise {
+        transform-box: fill-box;
+      }
+      .v-pop,
+      .v-spark {
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+
+      /* active states — start the animations */
+      .slide.active .v-draw {
+        animation: vDraw 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards
+          var(--d, 0s);
+      }
+      .slide.active .v-rise {
+        animation: vRise 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards
+          var(--d, 0s);
+      }
+      .slide.active .v-pop {
+        animation: vPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards var(--d, 0s);
+      }
+      .slide.active .v-fade {
+        animation: vFade 0.5s ease forwards var(--d, 0s);
+      }
+      .slide.active .v-spark {
+        animation: vSpark 4.5s ease-in-out infinite var(--d, 0s);
+      }
+      .slide.active .v-dot48 {
+        animation: dot48 6s linear infinite 1.1s;
+      }
+      .slide.active .v-dot47 {
+        animation: dot47 6s linear infinite 1.1s;
+      }
+
+      @keyframes vDraw {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      @keyframes vFade {
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes vRise {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes vPop {
+        from {
+          opacity: 0;
+          transform: scale(0.82);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes vSpark {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.85;
+        }
+        50% {
+          transform: scale(1.12);
+          opacity: 1;
+        }
+      }
+      /* Bright Opus 4.8 dot — travels the full track, color-shifts */
+      @keyframes dot48 {
+        0% {
+          cx: 120px;
+          opacity: 0;
+          fill: #1e2a4a;
+        }
+        5% {
+          opacity: 1;
+          fill: #1e2a4a;
+        }
+        45% {
+          cx: 600px;
+          fill: #2d5a5a;
+        }
+        85% {
+          cx: 1080px;
+          fill: #74614a;
+          opacity: 1;
+        }
+        93% {
+          cx: 1080px;
+          opacity: 0;
+        }
+        100% {
+          cx: 120px;
+          opacity: 0;
+        }
+      }
+      /* Dim Opus 4.7 dot — pauses at the hand-off marker, fades */
+      @keyframes dot47 {
+        0% {
+          cx: 120px;
+          opacity: 0;
+        }
+        8% {
+          opacity: 0.45;
+        }
+        38% {
+          cx: 480px;
+          opacity: 0.45;
+        }
+        50% {
+          cx: 480px;
+          opacity: 0;
+        }
+        100% {
+          cx: 480px;
+          opacity: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        .v-draw {
+          stroke-dashoffset: 0;
+        }
+        .v-rise,
+        .v-pop,
+        .v-fade {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ===================== GLASS NAV ===================== -->
+    <header class="glass-nav">
+      <div class="nav-inner">
+        <a class="wordmark" href="https://karstinsights.com/" aria-label="Karst — home"><span class="wm-back" aria-hidden="true">&lsaquo;</span>Karst</a>
+        <span class="nav-title">Claude Opus 4.8 — Briefing</span>
+        <span class="nav-count" id="navCount">01 / 10</span>
+      </div>
+      <div class="nav-progress" id="navProgress" style="width: 10%"></div>
+    </header>
+
+    <!-- ===================== STAGE ===================== -->
+    <main class="stage" id="stage">
+      <!-- ───────── 1-1 · HERO ───────── -->
+      <section class="slide active" data-chapter="1" data-eyebrow="Welcome">
+        <p class="eyebrow">Opus 4.8 &middot; For school leadership teams</p>
+        <div class="hero-grid">
+          <div>
+            <h1 class="headline">
+              Claude just got an upgrade. Here&rsquo;s what it means for
+              <span class="tropical">your work</span>.
+            </h1>
+            <p class="serif" style="max-width: 35rem">
+              Anthropic released Claude Opus 4.8 this week. Most of the
+              announcement is written for engineers &mdash; this walks through
+              the three changes that actually reach your desk, in plain English,
+              in about five minutes.
+            </p>
+            <p class="prose mt-6">
+              No new tool to learn. No new login. The same Claude you&rsquo;ve
+              already been using &mdash; now with sharper judgment and
+              a better sense of when to ask.
+            </p>
+          </div>
+          <figure style="margin: 0">
+            <div class="numeral-panel tropical-bg">
+              <div class="dust" id="heroDust" aria-hidden="true"></div>
+              <span class="from">Up from Opus 4.7</span>
+              <span class="big">4.8</span>
+              <span class="cap"
+                >Sharper judgment &middot; more honest &middot; works longer on
+                its own</span
+              >
+            </div>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ───────── 1-2 · ONE SENTENCE ───────── -->
+      <section class="slide" data-chapter="1" data-eyebrow="The frame">
+        <p class="eyebrow">The frame</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">What changed, in one sentence.</h2>
+        </div>
+        <p class="pull">
+          Claude 4.8 has sharper judgment, is more honest about what it
+          <strong>doesn&rsquo;t</strong> know, and can keep working on its own
+          for longer &mdash; at the same price, through the same login.
+        </p>
+
+        <svg
+          class="viz viz-d"
+          viewBox="0 0 1080 330"
+          role="img"
+          aria-label="Three changes in Opus 4.8: sharper judgment, more honest, works longer"
+        >
+          <defs>
+            <marker id="triArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#74614a" />
+            </marker>
+          </defs>
+
+          <!-- connecting baseline -->
+          <line class="v-draw" style="--d: 0.5s" pathLength="1" x1="255" y1="80" x2="825" y2="80" stroke="#1e2a4a" stroke-opacity="0.22" stroke-width="1.5" />
+
+          <!-- PILLAR 1 · sharper judgment (bullseye) -->
+          <g class="v-rise" style="--d: 0.1s">
+            <circle cx="200" cy="80" r="34" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.5" />
+            <circle cx="200" cy="80" r="22" fill="none" stroke="#1e2a4a" stroke-width="1.4" stroke-opacity="0.65" />
+            <circle cx="200" cy="80" r="11" fill="none" stroke="#1e2a4a" stroke-width="1.4" stroke-opacity="0.65" />
+            <circle cx="200" cy="80" r="4" fill="#1e2a4a" />
+            <text class="v-eyebrow" x="200" y="142" font-size="9" fill="#1e2a4a" letter-spacing="2.6" text-anchor="middle">CHANGE ONE</text>
+            <text class="v-title" x="200" y="170" font-size="22" fill="#1e2a4a" text-anchor="middle">Sharper judgment</text>
+            <foreignObject x="75" y="182" width="250" height="64">
+              <div class="v-bodywrap" style="font-size: 12.5px; line-height: 1.5">Closer to right on the first try — fewer rounds of correction.</div>
+            </foreignObject>
+          </g>
+
+          <!-- PILLAR 2 · more honest (flag) -->
+          <g class="v-rise" style="--d: 0.25s">
+            <line x1="526" y1="48" x2="526" y2="112" stroke="#2d5a5a" stroke-width="2" stroke-linecap="round" />
+            <path d="M 526 50 L 562 60 L 526 70 Z" fill="#2d5a5a" fill-opacity="0.15" stroke="#2d5a5a" stroke-width="1.6" stroke-linejoin="round" />
+            <text class="v-eyebrow" x="540" y="142" font-size="9" fill="#2d5a5a" letter-spacing="2.6" text-anchor="middle">CHANGE TWO</text>
+            <text class="v-title" x="540" y="170" font-size="22" fill="#1e2a4a" text-anchor="middle">More honest</text>
+            <foreignObject x="415" y="182" width="250" height="64">
+              <div class="v-bodywrap" style="font-size: 12.5px; line-height: 1.5">Flags what it can&rsquo;t be sure of instead of bluffing.</div>
+            </foreignObject>
+          </g>
+
+          <!-- PILLAR 3 · works longer (arrow + milestones) -->
+          <g class="v-rise" style="--d: 0.4s">
+            <line x1="850" y1="80" x2="908" y2="80" stroke="#74614a" stroke-width="2" stroke-linecap="round" marker-end="url(#triArrow)" />
+            <line x1="862" y1="72" x2="862" y2="88" stroke="#74614a" stroke-width="1.4" stroke-linecap="round" />
+            <line x1="878" y1="72" x2="878" y2="88" stroke="#74614a" stroke-width="1.4" stroke-linecap="round" />
+            <line x1="894" y1="72" x2="894" y2="88" stroke="#74614a" stroke-width="1.4" stroke-linecap="round" />
+            <text class="v-eyebrow" x="880" y="142" font-size="9" fill="#74614a" letter-spacing="2.6" text-anchor="middle">CHANGE THREE</text>
+            <text class="v-title" x="880" y="170" font-size="22" fill="#1e2a4a" text-anchor="middle">Works longer</text>
+            <foreignObject x="755" y="182" width="250" height="64">
+              <div class="v-bodywrap" style="font-size: 12.5px; line-height: 1.5">Carries a multi-step job to the finish without nudging.</div>
+            </foreignObject>
+          </g>
+
+          <text class="v-fade v-title" style="--d: 0.9s" x="540" y="305" font-size="14" fill="rgba(58,54,50,0.6)" text-anchor="middle">
+            Three changes worth your attention. The rest is written for engineers.
+          </text>
+        </svg>
+
+        <!-- mobile: 3 stacked rows -->
+        <svg class="viz-m" viewBox="0 0 380 432" role="img" aria-label="Three changes in Opus 4.8: sharper judgment, more honest, works longer">
+          <defs>
+            <marker id="triArrowM" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#74614a" />
+            </marker>
+          </defs>
+          <line class="v-draw" style="--d: 0.4s" pathLength="1" x1="52" y1="92" x2="52" y2="298" stroke="#1e2a4a" stroke-opacity="0.2" stroke-width="1.5" />
+
+          <g class="v-rise" style="--d: 0.1s">
+            <circle cx="52" cy="70" r="30" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.6" />
+            <circle cx="52" cy="70" r="19" fill="none" stroke="#1e2a4a" stroke-width="1.4" stroke-opacity="0.65" />
+            <circle cx="52" cy="70" r="9" fill="none" stroke="#1e2a4a" stroke-width="1.4" stroke-opacity="0.65" />
+            <circle cx="52" cy="70" r="3.5" fill="#1e2a4a" />
+            <text class="v-eyebrow" x="108" y="50" font-size="10" fill="#1e2a4a" letter-spacing="2" text-anchor="start">CHANGE ONE</text>
+            <text class="v-title" x="108" y="74" font-size="19" fill="#1e2a4a" text-anchor="start">Sharper judgment</text>
+            <foreignObject x="106" y="84" width="262" height="50">
+              <div style="font-family: var(--font-body); font-size: 13px; line-height: 1.45; color: var(--muted)">Closer to right on the first try.</div>
+            </foreignObject>
+          </g>
+
+          <g class="v-rise" style="--d: 0.25s">
+            <line x1="44" y1="167" x2="44" y2="223" stroke="#2d5a5a" stroke-width="2" stroke-linecap="round" />
+            <path d="M 44 169 L 74 177 L 44 185 Z" fill="#2d5a5a" fill-opacity="0.15" stroke="#2d5a5a" stroke-width="1.6" stroke-linejoin="round" />
+            <text class="v-eyebrow" x="108" y="175" font-size="10" fill="#2d5a5a" letter-spacing="2" text-anchor="start">CHANGE TWO</text>
+            <text class="v-title" x="108" y="199" font-size="19" fill="#1e2a4a" text-anchor="start">More honest</text>
+            <foreignObject x="106" y="209" width="262" height="50">
+              <div style="font-family: var(--font-body); font-size: 13px; line-height: 1.45; color: var(--muted)">Flags what it can&rsquo;t be sure of.</div>
+            </foreignObject>
+          </g>
+
+          <g class="v-rise" style="--d: 0.4s">
+            <line x1="26" y1="320" x2="74" y2="320" stroke="#74614a" stroke-width="2" stroke-linecap="round" marker-end="url(#triArrowM)" />
+            <line x1="38" y1="312" x2="38" y2="328" stroke="#74614a" stroke-width="1.4" stroke-linecap="round" />
+            <line x1="52" y1="312" x2="52" y2="328" stroke="#74614a" stroke-width="1.4" stroke-linecap="round" />
+            <text class="v-eyebrow" x="108" y="300" font-size="10" fill="#74614a" letter-spacing="2" text-anchor="start">CHANGE THREE</text>
+            <text class="v-title" x="108" y="324" font-size="19" fill="#1e2a4a" text-anchor="start">Works longer</text>
+            <foreignObject x="106" y="334" width="262" height="50">
+              <div style="font-family: var(--font-body); font-size: 13px; line-height: 1.45; color: var(--muted)">Carries a multi-step job to the finish.</div>
+            </foreignObject>
+          </g>
+
+          <text class="v-fade v-title" style="--d: 0.85s" x="190" y="414" font-size="12.5" fill="rgba(58,54,50,0.6)" text-anchor="middle">The rest is written for engineers.</text>
+        </svg>
+
+        <p class="prose mt-6" style="margin-left: auto; margin-right: auto; text-align: center">
+          The rest of this page is those three changes &mdash; and why each one
+          matters inside a school district.
+        </p>
+      </section>
+
+      <!-- ───────── 2-1 · WIN ONE ───────── -->
+      <section class="slide" data-chapter="2" data-eyebrow="Sharper judgment">
+        <p class="eyebrow">What it means &middot; 1 of 3</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">
+            Better first drafts, <span class="accent">fewer rounds.</span>
+          </h2>
+          <p class="serif">
+            Opus 4.8 makes sharper calls about what you actually asked for &mdash;
+            so the first version it hands back is closer to the one you&rsquo;d
+            send.
+          </p>
+        </div>
+
+        <svg
+          class="viz viz-d"
+          viewBox="0 0 1080 290"
+          role="img"
+          aria-label="Opus 4.7 needs three rounds of revision to reach a ready draft; Opus 4.8 lands in one pass"
+        >
+          <defs>
+            <marker id="fdaArrowW" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#74614a" />
+            </marker>
+            <marker id="fdaArrowN" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#1e2a4a" />
+            </marker>
+          </defs>
+
+          <!-- lane labels -->
+          <text class="v-eyebrow v-fade" style="--d: 0.05s" x="34" y="94" font-size="9" fill="#74614a" letter-spacing="2.2">OPUS 4.7</text>
+          <text class="v-eyebrow v-fade" style="--d: 0.05s" x="34" y="204" font-size="9" fill="#1e2a4a" letter-spacing="2.2">OPUS 4.8</text>
+
+          <!-- ===== 4.7 lane (y=90) — dashed, three revise rounds ===== -->
+          <g class="v-fade" style="--d: 0.35s">
+            <line x1="227" y1="90" x2="383" y2="90" stroke="#74614a" stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#fdaArrowW)" />
+            <line x1="417" y1="90" x2="573" y2="90" stroke="#74614a" stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#fdaArrowW)" />
+            <line x1="607" y1="90" x2="763" y2="90" stroke="#74614a" stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#fdaArrowW)" />
+            <line x1="797" y1="90" x2="928" y2="90" stroke="#74614a" stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#fdaArrowW)" />
+          </g>
+          <!-- 4.7 nodes -->
+          <g class="v-pop" style="--d: 0.15s">
+            <circle cx="210" cy="90" r="17" fill="#fffcf7" stroke="#74614a" stroke-width="1.6" />
+            <rect x="203" y="81" width="14" height="18" rx="2" fill="none" stroke="#74614a" stroke-width="1.5" />
+            <line x1="206" y1="86" x2="214" y2="86" stroke="#74614a" stroke-width="1.2" />
+            <line x1="206" y1="90" x2="214" y2="90" stroke="#74614a" stroke-width="1.2" />
+            <line x1="206" y1="94" x2="211" y2="94" stroke="#74614a" stroke-width="1.2" />
+          </g>
+          <g class="v-pop" style="--d: 0.25s">
+            <circle cx="400" cy="90" r="17" fill="#fffcf7" stroke="#74614a" stroke-width="1.6" />
+            <line x1="394" y1="96" x2="404" y2="86" stroke="#74614a" stroke-width="1.7" stroke-linecap="round" />
+            <line x1="404" y1="86" x2="407" y2="83" stroke="#74614a" stroke-width="1.7" stroke-linecap="round" />
+          </g>
+          <g class="v-pop" style="--d: 0.33s">
+            <circle cx="590" cy="90" r="17" fill="#fffcf7" stroke="#74614a" stroke-width="1.6" />
+            <line x1="584" y1="96" x2="594" y2="86" stroke="#74614a" stroke-width="1.7" stroke-linecap="round" />
+            <line x1="594" y1="86" x2="597" y2="83" stroke="#74614a" stroke-width="1.7" stroke-linecap="round" />
+          </g>
+          <g class="v-pop" style="--d: 0.41s">
+            <circle cx="780" cy="90" r="17" fill="#fffcf7" stroke="#74614a" stroke-width="1.6" />
+            <line x1="774" y1="96" x2="784" y2="86" stroke="#74614a" stroke-width="1.7" stroke-linecap="round" />
+            <line x1="784" y1="86" x2="787" y2="83" stroke="#74614a" stroke-width="1.7" stroke-linecap="round" />
+          </g>
+          <text class="v-fade v-title" style="--d: 0.7s" x="500" y="132" font-size="13" fill="#74614a" text-anchor="middle">Three rounds of &ldquo;not quite&rdquo; before it&rsquo;s right.</text>
+
+          <!-- ===== 4.8 lane (y=200) — solid, one pass ===== -->
+          <line class="v-draw" style="--d: 0.45s" pathLength="1" x1="227" y1="200" x2="928" y2="200" stroke="#1e2a4a" stroke-width="2" marker-end="url(#fdaArrowN)" />
+          <g class="v-pop" style="--d: 0.18s">
+            <circle cx="210" cy="200" r="17" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.6" />
+            <rect x="203" y="191" width="14" height="18" rx="2" fill="none" stroke="#1e2a4a" stroke-width="1.5" />
+            <line x1="206" y1="196" x2="214" y2="196" stroke="#1e2a4a" stroke-width="1.2" />
+            <line x1="206" y1="200" x2="214" y2="200" stroke="#1e2a4a" stroke-width="1.2" />
+            <line x1="206" y1="204" x2="211" y2="204" stroke="#1e2a4a" stroke-width="1.2" />
+          </g>
+          <text class="v-fade v-title" style="--d: 0.85s" x="560" y="242" font-size="13" fill="#1e2a4a" text-anchor="middle">Lands on the first pass.</text>
+
+          <!-- shared target -->
+          <g class="v-pop" style="--d: 0.55s">
+            <circle cx="950" cy="90" r="20" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.8" />
+            <path d="M 942 90 l 5 6 l 11 -13" fill="none" stroke="#2d5a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="950" cy="200" r="20" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.8" />
+            <path d="M 942 200 l 5 6 l 11 -13" fill="none" stroke="#2d5a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+          <text class="v-eyebrow v-fade" style="--d: 0.95s" x="950" y="150" font-size="8.5" fill="#2d5a5a" letter-spacing="2.4" text-anchor="middle">READY TO SEND</text>
+          <!-- the living layer — two memos in flight (script) -->
+          <g id="rrDots"></g>
+          <text id="rrVerdict" x="540" y="282" font-size="15" font-family="var(--font-editorial)" font-style="italic" fill="#2d5a5a" text-anchor="middle" opacity="0">the rounds were the cost &mdash; and they&rsquo;re mostly gone</text>
+        </svg>
+
+        <!-- mobile: two compact rows -->
+        <svg class="viz-m" viewBox="0 0 380 232" role="img" aria-label="Opus 4.7 needs three rounds; Opus 4.8 lands in one pass">
+          <text class="v-eyebrow v-fade" style="--d: 0.05s" x="20" y="42" font-size="9" fill="#74614a" letter-spacing="2">OPUS 4.7</text>
+          <g class="v-fade" style="--d: 0.3s">
+            <line x1="53" y1="80" x2="105" y2="80" stroke="#74614a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#fdaArrowW)" />
+            <line x1="131" y1="80" x2="183" y2="80" stroke="#74614a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#fdaArrowW)" />
+            <line x1="209" y1="80" x2="261" y2="80" stroke="#74614a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#fdaArrowW)" />
+            <line x1="287" y1="80" x2="337" y2="80" stroke="#74614a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#fdaArrowW)" />
+          </g>
+          <g class="v-pop" style="--d: 0.12s">
+            <circle cx="40" cy="80" r="13" fill="#fffcf7" stroke="#74614a" stroke-width="1.5" />
+            <rect x="34" y="73" width="12" height="15" rx="1.5" fill="none" stroke="#74614a" stroke-width="1.4" />
+            <line x1="37" y1="78" x2="43" y2="78" stroke="#74614a" stroke-width="1.1" />
+            <line x1="37" y1="81" x2="43" y2="81" stroke="#74614a" stroke-width="1.1" />
+          </g>
+          <g class="v-pop" style="--d: 0.2s"><circle cx="118" cy="80" r="13" fill="#fffcf7" stroke="#74614a" stroke-width="1.5" /><line x1="113" y1="85" x2="122" y2="76" stroke="#74614a" stroke-width="1.5" stroke-linecap="round" /><line x1="122" y1="76" x2="124" y2="74" stroke="#74614a" stroke-width="1.5" stroke-linecap="round" /></g>
+          <g class="v-pop" style="--d: 0.28s"><circle cx="196" cy="80" r="13" fill="#fffcf7" stroke="#74614a" stroke-width="1.5" /><line x1="191" y1="85" x2="200" y2="76" stroke="#74614a" stroke-width="1.5" stroke-linecap="round" /><line x1="200" y1="76" x2="202" y2="74" stroke="#74614a" stroke-width="1.5" stroke-linecap="round" /></g>
+          <g class="v-pop" style="--d: 0.36s"><circle cx="274" cy="80" r="13" fill="#fffcf7" stroke="#74614a" stroke-width="1.5" /><line x1="269" y1="85" x2="278" y2="76" stroke="#74614a" stroke-width="1.5" stroke-linecap="round" /><line x1="278" y1="76" x2="280" y2="74" stroke="#74614a" stroke-width="1.5" stroke-linecap="round" /></g>
+          <g class="v-pop" style="--d: 0.46s"><circle cx="350" cy="80" r="15" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.7" /><path d="M 344 80 l 4 5 l 8 -10" fill="none" stroke="#2d5a5a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></g>
+          <text class="v-fade v-title" style="--d: 0.6s" x="180" y="112" font-size="12.5" fill="#74614a" text-anchor="middle">Three rounds before it&rsquo;s right.</text>
+
+          <text class="v-eyebrow v-fade" style="--d: 0.1s" x="20" y="158" font-size="9" fill="#1e2a4a" letter-spacing="2">OPUS 4.8</text>
+          <line class="v-draw" style="--d: 0.4s" pathLength="1" x1="53" y1="178" x2="335" y2="178" stroke="#1e2a4a" stroke-width="1.8" marker-end="url(#fdaArrowN)" />
+          <g class="v-pop" style="--d: 0.16s">
+            <circle cx="40" cy="178" r="13" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.5" />
+            <rect x="34" y="171" width="12" height="15" rx="1.5" fill="none" stroke="#1e2a4a" stroke-width="1.4" />
+            <line x1="37" y1="176" x2="43" y2="176" stroke="#1e2a4a" stroke-width="1.1" />
+            <line x1="37" y1="179" x2="43" y2="179" stroke="#1e2a4a" stroke-width="1.1" />
+          </g>
+          <g class="v-pop" style="--d: 0.5s"><circle cx="350" cy="178" r="15" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.7" /><path d="M 344 178 l 4 5 l 8 -10" fill="none" stroke="#2d5a5a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></g>
+          <text class="v-fade v-title" style="--d: 0.6s" x="180" y="210" font-size="12.5" fill="#1e2a4a" text-anchor="middle">One pass &mdash; ready to send.</text>
+        </svg>
+
+        <p class="prose" style="margin-top: 1.75rem">
+          For the work your leadership team does &mdash; board memos, family
+          communications, grant narratives, data summaries &mdash; that means
+          less time correcting and re-prompting. Anthropic&rsquo;s own testing
+          shows the model is measurably better at multi-step reasoning when it
+          has tools in hand, which is exactly the kind of thinking behind a clean,
+          well-organized document.
+        </p>
+        <div class="callout">
+          <b>In practice:</b> the same prompt that used to need two or three
+          rounds of &ldquo;not quite, try again&rdquo; is more likely to land on
+          the first pass.
+        </div>
+      </section>
+
+      <!-- ───────── 2-2 · WIN TWO (the headline) ───────── -->
+      <section class="slide" data-chapter="2" data-eyebrow="More honest">
+        <p class="eyebrow">What it means &middot; 2 of 3</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">
+            It tells you <span class="accent">when it isn&rsquo;t sure.</span>
+          </h2>
+          <p class="serif">
+            The biggest change is temperament. Opus 4.8 is more likely to flag
+            uncertainty and less likely to state something it can&rsquo;t
+            support.
+          </p>
+        </div>
+
+        <svg
+          class="viz viz-d"
+          viewBox="0 0 1080 318"
+          role="img"
+          aria-label="Opus 4.7 states a figure with full confidence; Opus 4.8 flags the same figure for verification"
+        >
+          <!-- LEFT panel · 4.7 old reflex -->
+          <g class="v-rise" style="--d: 0.1s">
+            <rect x="40" y="48" width="460" height="200" rx="6" fill="#fffcf7" stroke="#74614a" stroke-width="1.5" stroke-opacity="0.7" />
+            <text class="v-eyebrow" x="64" y="84" font-size="9" fill="#74614a" letter-spacing="2.2">OPUS 4.7 &middot; OLD REFLEX</text>
+            <foreignObject x="64" y="100" width="372" height="60">
+              <div style="font-family: var(--font-editorial); font-style: italic; font-size: 16px; line-height: 1.35; color: #1e2a4a">&ldquo;Enrollment rose 14% last year.&rdquo;</div>
+            </foreignObject>
+            <foreignObject x="64" y="176" width="386" height="60">
+              <div style="font-family: var(--font-body); font-size: 12.5px; line-height: 1.5; color: rgba(58,54,50,0.62)">Stated with full confidence &mdash; even when the figure is really a guess.</div>
+            </foreignObject>
+          </g>
+          <g class="v-pop" style="--d: 0.5s">
+            <circle cx="468" cy="82" r="13" fill="#a13d3d" fill-opacity="0.12" stroke="#a13d3d" stroke-width="1.6" />
+            <text x="468" y="88" font-size="16" font-weight="700" fill="#a13d3d" text-anchor="middle" font-family="var(--font-headline)">!</text>
+          </g>
+
+          <!-- RIGHT panel · 4.8 new reflex -->
+          <g class="v-rise" style="--d: 0.25s">
+            <rect x="580" y="48" width="460" height="200" rx="6" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.5" />
+            <text class="v-eyebrow" x="604" y="84" font-size="9" fill="#2d5a5a" letter-spacing="2.2">OPUS 4.8 &middot; NEW REFLEX</text>
+            <foreignObject x="604" y="100" width="372" height="60">
+              <div style="font-family: var(--font-editorial); font-style: italic; font-size: 16px; line-height: 1.35; color: #1e2a4a">&ldquo;Enrollment rose about 14% last year.&rdquo;</div>
+            </foreignObject>
+            <foreignObject x="604" y="176" width="392" height="60">
+              <div style="font-family: var(--font-body); font-size: 12.5px; line-height: 1.5; color: rgba(58,54,50,0.62)">Flags it: &ldquo;verify this &mdash; I&rsquo;m not fully certain of the figure.&rdquo;</div>
+            </foreignObject>
+          </g>
+          <g class="v-pop" style="--d: 0.6s">
+            <line x1="1004" y1="68" x2="1004" y2="96" stroke="#2d5a5a" stroke-width="2" stroke-linecap="round" />
+            <path d="M 1004 70 L 1028 77 L 1004 84 Z" fill="#2d5a5a" fill-opacity="0.16" stroke="#2d5a5a" stroke-width="1.6" stroke-linejoin="round" />
+          </g>
+
+          <!-- Claude spark in the divider (outer g = position, inner g = pulse) -->
+          <g transform="translate(540,148)">
+            <g class="v-spark" style="--d: 0.4s">
+              <circle r="4" fill="#1e2a4a" />
+              <line x1="0" y1="-15" x2="0" y2="-8" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+              <line x1="0" y1="8" x2="0" y2="15" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+              <line x1="-15" y1="0" x2="-8" y2="0" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+              <line x1="8" y1="0" x2="15" y2="0" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+              <line x1="-10" y1="-10" x2="-6" y2="-6" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+              <line x1="6" y1="-6" x2="10" y2="-10" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+              <line x1="-10" y1="10" x2="-6" y2="6" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+              <line x1="6" y1="6" x2="10" y2="10" stroke="#1e2a4a" stroke-width="1.4" stroke-linecap="round" />
+            </g>
+          </g>
+
+          <text class="v-fade v-title" style="--d: 0.9s" x="540" y="298" font-size="14" fill="rgba(58,54,50,0.62)" text-anchor="middle">A model that admits doubt is worth more than one that bluffs.</text>
+        </svg>
+
+        <!-- mobile: two stacked panels -->
+        <svg class="viz-m" viewBox="0 0 380 470" role="img" aria-label="Opus 4.7 states a figure with full confidence; Opus 4.8 flags it for verification">
+          <g class="v-rise" style="--d: 0.1s">
+            <rect x="10" y="14" width="360" height="198" rx="6" fill="#fffcf7" stroke="#74614a" stroke-width="1.5" stroke-opacity="0.7" />
+            <text class="v-eyebrow" x="30" y="48" font-size="9" fill="#74614a" letter-spacing="2">OPUS 4.7 &middot; OLD REFLEX</text>
+            <foreignObject x="30" y="62" width="300" height="56">
+              <div style="font-family: var(--font-editorial); font-style: italic; font-size: 15px; line-height: 1.35; color: #1e2a4a">&ldquo;Enrollment rose 14% last year.&rdquo;</div>
+            </foreignObject>
+            <foreignObject x="30" y="150" width="320" height="56">
+              <div style="font-family: var(--font-body); font-size: 12.5px; line-height: 1.5; color: rgba(58,54,50,0.62)">Stated with full confidence &mdash; even when it&rsquo;s a guess.</div>
+            </foreignObject>
+          </g>
+          <g class="v-pop" style="--d: 0.45s">
+            <circle cx="340" cy="44" r="11" fill="#a13d3d" fill-opacity="0.12" stroke="#a13d3d" stroke-width="1.6" />
+            <text x="340" y="49" font-size="14" font-weight="700" fill="#a13d3d" text-anchor="middle" font-family="var(--font-headline)">!</text>
+          </g>
+
+          <g class="v-rise" style="--d: 0.25s">
+            <rect x="10" y="244" width="360" height="198" rx="6" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.5" />
+            <text class="v-eyebrow" x="30" y="278" font-size="9" fill="#2d5a5a" letter-spacing="2">OPUS 4.8 &middot; NEW REFLEX</text>
+            <foreignObject x="30" y="292" width="300" height="56">
+              <div style="font-family: var(--font-editorial); font-style: italic; font-size: 15px; line-height: 1.35; color: #1e2a4a">&ldquo;Enrollment rose about 14% last year.&rdquo;</div>
+            </foreignObject>
+            <foreignObject x="30" y="380" width="320" height="56">
+              <div style="font-family: var(--font-body); font-size: 12.5px; line-height: 1.5; color: rgba(58,54,50,0.62)">Flags it: &ldquo;verify this &mdash; I&rsquo;m not fully certain.&rdquo;</div>
+            </foreignObject>
+          </g>
+          <g class="v-pop" style="--d: 0.55s">
+            <line x1="336" y1="258" x2="336" y2="286" stroke="#2d5a5a" stroke-width="2" stroke-linecap="round" />
+            <path d="M 336 260 L 360 267 L 336 274 Z" fill="#2d5a5a" fill-opacity="0.16" stroke="#2d5a5a" stroke-width="1.6" stroke-linejoin="round" />
+          </g>
+
+          <g transform="translate(190,228)">
+            <g class="v-spark" style="--d: 0.4s">
+              <circle r="3.5" fill="#1e2a4a" />
+              <line x1="0" y1="-13" x2="0" y2="-7" stroke="#1e2a4a" stroke-width="1.6" stroke-linecap="round" />
+              <line x1="0" y1="7" x2="0" y2="13" stroke="#1e2a4a" stroke-width="1.6" stroke-linecap="round" />
+              <line x1="-13" y1="0" x2="-7" y2="0" stroke="#1e2a4a" stroke-width="1.6" stroke-linecap="round" />
+              <line x1="7" y1="0" x2="13" y2="0" stroke="#1e2a4a" stroke-width="1.6" stroke-linecap="round" />
+              <line x1="-9" y1="-9" x2="-5" y2="-5" stroke="#1e2a4a" stroke-width="1.3" stroke-linecap="round" />
+              <line x1="5" y1="-5" x2="9" y2="-9" stroke="#1e2a4a" stroke-width="1.3" stroke-linecap="round" />
+              <line x1="-9" y1="9" x2="-5" y2="5" stroke="#1e2a4a" stroke-width="1.3" stroke-linecap="round" />
+              <line x1="5" y1="5" x2="9" y2="9" stroke="#1e2a4a" stroke-width="1.3" stroke-linecap="round" />
+            </g>
+          </g>
+
+          <text class="v-fade v-title" style="--d: 0.9s" x="190" y="462" font-size="12.5" fill="rgba(58,54,50,0.62)" text-anchor="middle">Admitting doubt beats bluffing.</text>
+        </svg>
+
+        <p class="prose" style="margin-top: 1.75rem">
+          In a district, a confident wrong answer is the expensive kind &mdash;
+          in a board packet, a compliance note, a message that goes home to
+          families. A model that says <em>&ldquo;I&rsquo;m not certain about this
+          figure, verify it&rdquo;</em> is worth more than one that sounds sure
+          and isn&rsquo;t. If you remember only one thing from this briefing, make
+          it this one.
+        </p>
+      </section>
+
+      <!-- ───────── 2-3 · WIN THREE ───────── -->
+      <section class="slide" data-chapter="2" data-eyebrow="Works longer">
+        <p class="eyebrow">What it means &middot; 3 of 3</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">
+            It carries a task <span class="accent">further before checking
+            back.</span>
+          </h2>
+          <p class="serif">
+            Opus 4.8 can work independently for longer &mdash; holding a
+            multi-step job together without needing you to nudge it through every
+            step.
+          </p>
+        </div>
+
+        <svg
+          class="viz viz--wide viz-d"
+          viewBox="0 0 1200 380"
+          role="img"
+          aria-label="A five-step task track. Opus 4.8 travels the whole way; Opus 4.7 often paused for input partway through."
+        >
+          <defs>
+            <linearGradient id="autoTrack" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0%" stop-color="#1e2a4a" stop-opacity="0.5" />
+              <stop offset="28%" stop-color="#1e2a4a" stop-opacity="0.5" />
+              <stop offset="55%" stop-color="#2d5a5a" stop-opacity="0.5" />
+              <stop offset="82%" stop-color="#2d5a5a" stop-opacity="0.5" />
+              <stop offset="100%" stop-color="#74614a" stop-opacity="0.5" />
+            </linearGradient>
+          </defs>
+
+          <!-- track -->
+          <line class="v-draw" pathLength="1" x1="160" y1="150" x2="1040" y2="150" stroke="url(#autoTrack)" stroke-width="3" stroke-linecap="round" />
+
+          <!-- hand-off marker (between step 2 and 3) -->
+          <g class="v-fade" style="--d: 0.8s">
+            <line x1="480" y1="62" x2="480" y2="244" stroke="#1e2a4a" stroke-opacity="0.28" stroke-width="1" stroke-dasharray="4 4" />
+            <text class="v-eyebrow" x="480" y="54" font-size="8" fill="#1e2a4a" fill-opacity="0.6" letter-spacing="1.8" text-anchor="middle">OPUS 4.7 OFTEN PAUSED HERE</text>
+          </g>
+
+          <!-- STEP NODES -->
+          <!-- 01 Gather (navy folder) -->
+          <g class="v-pop" style="--d: 0.2s">
+            <circle cx="120" cy="150" r="48" fill="#1e2a4a" fill-opacity="0.04" />
+            <circle cx="120" cy="150" r="40" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.6" />
+            <text class="v-eyebrow" x="120" y="96" font-size="9" fill="#1e2a4a" letter-spacing="2.4" text-anchor="middle">STEP 01</text>
+            <g transform="translate(120,150)">
+              <path d="M -15 -7 a2 2 0 0 1 2 -2 H -4 l 3 3 H 13 a2 2 0 0 1 2 2 V 11 a2 2 0 0 1 -2 2 H -13 a2 2 0 0 1 -2 -2 Z" fill="none" stroke="#1e2a4a" stroke-width="1.7" />
+            </g>
+            <text class="v-title" x="120" y="216" font-size="16" fill="#1e2a4a" text-anchor="middle">Gather</text>
+            <foreignObject x="20" y="228" width="200" height="64">
+              <div class="v-bodywrap" style="font-size: 11px; line-height: 1.45">Pull the data and context the task needs.</div>
+            </foreignObject>
+          </g>
+          <!-- 02 Draft (navy doc) -->
+          <g class="v-pop" style="--d: 0.3s">
+            <circle cx="360" cy="150" r="48" fill="#1e2a4a" fill-opacity="0.04" />
+            <circle cx="360" cy="150" r="40" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.6" />
+            <text class="v-eyebrow" x="360" y="96" font-size="9" fill="#1e2a4a" letter-spacing="2.4" text-anchor="middle">STEP 02</text>
+            <g transform="translate(360,150)">
+              <rect x="-11" y="-14" width="22" height="28" rx="2" fill="none" stroke="#1e2a4a" stroke-width="1.7" />
+              <line x1="-6" y1="-7" x2="6" y2="-7" stroke="#1e2a4a" stroke-width="1.3" />
+              <line x1="-6" y1="-2" x2="6" y2="-2" stroke="#1e2a4a" stroke-width="1.3" />
+              <line x1="-6" y1="3" x2="2" y2="3" stroke="#1e2a4a" stroke-width="1.3" />
+            </g>
+            <text class="v-title" x="360" y="216" font-size="16" fill="#1e2a4a" text-anchor="middle">Draft</text>
+            <foreignObject x="260" y="228" width="200" height="64">
+              <div class="v-bodywrap" style="font-size: 11px; line-height: 1.45">Produce the first full version.</div>
+            </foreignObject>
+          </g>
+          <!-- 03 Check (teal magnifier) -->
+          <g class="v-pop" style="--d: 0.4s">
+            <circle cx="600" cy="150" r="48" fill="#2d5a5a" fill-opacity="0.04" />
+            <circle cx="600" cy="150" r="40" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.6" />
+            <text class="v-eyebrow" x="600" y="96" font-size="9" fill="#2d5a5a" letter-spacing="2.4" text-anchor="middle">STEP 03</text>
+            <g transform="translate(600,150)">
+              <circle cx="-2" cy="-2" r="9" fill="none" stroke="#2d5a5a" stroke-width="1.8" />
+              <line x1="5" y1="5" x2="13" y2="13" stroke="#2d5a5a" stroke-width="2" stroke-linecap="round" />
+            </g>
+            <text class="v-title" x="600" y="216" font-size="16" fill="#1e2a4a" text-anchor="middle">Check</text>
+            <foreignObject x="500" y="228" width="200" height="64">
+              <div class="v-bodywrap" style="font-size: 11px; line-height: 1.45">Review it against what was asked.</div>
+            </foreignObject>
+          </g>
+          <!-- 04 Revise (teal pencil) -->
+          <g class="v-pop" style="--d: 0.5s">
+            <circle cx="840" cy="150" r="48" fill="#2d5a5a" fill-opacity="0.04" />
+            <circle cx="840" cy="150" r="40" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.6" />
+            <text class="v-eyebrow" x="840" y="96" font-size="9" fill="#2d5a5a" letter-spacing="2.4" text-anchor="middle">STEP 04</text>
+            <g transform="translate(840,150)">
+              <line x1="-10" y1="10" x2="8" y2="-8" stroke="#2d5a5a" stroke-width="1.9" stroke-linecap="round" />
+              <line x1="8" y1="-8" x2="12" y2="-12" stroke="#2d5a5a" stroke-width="1.9" stroke-linecap="round" />
+              <line x1="-10" y1="10" x2="-13" y2="13" stroke="#2d5a5a" stroke-width="1.5" stroke-linecap="round" />
+            </g>
+            <text class="v-title" x="840" y="216" font-size="16" fill="#1e2a4a" text-anchor="middle">Revise</text>
+            <foreignObject x="740" y="228" width="200" height="64">
+              <div class="v-bodywrap" style="font-size: 11px; line-height: 1.45">Fix what the check caught.</div>
+            </foreignObject>
+          </g>
+          <!-- 05 Deliver (warm paper-plane) -->
+          <g class="v-pop" style="--d: 0.6s">
+            <circle cx="1080" cy="150" r="48" fill="#74614a" fill-opacity="0.04" />
+            <circle cx="1080" cy="150" r="40" fill="#fffcf7" stroke="#74614a" stroke-width="1.6" />
+            <text class="v-eyebrow" x="1080" y="96" font-size="9" fill="#74614a" letter-spacing="2.4" text-anchor="middle">STEP 05</text>
+            <g transform="translate(1080,150)">
+              <path d="M -14 -4 L 14 -11 L 3 13 L 0 3 Z" fill="none" stroke="#74614a" stroke-width="1.7" stroke-linejoin="round" />
+              <line x1="0" y1="3" x2="14" y2="-11" stroke="#74614a" stroke-width="1.4" />
+            </g>
+            <text class="v-title" x="1080" y="216" font-size="16" fill="#1e2a4a" text-anchor="middle">Deliver</text>
+            <foreignObject x="980" y="228" width="200" height="64">
+              <div class="v-bodywrap" style="font-size: 11px; line-height: 1.45">Hand back the finished piece.</div>
+            </foreignObject>
+          </g>
+
+          <!-- traveling dots (cx/fill are base values; keyframes drive them) -->
+          <circle class="v-dot47" cx="120" cy="150" r="6" fill="#74614a" fill-opacity="0.5" />
+          <circle class="v-dot48" cx="120" cy="150" r="7.5" fill="#1e2a4a" />
+
+          <!-- zone labels -->
+          <text class="v-eyebrow v-fade" style="--d: 1s" x="300" y="324" font-size="8" fill="rgba(58,54,50,0.5)" letter-spacing="2.4" text-anchor="middle">OFTEN NEEDED A NUDGE</text>
+          <text class="v-eyebrow v-fade" style="--d: 1s" x="840" y="324" font-size="8" fill="#2d5a5a" fill-opacity="0.8" letter-spacing="2.4" text-anchor="middle">OPUS 4.8 RUNS TO COMPLETION</text>
+
+          <!-- legend -->
+          <g class="v-fade" style="--d: 1.1s">
+            <circle cx="455" cy="356" r="5" fill="#74614a" fill-opacity="0.55" />
+            <text x="468" y="360" font-size="11" fill="rgba(58,54,50,0.6)" font-family="var(--font-label)">Opus 4.7 &mdash; pauses for input</text>
+            <circle cx="720" cy="356" r="6" fill="#1e2a4a" />
+            <text x="734" y="360" font-size="11" fill="rgba(58,54,50,0.6)" font-family="var(--font-label)">Opus 4.8 &mdash; runs to the end</text>
+          </g>
+        </svg>
+
+        <!-- mobile: vertical timeline -->
+        <svg class="viz-m" viewBox="0 0 380 636" style="max-width: 400px" role="img" aria-label="A five-step task track shown vertically. Opus 4.8 runs the whole way; Opus 4.7 often paused partway.">
+          <defs>
+            <linearGradient id="autoTrackV" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1e2a4a" stop-opacity="0.5" />
+              <stop offset="28%" stop-color="#1e2a4a" stop-opacity="0.5" />
+              <stop offset="55%" stop-color="#2d5a5a" stop-opacity="0.5" />
+              <stop offset="82%" stop-color="#2d5a5a" stop-opacity="0.5" />
+              <stop offset="100%" stop-color="#74614a" stop-opacity="0.5" />
+            </linearGradient>
+          </defs>
+          <line class="v-draw" pathLength="1" x1="58" y1="70" x2="58" y2="550" stroke="url(#autoTrackV)" stroke-width="3" stroke-linecap="round" />
+
+          <!-- hand-off marker -->
+          <g class="v-fade" style="--d: 0.8s">
+            <line x1="18" y1="250" x2="300" y2="250" stroke="#1e2a4a" stroke-opacity="0.28" stroke-width="1" stroke-dasharray="4 4" />
+            <text class="v-eyebrow" x="104" y="244" font-size="8" fill="#1e2a4a" fill-opacity="0.6" letter-spacing="1.6" text-anchor="start">OPUS 4.7 OFTEN PAUSED HERE</text>
+          </g>
+
+          <!-- 01 Gather -->
+          <g class="v-pop" style="--d: 0.2s">
+            <circle cx="58" cy="70" r="37" fill="#1e2a4a" fill-opacity="0.04" />
+            <circle cx="58" cy="70" r="30" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.6" />
+            <g transform="translate(58,70)"><path d="M -13 -6 a2 2 0 0 1 2 -2 H -3 l 3 3 H 11 a2 2 0 0 1 2 2 V 9 a2 2 0 0 1 -2 2 H -11 a2 2 0 0 1 -2 -2 Z" fill="none" stroke="#1e2a4a" stroke-width="1.6" /></g>
+            <text class="v-eyebrow" x="104" y="59" font-size="9" fill="#1e2a4a" letter-spacing="2.2" text-anchor="start">STEP 01</text>
+            <text class="v-title" x="104" y="80" font-size="16" fill="#1e2a4a" text-anchor="start">Gather</text>
+          </g>
+          <!-- 02 Draft -->
+          <g class="v-pop" style="--d: 0.3s">
+            <circle cx="58" cy="190" r="37" fill="#1e2a4a" fill-opacity="0.04" />
+            <circle cx="58" cy="190" r="30" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.6" />
+            <g transform="translate(58,190)"><rect x="-10" y="-13" width="20" height="26" rx="2" fill="none" stroke="#1e2a4a" stroke-width="1.6" /><line x1="-5" y1="-6" x2="5" y2="-6" stroke="#1e2a4a" stroke-width="1.2" /><line x1="-5" y1="-1" x2="5" y2="-1" stroke="#1e2a4a" stroke-width="1.2" /><line x1="-5" y1="4" x2="1" y2="4" stroke="#1e2a4a" stroke-width="1.2" /></g>
+            <text class="v-eyebrow" x="104" y="179" font-size="9" fill="#1e2a4a" letter-spacing="2.2" text-anchor="start">STEP 02</text>
+            <text class="v-title" x="104" y="200" font-size="16" fill="#1e2a4a" text-anchor="start">Draft</text>
+          </g>
+          <!-- 03 Check -->
+          <g class="v-pop" style="--d: 0.4s">
+            <circle cx="58" cy="310" r="37" fill="#2d5a5a" fill-opacity="0.04" />
+            <circle cx="58" cy="310" r="30" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.6" />
+            <g transform="translate(58,310)"><circle cx="-2" cy="-2" r="8" fill="none" stroke="#2d5a5a" stroke-width="1.7" /><line x1="4" y1="4" x2="11" y2="11" stroke="#2d5a5a" stroke-width="1.9" stroke-linecap="round" /></g>
+            <text class="v-eyebrow" x="104" y="299" font-size="9" fill="#2d5a5a" letter-spacing="2.2" text-anchor="start">STEP 03</text>
+            <text class="v-title" x="104" y="320" font-size="16" fill="#1e2a4a" text-anchor="start">Check</text>
+          </g>
+          <!-- 04 Revise -->
+          <g class="v-pop" style="--d: 0.5s">
+            <circle cx="58" cy="430" r="37" fill="#2d5a5a" fill-opacity="0.04" />
+            <circle cx="58" cy="430" r="30" fill="#fffcf7" stroke="#2d5a5a" stroke-width="1.6" />
+            <g transform="translate(58,430)"><line x1="-9" y1="9" x2="7" y2="-7" stroke="#2d5a5a" stroke-width="1.8" stroke-linecap="round" /><line x1="7" y1="-7" x2="11" y2="-11" stroke="#2d5a5a" stroke-width="1.8" stroke-linecap="round" /><line x1="-9" y1="9" x2="-12" y2="12" stroke="#2d5a5a" stroke-width="1.4" stroke-linecap="round" /></g>
+            <text class="v-eyebrow" x="104" y="419" font-size="9" fill="#2d5a5a" letter-spacing="2.2" text-anchor="start">STEP 04</text>
+            <text class="v-title" x="104" y="440" font-size="16" fill="#1e2a4a" text-anchor="start">Revise</text>
+          </g>
+          <!-- 05 Deliver -->
+          <g class="v-pop" style="--d: 0.6s">
+            <circle cx="58" cy="550" r="37" fill="#74614a" fill-opacity="0.04" />
+            <circle cx="58" cy="550" r="30" fill="#fffcf7" stroke="#74614a" stroke-width="1.6" />
+            <g transform="translate(58,550)"><path d="M -13 -4 L 13 -10 L 3 12 L 0 3 Z" fill="none" stroke="#74614a" stroke-width="1.6" stroke-linejoin="round" /><line x1="0" y1="3" x2="13" y2="-10" stroke="#74614a" stroke-width="1.3" /></g>
+            <text class="v-eyebrow" x="104" y="539" font-size="9" fill="#74614a" letter-spacing="2.2" text-anchor="start">STEP 05</text>
+            <text class="v-title" x="104" y="560" font-size="16" fill="#1e2a4a" text-anchor="start">Deliver</text>
+          </g>
+
+          <!-- vertical traveling dots -->
+          <circle class="v-dot47v" cx="58" cy="70" r="6" fill="#74614a" fill-opacity="0.5" />
+          <circle class="v-dot48v" cx="58" cy="70" r="7.5" fill="#1e2a4a" />
+
+          <!-- legend -->
+          <g class="v-fade" style="--d: 1s">
+            <circle cx="44" cy="600" r="5" fill="#74614a" fill-opacity="0.55" />
+            <text x="56" y="604" font-size="11" fill="rgba(58,54,50,0.6)" font-family="var(--font-label)">Opus 4.7 &mdash; pauses for input</text>
+            <circle cx="44" cy="624" r="6" fill="#1e2a4a" />
+            <text x="56" y="628" font-size="11" fill="rgba(58,54,50,0.6)" font-family="var(--font-label)">Opus 4.8 &mdash; runs to the end</text>
+          </g>
+        </svg>
+
+        <p class="prose" style="margin-top: 1.5rem">
+          Think of the workflows your team relies on &mdash; the
+          PII-safe grade-data pipeline, a multi-section grant, a dashboard
+          refresh. 4.8 is better at running those start-to-finish, and better at
+          not skipping a step it was supposed to take along the way.
+        </p>
+      </section>
+
+      <!-- ───────── 2-4 · BY THE NUMBERS ───────── -->
+      <section class="slide" data-chapter="2" data-eyebrow="The receipts">
+        <p class="eyebrow">What it means &middot; the receipts</p>
+        <div class="max-3xl mb-8">
+          <h2 class="heading">
+            Small numbers, <span class="accent">real difference.</span>
+          </h2>
+          <p class="serif">
+            Two of Anthropic&rsquo;s published scores, translated out of
+            engineer-speak.
+          </p>
+        </div>
+        <div class="bars" id="benchBars">
+          <div>
+            <div class="bar-label">
+              <span>Multi-step work with tools</span>
+              <span class="delta">54.7% &rarr; 57.9%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-old" data-pct="54.7"></div>
+              <div class="bar-new" data-pct="57.9"></div>
+            </div>
+          </div>
+          <div>
+            <div class="bar-label">
+              <span>Complex, multi-file coding tasks</span>
+              <span class="delta">64.3% &rarr; 69.2%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-old" data-pct="64.3"></div>
+              <div class="bar-new" data-pct="69.2"></div>
+            </div>
+          </div>
+        </div>
+        <div class="bar-legend">
+          <span><i style="width: 3px; height: 13px; border-radius: 1px; background: rgba(26,24,22,0.7)"></i>Opus 4.7</span>
+          <span
+            ><i style="background: url('../assets/opus-4-8.webp') center / cover"></i
+            >Opus 4.8</span
+          >
+        </div>
+        <p class="prose mt-6">
+          These are developer benchmarks &mdash; you&rsquo;ll never run them. They
+          matter because the reasoning they measure is the same reasoning behind a
+          correctly-summarized data table or a board memo that holds together.
+          Up and to the right, quietly.
+        </p>
+      </section>
+
+      <!-- ───────── 3-1 · WHAT STAYS THE SAME ───────── -->
+      <section class="slide" data-chapter="3" data-eyebrow="Nothing changes">
+        <p class="eyebrow">What stays the same</p>
+        <div class="max-3xl mb-10">
+          <h2 class="heading">
+            Nothing on <span class="accent">your end</span> changes.
+          </h2>
+          <p class="serif">
+            An upgrade you get for free, without lifting a finger.
+          </p>
+        </div>
+        <div class="grid grid-4-constants">
+          <!-- Same price · tag glyph -->
+          <div class="ghost card constant-card v-rise" style="--d: 0.1s">
+            <svg viewBox="0 0 56 56" class="constant-glyph" aria-hidden="true">
+              <path d="M 30 8 H 46 a 2 2 0 0 1 2 2 V 26 L 28 46 a 3 3 0 0 1 -4 0 L 10 32 a 3 3 0 0 1 0 -4 L 30 8 Z" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.7" stroke-linejoin="round" />
+              <circle cx="40" cy="16" r="3" fill="none" stroke="#1e2a4a" stroke-width="1.5" />
+              <text x="26" y="33" font-size="13" font-weight="600" fill="#2d5a5a" text-anchor="middle" font-family="var(--font-headline)" transform="rotate(45 26 30)">$</text>
+            </svg>
+            <h3 class="card-title">Same price</h3>
+            <p class="card-body">Anthropic kept the cost identical to 4.7. No budget conversation to have.</p>
+          </div>
+          <!-- Same login · key glyph -->
+          <div class="ghost card constant-card v-rise" style="--d: 0.2s">
+            <svg viewBox="0 0 56 56" class="constant-glyph" aria-hidden="true">
+              <circle cx="20" cy="22" r="10" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.7" />
+              <circle cx="20" cy="22" r="3.5" fill="none" stroke="#1e2a4a" stroke-width="1.5" />
+              <line x1="27" y1="29" x2="44" y2="46" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+              <line x1="38" y1="40" x2="44" y2="34" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+              <line x1="33" y1="35" x2="38" y2="30" stroke="#1e2a4a" stroke-width="1.7" stroke-linecap="round" />
+            </svg>
+            <h3 class="card-title">Same login</h3>
+            <p class="card-body">Nothing to install, nothing to migrate. You&rsquo;re already using it.</p>
+          </div>
+          <!-- Same workflows · stacked folders glyph -->
+          <div class="ghost card constant-card v-rise" style="--d: 0.3s">
+            <svg viewBox="0 0 56 56" class="constant-glyph" aria-hidden="true">
+              <path d="M 10 20 a 2 2 0 0 1 2 -2 H 22 l 4 4 H 42 a 2 2 0 0 1 2 2 V 28 H 10 Z" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.6" stroke-linejoin="round" />
+              <path d="M 10 26 a 2 2 0 0 1 2 -2 H 44 a 2 2 0 0 1 2 2 V 44 a 2 2 0 0 1 -2 2 H 12 a 2 2 0 0 1 -2 -2 Z" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.7" stroke-linejoin="round" />
+              <path d="M 22 33 l 4 4 l 8 -9" fill="none" stroke="#2d5a5a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h3 class="card-title">Same workflows</h3>
+            <p class="card-body">Every prompt and folder you&rsquo;ve built still works exactly as before.</p>
+          </div>
+          <!-- Same guardrails · shield glyph -->
+          <div class="ghost card constant-card v-rise" style="--d: 0.4s">
+            <svg viewBox="0 0 56 56" class="constant-glyph" aria-hidden="true">
+              <path d="M 28 8 L 44 14 V 26 a 16 22 0 0 1 -16 22 a 16 22 0 0 1 -16 -22 V 14 Z" fill="#fffcf7" stroke="#1e2a4a" stroke-width="1.7" stroke-linejoin="round" />
+              <path d="M 21 27 l 5 5 l 10 -11" fill="none" stroke="#2d5a5a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h3 class="card-title">Same guardrails</h3>
+            <p class="card-body">The PII-safe pattern and your data boundaries are unchanged. Compliance is identical.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────── 3-2 · THE DEVELOPER STUFF ───────── -->
+      <section class="slide" data-chapter="3" data-eyebrow="For completeness">
+        <p class="eyebrow">What stays the same &middot; for completeness</p>
+        <div class="max-3xl mb-10">
+          <h2 class="heading">
+            The parts written <span class="accent">for engineers.</span>
+          </h2>
+          <p class="serif">
+            Listed only so you&rsquo;ve seen the whole picture. The short version:
+            none of this is yours to touch.
+          </p>
+        </div>
+        <div class="grid grid-2">
+          <div class="ghost card" style="border-top: 3px solid var(--navy)">
+            <p class="card-eyebrow" style="color: var(--navy)">In the release notes</p>
+            <ul class="checks" style="gap: 0.7rem">
+              <li><span class="material-symbols-outlined" style="color:var(--muted)">hub</span><span><strong>Dynamic Workflows</strong> — lets developers coordinate hundreds of AI sub-tasks at once.</span></li>
+              <li><span class="material-symbols-outlined" style="color:var(--muted)">bolt</span><span><strong>Fast mode</strong> — an optional setting that trades a little depth for up to 2.5&times; faster output.</span></li>
+              <li><span class="material-symbols-outlined" style="color:var(--muted)">psychology</span><span><strong>Adaptive thinking</strong> — the model decides on its own when a question needs deeper thought.</span></li>
+              <li><span class="material-symbols-outlined" style="color:var(--muted)">memory</span><span><strong>Prompt-cache changes</strong> — a behind-the-scenes efficiency for people building apps.</span></li>
+            </ul>
+          </div>
+          <div class="ghost card" style="border-top: 3px solid var(--teal)">
+            <p class="card-eyebrow" style="color: var(--teal)">What it means for you</p>
+            <h3 class="card-title">Nothing to do.</h3>
+            <p class="card-body">
+              These features either run under the hood automatically, or they live
+              inside the developer tools your IT and vendor partners use &mdash;
+              not in your day-to-day work. They make the people who
+              <em>build</em> on Claude faster. For everyone using Claude to write,
+              summarize, and decide, the wins are the three on the previous pages.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────── 4-1 · WHAT TO DO MONDAY ───────── -->
+      <section class="slide" data-chapter="4" data-eyebrow="The close">
+        <p class="eyebrow">The close</p>
+        <div class="max-3xl mb-10">
+          <h2 class="heading">What to do <span class="accent">with this.</span></h2>
+          <p class="serif">Honestly? Keep working exactly as you were.</p>
+        </div>
+        <div class="heads-up">
+          <span class="hu-icon"><span class="material-symbols-outlined">restart_alt</span></span>
+          <div class="hu-body">
+            <p class="hu-label">Heads up &middot; getting 4.8 in Antigravity</p>
+            <p class="hu-text">
+              Antigravity won&rsquo;t switch models in the middle of a
+              conversation &mdash; if you keep a long chat running, it may still
+              be on 4.7. <b>To get 4.8: fully quit and reopen Antigravity, then
+              start a fresh chat.</b>
+            </p>
+          </div>
+        </div>
+        <div class="grid grid-3">
+          <div class="ghost card">
+            <span class="material-symbols-outlined card-icon" style="color: var(--navy)">check_circle</span>
+            <h3 class="card-title">You&rsquo;re already on it.</h3>
+            <p class="card-body">If your team uses Claude in the browser or the app, you&rsquo;re on 4.8 today. No setup, no install.</p>
+          </div>
+          <div class="ghost card">
+            <span class="material-symbols-outlined card-icon" style="color: var(--teal)">flag</span>
+            <h3 class="card-title">Notice the pushback.</h3>
+            <p class="card-body">When it flags a number or says &ldquo;verify this,&rdquo; that&rsquo;s the upgrade working. Treat it as a feature, not a glitch.</p>
+          </div>
+          <div class="ghost card">
+            <span class="material-symbols-outlined card-icon" style="color: var(--warm)">trending_up</span>
+            <h3 class="card-title">Trust it with more.</h3>
+            <p class="card-body">Hand it the longer, multi-step jobs you used to split into pieces. It&rsquo;s built to carry them further now.</p>
+          </div>
+        </div>
+        <div class="try-box">
+          <p class="tb-label">Try this, this week</p>
+          <p class="tb-prompt">
+            &ldquo;Draft our spring enrollment update for families. Flag anything
+            you&rsquo;re not confident about so I can verify it before it goes
+            out.&rdquo;
+          </p>
+        </div>
+      </section>
+
+      <!-- ───────── 4-2 · WHERE THIS CAME FROM ───────── -->
+      <section class="slide" data-chapter="4" data-eyebrow="Sources">
+        <p class="eyebrow">The close</p>
+        <div class="max-3xl mb-10">
+          <h2 class="heading">Where this <span class="accent">came from.</span></h2>
+          <p class="serif">
+            Everything on this page traces to Anthropic&rsquo;s own announcement.
+            The two links below are the primary sources.
+          </p>
+        </div>
+        <div class="grid grid-3">
+          <a class="ghost card card-flex" href="https://www.anthropic.com/news/claude-opus-4-8" target="_blank" rel="noopener noreferrer">
+            <p class="card-eyebrow" style="color: var(--teal)">The announcement</p>
+            <h3 class="card-title">Introducing Opus 4.8</h3>
+            <p class="card-body">Anthropic&rsquo;s plain-language post on what shipped and why &mdash; the source for the three changes in this briefing.</p>
+            <span class="link-row">Read it <span class="material-symbols-outlined" style="font-size:15px">arrow_outward</span></span>
+          </a>
+          <a class="ghost card card-flex" href="https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-8" target="_blank" rel="noopener noreferrer">
+            <p class="card-eyebrow" style="color: var(--navy)">The technical detail</p>
+            <h3 class="card-title">What&rsquo;s new in 4.8</h3>
+            <p class="card-body">The developer documentation, with the benchmark figures and the research-preview features named on the previous page.</p>
+            <span class="link-row">Read it <span class="material-symbols-outlined" style="font-size:15px">arrow_outward</span></span>
+          </a>
+          <div class="ghost card card-flex">
+            <p class="card-eyebrow" style="color: var(--warm)">For the room</p>
+            <h3 class="card-title">Bring it to your team.</h3>
+            <p class="card-body">Which of your current workflows would benefit most from a model that finishes longer jobs and flags its own uncertainty? Start there.</p>
+            <span class="link-row" style="color: var(--muted)">Discussion <span class="material-symbols-outlined" style="font-size:15px">forum</span></span>
+          </div>
+        </div>
+        <div class="footer-band">
+          <p>Karst &middot; Claude Opus 4.8 Briefing &middot; May 2026</p>
+          <p>Prepared by Karst</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================== FLOATING PILL NAV ===================== -->
+    <div class="pill-wrap">
+      <div class="pill">
+        <button class="pill-btn" id="prevBtn" aria-label="Previous">
+          <span class="material-symbols-outlined" style="font-size: 18px">chevron_left</span>
+        </button>
+        <span class="pill-count" id="pillCount">1/10</span>
+        <div class="dots" id="dots"></div>
+        <button class="pill-btn" id="nextBtn" aria-label="Next">
+          <span class="material-symbols-outlined" style="font-size: 18px">chevron_right</span>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      /* Populate the hero panel with drifting dust motes */
+      (function () {
+        var host = document.getElementById('heroDust');
+        if (!host) return;
+        var COUNT = 72;
+        var rand = function (min, max) { return min + Math.random() * (max - min); };
+        var frag = document.createDocumentFragment();
+        for (var i = 0; i < COUNT; i++) {
+          var soft = Math.random() < 0.16;
+          var size = soft ? rand(3.5, 6.5) : rand(0.8, 2.6);
+          var dur = rand(9, 20);
+          var m = document.createElement('span');
+          m.className = 'dust-mote' + (soft ? ' soft' : '');
+          m.style.left = rand(0, 100) + '%';
+          m.style.top = rand(0, 100) + '%';
+          m.style.width = size.toFixed(2) + 'px';
+          m.style.height = size.toFixed(2) + 'px';
+          m.style.setProperty('--op', (soft ? rand(0.18, 0.4) : rand(0.35, 0.95)).toFixed(2));
+          m.style.setProperty('--dur', dur.toFixed(1) + 's');
+          m.style.setProperty('--delay', (-rand(0, dur)).toFixed(1) + 's');
+          m.style.setProperty('--dx', rand(-28, 28).toFixed(0) + 'px');
+          m.style.setProperty('--dy', rand(-110, -45).toFixed(0) + 'px');
+          frag.appendChild(m);
+        }
+        host.appendChild(frag);
+      })();
+
+      /* ── Two memos in flight — the 4.7 memo labors node to node, pausing at
+         every "not quite"; the 4.8 memo starts later, sails one pass with a
+         quiet mid-flight self-check, and arrives first. The static diagram
+         beneath is the settled (and reduced-motion) state. ── */
+      (function () {
+        var layer = document.getElementById('rrDots');
+        var verdict = document.getElementById('rrVerdict');
+        if (!layer || !verdict) return;
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) return; // the static diagram already tells the settled story
+        var SVGNS = 'http://www.w3.org/2000/svg';
+        var svg = layer.ownerSVGElement;
+
+        // 4.7 lane: hops between node x-positions at y=90, pausing at each
+        var HOPS = [210, 400, 590, 780, 950];
+        var HOP_MS = 950, PAUSE_MS = 520;
+        // 4.8 lane: one pass 210 -> 950 at y=200, starting later
+        var SAIL_START = 1400, SAIL_MS = 2600, CHECK_AT = 0.55;
+
+        var topDot = null, botDot = null, checkRing = null;
+        function circle(r, fill, op) {
+          var c = document.createElementNS(SVGNS, 'circle');
+          c.setAttribute('r', r); c.setAttribute('fill', fill);
+          if (op) c.setAttribute('fill-opacity', op);
+          layer.appendChild(c);
+          return c;
+        }
+        function clearLayer() {
+          while (layer.firstChild) layer.removeChild(layer.firstChild);
+          verdict.setAttribute('opacity', '0');
+          topDot = circle(5, '#74614a');
+          botDot = circle(5, '#1e2a4a');
+          checkRing = document.createElementNS(SVGNS, 'circle');
+          checkRing.setAttribute('r', 9);
+          checkRing.setAttribute('fill', 'none');
+          checkRing.setAttribute('stroke', '#2d5a5a');
+          checkRing.setAttribute('stroke-width', '1.6');
+          checkRing.setAttribute('opacity', '0');
+          layer.appendChild(checkRing);
+        }
+        function ease(x) { return x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x); }
+
+        var t0 = 0, running = false, raf = 0, doneTop = 0, doneBot = 0, verdictAt = 0;
+        function tick(now) {
+          if (!t0) { t0 = now; clearLayer(); doneTop = 0; doneBot = 0; verdictAt = 0; }
+          var t = now - t0;
+
+          // top memo: hop / pause cadence
+          var seg = Math.floor(t / (HOP_MS + PAUSE_MS));
+          if (seg >= HOPS.length - 1) {
+            topDot.setAttribute('cx', HOPS[HOPS.length - 1]);
+            topDot.setAttribute('cy', 90);
+            if (!doneTop) doneTop = now;
+          } else {
+            var st = t - seg * (HOP_MS + PAUSE_MS);
+            var f = ease(st / HOP_MS); // pauses once f clamps at 1
+            topDot.setAttribute('cx', HOPS[seg] + (HOPS[seg + 1] - HOPS[seg]) * f);
+            topDot.setAttribute('cy', 90 - Math.sin(Math.min(1, st / HOP_MS) * Math.PI) * 14);
+          }
+
+          // bottom memo: one pass, later start, mid-flight self-check
+          var bt = (t - SAIL_START) / SAIL_MS;
+          var bf = ease(bt);
+          var bx = 210 + (950 - 210) * bf;
+          botDot.setAttribute('cx', bx);
+          botDot.setAttribute('cy', 200 - Math.sin(Math.max(0, Math.min(1, bt)) * Math.PI) * 10);
+          botDot.setAttribute('opacity', bt < 0 ? '0' : '1');
+          if (bt > CHECK_AT && bt < CHECK_AT + 0.22) {
+            var cf = (bt - CHECK_AT) / 0.22;
+            checkRing.setAttribute('cx', bx);
+            checkRing.setAttribute('cy', 200 - Math.sin(bt * Math.PI) * 10);
+            checkRing.setAttribute('r', 7 + cf * 9);
+            checkRing.setAttribute('opacity', (0.7 * (1 - cf)).toFixed(2));
+          } else {
+            checkRing.setAttribute('opacity', '0');
+          }
+          if (bt >= 1 && !doneBot) doneBot = now;
+
+          if (doneTop && doneBot && !verdictAt) {
+            verdictAt = now;
+            verdict.setAttribute('opacity', '1');
+          }
+          if (verdictAt && now - verdictAt > 3200) t0 = 0; // replay
+          if (running) raf = requestAnimationFrame(tick);
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            running = e.isIntersecting;
+            if (running) {
+              t0 = 0;
+              cancelAnimationFrame(raf);
+              raf = requestAnimationFrame(tick);
+            } else {
+              cancelAnimationFrame(raf);
+            }
+          });
+        }, { threshold: 0.2 });
+        io.observe(svg);
+      })();
+
+      (function () {
+        var slides = Array.prototype.slice.call(
+          document.querySelectorAll(".slide")
+        );
+        var total = slides.length;
+        var index = 0;
+
+        var navCount = document.getElementById("navCount");
+        var navProgress = document.getElementById("navProgress");
+        var pillCount = document.getElementById("pillCount");
+        var prevBtn = document.getElementById("prevBtn");
+        var nextBtn = document.getElementById("nextBtn");
+        var dotsWrap = document.getElementById("dots");
+
+        function pad(n) {
+          return String(n).padStart(2, "0");
+        }
+
+        // Build grouped progress dots (by data-chapter)
+        var dotEls = [];
+        var lastChapter = null;
+        slides.forEach(function (slide, i) {
+          var chapter = slide.getAttribute("data-chapter");
+          if (chapter !== lastChapter) {
+            if (lastChapter !== null) {
+              var div = document.createElement("span");
+              div.className = "dot-divider";
+              dotsWrap.appendChild(div);
+            }
+            lastChapter = chapter;
+          }
+          var btn = document.createElement("button");
+          btn.className = "dot";
+          btn.type = "button";
+          var inner = document.createElement("span");
+          var tip = document.createElement("span");
+          tip.className = "dot-tip";
+          tip.textContent = slide.getAttribute("data-eyebrow") || "";
+          btn.appendChild(inner);
+          btn.appendChild(tip);
+          btn.addEventListener("click", function () {
+            goTo(i);
+          });
+          dotsWrap.appendChild(btn);
+          dotEls.push(btn);
+        });
+
+        function animateBars(slide) {
+          var bars = slide.querySelectorAll(".bar-old, .bar-new");
+          bars.forEach(function (bar) {
+            bar.style.width = "0";
+          });
+          // next frame -> grow to target
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              bars.forEach(function (bar) {
+                bar.style.width = bar.getAttribute("data-pct") + "%";
+              });
+            });
+          });
+        }
+
+        function render() {
+          slides.forEach(function (s, i) {
+            s.classList.toggle("active", i === index);
+          });
+          navCount.textContent = pad(index + 1) + " / " + pad(total);
+          pillCount.textContent = index + 1 + "/" + total;
+          navProgress.style.width = ((index + 1) / total) * 100 + "%";
+          prevBtn.disabled = index === 0;
+          nextBtn.disabled = index === total - 1;
+          dotEls.forEach(function (d, i) {
+            d.classList.toggle("current", i === index);
+            d.classList.toggle("past", i < index);
+          });
+          var active = slides[index];
+          if (active.querySelector(".bar-track")) animateBars(active);
+          window.scrollTo({ top: 0, behavior: "instant" });
+        }
+
+        function goTo(i) {
+          index = Math.max(0, Math.min(total - 1, i));
+          render();
+        }
+
+        prevBtn.addEventListener("click", function () {
+          goTo(index - 1);
+        });
+        nextBtn.addEventListener("click", function () {
+          goTo(index + 1);
+        });
+        document.addEventListener("keydown", function (e) {
+          if (
+            e.target instanceof HTMLElement &&
+            ["INPUT", "TEXTAREA", "SELECT"].indexOf(e.target.tagName) !== -1
+          )
+            return;
+          if (e.key === "ArrowRight") goTo(index + 1);
+          if (e.key === "ArrowLeft") goTo(index - 1);
+        });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>

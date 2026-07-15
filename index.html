@@ -1,0 +1,75 @@
+<!doctype html>
+<html class="light" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Establish connections to Google Fonts before requesting stylesheets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Critical fonts: Montserrat (headlines) + Inter (body) + Libre Baskerville italic (editorial) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=Libre+Baskerville:ital@1&display=swap" rel="stylesheet" />
+
+    <!-- Material Symbols — async-loaded so it doesn't block the homepage paint.
+         Used by /proposal-builder, /contact, and a few other pages. -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    </noscript>
+
+    <title>Karst — Data &amp; Intelligence for Executive Teams</title>
+    <meta name="description" content="Operating intelligence for the people who run the organization. We build the dashboards, decisions, and rhythms your leadership thinks in." />
+    <link rel="canonical" href="https://karstinsights.com/" />
+
+    <!-- Open Graph (Facebook, LinkedIn, iMessage, Slack) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Karst" />
+    <meta property="og:title" content="Karst — Data &amp; Intelligence for Executive Teams" />
+    <meta property="og:description" content="Operating intelligence for the people who run the organization. We build the dashboards, decisions, and rhythms your leadership thinks in." />
+    <meta property="og:url" content="https://karstinsights.com" />
+    <meta property="og:image" content="https://karstinsights.com/og-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Karst — Data &amp; Intelligence for Executive Teams" />
+    <meta name="twitter:description" content="Operating intelligence for the people who run the organization. We build the dashboards, decisions, and rhythms your leadership thinks in." />
+    <meta name="twitter:image" content="https://karstinsights.com/og-card.png" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://karstinsights.com/#org",
+          "name": "Karst",
+          "legalName": "Anyra Inc.",
+          "url": "https://karstinsights.com/",
+          "logo": "https://karstinsights.com/favicon.png",
+          "description": "Data and intelligence for executive teams. Karst partners with school districts by introduction and referral."
+        },
+        {
+          "@type": "WebSite",
+          "name": "Karst",
+          "url": "https://karstinsights.com/",
+          "publisher": { "@id": "https://karstinsights.com/#org" }
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body class="bg-surface text-on-surface font-body antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

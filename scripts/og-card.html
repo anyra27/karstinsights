@@ -1,0 +1,91 @@
+<!doctype html>
+<!-- OG-card artboard — renders the 1200×630 link-preview image.
+     Regenerate: open at viewport 1200×630, wait for fonts, screenshot
+     → public/og-card.png. Visual language mirrors the homepage: cream
+     ground, strata contours settling toward the navy standard line. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1200px; height: 630px; overflow: hidden; }
+    body { background: #F0EEE6; position: relative; }
+    canvas { position: absolute; inset: 0; }
+    .text {
+      position: absolute;
+      left: 0; right: 0;
+      top: 168px;
+      text-align: center;
+      z-index: 2;
+    }
+    .wordmark {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: 78px;
+      letter-spacing: 0.42em;
+      text-indent: 0.42em; /* re-center: tracking adds a trailing gap */
+      text-transform: uppercase;
+      color: #1a1816;
+    }
+    .rule {
+      width: 56px; height: 1px;
+      background: rgba(110, 99, 85, 0.55);
+      margin: 36px auto;
+    }
+    .line {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: 21px;
+      letter-spacing: 0.32em;
+      text-indent: 0.32em;
+      text-transform: uppercase;
+      color: #6e6355;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="strata" width="2400" height="1260" style="width:1200px;height:630px;"></canvas>
+  <div class="text">
+    <div class="wordmark">Karst</div>
+    <div class="rule"></div>
+    <div class="line">Data &amp; Intelligence for Executive Teams</div>
+  </div>
+  <script>
+    // Settled StrataContours frame, lower band of the card.
+    const ctx = document.getElementById('strata').getContext('2d')
+    ctx.setTransform(2, 0, 0, 2, 0, 0)
+    const W = 1200, H = 630
+    const LAYERS = 11
+    const STANDARD = 8
+    const terrain = (xn, amp, i) => {
+      let y = Math.sin(xn * 2.2 + i * 0.06)
+      y += 0.45 * Math.sin(xn * 4.7 + i * 0.08 + 1.4)
+      y += 0.2 * Math.sin(xn * 8.3 - i * 0.05 + 0.6)
+      return y * amp
+    }
+    for (let i = 0; i < LAYERS; i++) {
+      const f = i / (LAYERS - 1)
+      const yc = H * (0.62 + 0.30 * Math.pow(f, 0.86))
+      const isStd = i === STANDARD
+      const amp = isStd ? 0.08 : 0.18 + 0.82 * (1 - Math.pow(f, 1.35))
+      const alpha = isStd ? 0.8 : 0.24 + 0.26 * f
+      ctx.beginPath()
+      ctx.lineWidth = isStd ? 2.2 : 1.1
+      ctx.strokeStyle = isStd
+        ? `rgba(30,42,74,${alpha})`
+        : `rgba(74,68,60,${alpha})`
+      for (let n = 0; n <= 240; n++) {
+        const x = (n / 240) * W
+        const xn = (n / 240) * Math.PI * 2 * 1.6
+        const y = yc + terrain(xn, amp, i) * 52
+        if (n === 0) ctx.moveTo(x, y)
+        else ctx.lineTo(x, y)
+      }
+      ctx.stroke()
+    }
+  </script>
+</body>
+</html>

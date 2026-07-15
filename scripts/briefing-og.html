@@ -1,0 +1,42 @@
+<!doctype html>
+<!-- Briefing OG-card artboard. Set ?img=, ?eyebrow=, ?title= via the inline
+     config below, open at 1200×630, screenshot → public/briefings/assets/og-<slug>.png -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Libre+Baskerville:ital@1&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1200px; height: 630px; overflow: hidden; }
+    body { position: relative; background: #0e0e0c; }
+    .photo { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .scrim { position: absolute; inset: 0;
+      background: linear-gradient(105deg, rgba(14,14,12,0.86) 0%, rgba(14,14,12,0.62) 48%, rgba(14,14,12,0.30) 100%); }
+    .content { position: absolute; inset: 0; padding: 72px 80px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; }
+    .wordmark { font-family: 'Montserrat', sans-serif; font-weight: 500; font-size: 24px; letter-spacing: 0.42em; text-indent: 0.42em; text-transform: uppercase; color: #f4f1ea; }
+    .eyebrow { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 17px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(244,241,234,0.66); margin-bottom: 22px; }
+    .title { font-family: 'Libre Baskerville', serif; font-style: italic; font-size: 54px; line-height: 1.12; color: #f4f1ea; max-width: 880px; }
+    .tag { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(244,241,234,0.5); }
+  </style>
+</head>
+<body>
+  <div class="photo" id="photo"></div>
+  <div class="scrim"></div>
+  <div class="content">
+    <div class="wordmark">Karst</div>
+    <div>
+      <div class="eyebrow" id="eyebrow"></div>
+      <div class="title" id="title"></div>
+    </div>
+    <div class="tag">A Karst Briefing</div>
+  </div>
+  <script>
+    var p = new URLSearchParams(location.search)
+    document.getElementById('photo').style.backgroundImage = "url('/briefings/assets/" + (p.get('img') || 'koi.webp') + "')"
+    document.getElementById('eyebrow').textContent = p.get('eyebrow') || ''
+    document.getElementById('title').textContent = p.get('title') || ''
+  </script>
+</body>
+</html>

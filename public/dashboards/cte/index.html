@@ -1,0 +1,2188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CTE Pathway Completion · Class of 2025 · Karst Demo</title>
+  <meta name="description" content="An Karst demo dashboard showing how a district CTE pathway completion read-back can look — synthetic data, real editorial pattern. Retention, scheduling gaps, and equity across four high schools.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.js"></script>
+  <style>
+    /* ============================================================
+       KARST DESIGN TOKENS
+       ============================================================ */
+    :root {
+      --surface: #fffcf7;
+      --surface-container: #f6f4ec;
+      --surface-elevated: rgba(255, 255, 255, 0.88);
+
+      --on-surface: #1a1816;
+      --on-surface-variant: #3a3632;
+      --on-surface-muted: rgba(58, 54, 50, 0.55);
+
+      --navy: #1e2a4a;
+      --navy-deep: #141e38;
+      --navy-08: rgba(30, 42, 74, 0.08);
+      --navy-15: rgba(30, 42, 74, 0.15);
+      --navy-33: rgba(30, 42, 74, 0.33);
+
+      --teal-deep: #0f4c4c;
+      --teal: #1a6b6b;
+      --teal-soft: #2d8a8a;
+      --blue-deep: #1e3a5f;
+      --blue: #2d5f8f;
+
+      --secondary: #6e6355;
+
+      --color-success: #10B981;
+      --color-warning: #F59E0B;
+      --color-danger: #EF4444;
+
+      --border: rgba(30, 42, 74, 0.08);
+      --border-strong: rgba(30, 42, 74, 0.15);
+
+      --font-editorial: 'Libre Baskerville', Georgia, serif;
+      --font-headline: 'Montserrat', system-ui, sans-serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-label: 'Montserrat', system-ui, sans-serif;
+
+      --space-1: 0.25rem;  --space-2: 0.5rem;  --space-3: 0.75rem;
+      --space-4: 1rem;     --space-5: 1.25rem; --space-6: 1.5rem;
+      --space-8: 2rem;     --space-10: 2.5rem; --space-12: 3rem;
+      --space-16: 4rem;
+
+      --radius: 3px;
+      --radius-full: 9999px;
+
+      --shadow-ghost: 0 2px 8px rgba(30, 42, 74, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+      --shadow-ghost-hover: 0 6px 24px rgba(30, 42, 74, 0.09), 0 2px 4px rgba(0, 0, 0, 0.04);
+
+      --transition: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ============================================================
+       RESET + BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--on-surface);
+      background: var(--surface);
+      min-height: 100vh;
+    }
+    h1, h2, h3, h4 { color: var(--on-surface); font-family: var(--font-headline); line-height: 1.2; }
+    a { color: var(--navy); text-decoration: none; transition: color var(--transition); }
+    a:hover { color: var(--teal-deep); }
+    ul, ol { list-style: none; }
+
+    /* Grain overlay (premium editorial feel) */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.16;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+    body > * { position: relative; z-index: 1; }
+
+    /* ============================================================
+       TOP NAV
+       ============================================================ */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-5) clamp(var(--space-6), 4vw, var(--space-16));
+      background: rgba(255, 252, 247, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-title {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 1.125rem;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+    }
+    .nav-meta {
+      font-family: var(--font-label);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--on-surface-muted);
+      margin-top: 2px;
+    }
+
+    .tab-nav {
+      display: inline-flex;
+      gap: 2px;
+      padding: 3px;
+      background: rgba(255, 252, 247, 0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-ghost);
+    }
+    .tab-btn {
+      font-family: var(--font-label);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      color: var(--on-surface-muted);
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: all var(--transition);
+    }
+    .tab-btn:hover { color: var(--navy); }
+    .tab-btn--active {
+      color: #fff;
+      background: var(--navy);
+      box-shadow: var(--shadow-ghost);
+    }
+    .tab-btn--active:hover { color: #fff; }
+
+    .tab-panel { display: none; }
+    .tab-panel--active { display: block; }
+
+    /* ============================================================
+       LAYOUT
+       ============================================================ */
+    main {
+      max-width: 1640px;
+      margin: 0 auto;
+      padding: var(--space-10) clamp(var(--space-6), 4vw, var(--space-16)) var(--space-16);
+    }
+    section.section { margin-bottom: var(--space-16); }
+
+    /* ============================================================
+       INSIGHTS HERO
+       ============================================================ */
+    .insights-hero {
+      padding: var(--space-12) 0 var(--space-6);
+      margin-bottom: var(--space-10);
+    }
+    .insights-hero h1 {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+      max-width: 1100px;
+      margin-bottom: var(--space-4);
+      background: linear-gradient(135deg, var(--navy), var(--teal-deep));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+    .insights-lede {
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--on-surface-muted);
+      max-width: 720px;
+    }
+
+    /* ============================================================
+       INSIGHTS GRID — 10 cards
+       ============================================================ */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+    @media (max-width: 1240px) { .insights-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 720px)  { .insights-grid { grid-template-columns: 1fr; } }
+
+    .insight-card {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-ghost);
+      transition: all var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      position: relative;
+      overflow: hidden;
+      min-height: 360px;
+    }
+    .insight-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--navy);
+      opacity: 0.18;
+      transition: opacity var(--transition);
+    }
+    .insight-card:hover {
+      box-shadow: var(--shadow-ghost-hover);
+      transform: translateY(-2px);
+      border-color: var(--border-strong);
+    }
+    .insight-card:hover::before { opacity: 0.7; }
+    .insight-card:nth-child(2)::before  { background: var(--teal-deep); }
+    .insight-card:nth-child(3)::before  { background: var(--blue); }
+    .insight-card:nth-child(4)::before  { background: var(--color-warning); }
+    .insight-card:nth-child(5)::before  { background: var(--color-danger); }
+    .insight-card:nth-child(6)::before  { background: var(--teal); }
+    .insight-card:nth-child(7)::before  { background: var(--secondary); }
+    .insight-card:nth-child(8)::before  { background: var(--blue); }
+    .insight-card:nth-child(9)::before  { background: var(--color-warning); }
+    .insight-card:nth-child(10)::before { background: var(--navy); }
+
+    .insight-card--wide {
+      grid-column: 1 / -1;
+      min-height: 0;
+      padding: var(--space-8) var(--space-10);
+    }
+
+    .insight-glyph {
+      width: 100%;
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(30,42,74,0.025), rgba(30,42,74,0));
+      border-radius: var(--radius);
+      padding: var(--space-3);
+    }
+    .insight-glyph svg { width: 100%; height: 100%; max-width: 260px; overflow: visible; }
+
+    .insight-num {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 0.875rem;
+      letter-spacing: 0.02em;
+      color: var(--on-surface-muted);
+      display: inline-flex;
+      align-items: baseline;
+      gap: var(--space-2);
+    }
+    .insight-num::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 1px;
+      background: var(--navy-33);
+      position: relative;
+      bottom: 4px;
+    }
+    .insight-headline {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--navy);
+      line-height: 1.22;
+      letter-spacing: -0.005em;
+    }
+    .insight-card--wide .insight-headline { font-size: 1.625rem; }
+    .insight-body {
+      color: var(--on-surface-variant);
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      margin-top: auto;
+    }
+    .insight-body strong {
+      color: var(--navy);
+      font-family: var(--font-headline);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .insight-tags { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+    .insight-tag {
+      font-family: var(--font-label);
+      font-size: 0.5625rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--on-surface-muted);
+      padding: 3px 8px;
+      background: var(--navy-08);
+      border-radius: var(--radius);
+    }
+    .insight-tag--teal { color: var(--teal-deep); background: rgba(15, 76, 76, 0.08); }
+    .insight-tag--warn { color: #a66a06; background: rgba(245, 158, 11, 0.12); }
+    .insight-tag--danger { color: #b91c1c; background: rgba(239, 68, 68, 0.10); }
+
+    /* ===== Glyph primitives ===== */
+    .gly-axis    { stroke: rgba(30,42,74,0.18); stroke-width: 1; fill: none; }
+    .gly-rule    { stroke: rgba(30,42,74,0.10); stroke-width: 1; fill: none; stroke-dasharray: 2 3; }
+    .gly-bar-hi  { fill: var(--navy); }
+    .gly-bar-2   { fill: var(--teal-deep); }
+    .gly-bar-lo  { fill: var(--secondary); opacity: 0.55; }
+    .gly-bar-warn{ fill: var(--color-warning); }
+    .gly-bar-danger { fill: var(--color-danger); }
+    .gly-bar-success { fill: var(--color-success); }
+    .gly-stroke  { stroke: var(--navy); stroke-width: 1.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .gly-stroke-teal { stroke: var(--teal-deep); stroke-width: 1.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .gly-stroke-warn { stroke: var(--color-warning); stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .gly-dot     { fill: var(--navy); }
+    .gly-dot-teal{ fill: var(--teal-deep); }
+    .gly-dot-warn{ fill: var(--color-warning); }
+    .gly-dot-dim { fill: rgba(30,42,74,0.16); }
+    .gly-label   { font-family: var(--font-label); font-size: 9px; font-weight: 600; letter-spacing: 0.14em; fill: rgba(58,54,50,0.55); text-transform: uppercase; }
+    .gly-num     { font-family: var(--font-headline); font-size: 14px; font-weight: 600; fill: var(--navy); }
+
+    @keyframes gly-grow-h { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    @keyframes gly-grow-v { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    @keyframes gly-fade   { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes gly-draw   { from { stroke-dashoffset: 200; } to { stroke-dashoffset: 0; } }
+    .insight-card .gly-anim-bar   { transform-origin: 0% 100%; animation: gly-grow-v 900ms cubic-bezier(0.25, 0.1, 0.25, 1) both; }
+    .insight-card .gly-anim-bar-h { transform-origin: 0% 50%; animation: gly-grow-h 900ms cubic-bezier(0.25, 0.1, 0.25, 1) both; }
+    .insight-card .gly-anim-fade  { animation: gly-fade 800ms ease-out both; }
+    .insight-card .gly-anim-draw  { stroke-dasharray: 200; stroke-dashoffset: 200; animation: gly-draw 1400ms cubic-bezier(0.25, 0.1, 0.25, 1) both; }
+    @media (prefers-reduced-motion: reduce) {
+      .insight-card .gly-anim-bar, .insight-card .gly-anim-bar-h,
+      .insight-card .gly-anim-fade, .insight-card .gly-anim-draw {
+        animation: none; stroke-dashoffset: 0;
+      }
+    }
+
+    /* ============================================================
+       FINDINGS HERO
+       ============================================================ */
+    .hero {
+      padding: var(--space-12) 0 var(--space-10);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--space-12);
+    }
+    .hero h1 {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      max-width: 920px;
+      margin-bottom: var(--space-5);
+      background: linear-gradient(135deg, var(--navy), var(--teal-deep));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+    .hero-lede {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--on-surface-variant);
+      max-width: 760px;
+    }
+    .hero-cite {
+      margin-top: var(--space-6);
+      font-family: var(--font-label);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--on-surface-muted);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-family: var(--font-label);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--navy);
+      padding: 4px 10px;
+      background: var(--navy-08);
+      border-radius: var(--radius);
+      margin-bottom: var(--space-3);
+    }
+    .editorial-title {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      color: var(--navy);
+      margin-bottom: var(--space-3);
+      font-size: 2rem;
+      max-width: 760px;
+    }
+    .section-lede {
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      color: var(--on-surface-variant);
+      max-width: 760px;
+      margin-bottom: var(--space-8);
+    }
+
+    /* ============================================================
+       CHART CARD
+       ============================================================ */
+    .chart-card {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-ghost);
+    }
+    .chart-title {
+      font-family: var(--font-label);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--on-surface-muted);
+      margin-bottom: var(--space-4);
+    }
+    .chart-canvas-wrap {
+      position: relative;
+      height: 360px;
+    }
+    .chart-canvas-wrap--lg { height: 480px; }
+    .chart-note {
+      margin-top: var(--space-4);
+      font-size: 0.8125rem;
+      color: var(--on-surface-muted);
+      font-style: italic;
+      line-height: 1.5;
+    }
+    .chart-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+    @media (max-width: 1100px) { .chart-grid-2 { grid-template-columns: 1fr; } }
+
+    /* ============================================================
+       KPI ROW
+       ============================================================ */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+    }
+    @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+    .kpi-card {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-ghost);
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--navy);
+      opacity: 0.18;
+    }
+    .kpi-card:nth-child(2)::before { background: var(--teal-deep); opacity: 0.85; }
+    .kpi-card:nth-child(3)::before { background: var(--blue); opacity: 0.85; }
+    .kpi-card:nth-child(4)::before { background: var(--color-warning); opacity: 0.85; }
+    .kpi-title {
+      font-family: var(--font-label);
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--on-surface-muted);
+      margin-bottom: var(--space-3);
+    }
+    .kpi-value {
+      font-family: var(--font-headline);
+      font-weight: 600;
+      font-size: 2.25rem;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+      margin-bottom: var(--space-3);
+      font-variant-numeric: tabular-nums;
+    }
+    .kpi-context {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: var(--on-surface-variant);
+    }
+
+    /* ============================================================
+       RETENTION HEATMAP — Karst-styled
+       ============================================================ */
+    .heatmap-wrap { overflow-x: auto; }
+    .matrix-heat {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 4px;
+      font-size: 0.875rem;
+      min-width: 720px;
+    }
+    .matrix-heat th, .matrix-heat td {
+      padding: var(--space-3) var(--space-3);
+      text-align: center;
+    }
+    .matrix-heat thead th {
+      font-family: var(--font-label);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--on-surface-muted);
+      padding-bottom: var(--space-3);
+    }
+    .matrix-heat thead th:first-child { text-align: left; }
+    .matrix-heat tbody td:first-child {
+      text-align: left;
+      font-family: var(--font-headline);
+      font-weight: 600;
+      color: var(--navy);
+      font-size: 0.9375rem;
+      background: transparent;
+      padding-left: 0;
+      max-width: 240px;
+    }
+    .matrix-heat tbody td.heat {
+      border-radius: var(--radius);
+      font-family: var(--font-headline);
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      font-size: 1.0625rem;
+      color: var(--navy);
+      transition: transform var(--transition);
+      cursor: default;
+      position: relative;
+    }
+    .matrix-heat tbody td.heat:hover { transform: scale(1.06); z-index: 2; }
+    .matrix-heat td.heat-l1 { background: rgba(239, 68, 68, 0.18); color: #b91c1c; }
+    .matrix-heat td.heat-l2 { background: rgba(245, 158, 11, 0.20); color: #a66a06; }
+    .matrix-heat td.heat-l3 { background: rgba(45, 138, 138, 0.32); color: var(--teal-deep); }
+    .matrix-heat td.heat-l4 { background: rgba(15, 76, 76, 0.85); color: #fff; }
+    .matrix-heat td.heat-empty { background: rgba(30, 42, 74, 0.04); color: rgba(58,54,50,0.32); font-size: 0.8125rem; }
+    .matrix-legend {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+      flex-wrap: wrap;
+      font-family: var(--font-label);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--on-surface-muted);
+    }
+    .matrix-legend-swatch {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+    }
+    .matrix-legend-swatch::before {
+      content: '';
+      display: inline-block;
+      width: 14px; height: 14px;
+      border-radius: 3px;
+    }
+    .matrix-legend-swatch.l1::before { background: rgba(239, 68, 68, 0.30); }
+    .matrix-legend-swatch.l2::before { background: rgba(245, 158, 11, 0.32); }
+    .matrix-legend-swatch.l3::before { background: rgba(45, 138, 138, 0.45); }
+    .matrix-legend-swatch.l4::before { background: rgba(15, 76, 76, 0.85); }
+    .matrix-note {
+      margin-top: var(--space-5);
+      padding: var(--space-4) var(--space-5);
+      background: rgba(15, 76, 76, 0.06);
+      border-left: 2px solid var(--teal-deep);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: var(--on-surface-variant);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       METHODOLOGY
+       ============================================================ */
+    .methodology {
+      margin-top: var(--space-16);
+      padding-top: var(--space-12);
+      border-top: 1px solid var(--border);
+    }
+    .methodology h2 {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.625rem;
+      color: var(--navy);
+      margin-bottom: var(--space-5);
+      letter-spacing: -0.01em;
+    }
+    .methodology dl {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--space-3) var(--space-6);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--on-surface-variant);
+    }
+    @media (max-width: 720px) { .methodology dl { grid-template-columns: 1fr; } }
+    .methodology dt {
+      font-family: var(--font-label);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--on-surface-muted);
+      padding-top: 2px;
+    }
+    .methodology dd { margin-bottom: var(--space-3); }
+
+    /* ============================================================
+       FOOTER CREDIT
+       ============================================================ */
+    .page-credit {
+      max-width: 1640px;
+      margin: 0 auto;
+      padding: var(--space-8) clamp(var(--space-6), 4vw, var(--space-16)) var(--space-12);
+      display: flex;
+      justify-content: center;
+      border-top: 1px solid var(--border);
+    }
+    .page-credit__text {
+      font-family: var(--font-body);
+      font-size: 0.8125rem;
+      color: var(--on-surface-muted);
+      font-style: italic;
+    }
+
+    /* ============================================================
+       CHART.JS DEFAULTS — make charts editorial
+       ============================================================ */
+    canvas { font-family: var(--font-body); }
+  </style>
+</head>
+<body><div style="background:#1e2a4a;color:#fffcf7;text-align:center;padding:8px 16px;font-family:Montserrat,system-ui,sans-serif;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;font-weight:700;border-bottom:1px solid rgba(255,252,247,0.15);position:relative;z-index:9999;">Karst · Demo Surface · Illustrative Data</div>
+  <!-- ============================================================
+       TOP NAV
+       ============================================================ -->
+  <nav class="top-nav">
+    <div>
+      <div class="nav-title">CTE Pathway Completion · Karst Demo</div>
+      <div class="nav-meta">Class of 2025 · A read-back for the cabinet</div>
+    </div>
+    <div class="tab-nav" role="tablist" aria-label="Dashboard view">
+      <button class="tab-btn tab-btn--active" data-tab="insights" role="tab" aria-selected="true">Insights</button>
+      <button class="tab-btn" data-tab="findings" role="tab" aria-selected="false">Findings</button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ============================================================
+         INSIGHTS TAB
+         ============================================================ -->
+    <section class="tab-panel tab-panel--active" data-panel="insights" role="tabpanel">
+      <div class="insights-hero">
+        <h1>Ten things the data is telling the cabinet about CTE.</h1>
+        <p class="insights-lede">
+          Across 2,000+ student records, four high schools, and roughly two dozen pathways, the
+          Class of 2025 leaves a clear pattern: most students who start a pathway never finish it,
+          and the place they stop is almost always the same.
+        </p>
+      </div>
+
+      <div class="insights-grid" id="insightsGrid">
+        <!-- 10 insight cards rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FINDINGS TAB
+         ============================================================ -->
+    <section class="tab-panel" data-panel="findings" role="tabpanel">
+
+      <section class="hero">
+        <div class="eyebrow">Demo cohort · Class of 2025</div>
+        <h1>What the records say about CTE pathway completion.</h1>
+        <p class="hero-lede">
+          The retention surface, the pipeline funnel, the gap-year effect, and the equity slice —
+          the four views the cabinet returns to most.
+        </p>
+        <div class="hero-cite" id="heroCite">Source · synthetic demo dataset · Class of 2025</div>
+      </section>
+
+      <!-- KPI Row -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-title">Total Graduates</div>
+          <div class="kpi-value" id="kpiTotal">—</div>
+          <div class="kpi-context">All seniors in the Class of 2025 across the four high schools.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">CTE Concentrators</div>
+          <div class="kpi-value" id="kpiConc">—</div>
+          <div class="kpi-context" id="kpiConcCtx">Reached Level 2 in at least one pathway.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Pathway Completers</div>
+          <div class="kpi-value" id="kpiComp">—</div>
+          <div class="kpi-context" id="kpiCompCtx">Completed a capstone (Level 3).</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Stuck at Level 2</div>
+          <div class="kpi-value" id="kpiStuck">—</div>
+          <div class="kpi-context" id="kpiStuckCtx">Concentrators who never reached capstone.</div>
+        </div>
+      </div>
+
+      <!-- Retention Heatmap -->
+      <section class="section">
+        <div class="eyebrow">Retention surface</div>
+        <h2 class="editorial-title">CTE pathway retention rate, by school.</h2>
+        <p class="section-lede">
+          Each cell is the share of concentrators at that school × pathway who reached capstone.
+          Cells are colored only when 5 or more concentrators are present; gray cells are too small
+          to read responsibly.
+        </p>
+        <div class="chart-card">
+          <div class="heatmap-wrap" id="heatmapWrap"></div>
+          <div class="matrix-legend">
+            <span>Lower</span>
+            <span class="matrix-legend-swatch l1">0–39%</span>
+            <span class="matrix-legend-swatch l2">40–59%</span>
+            <span class="matrix-legend-swatch l3">60–79%</span>
+            <span class="matrix-legend-swatch l4">80–100%</span>
+            <span>Higher</span>
+          </div>
+          <div class="matrix-note" id="heatmapNote"></div>
+        </div>
+      </section>
+
+      <!-- Pipeline Leak + Sector View -->
+      <section class="section">
+        <div class="eyebrow">The pipeline funnel</div>
+        <h2 class="editorial-title">Where the pathway leaks.</h2>
+        <p class="section-lede">
+          The same loss, viewed two ways: per pathway, then rolled up to the fifteen CDE industry
+          sectors. The first locates the leaks; the second shows which sectors carry the system.
+        </p>
+        <div class="chart-card" style="margin-bottom: var(--space-6);">
+          <div class="chart-title">Pipeline Leak — Concentrators vs Capstone Completers (per pathway)</div>
+          <div class="chart-canvas-wrap chart-canvas-wrap--lg"><canvas id="chartPipeline"></canvas></div>
+          <p class="chart-note">Stacked bars. Hover for leak rate per pathway.</p>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Concentrators vs Completers — by industry sector</div>
+          <div class="chart-canvas-wrap chart-canvas-wrap--lg"><canvas id="chartSector"></canvas></div>
+          <p class="chart-note">All pathways aggregated into the CDE's fifteen industry sectors. The wider the gap between the lighter and darker bar, the more concentrators that sector holds without delivering completers.</p>
+        </div>
+      </section>
+
+      <!-- Gap Year Effect (3 charts) -->
+      <section class="section">
+        <div class="eyebrow">The gap-year effect</div>
+        <h2 class="editorial-title">Capstone uptake collapses when a year is skipped.</h2>
+        <p class="section-lede">
+          The headline first: across all pathways, what consecutive scheduling delivers versus what
+          a two-or-more-year gap delivers. Then the same comparison broken out per pathway, then
+          two follow-ups — which grade tends to be the one that disappears, and what students do
+          when the year after their concentrator goes empty.
+        </p>
+        <div class="chart-card" style="margin-bottom: var(--space-6);">
+          <div class="chart-title">Capstone Uptake — Consecutive vs Gap (district headline)</div>
+          <div class="chart-canvas-wrap"><canvas id="chartGapHeadline"></canvas></div>
+          <p class="chart-note">Same denominator on both bars: every unique student who reached concentrator in any pathway.</p>
+        </div>
+        <div class="chart-card" style="margin-bottom: var(--space-6);">
+          <div class="chart-title">Capstone Uptake by Pathway — Consecutive vs Gap</div>
+          <div class="chart-canvas-wrap chart-canvas-wrap--lg"><canvas id="chartPathwayGap"></canvas></div>
+          <p class="chart-note">Pathways sorted by the consecutive–gap differential. The longer the dark bar relative to amber, the more the timing of scheduling matters in that pathway.</p>
+        </div>
+        <div class="chart-grid-2">
+          <div class="chart-card">
+            <div class="chart-title">Which grade tends to be skipped</div>
+            <div class="chart-canvas-wrap"><canvas id="chartSkippedGrade"></canvas></div>
+            <p class="chart-note">For students who never reached capstone in any pathway, the grade level immediately after their first concentrator. The most common bar is the place where the pathway most often ends.</p>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">What happens after a gap year</div>
+            <div class="chart-canvas-wrap"><canvas id="chartPostGap"></canvas></div>
+            <p class="chart-note">Of students who skipped the consecutive year: did they return to the same pathway, switch to a different one, or stop CTE entirely?</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Other Contributing Factors -->
+      <section class="section">
+        <div class="eyebrow">Other contributing factors</div>
+        <h2 class="editorial-title">Two structural pressures sitting under the gap.</h2>
+        <p class="section-lede">
+          Beyond the timing of when students take which course, two patterns systematically lower
+          completion: spreading across multiple pathways without committing to one, and pathways
+          where the floor of academic failure is high enough to gate progression.
+        </p>
+        <div class="chart-grid-2">
+          <div class="chart-card">
+            <div class="chart-title">Multi-pathway dilution</div>
+            <div class="chart-canvas-wrap"><canvas id="chartMultiPathway"></canvas></div>
+            <p class="chart-note" id="multiPathwayNote">Single-pathway students complete at one rate; students spread across two or more complete at another.</p>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">D and F rate by pathway</div>
+            <div class="chart-canvas-wrap chart-canvas-wrap--lg"><canvas id="chartDFRate"></canvas></div>
+            <p class="chart-note">Share of CTE course-grade records ending in D or F, by pathway. Pathways with 10+ records shown; sorted high to low. Pathways above 10% (in red) are likely gating progression — failing Level 2 is, structurally, exiting.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- AVID + EL + SpEd Equity -->
+      <section class="section">
+        <div class="eyebrow">Equity slice</div>
+        <h2 class="editorial-title">Who reaches CTE — and who completes.</h2>
+        <p class="section-lede">
+          Concentrator and completer rates for AVID, English Learners, and Special Education
+          students, side-by-side with the district baseline. AVID is also broken out by years of
+          participation.
+        </p>
+        <div class="chart-grid-2">
+          <div class="chart-card">
+            <div class="chart-title">CTE Pipeline by Program</div>
+            <div class="chart-canvas-wrap"><canvas id="chartProgramPipeline"></canvas></div>
+            <p class="chart-note">Concentrator rate (light) and completer rate (solid) for each program. Hover for raw counts.</p>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">AVID — CTE Rates by Years of Participation</div>
+            <div class="chart-canvas-wrap"><canvas id="chartAvidYears"></canvas></div>
+            <p class="chart-note">More years of AVID correlates with higher concentrator and completer rates.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Methodology -->
+      <section class="methodology">
+        <h2>Methodology and provenance.</h2>
+        <dl>
+          <dt>Cohort</dt>
+          <dd>A demo cohort representing the Class of 2025 across four high schools. Numbers are synthetic, derived from a de-identified district structure but perturbed so aggregates do not reflect any real district's outcomes.</dd>
+
+          <dt>Source records</dt>
+          <dd>De-identified district student records: pathway enrollment, course-level transcript data with academic year and pass/fail, and program flags (AVID, EL, SpEd). Original student IDs and names are not shipped with this dashboard.</dd>
+
+          <dt>Concentrator</dt>
+          <dd>A student who took and passed a Level 2 course in a CTE pathway.</dd>
+
+          <dt>Completer</dt>
+          <dd>A student who reached Level 3 capstone in a pathway and is marked <em>completer = "Yes"</em> in district records.</dd>
+
+          <dt>Retention rate</dt>
+          <dd>Completers divided by concentrators. Cells with fewer than 5 concentrators are not colored to avoid drawing conclusions from small numbers.</dd>
+
+          <dt>Consecutive vs. gap</dt>
+          <dd>A student is "consecutive" if their first Level 3 year is within one academic year of their first Level 2 year in the same pathway, and "gap" if it is two or more years later.</dd>
+
+          <dt>Skipped grade</dt>
+          <dd>For students who never reached capstone in any pathway, the grade level immediately following their first concentrator. The most common skipped grade is the place where the pathway most often ends.</dd>
+
+          <dt>Privacy</dt>
+          <dd>Every record on this page is synthetic demonstration data, generated by a script. No real student records were used. In a district deployment, anonymization runs offline before any data file is produced, and names and original IDs never reach the page.</dd>
+
+          <dt>Refresh</dt>
+          <dd>This page reads one data file at load time. In a district deployment, regenerating that file from the district's own records is the only step needed to refresh the entire dashboard.</dd>
+        </dl>
+      </section>
+
+    </section>
+  </main>
+
+  <footer class="page-credit">
+    <p class="page-credit__text">Built by Karst · for the cabinet · April 2026</p>
+  </footer>
+
+  <!-- ============================================================
+       DATA + COMPUTE
+       ============================================================ -->
+  <script src="real_data.js"></script>
+  <script>
+  // ============================================================
+  // CONSTANTS (ported from source dashboard)
+  // ============================================================
+  const SCHOOL_CODES = ['N', 'E', 'S', 'W'];
+  const SCHOOL_NAMES = {
+    N: 'North', E: 'East', S: 'South', W: 'West', Other: 'Other'
+  };
+  const SCHOOL_INFO = {
+    N: { name: "North High School" },
+    E: { name: "East High School" },
+    S: { name: "South High School" },
+    W: { name: "West High School" }
+  };
+  const PATHWAY_NORMALIZE = {
+    'Design, Visual, and Media Arts': 'Design, Visual & Media Arts',
+    'Software and Systems Development': 'Software & Systems Development',
+    'Graphic Production Technologies': 'Graphics Production Technology',
+    'Welding and Materials Joining': 'Welding & Materials Joining',
+    'Gaming and Simulation': 'Games & Simulations',
+    'Marketing, Professional Sales': 'Marketing',
+    'Performing Arts (Dance)': 'Performing Arts',
+    'Performing Arts (Theatre)': 'Performing Arts'
+  };
+  function normPathway(name) { return PATHWAY_NORMALIZE[name] || name; }
+
+  // CDE 15 industry sectors — pathway → sector mapping (source dashboard)
+  const PATHWAY_TO_SECTOR = {
+    'Agriscience': 'Agriculture & Natural Resources',
+    'Animal Science': 'Agriculture & Natural Resources',
+    'Agricultural Business': 'Agriculture & Natural Resources',
+    'Audio Tech': 'Arts, Media & Entertainment',
+    'Design, Visual & Media Arts': 'Arts, Media & Entertainment',
+    'Performing Arts': 'Arts, Media & Entertainment',
+    'Professional Music': 'Arts, Media & Entertainment',
+    'Production & Managerial Arts': 'Arts, Media & Entertainment',
+    'Video Production': 'Arts, Media & Entertainment',
+    'Business Management': 'Business & Finance',
+    'Residential & Commercial Construction': 'Building & Construction',
+    'Child Development': 'Education & Family Services',
+    'Education': 'Education & Family Services',
+    'Engineering Technology': 'Engineering & Architecture',
+    'Patient Care': 'Health Science',
+    'Hospitality, Tourism, and Recreation': 'Hospitality & Tourism',
+    'Event Design and Management': 'Hospitality & Tourism',
+    'Games & Simulations': 'ICT',
+    'Networking': 'ICT',
+    'Software & Systems Development': 'ICT',
+    'Graphics Production Technology': 'Manufacturing & Product Dev',
+    'Operations': 'Manufacturing & Product Dev',
+    'Product Innovation & Design': 'Manufacturing & Product Dev',
+    'Welding & Materials Joining': 'Manufacturing & Product Dev',
+    'Entrepreneurship': 'Marketing, Sales & Services',
+    'Marketing': 'Marketing, Sales & Services',
+    'Public Safety': 'Public Services'
+  };
+
+  function pct(num, den) {
+    if (!den) return '0.0%';
+    return (num / den * 100).toFixed(1) + '%';
+  }
+
+  // ============================================================
+  // PROCESS DATA — ported verbatim from source
+  // ============================================================
+  function processData(allStudents, pathwayRecords) {
+    const students = allStudents;
+    const records = pathwayRecords;
+    const totalStudents = students.length;
+
+    const studentMap = {};
+    records.forEach(rec => {
+      const sid = rec.student_id;
+      if (!studentMap[sid]) {
+        studentMap[sid] = {
+          id: sid, name: rec.name, school: rec.school,
+          pathways: {}, isCompleter: false, maxLevel: 0
+        };
+      }
+      const pw = rec.pathway;
+      if (pw && pw.trim()) {
+        if (!studentMap[sid].pathways[pw]) {
+          studentMap[sid].pathways[pw] = { hasLevel2: false, hasLevel3: false, completer: false, maxLevel: 0, years: [], l2Years: [], l3Years: [] };
+        }
+        const lvl = parseInt(rec.pathway_level) || 0;
+        if (rec.academic_year) studentMap[sid].pathways[pw].years.push(rec.academic_year);
+        if (lvl > studentMap[sid].pathways[pw].maxLevel) studentMap[sid].pathways[pw].maxLevel = lvl;
+        if (lvl > studentMap[sid].maxLevel) studentMap[sid].maxLevel = lvl;
+        if (rec.pathway_level === '2' && rec.passed !== false) {
+          studentMap[sid].pathways[pw].hasLevel2 = true;
+          if (rec.academic_year) studentMap[sid].pathways[pw].l2Years.push(rec.academic_year);
+        }
+        if (rec.pathway_level === '3' && rec.passed !== false) {
+          studentMap[sid].pathways[pw].hasLevel3 = true;
+          if (rec.academic_year) studentMap[sid].pathways[pw].l3Years.push(rec.academic_year);
+        }
+      }
+    });
+
+    records.forEach(rec => {
+      const sid = rec.student_id;
+      if (studentMap[sid] && rec.pathway && rec.pathway.trim() && rec.completer === 'Yes') {
+        if (studentMap[sid].pathways[rec.pathway]) {
+          studentMap[sid].pathways[rec.pathway].completer = true;
+          studentMap[sid].isCompleter = true;
+        }
+      }
+    });
+
+    const participants = Object.values(studentMap).filter(s => Object.keys(s.pathways).length > 0);
+    const completers = participants.filter(s => s.isCompleter);
+    const participantsOnly = participants.filter(s => !s.isCompleter);
+    const multiPathway = participants.filter(s => Object.keys(s.pathways).length >= 2);
+
+    const participantIds = new Set(participants.map(s => s.id));
+    const nonCTE = students.filter(s => !participantIds.has(s.student_id));
+
+    let gapYearCount = 0;
+    completers.forEach(s => {
+      for (const info of Object.values(s.pathways)) {
+        if (info.completer && info.years.length >= 2) {
+          const sortedYears = [...new Set(info.years)].sort();
+          if (sortedYears.length >= 2) {
+            const firstYear = parseInt(sortedYears[0].split('-')[0]);
+            const lastYear = parseInt(sortedYears[sortedYears.length - 1].split('-')[0]);
+            if (lastYear - firstYear > 1) { gapYearCount++; break; }
+          }
+        }
+      }
+    });
+
+    // Gap Year Progression Analysis
+    const yearToGrade = { '2021': '9th', '2022': '10th', '2023': '11th', '2024': '12th' };
+    const progressionAnalysis = { totalL2: 0, consecutive: { count: 0 }, gap: { count: 0 }, neverL3: { count: 0 }, unique: { totalL2: 0, consecutive: 0, gap: 0, neverL3: 0 } };
+    const pathwayGapAnalysis = {};
+    const postGapBehavior = { returned: 0, switched: 0, stopped: 0 };
+    const skippedGrades = { '10th': 0, '11th': 0, '12th': 0 };
+    const gapStudentIds = new Set();
+    const firstCTEGrade = {};
+    ['9th', '10th', '11th', '12th'].forEach(g => { firstCTEGrade[g] = { total: 0, completers: 0, switchedPathway: 0 }; });
+
+    participants.forEach(s => {
+      let earliestConcentratorYear = Infinity;
+      const concentratorPathways = new Set();
+      for (const [pw, info] of Object.entries(s.pathways)) {
+        const l2Yrs = [...new Set(info.l2Years)].map(y => parseInt(y.split('-')[0])).filter(y => !isNaN(y));
+        if (l2Yrs.length > 0) {
+          concentratorPathways.add(pw);
+          const minL2 = Math.min(...l2Yrs);
+          if (minL2 < earliestConcentratorYear) earliestConcentratorYear = minL2;
+        }
+      }
+      if (earliestConcentratorYear < Infinity) {
+        const grade = yearToGrade[String(earliestConcentratorYear)] || null;
+        if (grade && firstCTEGrade[grade]) {
+          firstCTEGrade[grade].total++;
+          if (s.isCompleter) firstCTEGrade[grade].completers++;
+          if (concentratorPathways.size >= 2) firstCTEGrade[grade].switchedPathway++;
+        }
+      }
+
+      let studentHasL2 = false;
+      let studentBestGap = Infinity;
+      let studentHasAnyL3 = false;
+      for (const [pw, info] of Object.entries(s.pathways)) {
+        if (!info.hasLevel2) continue;
+        studentHasL2 = true;
+        if (!pathwayGapAnalysis[pw]) {
+          pathwayGapAnalysis[pw] = { totalL2: 0, consecutive: { count: 0 }, gap: { count: 0 }, neverL3: { count: 0 } };
+        }
+        progressionAnalysis.totalL2++;
+        pathwayGapAnalysis[pw].totalL2++;
+        const l2Yrs = [...new Set(info.l2Years)].map(y => parseInt(y.split('-')[0])).filter(y => !isNaN(y)).sort((a, b) => a - b);
+        const l3Yrs = [...new Set(info.l3Years)].map(y => parseInt(y.split('-')[0])).filter(y => !isNaN(y)).sort((a, b) => a - b);
+
+        if (l3Yrs.length === 0) {
+          progressionAnalysis.neverL3.count++;
+          pathwayGapAnalysis[pw].neverL3.count++;
+        } else {
+          studentHasAnyL3 = true;
+          const firstL2 = l2Yrs[0];
+          const firstL3 = l3Yrs[0];
+          const gap = firstL3 - firstL2;
+          if (gap < studentBestGap) studentBestGap = gap;
+          if (gap <= 1) {
+            progressionAnalysis.consecutive.count++;
+            pathwayGapAnalysis[pw].consecutive.count++;
+          } else {
+            progressionAnalysis.gap.count++;
+            pathwayGapAnalysis[pw].gap.count++;
+          }
+        }
+      }
+      if (studentHasL2) {
+        progressionAnalysis.unique.totalL2++;
+        if (!studentHasAnyL3) progressionAnalysis.unique.neverL3++;
+        else if (studentBestGap <= 1) progressionAnalysis.unique.consecutive++;
+        else progressionAnalysis.unique.gap++;
+      }
+    });
+
+    // Skipped grade analysis
+    participants.forEach(s => {
+      const hasAnyCapstone = Object.values(s.pathways).some(info => info.hasLevel3);
+      if (hasAnyCapstone) return;
+      let firstL2Year = Infinity;
+      for (const info of Object.values(s.pathways)) {
+        const l2Yrs = [...new Set(info.l2Years)].map(y => parseInt(y.split('-')[0])).filter(y => !isNaN(y));
+        if (l2Yrs.length > 0) { const m = Math.min(...l2Yrs); if (m < firstL2Year) firstL2Year = m; }
+      }
+      if (firstL2Year >= Infinity) return;
+      const skGrade = yearToGrade[String(firstL2Year + 1)];
+      if (skGrade && skippedGrades[skGrade] !== undefined) {
+        skippedGrades[skGrade]++;
+        gapStudentIds.add(s.id);
+      }
+    });
+
+    // Post-gap behavior
+    participants.forEach(s => {
+      for (const [pw, info] of Object.entries(s.pathways)) {
+        if (!info.hasLevel2) continue;
+        const l2Yrs = [...new Set(info.l2Years)].map(y => parseInt(y.split('-')[0])).filter(y => !isNaN(y)).sort((a, b) => a - b);
+        const l3Yrs = [...new Set(info.l3Years)].map(y => parseInt(y.split('-')[0])).filter(y => !isNaN(y)).sort((a, b) => a - b);
+        const firstL2 = l2Yrs[0];
+        if (l3Yrs.length > 0 && l3Yrs[0] - firstL2 <= 1) continue;
+        if (!firstL2) continue;
+        const nextConsecutiveYear = firstL2 + 1;
+        if (l3Yrs.length > 0 && l3Yrs[0] - firstL2 > 1) { postGapBehavior.returned++; continue; }
+        let switchedToOther = false;
+        for (const [otherPw, otherInfo] of Object.entries(s.pathways)) {
+          if (otherPw === pw) continue;
+          const otherL2Yrs = [...new Set(otherInfo.l2Years)].map(y => parseInt(y.split('-')[0])).filter(y => !isNaN(y));
+          if (otherL2Yrs.some(y => y >= nextConsecutiveYear)) { switchedToOther = true; break; }
+        }
+        if (switchedToOther) postGapBehavior.switched++;
+        else postGapBehavior.stopped++;
+      }
+    });
+
+    const bySchool = {};
+    SCHOOL_CODES.forEach(s => {
+      const schoolStudents = students.filter(st => st.school === s);
+      const schoolParticipants = participants.filter(p => p.school === s);
+      const schoolCompleters = completers.filter(c => c.school === s);
+      const schoolMulti = multiPathway.filter(m => m.school === s);
+      bySchool[s] = {
+        total: schoolStudents.length,
+        participants: schoolParticipants.length,
+        completers: schoolCompleters.length,
+        participantsOnly: schoolParticipants.filter(p => !p.isCompleter).length,
+        multiPathway: schoolMulti.length
+      };
+    });
+
+    const byPathway = {};
+    records.forEach(rec => {
+      if (!rec.pathway || !rec.pathway.trim()) return;
+      const key = `${rec.school}|${rec.pathway}`;
+      if (!byPathway[key]) {
+        byPathway[key] = {
+          school: rec.school, pathway: rec.pathway,
+          students: new Set(), completers: new Set(),
+          level2: new Set(), level3: new Set()
+        };
+      }
+      byPathway[key].students.add(rec.student_id);
+      if (rec.pathway_level === '2' && rec.passed !== false) byPathway[key].level2.add(rec.student_id);
+      if (rec.pathway_level === '3' && rec.passed !== false) byPathway[key].level3.add(rec.student_id);
+      if (rec.completer === 'Yes') byPathway[key].completers.add(rec.student_id);
+    });
+    for (const key of Object.keys(byPathway)) {
+      const p = byPathway[key];
+      byPathway[key] = {
+        school: p.school, pathway: p.pathway,
+        students: p.students.size, completers: p.completers.size,
+        level2: p.level2.size, level3: p.level3.size
+      };
+    }
+
+    return {
+      totalStudents,
+      participants: participants.length,
+      completers: completers.length,
+      participantsOnly: participantsOnly.length,
+      multiPathway: multiPathway.length,
+      nonCTE: nonCTE.length,
+      gapYear: gapYearCount,
+      progressionAnalysis, pathwayGapAnalysis, postGapBehavior, firstCTEGrade,
+      skippedGrades, gapStudentCount: gapStudentIds.size,
+      bySchool, byPathway,
+      studentMap, allStudents: students
+    };
+  }
+
+  // ============================================================
+  // RETENTION HEATMAP — pathway × school
+  // ============================================================
+  function buildRetentionGrid(data) {
+    const MIN_CONC = 5;
+    const grid = {};
+    Object.values(data.byPathway).forEach(p => {
+      const name = normPathway(p.pathway);
+      if (!grid[name]) grid[name] = {};
+      if (grid[name][p.school]) {
+        grid[name][p.school].level2 += p.level2;
+        grid[name][p.school].completers += p.completers;
+        grid[name][p.school].students += p.students;
+        grid[name][p.school].level3 += p.level3;
+      } else {
+        grid[name][p.school] = {
+          level2: p.level2, completers: p.completers,
+          students: p.students, level3: p.level3
+        };
+      }
+    });
+    let totalConc = 0, totalComp = 0;
+    Object.keys(grid).forEach(pw => {
+      SCHOOL_CODES.forEach(sch => {
+        const cell = grid[pw][sch];
+        if (cell && cell.level2 >= MIN_CONC) {
+          cell.retentionRate = Math.min(cell.completers / cell.level2 * 100, 100);
+          totalConc += cell.level2;
+          totalComp += cell.completers;
+        }
+      });
+    });
+    const districtAvg = totalConc > 0 ? Math.min(totalComp / totalConc * 100, 100) : 0;
+    const visible = Object.keys(grid).filter(pw =>
+      SCHOOL_CODES.some(sch => grid[pw][sch] && grid[pw][sch].level2 >= MIN_CONC)
+    );
+    function pwAvg(pw) {
+      let c = 0, d = 0;
+      SCHOOL_CODES.forEach(sch => {
+        const x = grid[pw][sch];
+        if (x && x.level2 >= MIN_CONC) { c += x.level2; d += x.completers; }
+      });
+      return c > 0 ? Math.min(d / c * 100, 100) : 0;
+    }
+    visible.sort((a, b) => pwAvg(b) - pwAvg(a));
+    return { grid, visible, districtAvg, totalConc, totalComp, pwAvg };
+  }
+
+  function colorLevel(rate) {
+    if (rate == null || isNaN(rate)) return 0;
+    if (rate < 40) return 1;
+    if (rate < 60) return 2;
+    if (rate < 80) return 3;
+    return 4;
+  }
+
+  // ============================================================
+  // PROGRAM (AVID/EL/SpEd) STATS
+  // ============================================================
+  function computeProgramStats(data) {
+    const programData = typeof PROGRAM_DATA !== 'undefined' ? PROGRAM_DATA : {};
+    const groups = { avid: { 1: [], 2: [], 3: [], 4: [] }, el: [], sped: [] };
+    data.allStudents.forEach(s => {
+      const pd = programData[s.student_id];
+      const mapped = data.studentMap[s.student_id];
+      const info = {
+        id: s.student_id, school: s.school,
+        isCTE: !!(mapped && Object.values(mapped.pathways).some(p => p.hasLevel2)),
+        isCompleter: !!(mapped && mapped.isCompleter)
+      };
+      if (pd && pd.avid > 0) groups.avid[Math.min(pd.avid, 4)].push(info);
+      if (pd && pd.el) groups.el.push(info);
+      if (pd && pd.sped) groups.sped.push(info);
+    });
+    function groupStats(arr) {
+      const total = arr.length;
+      const cte = arr.filter(s => s.isCTE).length;
+      const comp = arr.filter(s => s.isCompleter).length;
+      return {
+        total, cte, completers: comp,
+        partRate: total > 0 ? (cte / total * 100) : 0,
+        compRate: total > 0 ? (comp / total * 100) : 0
+      };
+    }
+    const allAvid = [...groups.avid[1], ...groups.avid[2], ...groups.avid[3], ...groups.avid[4]];
+    return {
+      avid: groupStats(allAvid),
+      el: groupStats(groups.el),
+      sped: groupStats(groups.sped),
+      avidYears: [1, 2, 3, 4].map(y => groupStats(groups.avid[y])),
+      _hasAny: allAvid.length + groups.el.length + groups.sped.length > 0
+    };
+  }
+
+  // ============================================================
+  // GLYPHS — 130px SVGs for each insight card
+  // ============================================================
+  const GLYPHS = {
+    funnel: () => `
+      <svg viewBox="0 0 240 110">
+        <rect class="gly-bar-hi gly-anim-bar"   x="20"  y="20" width="40" height="80" rx="2"/>
+        <rect class="gly-bar-2 gly-anim-bar"    x="80"  y="40" width="40" height="60" rx="2" style="animation-delay:120ms"/>
+        <rect class="gly-bar-warn gly-anim-bar" x="140" y="60" width="40" height="40" rx="2" style="animation-delay:240ms"/>
+        <text class="gly-label" x="40"  y="108" text-anchor="middle">L1</text>
+        <text class="gly-label" x="100" y="108" text-anchor="middle">L2</text>
+        <text class="gly-label" x="160" y="108" text-anchor="middle">L3</text>
+      </svg>`,
+    twoBars: (consec, gap) => {
+      const max = Math.max(consec || 0, gap || 1, 1);
+      const h1 = Math.max(8, (consec || 0) / max * 70);
+      const h2 = Math.max(8, (gap || 0) / max * 70);
+      return `
+      <svg viewBox="0 0 240 110">
+        <rect class="gly-bar-success gly-anim-bar" x="60"  y="${90 - h1}" width="40" height="${h1}" rx="2"/>
+        <rect class="gly-bar-warn gly-anim-bar"    x="140" y="${90 - h2}" width="40" height="${h2}" rx="2" style="animation-delay:120ms"/>
+        <text class="gly-num"   x="80"  y="${85 - h1}" text-anchor="middle">${(consec || 0).toFixed(0)}%</text>
+        <text class="gly-num"   x="160" y="${85 - h2}" text-anchor="middle">${(gap || 0).toFixed(0)}%</text>
+        <text class="gly-label" x="80"  y="105" text-anchor="middle">Consecutive</text>
+        <text class="gly-label" x="160" y="105" text-anchor="middle">After gap</text>
+      </svg>`;
+    },
+    schoolHeat: (rates) => {
+      // rates = [{school, rate}] for the four schools
+      const cellW = 50, cellH = 50, gap = 6;
+      const cells = rates.map((r, i) => {
+        const lvl = colorLevel(r.rate);
+        const fill = lvl === 0 ? 'rgba(30,42,74,0.06)'
+                  : lvl === 1 ? 'rgba(239, 68, 68, 0.30)'
+                  : lvl === 2 ? 'rgba(245, 158, 11, 0.34)'
+                  : lvl === 3 ? 'rgba(45, 138, 138, 0.50)'
+                  : 'rgba(15, 76, 76, 0.85)';
+        const txtFill = lvl >= 4 ? '#fff' : 'var(--navy)';
+        const x = 12 + i * (cellW + gap);
+        return `
+          <rect class="gly-anim-fade" x="${x}" y="20" width="${cellW}" height="${cellH}" rx="3" fill="${fill}" style="animation-delay:${i * 80}ms"/>
+          <text class="gly-num gly-anim-fade" x="${x + cellW / 2}" y="50" text-anchor="middle" fill="${txtFill}" style="animation-delay:${i * 80 + 200}ms">${r.rate != null ? r.rate.toFixed(0) + '%' : '—'}</text>
+          <text class="gly-label" x="${x + cellW / 2}" y="86" text-anchor="middle">${r.label}</text>
+        `;
+      }).join('');
+      return `<svg viewBox="0 0 240 110">${cells}</svg>`;
+    },
+    rankedBars: () => `
+      <svg viewBox="0 0 240 110">
+        <rect class="gly-bar-hi gly-anim-bar"   x="20"  y="20" width="28" height="80" rx="2"/>
+        <rect class="gly-bar-hi gly-anim-bar"   x="58"  y="32" width="28" height="68" rx="2" style="opacity:0.85;animation-delay:80ms"/>
+        <rect class="gly-bar-2 gly-anim-bar"    x="96"  y="52" width="28" height="48" rx="2" style="animation-delay:160ms"/>
+        <rect class="gly-bar-lo gly-anim-bar"   x="134" y="64" width="28" height="36" rx="2" style="animation-delay:240ms"/>
+        <rect class="gly-bar-lo gly-anim-bar"   x="172" y="78" width="28" height="22" rx="2" style="opacity:0.7;animation-delay:320ms"/>
+      </svg>`,
+    inverseBars: () => `
+      <svg viewBox="0 0 240 110">
+        <line class="gly-rule" x1="10" y1="56" x2="230" y2="56"/>
+        <rect class="gly-bar-danger gly-anim-bar" x="22"  y="22" width="22" height="32" rx="2"/>
+        <rect class="gly-bar-warn gly-anim-bar"   x="56"  y="36" width="22" height="18" rx="2" style="animation-delay:80ms"/>
+        <rect class="gly-bar-warn gly-anim-bar"   x="90"  y="42" width="22" height="12" rx="2" style="animation-delay:160ms"/>
+        <rect class="gly-bar-2 gly-anim-bar"      x="124" y="58" width="22" height="34" rx="2" style="animation-delay:240ms"/>
+        <rect class="gly-bar-2 gly-anim-bar"      x="158" y="58" width="22" height="22" rx="2" style="animation-delay:320ms"/>
+        <rect class="gly-bar-2 gly-anim-bar"      x="192" y="58" width="22" height="14" rx="2" style="animation-delay:400ms"/>
+        <text class="gly-label" x="22"  y="14">D / F</text>
+        <text class="gly-label" x="124" y="106">Pass</text>
+      </svg>`,
+    steps: () => `
+      <svg viewBox="0 0 240 110">
+        <line class="gly-rule" x1="20" y1="92" x2="220" y2="92"/>
+        <rect class="gly-bar-2 gly-anim-bar" x="36"  y="76" width="28" height="16" rx="2"/>
+        <rect class="gly-bar-2 gly-anim-bar" x="74"  y="58" width="28" height="34" rx="2" style="animation-delay:100ms"/>
+        <rect class="gly-bar-2 gly-anim-bar" x="112" y="42" width="28" height="50" rx="2" style="animation-delay:200ms"/>
+        <rect class="gly-bar-hi gly-anim-bar"x="150" y="22" width="28" height="70" rx="2" style="animation-delay:300ms"/>
+        <text class="gly-label" x="50"  y="106" text-anchor="middle">1 yr</text>
+        <text class="gly-label" x="88"  y="106" text-anchor="middle">2 yr</text>
+        <text class="gly-label" x="126" y="106" text-anchor="middle">3 yr</text>
+        <text class="gly-label" x="164" y="106" text-anchor="middle">4 yr</text>
+      </svg>`,
+    threeBars: (a, b, c) => {
+      const max = Math.max(a || 1, b || 1, c || 1, 1);
+      return `
+      <svg viewBox="0 0 240 110">
+        <rect class="gly-bar-hi gly-anim-bar"   x="40"  y="${92 - (a || 0) / max * 70}" width="34" height="${(a || 0) / max * 70}" rx="2"/>
+        <rect class="gly-bar-2 gly-anim-bar"    x="100" y="${92 - (b || 0) / max * 70}" width="34" height="${(b || 0) / max * 70}" rx="2" style="animation-delay:100ms"/>
+        <rect class="gly-bar-lo gly-anim-bar"   x="160" y="${92 - (c || 0) / max * 70}" width="34" height="${(c || 0) / max * 70}" rx="2" style="animation-delay:200ms"/>
+        <text class="gly-label" x="57"  y="106" text-anchor="middle">AVID</text>
+        <text class="gly-label" x="117" y="106" text-anchor="middle">EL</text>
+        <text class="gly-label" x="177" y="106" text-anchor="middle">SpEd</text>
+      </svg>`;
+    },
+    branch: () => `
+      <svg viewBox="0 0 240 110">
+        <circle class="gly-dot gly-anim-fade" cx="40" cy="55" r="6"/>
+        <path class="gly-stroke gly-anim-draw" d="M46 55 Q90 55 110 30 Q130 5 180 22"/>
+        <path class="gly-stroke gly-anim-draw" d="M46 55 Q90 55 110 55 Q140 55 180 55" style="animation-delay:120ms"/>
+        <path class="gly-stroke gly-anim-draw" d="M46 55 Q90 55 110 80 Q130 105 180 88" style="animation-delay:240ms"/>
+        <circle class="gly-dot-dim gly-anim-fade" cx="186" cy="22" r="5"/>
+        <circle class="gly-dot-dim gly-anim-fade" cx="186" cy="55" r="5"/>
+        <circle class="gly-dot-dim gly-anim-fade" cx="186" cy="88" r="5"/>
+        <text class="gly-label" x="120" y="14" text-anchor="middle">Multi-pathway exploration</text>
+      </svg>`,
+    grades: (counts) => {
+      // counts = [10th, 11th, 12th]
+      const max = Math.max(...counts.map(c => c || 1), 1);
+      const labels = ['10th', '11th', '12th'];
+      const winnerIdx = counts.indexOf(Math.max(...counts));
+      return `
+      <svg viewBox="0 0 240 110">
+        ${counts.map((c, i) => {
+          const x = 36 + i * 60;
+          const isWinner = i === winnerIdx && c > 0;
+          const r = 24 + (c || 0) / max * 14;
+          const fill = isWinner ? 'var(--color-warning)' : 'rgba(30,42,74,0.18)';
+          return `
+            <circle class="gly-anim-fade" cx="${x}" cy="50" r="${r}" fill="${fill}" style="animation-delay:${i * 80}ms"/>
+            <text class="gly-num gly-anim-fade" x="${x}" y="54" text-anchor="middle" fill="${isWinner ? '#a66a06' : 'var(--navy)'}" style="animation-delay:${i * 80 + 200}ms">${c || 0}</text>
+            <text class="gly-label" x="${x}" y="100" text-anchor="middle">${labels[i]}</text>
+          `;
+        }).join('')}
+      </svg>`;
+    },
+    arrow: () => `
+      <svg viewBox="0 0 240 110">
+        <path class="gly-stroke gly-anim-draw" d="M30 55 L190 55"/>
+        <path class="gly-stroke gly-anim-draw" d="M170 38 L200 55 L170 72" style="animation-delay:200ms"/>
+        <text class="gly-label" x="30" y="92">Today</text>
+        <text class="gly-label" x="195" y="92" text-anchor="end">Three priorities</text>
+      </svg>`
+  };
+
+  // ============================================================
+  // INSIGHT CARDS — 10 editorial cards
+  // ============================================================
+  function renderInsights(data, programs, retention) {
+    const grid = document.getElementById('insightsGrid');
+
+    // ---- Card 1: Pipeline Leak ----
+    const totalConcentrators = Object.values(data.byPathway).reduce((s, p) => s + p.level2, 0);
+    const totalCapstone = Object.values(data.byPathway).reduce((s, p) => s + p.completers, 0);
+    const totalStuck = totalConcentrators - totalCapstone;
+    const overallLeakRate = totalConcentrators > 0 ? (totalStuck / totalConcentrators * 100) : 0;
+    const uniqueStuckIds = new Set();
+    Object.values(data.studentMap).forEach(s => {
+      for (const info of Object.values(s.pathways)) {
+        if (info.hasLevel2 && !info.completer) { uniqueStuckIds.add(s.id); break; }
+      }
+    });
+    const uniqueStuck = uniqueStuckIds.size;
+
+    // ---- Card 2: Gap Year Effect ----
+    const u = data.progressionAnalysis.unique;
+    const consecRate = u.totalL2 > 0 ? (u.consecutive / u.totalL2 * 100) : 0;
+    const gapRate    = u.totalL2 > 0 ? (u.gap / u.totalL2 * 100) : 0;
+    const neverRate  = u.totalL2 > 0 ? (u.neverL3 / u.totalL2 * 100) : 0;
+    const diff = consecRate - gapRate;
+
+    // ---- Card 3: School variance ----
+    const schoolRates = SCHOOL_CODES.map(s => {
+      const bs = data.bySchool[s];
+      if (!bs || bs.participants === 0) return { school: s, label: SCHOOL_NAMES[s], rate: null };
+      return { school: s, label: SCHOOL_NAMES[s], rate: (bs.completers / bs.participants * 100) };
+    });
+    const ratedSchools = schoolRates.filter(r => r.rate != null);
+    const schoolMin = ratedSchools.reduce((a, b) => (a.rate < b.rate ? a : b), ratedSchools[0]);
+    const schoolMax = ratedSchools.reduce((a, b) => (a.rate > b.rate ? a : b), ratedSchools[0]);
+    const schoolSpread = schoolMax && schoolMin ? schoolMax.rate / Math.max(schoolMin.rate, 1) : 1;
+
+    // ---- Card 4: Top vs bottom pathways ----
+    const pathwayPerf = retention.visible.map(pw => ({
+      pw, rate: retention.pwAvg(pw)
+    })).sort((a, b) => b.rate - a.rate);
+    const topThree = pathwayPerf.slice(0, 3);
+    const bottomThree = pathwayPerf.slice(-3).reverse();
+    const topAvg = topThree.length > 0 ? topThree.reduce((s, p) => s + p.rate, 0) / topThree.length : 0;
+    const botAvg = bottomThree.length > 0 ? bottomThree.reduce((s, p) => s + p.rate, 0) / bottomThree.length : 0;
+
+    // ---- Card 5: D/F (best-effort with GRADE_BY_PATHWAY if present) ----
+    const gradeData = (typeof GRADE_BY_PATHWAY !== 'undefined') ? GRADE_BY_PATHWAY : [];
+    const dfAgg = {};
+    gradeData.forEach(g => {
+      if (!dfAgg[g.pathway]) dfAgg[g.pathway] = { pathway: g.pathway, total: 0, dfCount: 0 };
+      dfAgg[g.pathway].total += g.total;
+      dfAgg[g.pathway].dfCount += g.dCount + g.fCount;
+    });
+    const dfList = Object.values(dfAgg)
+      .map(p => ({ ...p, dfPct: p.total > 0 ? (p.dfCount / p.total * 100) : 0 }))
+      .filter(p => p.total >= 10)
+      .sort((a, b) => b.dfPct - a.dfPct);
+    const highDFCount = dfList.filter(p => p.dfPct >= 10).length;
+    const worstDF = dfList[0];
+
+    // ---- Card 6: AVID years ----
+    const avidY1 = programs.avidYears[0];
+    const avidY4 = programs.avidYears[3];
+    const avidGain = (avidY4.compRate || 0) - (avidY1.compRate || 0);
+
+    // ---- Card 7: EL/SpEd vs district ----
+    const districtCompRate = data.totalStudents > 0
+      ? (data.completers / data.totalStudents * 100) : 0;
+
+    // ---- Card 8: Multi-pathway dilution ----
+    const singleStudents = [];
+    const multiStudents = [];
+    Object.values(data.studentMap).forEach(s => {
+      const n = Object.keys(s.pathways).length;
+      if (n === 1) singleStudents.push(s);
+      else if (n >= 2) multiStudents.push(s);
+    });
+    const singleComp = singleStudents.filter(s => s.isCompleter).length;
+    const multiComp  = multiStudents.filter(s => s.isCompleter).length;
+    const singleRate = singleStudents.length > 0 ? (singleComp / singleStudents.length * 100) : 0;
+    const multiRate  = multiStudents.length  > 0 ? (multiComp  / multiStudents.length  * 100) : 0;
+
+    // ---- Card 9: Most skipped grade ----
+    const sk = data.skippedGrades;
+    const skTotal = (sk['10th'] || 0) + (sk['11th'] || 0) + (sk['12th'] || 0);
+    const skEntries = Object.entries(sk).sort((a, b) => b[1] - a[1]);
+    const mostSkipped = skEntries[0] || ['11th', 0];
+    const mostSkippedPct = skTotal > 0 ? (mostSkipped[1] / skTotal * 100) : 0;
+
+    // ----- BUILD CARDS -----
+    const cards = [];
+
+    cards.push(`
+      <article class="insight-card">
+        <div class="insight-glyph">${GLYPHS.funnel()}</div>
+        <span class="insight-num">01</span>
+        <h3 class="insight-headline">The pipeline leaks between Concentrator and Capstone.</h3>
+        <p class="insight-body">
+          <strong>${uniqueStuck.toLocaleString()}</strong> unique students reached Level&nbsp;2 but never reached capstone — accounting for <strong>${totalStuck.toLocaleString()}</strong> pathway gaps across the district. The overall leak rate is <strong>${overallLeakRate.toFixed(1)}%</strong>. This is the single largest point of attrition in the system.
+        </p>
+        <div class="insight-tags">
+          <span class="insight-tag insight-tag--danger">Primary barrier</span>
+          <span class="insight-tag">Retention</span>
+        </div>
+      </article>`);
+
+    cards.push(`
+      <article class="insight-card">
+        <div class="insight-glyph">${GLYPHS.twoBars(consecRate, gapRate)}</div>
+        <span class="insight-num">02</span>
+        <h3 class="insight-headline">A skipped year almost always ends the pathway.</h3>
+        <p class="insight-body">
+          Of <strong>${u.totalL2.toLocaleString()}</strong> students who reached concentrator, <strong>${consecRate.toFixed(1)}%</strong> took capstone within one year. After a gap of two or more years, only <strong>${gapRate.toFixed(1)}%</strong> ever returned — a <strong>${diff.toFixed(1)}-point</strong> drop. <strong>${u.neverL3.toLocaleString()}</strong> never took capstone in any pathway.
+        </p>
+        <div class="insight-tags">
+          <span class="insight-tag insight-tag--warn">Gap year</span>
+          <span class="insight-tag">Scheduling</span>
+        </div>
+      </article>`);
+
+    cards.push(`
+      <article class="insight-card">
+        <div class="insight-glyph">${GLYPHS.schoolHeat(schoolRates)}</div>
+        <span class="insight-num">03</span>
+        <h3 class="insight-headline">Completion rates vary sharply between schools.</h3>
+        <p class="insight-body">
+          ${schoolMax && schoolMin ? `<strong>${schoolMax.label}</strong> completes pathways at <strong>${schoolMax.rate.toFixed(1)}%</strong> of participants; <strong>${schoolMin.label}</strong> at <strong>${schoolMin.rate.toFixed(1)}%</strong> — a <strong>${schoolSpread.toFixed(1)}×</strong> spread. The same pathways, taught at different sites, are not yielding the same results.` : 'Per-school rates not available.'}
+        </p>
+        <div class="insight-tags">
+          <span class="insight-tag insight-tag--teal">Equity</span>
+          <span class="insight-tag">Schools</span>
+        </div>
+      </article>`);
+
+    cards.push(`
+      <article class="insight-card">
+        <div class="insight-glyph">${GLYPHS.rankedBars()}</div>
+        <span class="insight-num">04</span>
+        <h3 class="insight-headline">A handful of pathways carry the system.</h3>
+        <p class="insight-body">
+          The strongest three pathways average <strong>${topAvg.toFixed(1)}%</strong> retention; the weakest three average <strong>${botAvg.toFixed(1)}%</strong>. Strongest: <strong>${topThree.map(t => t.pw).join(', ')}</strong>. Weakest: <strong>${bottomThree.map(t => t.pw).join(', ')}</strong>.
+        </p>
+        <div class="insight-tags">
+          <span class="insight-tag">Pathways</span>
+          <span class="insight-tag">Concentration</span>
+        </div>
+      </article>`);
+
+    cards.push(`
+      <article class="insight-card">
+        <div class="insight-glyph">${GLYPHS.inverseBars()}</div>
+        <span class="insight-num">05</span>
+        <h3 class="insight-headline">D and F rates gate progression in specific pathways.</h3>
+        <p class="insight-body">
+          ${dfList.length > 0 ? `<strong>${highDFCount}</strong> pathway${highDFCount === 1 ? '' : 's'} run a D/F rate at or above 10%. Highest: <strong>${worstDF.pathway}</strong> at <strong>${worstDF.dfPct.toFixed(1)}%</strong>. Where students fail Level&nbsp;2, they don't typically reach Level&nbsp;3 — academic failure is a structural barrier, not just an outcome.` : 'D/F data unavailable in this dataset.'}
+        </p>
+        <div class="insight-tags">
+          <span class="insight-tag insight-tag--danger">Academic barrier</span>
+          <span class="insight-tag">Grades</span>
+        </div>
+      </article>`);
+
+    cards.push(`
+      <article class="insight-card">
+        <div class="insight-glyph">${GLYPHS.steps()}</div>
+        <span class="insight-num">06</span>
+        <h3 class="insight-headline">AVID compounds — more years, more CTE.</h3>
+        <p class="insight-body">
+          ${avidY1.total > 0 || avidY4.total > 0 ? `Single-year AVID students complete CTE pathways at <strong>${avidY1.compRate.toFixed(1)}%</strong>. Four-year AVID students complete at <strong>${avidY4.compRate.toFixed(1)}%</strong>${avidGain > 0 ? ` — a <strong>${avidGain.toFixed(1)}-point</strong> gain that scales with sustained participation.` : '.'}` : 'AVID participation data unavailable.'}
+        </p>
+        <div class="insight-tags">
+          <span class="insight-tag insight-tag--teal">AVID</span>
+          <span class="insight-tag">Compounding</span>
+        </div>
+      </article>`);
+
+    cards.push(`
+      <article class="insight-card">
+        <div class="insight-glyph">${GLYPHS.threeBars(programs.avid.compRate, programs.el.compRate, programs.sped.compRate)}</div>
+        <span class="insight-num">07</span>
+        <h3 class="insight-headline">EL and SpEd reach CTE — but complete it less.</h3>
+        <p class="insight-body">
+          AVID completer rate: <strong>${programs.avid.compRate.toFixed(1)}%</strong>. EL: <strong>${programs.el.compRate.toFixed(1)}%</strong>. SpEd: <strong>${programs.sped.compRate.toFixed(1)}%</strong>. District baseline: <strong>${districtCompRate.toFixed(1)}%</strong>. The access gap is narrower than the retention gap; getting into CTE is not the same as finishing it.
+        </p>
+        <div class="insight-tags">
+          <span class="insight-tag insight-tag--teal">Equity</span>
+          <span class="insight-tag">Programs</span>
+        </div>
+      </article>`);
+
+    cards.push(`
+      <article class="insight-card">
+        <div class="insight-glyph">${GLYPHS.branch()}</div>
+        <span class="insight-num">08</span>
+        <h3 class="insight-headline">Multi-pathway students rarely complete any.</h3>
+        <p class="insight-body">
+          Single-pathway students complete at <strong>${singleRate.toFixed(1)}%</strong> (<strong>${singleComp.toLocaleString()}</strong> of <strong>${singleStudents.length.toLocaleString()}</strong>). Students spread across two or more pathways complete at <strong>${multiRate.toFixed(1)}%</strong>. Exploration without commitment is the dilution effect at work.
+        </p>
+        <div class="insight-tags">
+          <span class="insight-tag">Pathways</span>
+          <span class="insight-tag">Commitment</span>
+        </div>
+      </article>`);
+
+    cards.push(`
+      <article class="insight-card">
+        <div class="insight-glyph">${GLYPHS.grades([sk['10th']||0, sk['11th']||0, sk['12th']||0])}</div>
+        <span class="insight-num">09</span>
+        <h3 class="insight-headline">${mostSkipped[0]} grade is where the pathway most often ends.</h3>
+        <p class="insight-body">
+          Among <strong>${data.gapStudentCount.toLocaleString()}</strong> students who never reached capstone in any pathway, <strong>${mostSkipped[1].toLocaleString()}</strong> (<strong>${mostSkippedPct.toFixed(0)}%</strong>) lost the year right after their concentrator at <strong>${mostSkipped[0]} grade</strong>. Master schedules built without sequential CTE create this gap.
+        </p>
+        <div class="insight-tags">
+          <span class="insight-tag insight-tag--warn">Scheduling</span>
+          <span class="insight-tag">${mostSkipped[0]} grade</span>
+        </div>
+      </article>`);
+
+    cards.push(`
+      <article class="insight-card insight-card--wide">
+        <span class="insight-num">10</span>
+        <h3 class="insight-headline">What the data points to.</h3>
+        <p class="insight-body">
+          Three priorities sit on top of these nine signals — none of them about CTE programs in isolation, all of them about the system the pathways live inside. <strong>First, sequential scheduling.</strong> Build master schedules so concentrators land in capstone the next year, not two years later. <strong>Second, pathway commitment by tenth grade.</strong> Students choose, then complete; spreading thin guarantees neither. <strong>Third, the academic floor.</strong> Pathways with sustained D/F rates need instructional support, not enrollment pressure — failing Level&nbsp;2 is the same as exiting.
+        </p>
+        <div class="insight-tags">
+          <span class="insight-tag">Action</span>
+          <span class="insight-tag insight-tag--teal">For the cabinet</span>
+        </div>
+      </article>`);
+
+    grid.innerHTML = cards.join('');
+  }
+
+  // ============================================================
+  // FINDINGS — KPIs, heatmap, charts
+  // ============================================================
+  function renderKPIs(data) {
+    const totalConcentrators = Object.values(data.byPathway).reduce((s, p) => s + p.level2, 0);
+    const totalCapstone = Object.values(data.byPathway).reduce((s, p) => s + p.completers, 0);
+    const stuck = totalConcentrators - totalCapstone;
+
+    document.getElementById('kpiTotal').textContent = data.totalStudents.toLocaleString();
+    document.getElementById('kpiConc').textContent = data.participants.toLocaleString();
+    document.getElementById('kpiConcCtx').textContent = `${pct(data.participants, data.totalStudents)} of all graduates reached Level 2 in at least one pathway.`;
+    document.getElementById('kpiComp').textContent = data.completers.toLocaleString();
+    document.getElementById('kpiCompCtx').textContent = `${pct(data.completers, data.participants)} of concentrators reached capstone.`;
+    document.getElementById('kpiStuck').textContent = stuck.toLocaleString();
+    document.getElementById('kpiStuckCtx').textContent = `${(totalConcentrators > 0 ? stuck / totalConcentrators * 100 : 0).toFixed(1)}% of concentrators across all pathways.`;
+  }
+
+  function renderHeatmap(retention) {
+    const wrap = document.getElementById('heatmapWrap');
+    let html = '<table class="matrix-heat"><thead><tr><th>Pathway</th>';
+    SCHOOL_CODES.forEach(s => { html += `<th>${SCHOOL_NAMES[s]}</th>`; });
+    html += '<th>Avg</th></tr></thead><tbody>';
+    retention.visible.forEach(pw => {
+      html += `<tr><td>${pw}</td>`;
+      SCHOOL_CODES.forEach(sch => {
+        const cell = retention.grid[pw][sch];
+        if (!cell || cell.level2 < 5) {
+          const hasAny = cell && cell.level2 > 0;
+          html += `<td class="heat heat-empty">${hasAny ? '<5' : '—'}</td>`;
+        } else {
+          const lvl = colorLevel(cell.retentionRate);
+          html += `<td class="heat heat-l${lvl}" title="${cell.completers} of ${cell.level2} concentrators">${cell.retentionRate.toFixed(0)}%</td>`;
+        }
+      });
+      const avg = retention.pwAvg(pw);
+      html += `<td class="heat heat-l${colorLevel(avg)}">${avg.toFixed(0)}%</td></tr>`;
+    });
+    html += '</tbody></table>';
+    wrap.innerHTML = html;
+
+    document.getElementById('heatmapNote').textContent =
+      `${retention.visible.length} pathways with 5+ concentrators at one or more schools. ` +
+      `District retention average is ${retention.districtAvg.toFixed(1)}% across ${retention.totalConc.toLocaleString()} concentrators.`;
+  }
+
+  function renderPipelineChart(data) {
+    const pipelineLeak = Object.values(data.byPathway)
+      .filter(p => p.level2 >= 5)
+      .map(p => ({
+        label: `${normPathway(p.pathway)} (${SCHOOL_NAMES[p.school]})`,
+        concentrators: p.level2, completers: p.completers,
+        stuck: p.level2 - p.completers,
+        leakRate: ((p.level2 - p.completers) / p.level2 * 100)
+      }))
+      .sort((a, b) => b.stuck - a.stuck)
+      .slice(0, 12);
+
+    new Chart(document.getElementById('chartPipeline'), {
+      type: 'bar',
+      data: {
+        labels: pipelineLeak.map(p => p.label.length > 36 ? p.label.substring(0, 34) + '…' : p.label),
+        datasets: [
+          { label: 'Reached capstone', data: pipelineLeak.map(p => p.completers), backgroundColor: '#0f4c4c', borderRadius: 3 },
+          { label: 'Stuck at Level 2', data: pipelineLeak.map(p => p.stuck), backgroundColor: '#EF4444', borderRadius: 3 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 12 } } },
+          tooltip: { callbacks: { label: ctx => {
+            const p = pipelineLeak[ctx.dataIndex];
+            return ctx.dataset.label === 'Stuck at Level 2'
+              ? `${p.stuck} stuck (${p.leakRate.toFixed(0)}% leak rate)`
+              : `${p.completers} reached capstone`;
+          }}}
+        },
+        scales: {
+          x: { stacked: true, beginAtZero: true, grid: { color: 'rgba(30,42,74,0.06)' }, ticks: { font: { family: 'Inter', size: 11 } } },
+          y: { stacked: true, ticks: { font: { family: 'Inter', size: 11 } } }
+        }
+      }
+    });
+  }
+
+  function renderPathwayGapChart(data) {
+    const pgap = data.pathwayGapAnalysis;
+    const entries = Object.entries(pgap)
+      .map(([pw, d]) => ({
+        pw,
+        consRate: d.totalL2 > 0 ? (d.consecutive.count / d.totalL2 * 100) : 0,
+        gapRate:  d.totalL2 > 0 ? (d.gap.count / d.totalL2 * 100) : 0,
+        consCount: d.consecutive.count,
+        gapCount: d.gap.count,
+        totalL2: d.totalL2
+      }))
+      .filter(p => p.totalL2 >= 5)
+      .sort((a, b) => (b.consRate - b.gapRate) - (a.consRate - a.gapRate));
+
+    new Chart(document.getElementById('chartPathwayGap'), {
+      type: 'bar',
+      data: {
+        labels: entries.map(p => normPathway(p.pw)),
+        datasets: [
+          { label: 'Consecutive (within 1 year)', data: entries.map(p => p.consRate.toFixed(1)),
+            backgroundColor: '#0f4c4c', borderRadius: 3, barPercentage: 0.75 },
+          { label: 'Gap (2+ years)', data: entries.map(p => p.gapRate.toFixed(1)),
+            backgroundColor: '#F59E0B', borderRadius: 3, barPercentage: 0.75 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 12 } } },
+          tooltip: { callbacks: { label: ctx => {
+            const p = entries[ctx.dataIndex];
+            if (ctx.datasetIndex === 0) return `Consecutive: ${ctx.parsed.x}% (${p.consCount} of ${p.totalL2})`;
+            return `Gap: ${ctx.parsed.x}% (${p.gapCount} of ${p.totalL2})`;
+          }}}
+        },
+        scales: {
+          x: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%', font: { family: 'Inter', size: 11 } }, grid: { color: 'rgba(30,42,74,0.06)' } },
+          y: { ticks: { font: { family: 'Inter', size: 11 } } }
+        }
+      }
+    });
+  }
+
+  function renderProgramCharts(data, programs) {
+    if (!programs._hasAny) return;
+    const labels = ['AVID', 'EL', 'SpEd'];
+    const colors = ['#0f4c4c', '#F59E0B', '#6e6355'];
+    const stats = [programs.avid, programs.el, programs.sped];
+
+    new Chart(document.getElementById('chartProgramPipeline'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [
+          { label: 'Concentrator rate', data: stats.map(s => s.partRate), backgroundColor: colors.map(c => c + '60'), borderColor: colors, borderWidth: 1, borderRadius: 3, barPercentage: 0.7 },
+          { label: 'Completer rate', data: stats.map(s => s.compRate), backgroundColor: colors, borderRadius: 3, barPercentage: 0.7 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 12 } } },
+          tooltip: { callbacks: { label: ctx => {
+            const s = stats[ctx.dataIndex];
+            const which = ctx.datasetIndex === 0 ? 'concentrators' : 'completers';
+            const cnt = ctx.datasetIndex === 0 ? s.cte : s.completers;
+            return `${cnt} ${which} of ${s.total} (${ctx.parsed.y.toFixed(1)}%)`;
+          }}}
+        },
+        scales: {
+          y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%', font: { family: 'Inter', size: 11 } }, grid: { color: 'rgba(30,42,74,0.06)' } },
+          x: { ticks: { font: { family: 'Inter', size: 11 } } }
+        }
+      }
+    });
+
+    const yearLabels = ['1 Year', '2 Years', '3 Years', '4 Years'];
+    const yStats = programs.avidYears;
+
+    new Chart(document.getElementById('chartAvidYears'), {
+      type: 'bar',
+      data: {
+        labels: yearLabels,
+        datasets: [
+          { label: 'Concentrator rate', data: yStats.map(s => s.partRate.toFixed(1)), backgroundColor: '#1e2a4a60', borderColor: '#1e2a4a', borderWidth: 1, borderRadius: 3, barPercentage: 0.7 },
+          { label: 'Completer rate', data: yStats.map(s => s.compRate.toFixed(1)), backgroundColor: '#0f4c4c', borderRadius: 3, barPercentage: 0.7 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 12 } } },
+          tooltip: { callbacks: { label: ctx => {
+            const s = yStats[ctx.dataIndex];
+            const which = ctx.datasetIndex === 0 ? 'concentrators' : 'completers';
+            const cnt = ctx.datasetIndex === 0 ? s.cte : s.completers;
+            return `${cnt} ${which} of ${s.total} (${ctx.parsed.y}%)`;
+          }}}
+        },
+        scales: {
+          y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%', font: { family: 'Inter', size: 11 } }, grid: { color: 'rgba(30,42,74,0.06)' } },
+          x: { ticks: { font: { family: 'Inter', size: 11 } } }
+        }
+      }
+    });
+  }
+
+  // ============================================================
+  // KARST CHART PALETTE — shared across the new charts
+  // ============================================================
+  const KARST = {
+    navy: '#1e2a4a',
+    navySoft: 'rgba(30, 42, 74, 0.40)',
+    navyGhost: 'rgba(30, 42, 74, 0.18)',
+    teal: '#0f4c4c',
+    tealSoft: 'rgba(15, 76, 76, 0.40)',
+    warm: '#F59E0B',
+    warmSoft: 'rgba(245, 158, 11, 0.50)',
+    danger: '#EF4444',
+    dangerSoft: 'rgba(239, 68, 68, 0.40)',
+    secondary: '#6e6355',
+    secondarySoft: 'rgba(110, 99, 85, 0.40)',
+    grid: 'rgba(30, 42, 74, 0.06)',
+    border: 'rgba(30, 42, 74, 0.15)'
+  };
+  const KARST_FONT = { family: 'Inter', size: 11 };
+  const KARST_LEGEND = { position: 'bottom', labels: { font: { family: 'Inter', size: 12 }, padding: 14, usePointStyle: true, pointStyle: 'rect' } };
+
+  // ============================================================
+  // CHART: Concentrators vs Completers by industry sector
+  // ============================================================
+  function renderSectorChart(data) {
+    const sectorAgg = {};
+    Object.values(data.byPathway).forEach(p => {
+      const sector = PATHWAY_TO_SECTOR[normPathway(p.pathway)] || 'Other';
+      if (!sectorAgg[sector]) sectorAgg[sector] = { concentrators: 0, completers: 0 };
+      sectorAgg[sector].concentrators += p.level2;
+      sectorAgg[sector].completers += p.completers;
+    });
+    const sorted = Object.entries(sectorAgg).sort((a, b) => b[1].concentrators - a[1].concentrators);
+
+    new Chart(document.getElementById('chartSector'), {
+      type: 'bar',
+      data: {
+        labels: sorted.map(([name]) => name),
+        datasets: [
+          { label: 'Concentrators (L2)', data: sorted.map(([, d]) => d.concentrators), backgroundColor: KARST.navySoft, borderColor: KARST.navy, borderWidth: 1, borderRadius: 3 },
+          { label: 'Completers (L3)',    data: sorted.map(([, d]) => d.completers),    backgroundColor: KARST.teal,    borderRadius: 3 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        plugins: {
+          legend: KARST_LEGEND,
+          tooltip: { callbacks: { label: ctx => {
+            const d = sorted[ctx.dataIndex][1];
+            const rate = d.concentrators > 0 ? (d.completers / d.concentrators * 100).toFixed(0) : '—';
+            return ctx.dataset.label === 'Completers (L3)'
+              ? `Completers: ${d.completers} (${rate}% of concentrators)`
+              : `Concentrators: ${d.concentrators}`;
+          }}}
+        },
+        scales: {
+          x: { beginAtZero: true, grid: { color: KARST.grid }, ticks: { font: KARST_FONT } },
+          y: { ticks: { font: KARST_FONT } }
+        }
+      }
+    });
+  }
+
+  // ============================================================
+  // CHART: Consecutive vs Gap (district headline, 2 bars)
+  // ============================================================
+  function renderGapHeadlineChart(data) {
+    const u = data.progressionAnalysis.unique;
+    const consecRate = u.totalL2 > 0 ? (u.consecutive / u.totalL2 * 100) : 0;
+    const gapRate    = u.totalL2 > 0 ? (u.gap / u.totalL2 * 100) : 0;
+    new Chart(document.getElementById('chartGapHeadline'), {
+      type: 'bar',
+      data: {
+        labels: ['Consecutive (within 1 year)', 'Gap (2 or more years)'],
+        datasets: [{
+          label: 'Capstone uptake rate',
+          data: [consecRate.toFixed(1), gapRate.toFixed(1)],
+          backgroundColor: [KARST.teal, KARST.warm],
+          borderRadius: 4, barPercentage: 0.45
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => {
+            const count = ctx.dataIndex === 0 ? u.consecutive : u.gap;
+            return `${ctx.parsed.y}% — ${count} of ${u.totalL2} concentrators`;
+          }}}
+        },
+        scales: {
+          y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%', font: KARST_FONT }, grid: { color: KARST.grid } },
+          x: { ticks: { font: KARST_FONT } }
+        }
+      }
+    });
+  }
+
+  // ============================================================
+  // CHART: Which grade tends to be skipped
+  // ============================================================
+  function renderSkippedGradeChart(data) {
+    const sk = data.skippedGrades;
+    const counts = [sk['10th'] || 0, sk['11th'] || 0, sk['12th'] || 0];
+    const max = Math.max(...counts);
+    const colors = counts.map(c => c === max && c > 0 ? KARST.warm : KARST.navySoft);
+    new Chart(document.getElementById('chartSkippedGrade'), {
+      type: 'bar',
+      data: {
+        labels: ['10th grade', '11th grade', '12th grade'],
+        datasets: [{
+          label: 'Students whose pathway ended at this grade',
+          data: counts,
+          backgroundColor: colors,
+          borderRadius: 4, barPercentage: 0.5
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => {
+            const total = counts.reduce((a, b) => a + b, 0);
+            const p = total > 0 ? (ctx.parsed.y / total * 100).toFixed(0) : 0;
+            return `${ctx.parsed.y} students (${p}% of skipped grades)`;
+          }}}
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { precision: 0, font: KARST_FONT }, grid: { color: KARST.grid } },
+          x: { ticks: { font: KARST_FONT } }
+        }
+      }
+    });
+  }
+
+  // ============================================================
+  // CHART: What happens after a gap year (donut)
+  // ============================================================
+  function renderPostGapChart(data) {
+    const pg = data.postGapBehavior;
+    const total = pg.returned + pg.switched + pg.stopped;
+    new Chart(document.getElementById('chartPostGap'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Returned to same pathway', 'Switched to different pathway', 'No further CTE'],
+        datasets: [{
+          data: [pg.returned, pg.switched, pg.stopped],
+          backgroundColor: [KARST.teal, KARST.warm, KARST.danger],
+          borderWidth: 2, borderColor: '#fffcf7'
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        cutout: '62%',
+        plugins: {
+          legend: KARST_LEGEND,
+          tooltip: { callbacks: { label: ctx => {
+            const v = ctx.parsed;
+            const p = total > 0 ? (v / total * 100).toFixed(0) : 0;
+            return `${ctx.label}: ${v} (${p}%)`;
+          }}}
+        }
+      }
+    });
+  }
+
+  // ============================================================
+  // CHART: Multi-pathway dilution (donut + completion overlay)
+  // ============================================================
+  function renderMultiPathwayChart(data) {
+    const counts = { 1: 0, 2: 0, 3: 0, '4+': 0 };
+    const completed = { 1: 0, 2: 0, 3: 0, '4+': 0 };
+    const buckets = (n) => n === 1 ? 1 : n === 2 ? 2 : n === 3 ? 3 : '4+';
+    Object.values(data.studentMap).forEach(s => {
+      const n = Object.keys(s.pathways).length;
+      if (n === 0) return;
+      const b = buckets(n);
+      counts[b]++;
+      if (s.isCompleter) completed[b]++;
+    });
+    const labels = ['1 pathway', '2 pathways', '3 pathways', '4+ pathways'];
+    const keys = [1, 2, 3, '4+'];
+    new Chart(document.getElementById('chartMultiPathway'), {
+      type: 'doughnut',
+      data: {
+        labels,
+        datasets: [{
+          data: keys.map(k => counts[k]),
+          backgroundColor: [KARST.navy, KARST.teal, KARST.warm, KARST.secondary],
+          borderWidth: 2, borderColor: '#fffcf7'
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        cutout: '62%',
+        plugins: {
+          legend: KARST_LEGEND,
+          tooltip: { callbacks: { label: ctx => {
+            const k = keys[ctx.dataIndex];
+            const total = counts[k];
+            const comp = completed[k];
+            const compPct = total > 0 ? (comp / total * 100).toFixed(0) : 0;
+            return `${ctx.label}: ${total} students · ${comp} complete (${compPct}%)`;
+          }}}
+        }
+      }
+    });
+    // Footer note
+    const single = counts[1];
+    const multi = counts[2] + counts[3] + counts['4+'];
+    const singleComp = completed[1];
+    const multiComp = completed[2] + completed[3] + completed['4+'];
+    const singleRate = single > 0 ? (singleComp / single * 100).toFixed(0) : '—';
+    const multiRate  = multi  > 0 ? (multiComp  / multi  * 100).toFixed(0) : '—';
+    const note = document.getElementById('multiPathwayNote');
+    if (note) note.innerHTML = `<strong>Single-pathway:</strong> ${singleRate}% complete (${singleComp} of ${single}). <strong>Two or more:</strong> ${multiRate}% complete (${multiComp} of ${multi}). The dilution effect is visible in the gap.`;
+  }
+
+  // ============================================================
+  // CHART: D and F rate by pathway
+  // ============================================================
+  function renderDFRateChart(data) {
+    if (typeof GRADE_BY_PATHWAY === 'undefined') return;
+    const agg = {};
+    GRADE_BY_PATHWAY.forEach(g => {
+      if (!agg[g.pathway]) agg[g.pathway] = { pathway: g.pathway, total: 0, dfCount: 0 };
+      agg[g.pathway].total += g.total;
+      agg[g.pathway].dfCount += g.dCount + g.fCount;
+    });
+    const list = Object.values(agg)
+      .map(p => ({ ...p, dfPct: p.total > 0 ? (p.dfCount / p.total * 100) : 0 }))
+      .filter(p => p.total >= 10)
+      .sort((a, b) => b.dfPct - a.dfPct);
+    if (list.length === 0) return;
+
+    new Chart(document.getElementById('chartDFRate'), {
+      type: 'bar',
+      data: {
+        labels: list.map(p => normPathway(p.pathway)),
+        datasets: [{
+          label: 'D / F rate',
+          data: list.map(p => p.dfPct.toFixed(1)),
+          backgroundColor: list.map(p => p.dfPct >= 10 ? KARST.danger : p.dfPct >= 5 ? KARST.warm : KARST.tealSoft),
+          borderColor: list.map(p => p.dfPct >= 10 ? KARST.danger : p.dfPct >= 5 ? KARST.warm : KARST.teal),
+          borderWidth: 1,
+          borderRadius: 3, barPercentage: 0.7
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => {
+            const p = list[ctx.dataIndex];
+            return `${ctx.parsed.x}% D/F (${p.dfCount} of ${p.total} grades)`;
+          }}}
+        },
+        scales: {
+          x: { beginAtZero: true, ticks: { callback: v => v + '%', font: KARST_FONT }, grid: { color: KARST.grid } },
+          y: { ticks: { font: KARST_FONT } }
+        }
+      }
+    });
+  }
+
+  // ============================================================
+  // TABS
+  // ============================================================
+  function setupTabs() {
+    const buttons = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        buttons.forEach(b => {
+          const active = b.dataset.tab === target;
+          b.classList.toggle('tab-btn--active', active);
+          b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        panels.forEach(p => {
+          p.classList.toggle('tab-panel--active', p.dataset.panel === target);
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', () => {
+    setupTabs();
+
+    if (typeof ALL_STUDENTS === 'undefined' || typeof PATHWAY_RECORDS === 'undefined') {
+      const grid = document.getElementById('insightsGrid');
+      grid.innerHTML = `<div class="insight-card insight-card--wide">
+        <h3 class="insight-headline">Data not loaded.</h3>
+        <p class="insight-body">Could not find <code>ALL_STUDENTS</code> or <code>PATHWAY_RECORDS</code> in <code>real_data.js</code>. Check the file is present and parses.</p>
+      </div>`;
+      return;
+    }
+
+    const data = processData(ALL_STUDENTS, PATHWAY_RECORDS);
+    const retention = buildRetentionGrid(data);
+    const programs = computeProgramStats(data);
+
+    renderInsights(data, programs, retention);
+    renderKPIs(data);
+    renderHeatmap(retention);
+    renderPipelineChart(data);
+    renderSectorChart(data);
+    renderGapHeadlineChart(data);
+    renderPathwayGapChart(data);
+    renderSkippedGradeChart(data);
+    renderPostGapChart(data);
+    renderMultiPathwayChart(data);
+    renderDFRateChart(data);
+    renderProgramCharts(data, programs);
+
+    // Hero cite with actual numbers
+    const totalConc = Object.values(data.byPathway).reduce((s, p) => s + p.level2, 0);
+    document.getElementById('heroCite').textContent =
+      `Source · synthetic demo dataset · n = ${data.totalStudents.toLocaleString()} graduates · ${totalConc.toLocaleString()} concentrator records · April 2026`;
+  });
+  </script>
+</body>
+</html>

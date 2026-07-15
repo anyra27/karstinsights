@@ -1,0 +1,447 @@
+{
+  "generated_at": "2026-04-28T21:32:34+00:00",
+  "source": {
+    "range": "Responses!A1:Y",
+    "bootstrap": true
+  },
+  "totals": {
+    "n": 524,
+    "by_role": {
+      "parent": 295,
+      "student": 191,
+      "staff": 35,
+      "leadership": 3
+    },
+    "schools_seen": 7,
+    "schools_total": 8
+  },
+  "skills": {
+    "overall": {
+      "collaboration": {
+        "n": 815,
+        "mean": 4.6
+      },
+      "communication": {
+        "n": 850,
+        "mean": 4.83
+      },
+      "critical_thinking": {
+        "n": 919,
+        "mean": 4.82
+      },
+      "agency": {
+        "n": 834,
+        "mean": 4.46
+      },
+      "integrity": {
+        "n": 823,
+        "mean": 4.4
+      },
+      "using_ai": {
+        "n": 854,
+        "mean": 4.17
+      }
+    },
+    "distribution": {
+      "collaboration": [
+        3,
+        11,
+        71,
+        227,
+        493
+      ],
+      "communication": [
+        1,
+        4,
+        28,
+        176,
+        684
+      ],
+      "critical_thinking": [
+        3,
+        5,
+        22,
+        131,
+        697
+      ],
+      "agency": [
+        3,
+        3,
+        45,
+        185,
+        607
+      ],
+      "integrity": [
+        9,
+        19,
+        67,
+        157,
+        621
+      ],
+      "using_ai": [
+        26,
+        29,
+        107,
+        188,
+        427
+      ]
+    },
+    "by_role": {
+      "collaboration": {
+        "parent": {
+          "n": 447,
+          "mean": 4.62
+        },
+        "student": {
+          "n": 262,
+          "mean": 4.28
+        },
+        "staff": {
+          "n": 57,
+          "mean": 4.67
+        },
+        "leadership": {
+          "n": 4,
+          "mean": 5.0
+        }
+      },
+      "communication": {
+        "parent": {
+          "n": 412,
+          "mean": 4.87
+        },
+        "student": {
+          "n": 353,
+          "mean": 4.52
+        },
+        "staff": {
+          "n": 50,
+          "mean": 4.53
+        },
+        "leadership": {
+          "n": 4,
+          "mean": 4.84
+        }
+      },
+      "critical_thinking": {
+        "parent": {
+          "n": 412,
+          "mean": 4.99
+        },
+        "student": {
+          "n": 346,
+          "mean": 4.43
+        },
+        "staff": {
+          "n": 56,
+          "mean": 4.85
+        },
+        "leadership": {
+          "n": 4,
+          "mean": 4.83
+        }
+      },
+      "agency": {
+        "parent": {
+          "n": 499,
+          "mean": 4.71
+        },
+        "student": {
+          "n": 295,
+          "mean": 4.55
+        },
+        "staff": {
+          "n": 61,
+          "mean": 4.77
+        },
+        "leadership": {
+          "n": 4,
+          "mean": 4.51
+        }
+      },
+      "integrity": {
+        "parent": {
+          "n": 498,
+          "mean": 4.68
+        },
+        "student": {
+          "n": 328,
+          "mean": 4.2
+        },
+        "staff": {
+          "n": 52,
+          "mean": 4.87
+        },
+        "leadership": {
+          "n": 4,
+          "mean": 4.92
+        }
+      },
+      "using_ai": {
+        "parent": {
+          "n": 419,
+          "mean": 4.16
+        },
+        "student": {
+          "n": 338,
+          "mean": 4.04
+        },
+        "staff": {
+          "n": 49,
+          "mean": 4.27
+        },
+        "leadership": {
+          "n": 4,
+          "mean": 4.69
+        }
+      }
+    }
+  },
+  "top3": {
+    "overall": {
+      "Communication": 635,
+      "Critical Thinking": 698,
+      "Integrity & Transparency": 430,
+      "Agency": 218,
+      "Collaboration": 361,
+      "Using AI Wisely": 115
+    },
+    "by_role": {
+      "parent": {
+        "Communication": 353,
+        "Critical Thinking": 394,
+        "Integrity & Transparency": 261,
+        "Agency": 129,
+        "Collaboration": 170,
+        "Using AI Wisely": 58
+      },
+      "student": {
+        "Communication": 245,
+        "Critical Thinking": 260,
+        "Integrity & Transparency": 134,
+        "Collaboration": 160,
+        "Agency": 74,
+        "Using AI Wisely": 51
+      },
+      "staff": {
+        "Collaboration": 28,
+        "Agency": 14,
+        "Integrity & Transparency": 33,
+        "Communication": 34,
+        "Critical Thinking": 41,
+        "Using AI Wisely": 6
+      },
+      "leadership": {
+        "Collaboration": 3,
+        "Communication": 3,
+        "Critical Thinking": 3,
+        "Integrity & Transparency": 2,
+        "Agency": 1
+      }
+    },
+    "total_picks": 2347
+  },
+  "schools": {
+    "n_by_school": {
+      "Site E": 146,
+      "Site H": 180,
+      "Site A": 96,
+      "Site C": 68,
+      "Site B": 161,
+      "Other / Prefer not to say": 4,
+      "Site D": 83,
+      "Site G": 15,
+      "Site F": 7,
+      "District Office": 2,
+      "Средняя школа Антелоп": 1
+    },
+    "means_qualified": {
+      "Site E": {
+        "collaboration": 4.44,
+        "communication": 4.64,
+        "critical_thinking": 4.81,
+        "agency": 4.69,
+        "integrity": 4.62,
+        "using_ai": 4.36
+      },
+      "Site H": {
+        "collaboration": 4.61,
+        "communication": 4.62,
+        "critical_thinking": 4.97,
+        "agency": 4.45,
+        "integrity": 4.61,
+        "using_ai": 4.27
+      },
+      "Site A": {
+        "collaboration": 4.53,
+        "communication": 4.74,
+        "critical_thinking": 5.0,
+        "agency": 4.89,
+        "integrity": 4.83,
+        "using_ai": 4.04
+      },
+      "Site C": {
+        "collaboration": 4.31,
+        "communication": 4.63,
+        "critical_thinking": 4.74,
+        "agency": 4.58,
+        "integrity": 4.7,
+        "using_ai": 4.25
+      },
+      "Site B": {
+        "collaboration": 4.52,
+        "communication": 4.52,
+        "critical_thinking": 4.65,
+        "agency": 4.72,
+        "integrity": 4.72,
+        "using_ai": 4.25
+      },
+      "Site D": {
+        "collaboration": 4.64,
+        "communication": 4.64,
+        "critical_thinking": 4.89,
+        "agency": 4.67,
+        "integrity": 4.77,
+        "using_ai": 4.41
+      }
+    },
+    "qualified_threshold": 60
+  },
+  "themes": {
+    "ai": {
+      "counts": {
+        "dont_replace_thinking": 133,
+        "opposed_to_ai": 53,
+        "tool_not_crutch": 223,
+        "integrity_honesty": 120,
+        "verify_accuracy": 85
+      },
+      "by_role": {
+        "dont_replace_thinking": {
+          "parent": 102,
+          "student": 16,
+          "staff": 14,
+          "leadership": 1
+        },
+        "opposed_to_ai": {
+          "student": 40,
+          "parent": 13
+        },
+        "tool_not_crutch": {
+          "student": 57,
+          "parent": 144,
+          "staff": 20,
+          "leadership": 2
+        },
+        "integrity_honesty": {
+          "student": 45,
+          "parent": 60,
+          "staff": 14,
+          "leadership": 1
+        },
+        "verify_accuracy": {
+          "student": 22,
+          "parent": 58,
+          "staff": 5
+        }
+      },
+      "n_with_text": 687
+    },
+    "rl": {
+      "counts": {
+        "self_advocate_independent": 87,
+        "communicate": 134,
+        "real_world_life_skills": 115,
+        "confidence_voice": 89,
+        "adapt_change": 88
+      },
+      "by_role": {
+        "self_advocate_independent": {
+          "student": 19,
+          "parent": 63,
+          "staff": 4,
+          "leadership": 1
+        },
+        "communicate": {
+          "parent": 89,
+          "staff": 13,
+          "student": 31,
+          "leadership": 1
+        },
+        "real_world_life_skills": {
+          "student": 32,
+          "parent": 75,
+          "staff": 8
+        },
+        "confidence_voice": {
+          "student": 17,
+          "parent": 68,
+          "staff": 3,
+          "leadership": 1
+        },
+        "adapt_change": {
+          "student": 16,
+          "parent": 65,
+          "staff": 6,
+          "leadership": 1
+        }
+      },
+      "n_with_text": 636
+    },
+    "ms": {
+      "counts": {
+        "integrity_character": 55,
+        "work_ethic_responsibility": 26,
+        "financial_literacy": 31,
+        "resilience_growth_mindset": 37,
+        "curiosity_lifelong_learning": 17,
+        "empathy_kindness": 52,
+        "time_management_discipline": 18,
+        "mental_health_wellbeing": 16
+      },
+      "by_role": {
+        "integrity_character": {
+          "student": 22,
+          "parent": 30,
+          "staff": 3
+        },
+        "work_ethic_responsibility": {
+          "parent": 20,
+          "student": 3,
+          "staff": 3
+        },
+        "financial_literacy": {
+          "parent": 28,
+          "student": 3
+        },
+        "resilience_growth_mindset": {
+          "staff": 7,
+          "parent": 25,
+          "student": 5
+        },
+        "curiosity_lifelong_learning": {
+          "staff": 2,
+          "parent": 13,
+          "student": 2
+        },
+        "empathy_kindness": {
+          "student": 16,
+          "parent": 31,
+          "staff": 3,
+          "leadership": 2
+        },
+        "time_management_discipline": {
+          "parent": 12,
+          "student": 6
+        },
+        "mental_health_wellbeing": {
+          "parent": 11,
+          "student": 3,
+          "staff": 1,
+          "leadership": 1
+        }
+      },
+      "n_with_text": 354
+    }
+  }
+}
