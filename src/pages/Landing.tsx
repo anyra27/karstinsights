@@ -39,8 +39,8 @@ const SHOW_PROOF = true
 const capabilities = [
   {
     Vignette: DashboardVignette,
-    title: 'A dashboard from your own data.',
-    desc: 'A raw export becomes a board-ready dashboard in an afternoon. Built by your team, owned by your district.',
+    title: 'Decision intelligence from your own data.',
+    desc: 'A raw export becomes a clear, board-ready view of what matters. Built by your team, owned by your district.',
   },
   {
     Vignette: SpeakVignette,
@@ -124,7 +124,7 @@ export default function Landing() {
             custom={0.15}
             className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-on-surface-variant/70 mb-6"
           >
-            Data &amp; Intelligence for Executive Teams
+            Practical AI Capability for School District Leadership
           </motion.p>
 
           <motion.h1
@@ -134,7 +134,7 @@ export default function Landing() {
             custom={0.3}
             className="font-headline font-bold tracking-tight text-4xl md:text-6xl lg:text-7xl text-on-surface leading-[1.02] mb-12 max-w-3xl"
           >
-            Set the <span className="text-sunset-cycle">tempo.</span>
+            Build capability that <span className="text-sunset-cycle">lasts.</span>
           </motion.h1>
 
           <motion.div
@@ -192,8 +192,8 @@ export default function Landing() {
             variants={staggerChild}
             className="font-headline text-2xl md:text-3xl lg:text-4xl text-on-surface leading-snug text-center max-w-3xl mx-auto mb-12 md:mb-14"
           >
-            A capability few districts ever reach.{' '}
-            <span className="font-editorial italic font-normal">One that sets yours apart.</span>
+            Your cabinet learns to build the systems, tools, and habits that make the district more capable.{' '}
+            <span className="font-editorial italic font-normal">Not just talk about AI.</span>
           </motion.h2>
 
           <motion.div
