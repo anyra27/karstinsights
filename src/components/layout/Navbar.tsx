@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -66,7 +66,39 @@ function HamburgerIcon({ open }: { open: boolean }) {
 
 export default function Navbar({ activeNav }: { activeNav?: ActiveNav }) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [darkOverHero, setDarkOverHero] = useState(false)
   const location = useLocation()
+  const isHomeHeroPage = activeNav === 'home' && location.pathname === '/'
+  const navDark = isHomeHeroPage && darkOverHero
+
+  useEffect(() => {
+    if (!isHomeHeroPage) return
+
+    const darkSections = Array.from(document.querySelectorAll<HTMLElement>('[data-karst-nav-dark]'))
+    if (darkSections.length === 0) return
+
+    let frame = 0
+    const update = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        setDarkOverHero(
+          darkSections.some((section) => {
+            const rect = section.getBoundingClientRect()
+            return rect.bottom > 64 && rect.top < 64
+          }),
+        )
+      })
+    }
+
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
+    }
+  }, [isHomeHeroPage])
 
   const isActive = (nav: ActiveNav) =>
     activeNav === nav ||
@@ -77,17 +109,31 @@ export default function Navbar({ activeNav }: { activeNav?: ActiveNav }) {
     (nav === 'contact' && location.pathname === '/contact')
 
   const linkClass = (active: boolean) =>
-    `text-sm font-body px-4 py-2 transition-colors ${
-      active ? 'text-primary font-medium' : 'text-on-surface-variant hover:text-primary'
+    `text-sm font-body px-4 py-2 transition-colors duration-500 ${
+      navDark
+        ? active
+          ? 'text-[#f0eee6] font-medium'
+          : 'text-[#f0eee6]/62 hover:text-[#f0eee6]'
+        : active
+          ? 'text-primary font-medium'
+          : 'text-on-surface-variant hover:text-primary'
     }`
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-outline-variant/10">
+      <nav
+        className={`fixed left-0 right-0 top-0 z-50 border-b backdrop-blur-xl transition-colors duration-500 ${
+          navDark
+            ? 'border-[#f0eee6]/10 bg-[#0e0e0c]/78'
+            : 'glass-nav border-outline-variant/10'
+        }`}
+      >
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
           <Link
             to="/"
-            className="font-label text-[12px] uppercase text-on-surface"
+            className={`font-label text-[12px] uppercase transition-colors duration-500 ${
+              navDark ? 'text-[#f0eee6]' : 'text-on-surface'
+            }`}
             style={{ fontWeight: 500, letterSpacing: '0.42em' }}
           >
             Karst
@@ -125,8 +171,12 @@ export default function Navbar({ activeNav }: { activeNav?: ActiveNav }) {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen((o) => !o)}
-            className="md:hidden p-2 text-on-surface-variant hover:text-primary transition-colors"
-            aria-label="Toggle menu"
+            className={`p-2 transition-colors duration-500 md:hidden ${
+              navDark ? 'text-[#f0eee6]/72 hover:text-[#f0eee6]' : 'text-on-surface-variant hover:text-primary'
+            }`}
+            aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
           >
             <HamburgerIcon open={mobileOpen} />
           </button>
@@ -137,6 +187,10 @@ export default function Navbar({ activeNav }: { activeNav?: ActiveNav }) {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            id="mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

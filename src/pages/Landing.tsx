@@ -8,7 +8,7 @@ import {
 import PageShell from '../components/layout/PageShell'
 import ParallaxImage from '../components/layout/ParallaxImage'
 import DashboardShowcase from '../components/sections/DashboardShowcase'
-import RosevilleProof from '../components/sections/RosevilleProof'
+import DistrictLeadershipProof from '../components/sections/DistrictLeadershipProof'
 import RecastSurface from '../components/art/RecastSurface'
 import WorkingSurfaceGlyph from '../components/art/WorkingSurfaceGlyph'
 import AmbientParticles from '../components/art/AmbientParticles'
@@ -27,8 +27,8 @@ import gem4 from '../assets/gem4.webp'
 import birdOfParadise from '../assets/bird-of-paradise.webp'
 import koi from '../assets/koi.webp'
 
-/* Roseville proof — live. Testimonial from Tony Phan, Chief Communications
-   Officer, RJUHSD (provided for marketing use, 2026-06-03). */
+/* District leadership proof — live testimonials provided for marketing use,
+   with each leader's current role and organization stated individually. */
 const SHOW_PROOF = true
 
 /* ── Capabilities — what the district's own team walks out able to deliver.
@@ -161,8 +161,8 @@ export default function Landing() {
       </section>
 
 
-      {/* ══════════ PROOF — ROSEVILLE (shared with /workshop) ══════════ */}
-      {SHOW_PROOF && <RosevilleProof />}
+      {/* ══════════ PROOF — DISTRICT LEADERS ══════════ */}
+      {SHOW_PROOF && <DistrictLeadershipProof />}
 
 
       {/* ══════════ WHAT YOUR TEAM DELIVERS — capabilities ══════════ */}
