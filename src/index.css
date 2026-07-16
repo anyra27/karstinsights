@@ -285,12 +285,12 @@ body {
 }
 
 .karst-cinematic-hero {
-  height: 1119svh;
+  height: 760svh;
 }
 
 @media (max-width: 720px) {
   .karst-cinematic-hero {
-    height: 1031svh;
+    height: 690svh;
   }
 }
 

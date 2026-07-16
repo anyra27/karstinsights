@@ -4,85 +4,29 @@ const LAYERS = [
   {
     number: '01',
     title: 'District context',
-    detail: 'Priorities, language, brand, and local knowledge.',
-    mark: 'context',
+    detail: 'Priorities · language · local knowledge',
   },
   {
     number: '02',
     title: 'Guardrails',
-    detail: 'Data rules, review gates, and responsible-use boundaries.',
-    mark: 'guardrails',
+    detail: 'Data rules · review gates · boundaries',
   },
   {
     number: '03',
     title: 'Workflows',
-    detail: 'Repeatable methods built around real district work.',
-    mark: 'workflows',
+    detail: 'Repeatable methods for consequential work',
   },
   {
     number: '04',
     title: 'Tools',
-    detail: 'Prompts, templates, applications, and reusable patterns.',
-    mark: 'tools',
+    detail: 'Prompts · templates · working applications',
   },
   {
     number: '05',
     title: 'Ownership',
-    detail: 'The files, knowledge, and capability stay with the district.',
-    mark: 'ownership',
+    detail: 'Files · knowledge · capability',
   },
 ] as const
-
-function LayerMark({ type }: { type: (typeof LAYERS)[number]['mark'] }) {
-  if (type === 'context') {
-    return (
-      <svg viewBox="0 0 54 24" className="h-6 w-[54px]" aria-hidden="true">
-        <path d="M2 18C10 18 10 7 18 7s8 10 16 10 8-8 18-8" fill="none" stroke="currentColor" strokeWidth="1" />
-        <circle cx="18" cy="7" r="2" fill="currentColor" />
-        <circle cx="34" cy="17" r="2" fill="currentColor" />
-      </svg>
-    )
-  }
-
-  if (type === 'guardrails') {
-    return (
-      <svg viewBox="0 0 54 24" className="h-6 w-[54px]" aria-hidden="true">
-        <path d="M8 4h38v16H8z" fill="none" stroke="currentColor" strokeWidth="1" />
-        <path d="M18 4v16M36 4v16" stroke="currentColor" strokeWidth="1" strokeDasharray="2 3" />
-      </svg>
-    )
-  }
-
-  if (type === 'workflows') {
-    return (
-      <svg viewBox="0 0 54 24" className="h-6 w-[54px]" aria-hidden="true">
-        <circle cx="8" cy="12" r="3" fill="none" stroke="currentColor" />
-        <circle cx="27" cy="12" r="3" fill="none" stroke="currentColor" />
-        <circle cx="46" cy="12" r="3" fill="none" stroke="currentColor" />
-        <path d="M11 12h13M30 12h13" stroke="currentColor" />
-      </svg>
-    )
-  }
-
-  if (type === 'tools') {
-    return (
-      <svg viewBox="0 0 54 24" className="h-6 w-[54px]" aria-hidden="true">
-        <rect x="6" y="5" width="12" height="14" fill="none" stroke="currentColor" />
-        <rect x="22" y="5" width="12" height="14" fill="none" stroke="currentColor" />
-        <rect x="38" y="5" width="10" height="14" fill="none" stroke="currentColor" />
-        <path d="M9 9h6M25 9h6M41 9h4" stroke="currentColor" />
-      </svg>
-    )
-  }
-
-  return (
-    <svg viewBox="0 0 54 24" className="h-6 w-[54px]" aria-hidden="true">
-      <path d="M27 3l17 6v7l-17 5-17-5V9l17-6Z" fill="none" stroke="currentColor" />
-      <path d="M10 9l17 6 17-6M27 15v6" fill="none" stroke="currentColor" />
-      <circle cx="27" cy="9" r="2" fill="currentColor" />
-    </svg>
-  )
-}
 
 export default function OperatingKitDiagram() {
   const reduceMotion = Boolean(useReducedMotion())
@@ -91,71 +35,102 @@ export default function OperatingKitDiagram() {
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
-      className="relative overflow-hidden rounded-[3px] border border-[#1e2a4a]/14 bg-[#f3f0e8] shadow-[0_28px_80px_rgba(30,42,74,0.08)]"
+      viewport={{ once: true, margin: '-90px' }}
+      className="relative overflow-hidden rounded-[3px] border border-[#fffcf7]/12 bg-[#131a2c]/88 shadow-[0_34px_100px_rgba(0,0,0,0.3)]"
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.62),transparent_46%),radial-gradient(circle_at_88%_16%,rgba(168,128,42,0.08),transparent_32%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.035),transparent_42%),radial-gradient(circle_at_86%_8%,rgba(196,154,67,0.11),transparent_31%)]"
       />
 
-      <div className="relative flex items-center justify-between border-b border-[#1e2a4a]/10 px-5 py-4 md:px-7">
+      <div className="relative flex items-center justify-between border-b border-[#fffcf7]/10 px-5 py-4 md:px-7">
         <div className="flex items-center gap-3">
-          <span className="h-2 w-2 rounded-full bg-[#a8802a] shadow-[0_0_0_5px_rgba(168,128,42,0.08)]" />
-          <span className="font-label text-[9px] uppercase tracking-[0.3em] text-[#1e2a4a]/62">
+          <motion.span
+            variants={{
+              hidden: { opacity: 0, scale: reduceMotion ? 1 : 0.6 },
+              visible: { opacity: 1, scale: 1, transition: { duration: reduceMotion ? 0 : 0.6 } },
+            }}
+            className="h-2 w-2 rounded-full bg-[#c49a43] shadow-[0_0_18px_rgba(196,154,67,0.55)]"
+          />
+          <span className="font-label text-[9px] uppercase tracking-[0.3em] text-[#fffcf7]/56">
             District AI Operating Kit
           </span>
         </div>
-        <span className="hidden font-label text-[8px] uppercase tracking-[0.26em] text-[#1e2a4a]/36 sm:block">
+        <span className="hidden font-label text-[8px] uppercase tracking-[0.26em] text-[#fffcf7]/28 sm:block">
           District-owned
         </span>
       </div>
 
-      <div className="relative px-5 py-5 md:px-7 md:py-7">
-        <div
-          aria-hidden="true"
-          className="absolute bottom-10 left-[35px] top-10 w-px bg-gradient-to-b from-[#a8802a]/0 via-[#a8802a]/38 to-[#a8802a]/0 md:left-[43px]"
-        />
+      <div className="relative p-5 md:p-7">
+        <div className="mb-5 grid grid-cols-[1fr_auto] items-center gap-4 px-1">
+          <p className="font-label text-[8px] uppercase tracking-[0.24em] text-[#c49a43]/75">
+            Assembled through Fieldwork
+          </p>
+          <p className="font-label text-[8px] uppercase tracking-[0.24em] text-[#fffcf7]/25">
+            01—05
+          </p>
+        </div>
 
-        <ol className="relative space-y-2.5">
-          {LAYERS.map((layer, index) => (
-            <motion.li
-              key={layer.number}
-              custom={index}
-              variants={{
-                hidden: {
-                  opacity: 0,
-                  x: reduceMotion ? 0 : -22,
-                },
-                visible: (order: number) => ({
-                  opacity: 1,
-                  x: 0,
-                  transition: {
-                    duration: reduceMotion ? 0 : 0.7,
-                    delay: reduceMotion ? 0 : 0.12 + order * 0.13,
-                    ease: [0.22, 1, 0.36, 1],
+        <div className="relative">
+          <motion.div
+            aria-hidden="true"
+            variants={{
+              hidden: { scaleY: reduceMotion ? 1 : 0 },
+              visible: {
+                scaleY: 1,
+                transition: { duration: reduceMotion ? 0 : 1.25, delay: reduceMotion ? 0 : 0.18 },
+              },
+            }}
+            className="absolute bottom-5 left-[22px] top-5 z-10 w-px origin-top bg-gradient-to-b from-[#c49a43]/70 via-[#c49a43]/30 to-[#c49a43]/5 md:left-[27px]"
+          />
+
+          <ol className="relative space-y-2">
+            {LAYERS.map((layer, index) => (
+              <motion.li
+                key={layer.number}
+                custom={index}
+                variants={{
+                  hidden: {
+                    opacity: 0,
+                    x: reduceMotion ? 0 : index % 2 === 0 ? 26 : -26,
+                    y: reduceMotion ? 0 : 10,
                   },
-                }),
-              }}
-              className="group grid grid-cols-[34px_1fr_auto] items-center gap-3 rounded-[3px] border border-[#1e2a4a]/10 bg-[#fffdf8]/78 px-3 py-3.5 transition-colors duration-500 hover:bg-[#fffdf8] md:grid-cols-[42px_1fr_auto] md:gap-4 md:px-4 md:py-4"
-            >
-              <span className="relative z-10 flex h-7 w-7 items-center justify-center rounded-full border border-[#a8802a]/35 bg-[#f3f0e8] font-label text-[8px] tracking-[0.12em] text-[#8a6820] md:h-8 md:w-8">
-                {layer.number}
-              </span>
-              <span>
-                <span className="block font-headline text-[15px] font-medium text-[#171512] md:text-[16px]">
-                  {layer.title}
+                  visible: (order: number) => ({
+                    opacity: 1,
+                    x: 0,
+                    y: 0,
+                    transition: {
+                      duration: reduceMotion ? 0 : 0.78,
+                      delay: reduceMotion ? 0 : 0.12 + order * 0.12,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                  }),
+                }}
+                className="relative grid min-h-[76px] grid-cols-[36px_1fr] items-center gap-4 overflow-hidden rounded-[2px] border border-[#fffcf7]/10 bg-[#fffcf7]/[0.045] px-3 py-3.5 md:min-h-[84px] md:grid-cols-[44px_1fr_auto] md:px-4"
+              >
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b from-[#c49a43]/15 via-[#c49a43]/70 to-[#c49a43]/15"
+                />
+                <span className="relative z-20 flex h-7 w-7 items-center justify-center rounded-full border border-[#c49a43]/45 bg-[#131a2c] font-label text-[8px] tracking-[0.1em] text-[#d9b66b] md:h-8 md:w-8">
+                  {layer.number}
                 </span>
-                <span className="mt-0.5 block max-w-[50ch] font-body text-[11px] leading-relaxed text-[#1e2a4a]/48 md:text-[12px]">
-                  {layer.detail}
+                <span>
+                  <span className="block font-headline text-[15px] font-medium text-[#fffcf7] md:text-[16px]">
+                    {layer.title}
+                  </span>
+                  <span className="mt-1 block font-body text-[11px] leading-relaxed text-[#fffcf7]/50 md:text-[12px]">
+                    {layer.detail}
+                  </span>
                 </span>
-              </span>
-              <span className="hidden text-[#1e2a4a]/34 transition-colors duration-500 group-hover:text-[#a8802a]/70 sm:block">
-                <LayerMark type={layer.mark} />
-              </span>
-            </motion.li>
-          ))}
-        </ol>
+                <span
+                  aria-hidden="true"
+                  className="hidden h-px w-16 bg-gradient-to-r from-[#fffcf7]/18 to-transparent md:block"
+                />
+              </motion.li>
+            ))}
+          </ol>
+        </div>
       </div>
 
       <motion.div
@@ -163,16 +138,16 @@ export default function OperatingKitDiagram() {
           hidden: { opacity: 0 },
           visible: {
             opacity: 1,
-            transition: { duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.9 },
+            transition: { duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.88 },
           },
         }}
-        className="relative grid grid-cols-1 gap-2 border-t border-[#1e2a4a]/10 bg-[#1e2a4a]/[0.035] px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-center md:px-7"
+        className="relative grid gap-3 border-t border-[#fffcf7]/10 bg-[#070b14]/35 px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-center md:px-7"
       >
-        <p className="font-editorial text-[15px] italic text-[#1e2a4a]/72">
-          One operating layer. Ready for real district work.
+        <p className="font-editorial text-[15px] italic text-[#e6d8b9]/90">
+          One operating layer. Ready to keep evolving.
         </p>
-        <p className="font-label text-[8px] uppercase tracking-[0.24em] text-[#1e2a4a]/42">
-          Designed with Karst · Built to evolve
+        <p className="font-label text-[8px] uppercase tracking-[0.22em] text-[#fffcf7]/42">
+          Maintained by Karst
         </p>
       </motion.div>
     </motion.div>

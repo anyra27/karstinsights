@@ -9,6 +9,8 @@ import PageShell from '../components/layout/PageShell'
 import ParallaxImage from '../components/layout/ParallaxImage'
 import DashboardShowcase from '../components/sections/DashboardShowcase'
 import DistrictLeadershipProof from '../components/sections/DistrictLeadershipProof'
+import CapabilityGap from '../components/sections/CapabilityGap'
+import FieldworkMethod from '../components/sections/FieldworkMethod'
 import RecastSurface from '../components/art/RecastSurface'
 import OperatingKitDiagram from '../components/art/OperatingKitDiagram'
 import AmbientParticles from '../components/art/AmbientParticles'
@@ -22,7 +24,6 @@ import {
 
 import { usePageMeta } from '../lib/usePageMeta'
 import pearlBg from '../assets/pearl-bg.webp'
-import karstCavern from '../assets/karst-cavern.webp'
 import gem4 from '../assets/gem4.webp'
 import birdOfParadise from '../assets/bird-of-paradise.webp'
 import koi from '../assets/koi.webp'
@@ -99,10 +100,29 @@ export default function Landing() {
       />
 
 
-      {/* ══════════ THE OPERATING KIT — what the district keeps ══════════ */}
-      <section className="relative overflow-hidden bg-surface px-6 py-20 md:px-10 md:py-28">
+      {/* ══════════ THE PROBLEM — why access is not capability ══════════ */}
+      <CapabilityGap />
+
+
+      {/* ══════════ PROOF — DISTRICT LEADERS ══════════ */}
+      {SHOW_PROOF && <DistrictLeadershipProof />}
+
+
+      {/* ══════════ FIELDWORK — the response ══════════ */}
+      <FieldworkMethod />
+
+
+      {/* ══════════ THE OPERATING KIT — what Fieldwork leaves behind ══════════ */}
+      <section
+        data-karst-nav-dark
+        className="relative overflow-hidden bg-[#0d1220] px-6 py-24 text-[#fffcf7] md:px-10 md:py-36"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_26%,rgba(168,128,42,0.12),transparent_28%),linear-gradient(155deg,rgba(255,255,255,0.025),transparent_46%)]"
+        />
         <motion.div
-          className="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:gap-20"
+          className="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
@@ -111,33 +131,33 @@ export default function Landing() {
           <div>
             <motion.p
               variants={staggerChild}
-              className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]"
+              className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#c49a43] md:text-[11px]"
             >
               District AI Operating Kits
             </motion.p>
 
             <motion.h2
               variants={staggerChild}
-              className="max-w-xl font-headline text-3xl font-light leading-[1.16] text-on-surface md:text-4xl lg:text-[46px]"
+              className="max-w-xl font-headline text-3xl font-light leading-[1.14] text-[#fffcf7] md:text-5xl lg:text-[50px]"
             >
-              The operating layer your district{' '}
-              <span className="font-editorial font-normal italic">keeps.</span>
+              Built in the work.{' '}
+              <span className="font-editorial font-normal italic text-[#e6d8b9]">Kept by the district.</span>
             </motion.h2>
 
             <motion.p
               variants={staggerChild}
-              className="mt-7 max-w-[48ch] font-body text-sm leading-[1.8] text-on-surface-variant/72 md:text-[15px]"
+              className="mt-7 max-w-[48ch] font-body text-sm leading-[1.85] text-[#fffcf7]/60 md:text-base"
             >
-              Every Karst engagement leaves behind more than finished work. Your team keeps the
-              context, guardrails, workflows, tools, and patterns that let the capability continue
-              without starting over.
+              Fieldwork leaves behind more than a finished artifact. It becomes a district-owned
+              operating kit: the context, guardrails, workflows, tools, and patterns your team needs
+              to keep the capability moving.
             </motion.p>
 
             <motion.p
               variants={staggerChild}
-              className="mt-8 border-l border-[#a8802a]/45 pl-5 font-label text-[9px] uppercase leading-[1.8] tracking-[0.24em] text-on-surface-variant/48"
+              className="mt-8 border-l border-[#c49a43]/45 pl-5 font-label text-[9px] uppercase leading-[1.8] tracking-[0.24em] text-[#fffcf7]/38"
             >
-              District-owned · Designed with Karst · Built around real work
+              District-owned · Designed and maintained by Karst
             </motion.p>
           </div>
 
@@ -146,38 +166,6 @@ export default function Landing() {
           </motion.div>
         </motion.div>
       </section>
-
-
-      {/* ══════════ BENEATH THE SURFACE — the karst story ══════════ */}
-      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[560px]">
-        <ParallaxImage src={karstCavern} className="min-h-[360px] md:min-h-0" />
-        <div className="relative flex items-center px-10 md:px-16 lg:px-20 py-16 md:py-0 bg-surface-container">
-          <motion.div
-            className="relative z-10 max-w-lg"
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, ease: easeStandard }}
-          >
-            <p className="font-label text-[10px] tracking-[0.3em] uppercase text-tertiary mb-4">
-              Beneath the Surface
-            </p>
-            <h2 className="font-headline text-2xl md:text-3xl text-on-surface leading-snug mb-5">
-              The system beneath the surface.
-            </h2>
-            <div className="w-10 h-px bg-tertiary/40 mb-5" />
-            <p className="font-body text-sm md:text-base text-on-surface-variant leading-relaxed mb-6">
-              A karst is a landscape shaped from below: structure carved into stone, unseen
-              from above. A district holds the same hidden order. Your team learns to read
-              what&rsquo;s underneath, and to act on it.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-
-      {/* ══════════ PROOF — DISTRICT LEADERS ══════════ */}
-      {SHOW_PROOF && <DistrictLeadershipProof />}
 
 
       {/* ══════════ WHAT YOUR TEAM DELIVERS — capabilities ══════════ */}
