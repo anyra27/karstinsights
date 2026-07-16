@@ -213,7 +213,7 @@ export default function Landing() {
                 variants={staggerChild}
                 className="ghost-border flex flex-col overflow-hidden"
               >
-                <Vignette className="w-full border-b border-[#1e2a4a]/[0.08] bg-[#fffcf7] px-2 pt-3" />
+                <Vignette className="w-full border-b border-black/40 bg-[#0e0e0c] px-2 py-4" />
                 <div className="p-6 md:p-7 flex flex-col flex-1">
                   <h3 className="font-headline text-base md:text-lg text-on-surface leading-snug mb-3">
                     {cap.title}

@@ -5,28 +5,97 @@ const LAYERS = [
     number: '01',
     title: 'District context',
     detail: 'Priorities · language · local knowledge',
+    mark: 'context',
   },
   {
     number: '02',
     title: 'Guardrails',
     detail: 'Data rules · review gates · boundaries',
+    mark: 'guardrails',
   },
   {
     number: '03',
     title: 'Workflows',
     detail: 'Repeatable methods for consequential work',
+    mark: 'workflows',
   },
   {
     number: '04',
     title: 'Tools',
     detail: 'Prompts · templates · working applications',
+    mark: 'tools',
   },
   {
     number: '05',
     title: 'Ownership',
     detail: 'Files · knowledge · capability',
+    mark: 'ownership',
   },
 ] as const
+
+function LayerParticles({ type }: { type: (typeof LAYERS)[number]['mark'] }) {
+  if (type === 'context') {
+    const points = [
+      [8, 22, 1.5], [18, 12, 1], [27, 25, 1.2], [38, 8, 1.4],
+      [48, 19, 1], [61, 10, 1.2], [72, 24, 1.5], [84, 15, 1],
+    ]
+    return (
+      <svg viewBox="0 0 92 32" className="h-8 w-[92px]" aria-hidden="true">
+        {points.map(([cx, cy, r], index) => (
+          <circle key={cx} cx={cx} cy={cy} r={r} fill={index === 4 ? '#c49a43' : 'rgba(255,252,247,0.42)'} />
+        ))}
+      </svg>
+    )
+  }
+
+  if (type === 'guardrails') {
+    return (
+      <svg viewBox="0 0 92 32" className="h-8 w-[92px]" aria-hidden="true">
+        <path d="M17 5v22M75 5v22" stroke="rgba(196,154,67,0.52)" strokeWidth="1" />
+        {[28, 40, 52, 64].flatMap((cx) => [11, 21].map((cy) => (
+          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="1.35" fill="rgba(255,252,247,0.46)" />
+        )))}
+        <circle cx="52" cy="11" r="2.2" fill="#c49a43" />
+      </svg>
+    )
+  }
+
+  if (type === 'workflows') {
+    const points = [[8, 22], [20, 18], [32, 20], [44, 11], [56, 14], [68, 9], [82, 13]]
+    return (
+      <svg viewBox="0 0 92 32" className="h-8 w-[92px]" aria-hidden="true">
+        <path d="M8 22L20 18l12 2 12-9 12 3 12-5 14 4" fill="none" stroke="rgba(255,252,247,0.18)" strokeWidth="1" />
+        {points.map(([cx, cy], index) => (
+          <circle key={cx} cx={cx} cy={cy} r={index === 3 ? 2.3 : 1.45} fill={index === 3 ? '#c49a43' : 'rgba(255,252,247,0.48)'} />
+        ))}
+      </svg>
+    )
+  }
+
+  if (type === 'tools') {
+    return (
+      <svg viewBox="0 0 92 32" className="h-8 w-[92px]" aria-hidden="true">
+        {[10, 20, 30].flatMap((cx) => [9, 16, 23].map((cy) => (
+          <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="1.3" fill="rgba(255,252,247,0.4)" />
+        )))}
+        <path d="M39 16h13" stroke="rgba(255,252,247,0.2)" />
+        <rect x="57" y="7" width="10" height="18" rx="1" fill="none" stroke="rgba(255,252,247,0.36)" />
+        <rect x="72" y="10" width="11" height="15" rx="1" fill="none" stroke="rgba(196,154,67,0.58)" />
+        <circle cx="77.5" cy="17.5" r="2" fill="#c49a43" />
+      </svg>
+    )
+  }
+
+  return (
+    <svg viewBox="0 0 92 32" className="h-8 w-[92px]" aria-hidden="true">
+      <path d="M46 3l28 9v11l-28 7-28-7V12l28-9Z" fill="none" stroke="rgba(255,252,247,0.24)" />
+      <path d="M18 12l28 8 28-8M46 20v10" fill="none" stroke="rgba(196,154,67,0.38)" />
+      {[[31, 13], [40, 15.5], [52, 14.5], [60, 12.5], [46, 20]].map(([cx, cy], index) => (
+        <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r={index === 4 ? 2.5 : 1.3} fill={index === 4 ? '#c49a43' : 'rgba(255,252,247,0.5)'} />
+      ))}
+    </svg>
+  )
+}
 
 export default function OperatingKitDiagram() {
   const reduceMotion = Boolean(useReducedMotion())
@@ -125,8 +194,10 @@ export default function OperatingKitDiagram() {
                 </span>
                 <span
                   aria-hidden="true"
-                  className="hidden h-px w-16 bg-gradient-to-r from-[#fffcf7]/18 to-transparent md:block"
-                />
+                  className="hidden text-[#fffcf7]/50 md:block"
+                >
+                  <LayerParticles type={layer.mark} />
+                </span>
               </motion.li>
             ))}
           </ol>
