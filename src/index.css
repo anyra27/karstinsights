@@ -284,6 +284,23 @@ body {
   background-color: rgba(255, 252, 247, 0.85);
 }
 
+.karst-cinematic-hero {
+  height: 1119svh;
+}
+
+@media (max-width: 720px) {
+  .karst-cinematic-hero {
+    height: 1031svh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .karst-cinematic-hero,
+  .karst-cinematic-hero--reduced {
+    height: 100svh;
+  }
+}
+
 /* Hide scrollbar but keep scrolling */
 /* Noise texture — subtle grain overlay for gradients */
 .texture-noise::after {

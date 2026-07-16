@@ -1,10 +1,6 @@
-import { lazy, Suspense, useRef } from 'react'
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useTransform } from 'framer-motion'
-
-const LayeredSineWaves = lazy(() => import('../components/art/LayeredSineWaves'))
 import {
-  fadeSlideUpDelayed,
   staggerContainerRelaxed,
   staggerChild,
   easeStandard,
@@ -16,6 +12,7 @@ import RosevilleProof from '../components/sections/RosevilleProof'
 import RecastSurface from '../components/art/RecastSurface'
 import WorkingSurfaceGlyph from '../components/art/WorkingSurfaceGlyph'
 import AmbientParticles from '../components/art/AmbientParticles'
+import CinematicHomeHero from '../components/hero/CinematicHomeHero'
 import {
   DashboardVignette,
   SpeakVignette,
@@ -90,86 +87,16 @@ const offerings = [
 
 export default function Landing() {
   usePageMeta()
-  const heroRef = useRef<HTMLElement>(null)
-  const { scrollYProgress: heroProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  })
-  const heroScale = useTransform(heroProgress, [0, 1], [1, 1.15])
-  const heroOpacity = useTransform(heroProgress, [0, 0.7], [1, 0])
 
   return (
     <PageShell activeNav="home">
 
       {/* ══════════ HERO ══════════ */}
-      <section
-        ref={heroRef}
-        className="relative min-h-screen flex items-end pb-24 md:pb-32 px-8 md:px-16 overflow-hidden bg-[#F0EEE6]"
-      >
-        <motion.div
-          className="absolute inset-0 z-0"
-          style={{ scale: heroScale }}
-        >
-          <Suspense fallback={<div className="w-full h-full bg-[#F0EEE6]" />}>
-            <LayeredSineWaves className="w-full h-full" />
-          </Suspense>
-        </motion.div>
-        <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#F0EEE6] via-[#F0EEE6]/40 to-transparent pointer-events-none" />
-
-        <motion.div className="relative z-10 max-w-4xl pointer-events-none" style={{ opacity: heroOpacity }}>
-          <motion.p
-            variants={fadeSlideUpDelayed}
-            initial="hidden"
-            animate="visible"
-            custom={0.15}
-            className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-on-surface-variant/70 mb-6"
-          >
-            Practical AI Capability for School District Leadership
-          </motion.p>
-
-          <motion.h1
-            variants={fadeSlideUpDelayed}
-            initial="hidden"
-            animate="visible"
-            custom={0.3}
-            className="font-headline font-bold tracking-tight text-4xl md:text-6xl lg:text-7xl text-on-surface leading-[1.02] mb-12 max-w-3xl"
-          >
-            Build capability that <span className="text-sunset-cycle">lasts.</span>
-          </motion.h1>
-
-          <motion.div
-            variants={fadeSlideUpDelayed}
-            initial="hidden"
-            animate="visible"
-            custom={0.5}
-            className="flex flex-wrap gap-4 pointer-events-auto"
-          >
-            <Link
-              to="/contact"
-              className="inline-block bg-[#1a1816] text-[#F0EEE6] py-3.5 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px] hover:bg-[#0e0e0c] transition-colors"
-            >
-              Request an Introduction
-            </Link>
-            <Link
-              to="/studios"
-              className="inline-block border border-[#1a1816]/25 text-[#1a1816]/75 py-3.5 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px] hover:border-[#1a1816]/50 hover:text-[#1a1816] transition-all"
-            >
-              See the Studios
-            </Link>
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 pointer-events-none"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, y: [0, 8, 0] }}
-          transition={{ opacity: { delay: 1.5, duration: 0.5 }, y: { duration: 2, repeat: Infinity, ease: 'easeInOut' } }}
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="opacity-30">
-            <path d="M7 10l5 5 5-5" stroke="#1a1816" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </motion.div>
-      </section>
+      <CinematicHomeHero />
+      <div
+        className="h-px bg-gradient-to-r from-transparent via-[#a8802a]/65 to-transparent opacity-70"
+        aria-hidden="true"
+      />
 
 
       {/* ══════════ THE PROMISE — capability your team reaches ══════════ */}
