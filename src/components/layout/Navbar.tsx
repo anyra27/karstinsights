@@ -99,7 +99,7 @@ export default function Navbar({ activeNav }: { activeNav?: ActiveNav }) {
               Studios
             </Link>
             <a href="/cohort/" className={linkClass(false)}>
-              Cohort
+              Fieldwork
             </a>
             <a href="/students/" className={linkClass(false)}>
               Students
@@ -163,7 +163,7 @@ export default function Navbar({ activeNav }: { activeNav?: ActiveNav }) {
                 onClick={() => setMobileOpen(false)}
                 className="font-body text-lg text-on-surface py-3 border-b border-outline-variant/10"
               >
-                Cohort
+                Fieldwork
               </a>
               <a
                 href="/students/"
