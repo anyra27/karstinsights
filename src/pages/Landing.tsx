@@ -10,7 +10,7 @@ import ParallaxImage from '../components/layout/ParallaxImage'
 import DashboardShowcase from '../components/sections/DashboardShowcase'
 import DistrictLeadershipProof from '../components/sections/DistrictLeadershipProof'
 import RecastSurface from '../components/art/RecastSurface'
-import WorkingSurfaceGlyph from '../components/art/WorkingSurfaceGlyph'
+import OperatingKitDiagram from '../components/art/OperatingKitDiagram'
 import AmbientParticles from '../components/art/AmbientParticles'
 import CinematicHomeHero from '../components/hero/CinematicHomeHero'
 import {
@@ -99,35 +99,50 @@ export default function Landing() {
       />
 
 
-      {/* ══════════ THE PROMISE — capability your team reaches ══════════ */}
-      <section className="relative py-20 md:py-28 px-6 md:px-10 bg-surface overflow-hidden">
+      {/* ══════════ THE OPERATING KIT — what the district keeps ══════════ */}
+      <section className="relative overflow-hidden bg-surface px-6 py-20 md:px-10 md:py-28">
         <motion.div
-          className="relative z-10 max-w-6xl mx-auto"
+          className="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:gap-20"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
           variants={staggerContainerRelaxed}
         >
-          <motion.p
-            variants={staggerChild}
-            className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-on-surface-variant/55 text-center mb-6"
-          >
-            Capability
-          </motion.p>
+          <div>
+            <motion.p
+              variants={staggerChild}
+              className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]"
+            >
+              District AI Operating Kits
+            </motion.p>
 
-          <motion.h2
-            variants={staggerChild}
-            className="font-headline text-2xl md:text-3xl lg:text-4xl text-on-surface leading-snug text-center max-w-3xl mx-auto mb-12 md:mb-14"
-          >
-            Your cabinet learns to build the systems, tools, and habits that make the district more capable.{' '}
-            <span className="font-editorial italic font-normal">Not just talk about AI.</span>
-          </motion.h2>
+            <motion.h2
+              variants={staggerChild}
+              className="max-w-xl font-headline text-3xl font-light leading-[1.16] text-on-surface md:text-4xl lg:text-[46px]"
+            >
+              The operating layer your district{' '}
+              <span className="font-editorial font-normal italic">keeps.</span>
+            </motion.h2>
 
-          <motion.div
-            variants={staggerChild}
-            className="w-full max-w-3xl mx-auto"
-          >
-            <WorkingSurfaceGlyph />
+            <motion.p
+              variants={staggerChild}
+              className="mt-7 max-w-[48ch] font-body text-sm leading-[1.8] text-on-surface-variant/72 md:text-[15px]"
+            >
+              Every Karst engagement leaves behind more than finished work. Your team keeps the
+              context, guardrails, workflows, tools, and patterns that let the capability continue
+              without starting over.
+            </motion.p>
+
+            <motion.p
+              variants={staggerChild}
+              className="mt-8 border-l border-[#a8802a]/45 pl-5 font-label text-[9px] uppercase leading-[1.8] tracking-[0.24em] text-on-surface-variant/48"
+            >
+              District-owned · Designed with Karst · Built around real work
+            </motion.p>
+          </div>
+
+          <motion.div variants={staggerChild}>
+            <OperatingKitDiagram />
           </motion.div>
         </motion.div>
       </section>
