@@ -24,7 +24,7 @@ export default function FieldworkMethod() {
   return (
     <section
       data-karst-nav-dark
-      className="relative overflow-hidden bg-[#151b2d] px-6 py-24 text-[#fffcf7] md:px-10 md:py-36"
+      className="relative overflow-hidden bg-[#0e0e0c] px-6 py-24 text-[#fffcf7] md:px-10 md:py-36"
     >
       <div
         aria-hidden="true"
@@ -94,7 +94,7 @@ export default function FieldworkMethod() {
               }}
               className="relative border-t border-[#fffcf7]/12 py-8 md:border-t-0 md:border-r md:border-[#fffcf7]/10 md:px-9 md:pt-10 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
             >
-              <span className="absolute -top-1.5 left-0 hidden h-3 w-3 rounded-full border border-[#c49a43]/70 bg-[#151b2d] md:block" />
+              <span className="absolute -top-1.5 left-0 hidden h-3 w-3 rounded-full border border-[#c49a43]/70 bg-[#0e0e0c] md:block" />
               <p className="mb-10 font-label text-[9px] tracking-[0.24em] text-[#c49a43]/75">
                 {step.number}
               </p>

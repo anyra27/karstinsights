@@ -115,7 +115,7 @@ export default function Landing() {
       {/* ══════════ THE OPERATING KIT — what Fieldwork leaves behind ══════════ */}
       <section
         data-karst-nav-dark
-        className="relative overflow-hidden bg-[#0d1220] px-6 py-24 text-[#fffcf7] md:px-10 md:py-36"
+        className="relative overflow-hidden border-t border-[#fffcf7]/8 bg-[#090908] px-6 py-24 text-[#fffcf7] md:px-10 md:py-36"
       >
         <div
           aria-hidden="true"

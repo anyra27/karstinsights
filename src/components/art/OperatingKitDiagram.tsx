@@ -36,7 +36,7 @@ export default function OperatingKitDiagram() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-90px' }}
-      className="relative overflow-hidden rounded-[3px] border border-[#fffcf7]/12 bg-[#131a2c]/88 shadow-[0_34px_100px_rgba(0,0,0,0.3)]"
+      className="relative overflow-hidden rounded-[3px] border border-[#fffcf7]/12 bg-[#171614]/92 shadow-[0_34px_100px_rgba(0,0,0,0.34)]"
     >
       <div
         aria-hidden="true"
@@ -112,7 +112,7 @@ export default function OperatingKitDiagram() {
                   aria-hidden="true"
                   className="absolute inset-y-0 left-0 w-[3px] bg-gradient-to-b from-[#c49a43]/15 via-[#c49a43]/70 to-[#c49a43]/15"
                 />
-                <span className="relative z-20 flex h-7 w-7 items-center justify-center rounded-full border border-[#c49a43]/45 bg-[#131a2c] font-label text-[8px] tracking-[0.1em] text-[#d9b66b] md:h-8 md:w-8">
+                <span className="relative z-20 flex h-7 w-7 items-center justify-center rounded-full border border-[#c49a43]/45 bg-[#171614] font-label text-[8px] tracking-[0.1em] text-[#d9b66b] md:h-8 md:w-8">
                   {layer.number}
                 </span>
                 <span>
@@ -141,7 +141,7 @@ export default function OperatingKitDiagram() {
             transition: { duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.88 },
           },
         }}
-        className="relative grid gap-3 border-t border-[#fffcf7]/10 bg-[#070b14]/35 px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-center md:px-7"
+        className="relative grid gap-3 border-t border-[#fffcf7]/10 bg-black/35 px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-center md:px-7"
       >
         <p className="font-editorial text-[15px] italic text-[#e6d8b9]/90">
           One operating layer. Ready to keep evolving.
