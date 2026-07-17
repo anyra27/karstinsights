@@ -60,15 +60,15 @@ const capabilities = [
 const offerings = [
   {
     label: 'Workshops',
-    title: 'Build something real.',
-    desc: 'Focused sessions built around live district priorities.',
+    title: 'Start with one real priority.',
+    desc: 'Build the first working result and begin the Operating Kit.',
     image: birdOfParadise,
     link: '/contact',
   },
   {
     label: 'Fieldwork',
-    title: 'Build capability in the work.',
-    desc: 'A school-year practice of building, operating, and improving alongside your team.',
+    title: 'Protect the time. Build the capability.',
+    desc: 'Protected build time across a school year. Build and maintain the Operating Kit.',
     image: koi,
     imagePosition: 'right bottom',
     link: '/cohort/',
@@ -76,8 +76,8 @@ const offerings = [
   },
   {
     label: 'Learning Platforms',
-    title: 'Practice that scales.',
-    desc: 'Role-specific studios for leaders, educators, students, and families.',
+    title: 'Extend the practice.',
+    desc: 'Role-specific learning for leaders, educators, students, and families.',
     image: gem4,
     link: '/studios',
   },
@@ -147,14 +147,15 @@ export default function Landing() {
               variants={staggerChild}
               className="mt-7 max-w-[48ch] font-body text-sm leading-[1.85] text-[#fffcf7]/60 md:text-base"
             >
-              Every engagement leaves a district-owned system for continuing the work.
+              Each cycle adds a working system, operating instructions, and clear ownership to one
+              district-held record.
             </motion.p>
 
             <motion.p
               variants={staggerChild}
               className="mt-8 border-l border-[#c49a43]/45 pl-5 font-label text-[9px] uppercase leading-[1.8] tracking-[0.24em] text-[#fffcf7]/38"
             >
-              District-owned · Designed and maintained by Karst
+              District-owned · Built with Karst · Ready to evolve
             </motion.p>
           </div>
 
@@ -356,16 +357,16 @@ export default function Landing() {
           >
             <div className="max-w-2xl mx-auto">
               <p className="font-label text-[10px] tracking-[0.3em] uppercase text-white/35 mb-6">
-                Reserved · By Introduction
+                Start with the work
               </p>
               <h2 className="font-headline text-3xl md:text-4xl text-white/95 leading-snug mb-6 max-w-xl mx-auto">
-                Be the most capable district in your region.
+                Bring one district priority worth changing.
               </h2>
               <Link
                 to="/contact"
                 className="group mt-6 inline-flex items-center gap-2.5 bg-white text-[#0e0e0c] py-4 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_44px_-14px_rgba(255,255,255,0.45)]"
               >
-                Request an Introduction
+                Start the Conversation
                 <span className="text-sm transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
                   →
                 </span>

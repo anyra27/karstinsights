@@ -1,91 +1,152 @@
 <!doctype html>
 <!-- OG-card artboard — renders the 1200×630 link-preview image.
      Regenerate: open at viewport 1200×630, wait for fonts, screenshot
-     → public/og-card.png. Visual language mirrors the homepage: cream
-     ground, strata contours settling toward the navy standard line. -->
+     → public/og-card.png. Visual language mirrors the cinematic homepage:
+     warm black, ivory type, brass signal, and a settled particle system. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital@1&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 1200px; height: 630px; overflow: hidden; }
-    body { background: #F0EEE6; position: relative; }
+    body {
+      background:
+        radial-gradient(circle at 78% 30%, rgba(196,154,67,0.12), transparent 28%),
+        linear-gradient(145deg, rgba(255,255,255,0.025), transparent 45%),
+        #090908;
+      position: relative;
+      color: #fffcf7;
+    }
+    body::after {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border: 1px solid rgba(255,252,247,0.1);
+      pointer-events: none;
+    }
     canvas { position: absolute; inset: 0; }
     .text {
       position: absolute;
-      left: 0; right: 0;
-      top: 168px;
-      text-align: center;
+      left: 86px;
+      top: 72px;
+      width: 620px;
       z-index: 2;
     }
     .wordmark {
       font-family: 'Montserrat', sans-serif;
       font-weight: 500;
-      font-size: 78px;
+      font-size: 23px;
       letter-spacing: 0.42em;
-      text-indent: 0.42em; /* re-center: tracking adds a trailing gap */
       text-transform: uppercase;
-      color: #1a1816;
+      color: #fffcf7;
     }
     .rule {
-      width: 56px; height: 1px;
-      background: rgba(110, 99, 85, 0.55);
-      margin: 36px auto;
+      width: 64px;
+      height: 1px;
+      background: rgba(196,154,67,0.82);
+      margin: 44px 0 42px;
+    }
+    .headline {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      font-size: 60px;
+      line-height: 1.07;
+      letter-spacing: -0.035em;
+      color: #fffcf7;
+    }
+    .headline em {
+      display: block;
+      font-family: 'Libre Baskerville', serif;
+      font-weight: 400;
+      color: #e6d8b9;
     }
     .line {
+      margin-top: 42px;
+      max-width: 510px;
       font-family: 'Montserrat', sans-serif;
-      font-weight: 500;
-      font-size: 21px;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.65;
+      letter-spacing: 0.045em;
+      color: rgba(255,252,247,0.58);
+    }
+    .label {
+      position: absolute;
+      right: 74px;
+      bottom: 58px;
+      z-index: 2;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
       letter-spacing: 0.32em;
-      text-indent: 0.32em;
       text-transform: uppercase;
-      color: #6e6355;
+      color: rgba(255,252,247,0.32);
     }
   </style>
 </head>
 <body>
-  <canvas id="strata" width="2400" height="1260" style="width:1200px;height:630px;"></canvas>
+  <canvas id="particles" width="2400" height="1260" style="width:1200px;height:630px;"></canvas>
   <div class="text">
     <div class="wordmark">Karst</div>
     <div class="rule"></div>
-    <div class="line">Data &amp; Intelligence for Executive Teams</div>
+    <div class="headline">District-owned <em>AI capability.</em></div>
+    <div class="line">Protected build time. Working district systems. Capability your team can keep improving.</div>
   </div>
+  <div class="label">Workshop · Fieldwork · Learning Platforms</div>
   <script>
-    // Settled StrataContours frame, lower band of the card.
-    const ctx = document.getElementById('strata').getContext('2d')
+    // Settled capability field: scattered inputs converge into one owned operating layer.
+    const ctx = document.getElementById('particles').getContext('2d')
     ctx.setTransform(2, 0, 0, 2, 0, 0)
-    const W = 1200, H = 630
-    const LAYERS = 11
-    const STANDARD = 8
-    const terrain = (xn, amp, i) => {
-      let y = Math.sin(xn * 2.2 + i * 0.06)
-      y += 0.45 * Math.sin(xn * 4.7 + i * 0.08 + 1.4)
-      y += 0.2 * Math.sin(xn * 8.3 - i * 0.05 + 0.6)
-      return y * amp
+    const prand = (n) => {
+      const x = Math.sin(n * 12.9898 + 78.233) * 43758.5453
+      return x - Math.floor(x)
     }
-    for (let i = 0; i < LAYERS; i++) {
-      const f = i / (LAYERS - 1)
-      const yc = H * (0.62 + 0.30 * Math.pow(f, 0.86))
-      const isStd = i === STANDARD
-      const amp = isStd ? 0.08 : 0.18 + 0.82 * (1 - Math.pow(f, 1.35))
-      const alpha = isStd ? 0.8 : 0.24 + 0.26 * f
+
+    for (let i = 0; i < 126; i++) {
+      const x = 718 + prand(i * 3 + 1) * 396
+      const y = 76 + prand(i * 7 + 4) * 420
+      const r = 0.75 + prand(i * 11 + 3) * 1.5
+      const bright = prand(i * 17 + 2)
       ctx.beginPath()
-      ctx.lineWidth = isStd ? 2.2 : 1.1
-      ctx.strokeStyle = isStd
-        ? `rgba(30,42,74,${alpha})`
-        : `rgba(74,68,60,${alpha})`
-      for (let n = 0; n <= 240; n++) {
-        const x = (n / 240) * W
-        const xn = (n / 240) * Math.PI * 2 * 1.6
-        const y = yc + terrain(xn, amp, i) * 52
-        if (n === 0) ctx.moveTo(x, y)
-        else ctx.lineTo(x, y)
-      }
-      ctx.stroke()
+      ctx.fillStyle = bright > 0.92
+        ? 'rgba(196,154,67,0.84)'
+        : `rgba(255,252,247,${0.1 + bright * 0.3})`
+      ctx.arc(x, y, r, 0, Math.PI * 2)
+      ctx.fill()
     }
+
+    const cols = 7
+    const rows = 5
+    const ox = 824
+    const oy = 192
+    const gapX = 38
+    const gapY = 38
+    ctx.strokeStyle = 'rgba(196,154,67,0.16)'
+    ctx.lineWidth = 1
+    ctx.strokeRect(ox - 28, oy - 28, gapX * (cols - 1) + 56, gapY * (rows - 1) + 56)
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const i = row * cols + col
+        const x = ox + col * gapX
+        const y = oy + row * gapY
+        ctx.beginPath()
+        ctx.fillStyle = i === 17
+          ? '#c49a43'
+          : `rgba(255,252,247,${0.34 + prand(i * 19 + 5) * 0.36})`
+        ctx.arc(x, y, i === 17 ? 4.5 : 2.5, 0, Math.PI * 2)
+        ctx.fill()
+      }
+    }
+
+    ctx.beginPath()
+    ctx.strokeStyle = 'rgba(196,154,67,0.55)'
+    ctx.lineWidth = 1
+    ctx.moveTo(778, 382)
+    ctx.lineTo(1054, 382)
+    ctx.stroke()
   </script>
 </body>
 </html>

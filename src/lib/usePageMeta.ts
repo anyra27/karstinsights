@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 
-const DEFAULT_TITLE = 'Karst — Practical AI Capability for School Districts'
+const DEFAULT_TITLE = 'Karst — District-Owned AI Capability'
 const DEFAULT_DESCRIPTION =
-  'Karst helps superintendents and cabinet teams build practical AI capability, decision intelligence, and working systems their districts own.'
+  'Karst gives school district teams protected time and expert partnership to build working AI systems they own and can keep improving.'
 
 /**
  * Per-route document title + meta description for the SPA. The defaults live

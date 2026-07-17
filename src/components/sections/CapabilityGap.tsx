@@ -4,18 +4,18 @@ import { easeStandard, staggerChild, staggerContainerRelaxed } from '../../lib/m
 const SIGNALS = [
   {
     number: '01',
-    title: 'Tools multiply.',
-    detail: 'Shared practice does not.',
+    title: 'Access expands.',
+    detail: 'Capacity does not.',
   },
   {
     number: '02',
-    title: 'Generic systems.',
-    detail: 'District work bends to the product.',
+    title: 'Work stays fragmented.',
+    detail: 'Useful experiments never become shared practice.',
   },
   {
     number: '03',
     title: 'Dependence grows.',
-    detail: 'Every new need returns to a vendor.',
+    detail: 'Every new need returns to a vendor—or one employee.',
   },
 ]
 
@@ -39,20 +39,22 @@ export default function CapabilityGap() {
               variants={staggerChild}
               className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]"
             >
-              Build or Buy
+              The Capability Gap
             </motion.p>
             <motion.h2
               variants={staggerChild}
               className="max-w-2xl font-headline text-3xl font-light leading-[1.14] text-on-surface md:text-5xl lg:text-[54px]"
             >
-              Buy less.{' '}
-              <span className="font-editorial font-normal italic">Build what fits.</span>
+              The tools are here.{' '}
+              <span className="font-editorial font-normal italic">The time to build is not.</span>
             </motion.h2>
           </div>
 
           <motion.div variants={staggerChild} className="flex items-end">
             <p className="max-w-[54ch] font-body text-base leading-[1.85] text-on-surface-variant/75 md:text-lg">
-              The advantage is knowing what to buy, what to build, and what your district should own.
+              District teams are expected to evaluate, learn, and implement AI while carrying a full
+              workload. The missing layer is the capacity to decide what to buy, what to build, and
+              what the district should own.
             </p>
           </motion.div>
         </div>

@@ -3,18 +3,18 @@ import { motion, useReducedMotion } from 'framer-motion'
 const STEPS = [
   {
     number: '01',
-    label: 'Live priority',
-    detail: 'Work that matters now.',
+    label: 'Protect the time',
+    detail: 'The work earns room on the calendar.',
   },
   {
     number: '02',
-    label: 'Build together',
-    detail: 'The team shapes the system.',
+    label: 'Build in the work',
+    detail: 'Karst builds alongside the people who own it.',
   },
   {
     number: '03',
-    label: 'Keep the method',
-    detail: 'The practice stays with the district.',
+    label: 'Keep the capability',
+    detail: 'The system and method enter the district’s Operating Kit.',
   },
 ]
 
@@ -51,8 +51,8 @@ export default function FieldworkMethod() {
               Fieldwork
             </p>
             <h2 className="font-headline text-3xl font-light leading-[1.14] md:text-5xl">
-              Build capability{' '}
-              <span className="font-editorial font-normal italic text-[#e6d8b9]">in the work.</span>
+              Protected time{' '}
+              <span className="font-editorial font-normal italic text-[#e6d8b9]">to build.</span>
             </h2>
           </motion.div>
 
@@ -63,7 +63,8 @@ export default function FieldworkMethod() {
             }}
             className="max-w-[56ch] self-end font-body text-base leading-[1.85] text-[#fffcf7]/62 md:text-lg"
           >
-            One live priority. The people closest to it. A system they can keep improving.
+            Not time away from the work. Time to improve it. A selected cross-functional team builds
+            on a live priority with Karst—and leaves with a system it can keep improving.
           </motion.p>
         </div>
 

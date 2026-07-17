@@ -83,7 +83,7 @@ export default function Contact() {
 
             <div className="mt-8 flex flex-col gap-3 border-t border-outline-variant/15 pt-7 sm:flex-row sm:items-center sm:justify-between">
               <p className="font-body text-sm text-on-surface-variant/70">
-                Fieldwork · District AI Operating Kits · Focused builds
+                Workshops · Fieldwork · Learning Platforms
               </p>
               <p className="font-body text-xs text-on-surface-variant/55">
                 Read our{' '}
