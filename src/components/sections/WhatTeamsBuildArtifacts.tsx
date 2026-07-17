@@ -11,7 +11,55 @@ import { easeStandard } from '../../lib/motion'
 const BRASS = '#a8802a'
 const NAVY = '#1e2a4a'
 
-/* ════════ Shared frame — the exemplar chrome ════════ */
+/* ════════ Shared frame — the exemplar chrome, expandable to full screen ════════ */
+
+function ChromeBar({
+  url,
+  chromeRight,
+  actionLabel,
+  actionIcon,
+  onAction,
+}: {
+  url: string
+  chromeRight?: string
+  actionLabel: string
+  actionIcon: 'expand' | 'close'
+  onAction: () => void
+}) {
+  return (
+    <div className="flex items-center gap-3 border-b border-[#fffcf7]/10 bg-[#151411] px-4 py-3">
+      <div className="flex gap-1.5" aria-hidden="true">
+        <div className="h-2 w-2 rounded-full bg-[#c49a43]/80" />
+        <div className="h-2 w-2 rounded-full bg-[#fffcf7]/24" />
+        <div className="h-2 w-2 rounded-full bg-[#fffcf7]/12" />
+      </div>
+      <div className="ml-2 truncate font-mono text-[10px] text-[#fffcf7]/34 md:text-[11px]">{url}</div>
+      <div className="ml-auto flex shrink-0 items-center gap-4">
+        {chromeRight && (
+          <span className="hidden font-label text-[9px] font-semibold uppercase tracking-[0.22em] text-[#fffcf7]/38 md:block">
+            {chromeRight}
+          </span>
+        )}
+        <button
+          type="button"
+          onClick={onAction}
+          className="flex items-center gap-1.5 font-label text-[9px] font-semibold uppercase tracking-[0.22em] text-[#fffcf7]/48 transition-colors hover:text-[#fffcf7] md:text-[10px]"
+        >
+          {actionLabel}
+          {actionIcon === 'expand' ? (
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <path d="M3 1H1V3M7 1H9V3M3 9H1V7M7 9H9V7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+            </svg>
+          ) : (
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+              <path d="M1 1L10 10M10 1L1 10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+            </svg>
+          )}
+        </button>
+      </div>
+    </div>
+  )
+}
 
 function ArtifactFrame({
   url,
@@ -22,36 +70,89 @@ function ArtifactFrame({
   chromeRight?: string
   children: React.ReactNode
 }) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    if (!isOpen) return
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setIsOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [isOpen])
+
   return (
-    <div
-      className="relative overflow-hidden rounded-[4px] border border-[#fffcf7]/14 bg-[#0e0e0c]"
-      style={{
-        boxShadow: '0 42px 120px -32px rgba(0,0,0,0.88), 0 0 0 1px rgba(196,154,67,0.05)',
-      }}
-    >
-      <span
-        className="pointer-events-none absolute left-0 top-0 z-10 h-8 w-8 border-l border-t border-[#c49a43]/45"
-        aria-hidden="true"
-      />
-      <span
-        className="pointer-events-none absolute right-0 top-0 z-10 h-8 w-8 border-r border-t border-[#c49a43]/45"
-        aria-hidden="true"
-      />
-      <div className="flex items-center gap-3 border-b border-[#fffcf7]/10 bg-[#151411] px-4 py-3">
-        <div className="flex gap-1.5" aria-hidden="true">
-          <div className="h-2 w-2 rounded-full bg-[#c49a43]/80" />
-          <div className="h-2 w-2 rounded-full bg-[#fffcf7]/24" />
-          <div className="h-2 w-2 rounded-full bg-[#fffcf7]/12" />
-        </div>
-        <div className="ml-2 truncate font-mono text-[10px] text-[#fffcf7]/34 md:text-[11px]">{url}</div>
-        {chromeRight && (
-          <div className="ml-auto hidden shrink-0 font-label text-[9px] font-semibold uppercase tracking-[0.22em] text-[#fffcf7]/38 sm:block">
-            {chromeRight}
-          </div>
-        )}
+    <>
+      <div
+        className="relative overflow-hidden rounded-[4px] border border-[#fffcf7]/14 bg-[#0e0e0c]"
+        style={{
+          boxShadow: '0 42px 120px -32px rgba(0,0,0,0.88), 0 0 0 1px rgba(196,154,67,0.05)',
+        }}
+      >
+        <span
+          className="pointer-events-none absolute left-0 top-0 z-10 h-8 w-8 border-l border-t border-[#c49a43]/45"
+          aria-hidden="true"
+        />
+        <span
+          className="pointer-events-none absolute right-0 top-0 z-10 h-8 w-8 border-r border-t border-[#c49a43]/45"
+          aria-hidden="true"
+        />
+        <ChromeBar
+          url={url}
+          chromeRight={chromeRight}
+          actionLabel="Expand"
+          actionIcon="expand"
+          onAction={() => setIsOpen(true)}
+        />
+        <div className="bg-[#fffcf7] text-[#1a1816]">{children}</div>
       </div>
-      <div className="bg-[#fffcf7] text-[#1a1816]">{children}</div>
-    </div>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-6"
+            onClick={() => setIsOpen(false)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22 }}
+          >
+            <div
+              className="absolute inset-0 bg-[#0e0e0c]/75"
+              style={{ backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
+              aria-hidden="true"
+            />
+            <motion.div
+              className="relative flex w-full flex-col overflow-hidden rounded-[4px] border border-[#fffcf7]/14 bg-[#0e0e0c]"
+              style={{
+                maxWidth: 'min(96vw, 1500px)',
+                maxHeight: 'min(94vh, 1100px)',
+                boxShadow: '0 50px 120px -30px rgba(0,0,0,0.55), 0 12px 28px rgba(0,0,0,0.18)',
+              }}
+              onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.96, y: 18 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.97, y: 12 }}
+              transition={{ duration: 0.28, ease: easeStandard }}
+            >
+              <ChromeBar
+                url={url}
+                chromeRight={chromeRight}
+                actionLabel="Close"
+                actionIcon="close"
+                onAction={() => setIsOpen(false)}
+              />
+              <div className="min-h-0 flex-1 overflow-y-auto bg-[#fffcf7] text-[#1a1816]">{children}</div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 
@@ -456,10 +557,154 @@ export function DashboardArtifact() {
   )
 }
 
-/* ════════ 02 · Presentation — the board deck, staged as a deck ════════ */
+/* ════════ 02 · Presentation — a small working deck: two slides,
+   deck navigation, drawing charts ════════ */
+
+const SLIDE_NUMBERS = [4, 12] as const
+
+function QuestionSlide({ reduceMotion }: { reduceMotion: boolean }) {
+  return (
+    <div className="flex min-h-[360px] flex-col px-6 pb-5 pt-8 md:min-h-[440px] md:px-14 md:pb-8 md:pt-12">
+      <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
+        Enrollment &amp; facilities · Study session
+      </div>
+      <div className="mb-auto mt-4 max-w-[22ch] font-headline text-[26px] font-light leading-[1.14] tracking-[-0.01em] text-[#1a1816] md:text-[40px]">
+        Should we consolidate the two middle-school feeder patterns{' '}
+        <span className="font-editorial italic text-[#6e6355]">next fall?</span>
+      </div>
+
+      <div className="mt-7 grid items-center gap-6 md:mt-10 md:grid-cols-[1.25fr_1fr] md:gap-12">
+        <div>
+          <PanelLabel>Enrollment by feeder · five years</PanelLabel>
+          <svg viewBox="0 0 320 118" width="100%" aria-hidden="true">
+            <g stroke="rgba(30,42,74,0.1)" strokeWidth="1">
+              <line x1="0" y1="28" x2="320" y2="28" />
+              <line x1="0" y1="58" x2="320" y2="58" />
+              <line x1="0" y1="88" x2="320" y2="88" />
+            </g>
+            <motion.path
+              d="M10 40 C 70 44, 130 52, 190 62 S 290 82, 310 88"
+              fill="none"
+              stroke={NAVY}
+              strokeWidth="2"
+              initial={reduceMotion ? false : { pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: reduceMotion ? 0 : 1.3, delay: reduceMotion ? 0 : 0.25, ease: easeStandard }}
+            />
+            <motion.path
+              d="M10 62 C 70 60, 130 56, 190 50 S 290 36, 310 32"
+              fill="none"
+              stroke={BRASS}
+              strokeWidth="1.6"
+              strokeDasharray="3 5"
+              initial={reduceMotion ? false : { pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: reduceMotion ? 0 : 1.3, delay: reduceMotion ? 0 : 0.45, ease: easeStandard }}
+            />
+            <motion.circle
+              cx="310"
+              cy="88"
+              r="3"
+              fill={NAVY}
+              initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3, delay: reduceMotion ? 0 : 1.5 }}
+            />
+            <motion.circle
+              cx="310"
+              cy="32"
+              r="3"
+              fill={BRASS}
+              initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3, delay: reduceMotion ? 0 : 1.7 }}
+            />
+            <motion.g
+              fill="rgba(110,99,85,0.85)"
+              fontFamily="Montserrat, sans-serif"
+              fontSize="7.5"
+              fontWeight="600"
+              letterSpacing="1"
+              initial={reduceMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: reduceMotion ? 0 : 1.6 }}
+            >
+              <text x="238" y="104">FEEDER A</text>
+              <text x="240" y="24">FEEDER B</text>
+            </motion.g>
+          </svg>
+        </div>
+        <div className="grid content-center gap-3 font-body text-[13px] text-[#1a1816]/70 md:text-[14px]">
+          {[
+            'Enrollment trend by feeder, five years, with the inflection named.',
+            'Transportation and staffing implications, costed both ways.',
+            'A recommendation the room can accept, amend, or decline.',
+          ].map((point, i) => (
+            <motion.span
+              key={point}
+              initial={reduceMotion ? false : { opacity: 0, x: 8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.3 + i * 0.12, ease: easeStandard }}
+              className="block border-l-2 border-[#a8802a] pl-3.5"
+            >
+              {point}
+            </motion.span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function RecommendationSlide({ reduceMotion }: { reduceMotion: boolean }) {
+  return (
+    <div className="flex min-h-[360px] flex-col px-6 pb-5 pt-8 md:min-h-[440px] md:px-14 md:pb-8 md:pt-12">
+      <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
+        Recommendation · Study session
+      </div>
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: easeStandard }}
+        className="mb-auto mt-4 max-w-[24ch] font-headline text-[26px] font-light leading-[1.14] tracking-[-0.01em] text-[#1a1816] md:text-[40px]"
+      >
+        Consolidate next fall.{' '}
+        <span className="font-editorial italic text-[#6e6355]">Phase transportation over two years.</span>
+      </motion.div>
+      <div className="mt-8 grid gap-3.5 md:mt-12 md:grid-cols-3 md:gap-6">
+        {[
+          ['01', 'One feeder pattern consolidates next fall; the second holds for a one-year review.'],
+          ['02', 'Transportation routes phase in over two years, costed against the enrollment trend.'],
+          ['03', 'Staffing follows enrollment through attrition. No involuntary transfers.'],
+        ].map(([number, text], i) => (
+          <motion.div
+            key={number}
+            initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.25 + i * 0.14, ease: easeStandard }}
+            className="border-t border-[#1a1816]/12 pt-3.5"
+          >
+            <div className="font-label text-[9px] font-bold tracking-[0.2em] text-[#a8802a]">{number}</div>
+            <p className="mt-2.5 font-body text-[13px] leading-[1.6] text-[#1a1816]/72 md:text-[13.5px]">{text}</p>
+          </motion.div>
+        ))}
+      </div>
+      <motion.p
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.75 }}
+        className="mt-8 border-l-2 border-[#a8802a] pl-3.5 font-body text-[12.5px] italic leading-relaxed text-[#1a1816]/60 md:mt-10"
+      >
+        Presented with the evidence attached, for the board to accept, amend, or decline.
+      </motion.p>
+    </div>
+  )
+}
 
 export function PresentationArtifact() {
+  const [slide, setSlide] = useState(0)
   const reduceMotion = Boolean(useReducedMotion())
+  const slideNumber = SLIDE_NUMBERS[slide]
 
   return (
     <div className="relative">
@@ -473,154 +718,76 @@ export function PresentationArtifact() {
         className="absolute inset-x-2.5 -bottom-1 top-2.5 rounded-[4px] bg-[#fffcf7]/[0.16] shadow-[0_22px_60px_rgba(0,0,0,0.4)]"
       />
       <div className="relative">
-        <ArtifactFrame url="built-with-karst / board-study-session" chromeRight="Presenting · Slide 04 of 12">
-          <motion.div
-            className="flex min-h-[360px] flex-col px-6 pb-5 pt-8 md:min-h-[440px] md:px-14 md:pb-8 md:pt-12"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-60px' }}
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: reduceMotion ? 0 : 0.1 } } }}
-          >
+        <ArtifactFrame
+          url="built-with-karst / board-study-session"
+          chromeRight={`Presenting · Slide ${String(slideNumber).padStart(2, '0')} of 12`}
+        >
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
-              variants={{
-                hidden: { opacity: reduceMotion ? 1 : 0 },
-                visible: { opacity: 1, transition: { duration: 0.5 } },
-              }}
-              className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]"
+              key={slide}
+              initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: 24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={reduceMotion ? { opacity: 1 } : { opacity: 0, x: -18 }}
+              transition={{ duration: reduceMotion ? 0 : 0.4, ease: easeStandard }}
             >
-              Enrollment &amp; facilities · Study session
+              {slide === 0 ? (
+                <QuestionSlide reduceMotion={reduceMotion} />
+              ) : (
+                <RecommendationSlide reduceMotion={reduceMotion} />
+              )}
             </motion.div>
-            <motion.div
-              variants={{
-                hidden: { opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 10 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easeStandard } },
-              }}
-              className="mb-auto mt-4 max-w-[22ch] font-headline text-[26px] font-light leading-[1.14] tracking-[-0.01em] text-[#1a1816] md:text-[40px]"
-            >
-              Should we consolidate the two middle-school feeder patterns{' '}
-              <span className="font-editorial italic text-[#6e6355]">next fall?</span>
-            </motion.div>
+          </AnimatePresence>
 
-            <div className="mt-7 grid items-center gap-6 md:mt-10 md:grid-cols-[1.25fr_1fr] md:gap-12">
-              <motion.div
-                variants={{
-                  hidden: { opacity: reduceMotion ? 1 : 0 },
-                  visible: { opacity: 1, transition: { duration: 0.4 } },
-                }}
-              >
-                <PanelLabel>Enrollment by feeder · five years</PanelLabel>
-                <svg viewBox="0 0 320 118" width="100%" aria-hidden="true">
-                  <g stroke="rgba(30,42,74,0.1)" strokeWidth="1">
-                    <line x1="0" y1="28" x2="320" y2="28" />
-                    <line x1="0" y1="58" x2="320" y2="58" />
-                    <line x1="0" y1="88" x2="320" y2="88" />
-                  </g>
-                  <motion.path
-                    d="M10 40 C 70 44, 130 52, 190 62 S 290 82, 310 88"
-                    fill="none"
-                    stroke={NAVY}
-                    strokeWidth="2"
-                    initial={reduceMotion ? false : { pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: reduceMotion ? 0 : 1.3, delay: reduceMotion ? 0 : 0.25, ease: easeStandard }}
+          {/* deck rail — navigation lives on the slide, like a presenter view */}
+          <div className="flex items-center justify-between gap-3 border-t border-[#1a1816]/10 px-6 py-3.5 font-label text-[8.5px] font-semibold uppercase tracking-[0.24em] text-[#6e6355] md:px-14 md:text-[9.5px]">
+            <span>
+              <b className="font-semibold text-[#1a1816]">KARST</b> · Board study session
+            </span>
+            <span className="hidden md:block">Evidence attached · Two of twelve slides shown</span>
+            <span className="flex items-center gap-3">
+              <span className="flex gap-1" aria-hidden="true">
+                {Array.from({ length: 12 }, (_, i) => (
+                  <span
+                    key={i}
+                    className={`h-1 w-1 rounded-full transition-colors duration-300 ${
+                      i === slideNumber - 1 ? 'bg-[#a8802a]' : 'bg-[#1a1816]/15'
+                    }`}
                   />
-                  <motion.path
-                    d="M10 62 C 70 60, 130 56, 190 50 S 290 36, 310 32"
-                    fill="none"
-                    stroke={BRASS}
-                    strokeWidth="1.6"
-                    strokeDasharray="3 5"
-                    initial={reduceMotion ? false : { pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: reduceMotion ? 0 : 1.3, delay: reduceMotion ? 0 : 0.45, ease: easeStandard }}
-                  />
-                  <motion.circle
-                    cx="310"
-                    cy="88"
-                    r="3"
-                    fill={NAVY}
-                    initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: reduceMotion ? 0 : 1.5 }}
-                  />
-                  <motion.circle
-                    cx="310"
-                    cy="32"
-                    r="3"
-                    fill={BRASS}
-                    initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: reduceMotion ? 0 : 1.7 }}
-                  />
-                  <motion.g
-                    fill="rgba(110,99,85,0.85)"
-                    fontFamily="Montserrat, sans-serif"
-                    fontSize="7.5"
-                    fontWeight="600"
-                    letterSpacing="1"
-                    initial={reduceMotion ? false : { opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: reduceMotion ? 0 : 1.6 }}
-                  >
-                    <text x="238" y="104">FEEDER A</text>
-                    <text x="240" y="24">FEEDER B</text>
-                  </motion.g>
-                </svg>
-              </motion.div>
-              <div className="grid content-center gap-3 font-body text-[13px] text-[#1a1816]/70 md:text-[14px]">
-                {[
-                  'Enrollment trend by feeder, five years, with the inflection named.',
-                  'Transportation and staffing implications, costed both ways.',
-                  'A recommendation the room can accept, amend, or decline.',
-                ].map((point) => (
-                  <motion.span
-                    key={point}
-                    variants={{
-                      hidden: { opacity: reduceMotion ? 1 : 0, x: reduceMotion ? 0 : 8 },
-                      visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: easeStandard } },
-                    }}
-                    className="block border-l-2 border-[#a8802a] pl-3.5"
-                  >
-                    {point}
-                  </motion.span>
                 ))}
-              </div>
-            </div>
-
-            <motion.div
-              variants={{
-                hidden: { opacity: reduceMotion ? 1 : 0 },
-                visible: { opacity: 1, transition: { duration: 0.5 } },
-              }}
-              className="mt-8 flex items-baseline justify-between gap-3 border-t border-[#1a1816]/10 pt-4 font-label text-[8.5px] font-semibold uppercase tracking-[0.24em] text-[#6e6355] md:mt-12 md:text-[9.5px]"
-            >
-              <span>
-                <b className="font-semibold text-[#1a1816]">KARST</b> · Board study session
               </span>
-              <span className="hidden md:block">Evidence attached · Recommendation on slide 12</span>
-              <span className="flex items-center gap-2">
-                <span className="flex gap-1" aria-hidden="true">
-                  {Array.from({ length: 12 }, (_, i) => (
-                    <span
-                      key={i}
-                      className={`h-1 w-1 rounded-full ${i === 3 ? 'bg-[#a8802a]' : 'bg-[#1a1816]/15'}`}
-                    />
-                  ))}
-                </span>
-                04 / 12
+              <span className="tabular-nums">{String(slideNumber).padStart(2, '0')} / 12</span>
+              <span className="flex gap-1">
+                <button
+                  type="button"
+                  onClick={() => setSlide(0)}
+                  disabled={slide === 0}
+                  aria-label="Previous slide"
+                  className="flex h-6 w-6 items-center justify-center rounded-[3px] border border-[#1a1816]/15 text-[#1a1816]/70 transition-colors hover:border-[#1a1816]/40 hover:text-[#1a1816] disabled:opacity-30 disabled:hover:border-[#1a1816]/15"
+                >
+                  <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+                    <path d="M6 1L2 4.5L6 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSlide(1)}
+                  disabled={slide === 1}
+                  aria-label="Next slide"
+                  className="flex h-6 w-6 items-center justify-center rounded-[3px] border border-[#1a1816]/15 text-[#1a1816]/70 transition-colors hover:border-[#1a1816]/40 hover:text-[#1a1816] disabled:opacity-30 disabled:hover:border-[#1a1816]/15"
+                >
+                  <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+                    <path d="M3 1L7 4.5L3 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                  </svg>
+                </button>
               </span>
-            </motion.div>
-          </motion.div>
+            </span>
+          </div>
         </ArtifactFrame>
       </div>
     </div>
   )
 }
+
 
 /* ════════ 03 · Application — a live submit, then the system responds ════════ */
 
