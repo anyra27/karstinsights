@@ -4,17 +4,17 @@ const STEPS = [
   {
     number: '01',
     label: 'Protect the time',
-    detail: 'The work earns room on the calendar.',
+    detail: 'The work earns real room on the calendar.',
   },
   {
     number: '02',
     label: 'Build in the work',
-    detail: 'Karst builds alongside the people who own it.',
+    detail: 'Different people build different things, with Karst beside them.',
   },
   {
     number: '03',
-    label: 'Keep the capability',
-    detail: 'The system and method enter the district’s Operating Kit.',
+    label: 'Keep it going',
+    detail: 'Everything lands in one organized kit, easy to find and run again.',
   },
 ]
 
@@ -63,8 +63,9 @@ export default function FieldworkMethod() {
             }}
             className="max-w-[56ch] self-end font-body text-base leading-[1.85] text-[#fffcf7]/62 md:text-lg"
           >
-            Not time away from the work. Time to improve it. A selected cross-functional team builds
-            on a live priority with Karst—and leaves with a system it can keep improving.
+            Not time away from the work. Time to improve it. Your team brings the work already on
+            their plates, and Karst supplies the time, guidance, and methods to build with it.
+            Everyone leaves with working systems they can keep improving.
           </motion.p>
         </div>
 
