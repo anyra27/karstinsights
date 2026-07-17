@@ -150,7 +150,7 @@ export default function OperatingKitDiagram() {
                 transition: { duration: reduceMotion ? 0 : 1.25, delay: reduceMotion ? 0 : 0.18 },
               },
             }}
-            className="absolute bottom-5 left-[22px] top-5 z-10 w-px origin-top bg-gradient-to-b from-[#c49a43]/70 via-[#c49a43]/30 to-[#c49a43]/5 md:left-[27px]"
+            className="absolute bottom-5 left-[26px] top-5 z-10 w-px origin-top bg-gradient-to-b from-[#c49a43]/70 via-[#c49a43]/30 to-[#c49a43]/5 md:left-[32px]"
           />
 
           <ol className="relative space-y-2">

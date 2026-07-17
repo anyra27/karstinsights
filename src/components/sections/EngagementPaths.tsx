@@ -9,6 +9,7 @@ export interface EngagementPath {
   image: string
   imagePosition?: string
   link: string
+  native?: boolean
 }
 
 export default function EngagementPaths({ paths }: { paths: EngagementPath[] }) {
@@ -58,6 +59,7 @@ export default function EngagementPaths({ paths }: { paths: EngagementPath[] }) 
             >
               <Link
                 to={path.link}
+                reloadDocument={path.native}
                 className="group absolute inset-0 block overflow-hidden text-[#fffcf7]"
                 aria-label={`${path.label}: ${path.title}`}
               >

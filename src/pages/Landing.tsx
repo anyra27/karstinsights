@@ -55,28 +55,29 @@ const capabilities = [
   },
 ]
 
-/* ── Offerings — Executive Workshop leads; the Residency is the mature state a
-   district grows into; the Platform is the engine behind both. ── */
+/* ── Three ways into the work: focused workshops, sustained fieldwork,
+   and role-specific learning platforms. ── */
 const offerings = [
   {
-    label: 'Executive Workshop',
+    label: 'Workshops',
     title: 'Build something real.',
-    desc: 'One intensive day. One live district priority. A team ready to keep going.',
+    desc: 'Focused sessions built around live district priorities.',
     image: birdOfParadise,
     link: '/contact',
   },
   {
-    label: 'The Insights Residency',
-    title: 'Go deeper.',
-    desc: 'A year of building, operating, and improving alongside your team.',
+    label: 'Fieldwork',
+    title: 'Build capability in the work.',
+    desc: 'A school-year practice of building, operating, and improving alongside your team.',
     image: koi,
     imagePosition: 'right bottom',
-    link: '/contact',
+    link: '/cohort/',
+    native: true,
   },
   {
-    label: 'Karst Platform',
-    title: 'The platform behind the work.',
-    desc: 'Learning Studios, Basin, and Karst Frame—one system behind the practice.',
+    label: 'Learning Platforms',
+    title: 'Practice that scales.',
+    desc: 'Role-specific studios for leaders, educators, students, and families.',
     image: gem4,
     link: '/studios',
   },
@@ -100,6 +101,10 @@ export default function Landing() {
 
       {/* ══════════ THE PROBLEM — why access is not capability ══════════ */}
       <CapabilityGap />
+
+
+      {/* ══════════ THREE DOORS — strong imagery and the offer architecture ══════════ */}
+      <EngagementPaths paths={offerings} />
 
 
       {/* ══════════ PROOF — DISTRICT LEADERS ══════════ */}
@@ -189,30 +194,33 @@ export default function Landing() {
         </motion.div>
 
         <motion.div
-          className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-7"
+          className="mx-auto grid max-w-6xl grid-cols-1 border-t border-on-surface/10 md:grid-cols-2"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
           variants={staggerContainerRelaxed}
         >
-          {capabilities.map((cap) => {
+          {capabilities.map((cap, index) => {
             const Vignette = cap.Vignette
             return (
-              <motion.div
+              <motion.article
                 key={cap.title}
                 variants={staggerChild}
-                className="ghost-border flex flex-col overflow-hidden"
+                className="group relative grid min-h-[250px] items-center gap-4 border-b border-on-surface/10 py-8 sm:grid-cols-[0.88fr_1.12fr] md:gap-6 md:px-8 md:py-10 md:odd:border-r md:odd:pl-0 md:even:pr-0"
               >
-                <Vignette className="w-full border-b border-black/40 bg-[#0e0e0c] px-2 py-4" />
-                <div className="p-6 md:p-7 flex flex-col flex-1">
-                  <h3 className="font-headline text-base md:text-lg text-on-surface leading-snug mb-3">
+                <span className="absolute left-0 top-5 font-label text-[8px] tracking-[0.24em] text-[#a8802a]/65 md:top-7">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <Vignette className="w-full px-1 pt-5 sm:px-0 sm:pt-0" />
+                <div className="flex flex-col py-1">
+                  <h3 className="mb-3 font-headline text-lg leading-snug text-on-surface md:text-xl">
                     {cap.title}
                   </h3>
-                  <p className="font-body text-sm text-on-surface-variant leading-relaxed">
+                  <p className="max-w-[34ch] font-body text-sm leading-relaxed text-on-surface-variant/75">
                     {cap.desc}
                   </p>
                 </div>
-              </motion.div>
+              </motion.article>
             )
           })}
         </motion.div>
@@ -331,10 +339,6 @@ export default function Landing() {
           </motion.div>
         </motion.div>
       </section>
-
-
-      {/* ══════════ OFFERINGS — one composed field, not three repeated splits ══════════ */}
-      <EngagementPaths paths={offerings} />
 
 
       {/* ══════════ DARK CTA — ambition + the leader who brought it ══════════ */}

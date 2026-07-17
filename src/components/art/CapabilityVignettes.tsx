@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 
-const IVORY = 'rgba(255,252,247,0.82)'
-const IVORY_SOFT = 'rgba(255,252,247,0.38)'
-const IVORY_FAINT = 'rgba(255,252,247,0.16)'
+const INK = 'rgba(26,24,22,0.76)'
+const INK_SOFT = 'rgba(26,24,22,0.42)'
+const INK_FAINT = 'rgba(26,24,22,0.14)'
 const BRASS = '#c49a43'
 const BRASS_SOFT = 'rgba(196,154,67,0.48)'
 
@@ -61,7 +61,7 @@ export function DashboardVignette({ className = '' }: { className?: string }) {
           cx={27 + col * 13}
           cy={31 + row * 13}
           r="1.55"
-          fill={IVORY_SOFT}
+          fill={INK_SOFT}
           style={{ animationDelay: `${(row * cols.length + col) * 0.05}s` }}
         />
       )))}
@@ -73,11 +73,11 @@ export function DashboardVignette({ className = '' }: { className?: string }) {
           cx={150 + column * 19}
           cy={78 - row * 8}
           r={row === count - 1 ? 2 : 1.55}
-          fill={row === count - 1 && column === 3 ? BRASS : IVORY}
+          fill={row === count - 1 && column === 3 ? BRASS : INK}
           style={{ animationDelay: `${0.5 + column * 0.12 + row * 0.04}s` }}
         />
       )))}
-      <path d="M150 53l19-20 19 33 19-45 19 16" fill="none" stroke={IVORY_FAINT} strokeWidth="1" />
+      <path d="M150 53l19-20 19 33 19-45 19 16" fill="none" stroke={INK_FAINT} strokeWidth="1" />
     </VignetteFrame>
   )
 }
@@ -89,11 +89,11 @@ export function SpeakVignette({ className = '' }: { className?: string }) {
   return (
     <VignetteFrame className={className}>
       {source.map(([cx, cy], index) => (
-        <circle key={`${cx}-${cy}`} className="cv-particle" cx={cx} cy={cy} r="1.6" fill={index === 5 ? BRASS : IVORY_SOFT} style={{ animationDelay: `${index * 0.07}s` }} />
+        <circle key={`${cx}-${cy}`} className="cv-particle" cx={cx} cy={cy} r="1.6" fill={index === 5 ? BRASS : INK_SOFT} style={{ animationDelay: `${index * 0.07}s` }} />
       ))}
-      <path className="cv-particle-route" d="M75 50C118 50 126 24 174 24" fill="none" stroke={IVORY_SOFT} />
+      <path className="cv-particle-route" d="M75 50C118 50 126 24 174 24" fill="none" stroke={INK_SOFT} />
       <path className="cv-particle-route" d="M75 50h99" fill="none" stroke={BRASS_SOFT} style={{ animationDelay: '0.2s' }} />
-      <path className="cv-particle-route" d="M75 50c43 0 51 26 99 26" fill="none" stroke={IVORY_SOFT} style={{ animationDelay: '0.4s' }} />
+      <path className="cv-particle-route" d="M75 50c43 0 51 26 99 26" fill="none" stroke={INK_SOFT} style={{ animationDelay: '0.4s' }} />
       {destinations.flatMap((cy, group) => [0, 1, 2, 3, 4].map((col) => (
         <circle
           key={`${group}-${col}`}
@@ -101,7 +101,7 @@ export function SpeakVignette({ className = '' }: { className?: string }) {
           cx={188 + col * 11}
           cy={cy}
           r={col === 4 ? 2 : 1.45}
-          fill={group === 1 && col === 4 ? BRASS : IVORY}
+          fill={group === 1 && col === 4 ? BRASS : INK}
           style={{ animationDelay: `${0.7 + group * 0.18 + col * 0.05}s` }}
         />
       )))}
@@ -121,13 +121,13 @@ export function ConcertVignette({ className = '' }: { className?: string }) {
       {streams.map((stream, index) => (
         <g key={stream.y}>
           {[0, 1, 2].map((col) => (
-            <circle key={col} className="cv-particle" cx={35 + col * 10} cy={stream.y} r={col === 2 ? 2 : 1.35} fill={index === 1 && col === 2 ? BRASS : IVORY} style={{ animationDelay: `${index * 0.22 + col * 0.06}s` }} />
+            <circle key={col} className="cv-particle" cx={35 + col * 10} cy={stream.y} r={col === 2 ? 2 : 1.35} fill={index === 1 && col === 2 ? BRASS : INK} style={{ animationDelay: `${index * 0.22 + col * 0.06}s` }} />
           ))}
-          <path className="cv-particle-route" d={stream.path} fill="none" stroke={index === 1 ? BRASS_SOFT : IVORY_SOFT} style={{ animationDelay: `${index * 0.22}s` }} />
+          <path className="cv-particle-route" d={stream.path} fill="none" stroke={index === 1 ? BRASS_SOFT : INK_SOFT} style={{ animationDelay: `${index * 0.22}s` }} />
         </g>
       ))}
       {[0, 1, 2, 3].map((index) => (
-        <circle key={index} className="cv-particle" cx={177 + index * 11} cy="50" r="1.45" fill={IVORY_SOFT} style={{ animationDelay: `${0.8 + index * 0.08}s` }} />
+        <circle key={index} className="cv-particle" cx={177 + index * 11} cy="50" r="1.45" fill={INK_SOFT} style={{ animationDelay: `${0.8 + index * 0.08}s` }} />
       ))}
       <circle cx="232" cy="50" r="13" fill="none" stroke={BRASS_SOFT} />
       <circle className="cv-particle-resolve" cx="232" cy="50" r="4.5" fill={BRASS} />
@@ -150,10 +150,10 @@ export function ToolVignette({ className = '' }: { className?: string }) {
   return (
     <VignetteFrame className={className}>
       {frameDots.map(([cx, cy], index) => (
-        <circle key={`${cx}-${cy}-${index}`} className="cv-particle" cx={cx} cy={cy} r="1.3" fill={IVORY_FAINT} style={{ animationDelay: `${index * 0.025}s` }} />
+        <circle key={`${cx}-${cy}-${index}`} className="cv-particle" cx={cx} cy={cy} r="1.3" fill={INK_FAINT} style={{ animationDelay: `${index * 0.025}s` }} />
       ))}
       {modules.map(([cx, cy], index) => (
-        <circle key={`${cx}-${cy}`} className="cv-particle" cx={cx} cy={cy} r={index === 3 ? 2.2 : 1.55} fill={index === 3 ? BRASS : IVORY} style={{ animationDelay: `${0.45 + index * 0.05}s` }} />
+        <circle key={`${cx}-${cy}`} className="cv-particle" cx={cx} cy={cy} r={index === 3 ? 2.2 : 1.55} fill={index === 3 ? BRASS : INK} style={{ animationDelay: `${0.45 + index * 0.05}s` }} />
       ))}
       <path className="cv-particle-route" d="M112 50h20" stroke={BRASS_SOFT} />
       <circle className="cv-particle-resolve" cx="190" cy="49" r="4" fill={BRASS} />
