@@ -16,17 +16,17 @@ const TABS = [
   {
     id: 'dashboards',
     label: '01 · Dashboards',
-    line: 'A working surface. Switch the views and periods; the read follows.',
+    line: 'Ask in plain English. The analysis and the writing come back done.',
   },
   {
     id: 'presentations',
     label: '02 · Presentations',
-    line: 'Figures become a board-ready story with the recommendation attached.',
+    line: 'One set of figures, recomposed for the board, staff, and families.',
   },
   {
     id: 'applications',
     label: '03 · Applications',
-    line: 'A staff request becomes a routed, tracked, visible workflow.',
+    line: 'The form is the easy part. The system reads it, routes it, and drafts the reply.',
   },
 ] as const
 
@@ -94,8 +94,9 @@ export default function WhatTeamsBuild() {
             variants={staggerChild}
             className="max-w-[48ch] font-body text-base leading-[1.85] text-[#fffcf7]/62 md:text-lg"
           >
-            Dashboards from your own data. Presentations ready for the board. Applications your
-            staff actually use. Built by your team, with Karst, in sessions that fit real calendars.
+            Data that answers plain-English questions. Presentations that recompose for each
+            audience. Applications that read a request and draft the reply. Built by your team,
+            with Karst, on your real work.
           </motion.p>
         </div>
 
