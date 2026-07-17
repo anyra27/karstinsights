@@ -214,7 +214,7 @@ function PanelLabel({ children }: { children: React.ReactNode }) {
 /* ════════ 01 · Dashboards — a season of raw exports, processed with AI
    into an early-warning picture. Directionally modeled on real district
    work (attendance × outcomes, ABC early-warning framework); all numbers
-   here are illustrative, no live data. ════════ */
+   and site names here are invented, no live data, no district named. ════════ */
 
 const SOURCE_FILES: Array<[string, string]> = [
   ['attendance.xlsx', '18,600 rows'],
@@ -224,13 +224,14 @@ const SOURCE_FILES: Array<[string, string]> = [
 ]
 
 type LensKey = 'cliff' | 'early' | 'watchlist'
+type ChartKind = 'columns' | 'curve' | 'ranked'
 
 interface Lens {
   tab: string
   title: string
   stats: Array<[string, string, string]>
+  chart: ChartKind
   chartLabel: string
-  bars: Array<[string, number, string, boolean]>
   read: string
 }
 
@@ -242,13 +243,8 @@ const LENSES: Record<LensKey, Lens> = {
       ['Cliff edge', 'Below 90%', 'Risk doubles here'],
       ['D/F rate under 85%', '58%', 'Vs 6% at near-perfect'],
     ],
+    chart: 'columns',
     chartLabel: 'Course-failure rate by attendance band',
-    bars: [
-      ['95–100%', 10, '6%', false],
-      ['90–94%', 24, '14%', false],
-      ['85–89%', 53, '31%', true],
-      ['Below 85%', 96, '58%', true],
-    ],
     read:
       'The pattern hides in the join. Below 90 percent attendance, course-failure rates roughly double; below 85, most of a cohort is failing something. Attendance is not a side metric, it is the leading edge of the outcome.',
   },
@@ -259,14 +255,8 @@ const LENSES: Record<LensKey, Lens> = {
       ['Earliest reliable flag', 'Week 4', 'First-month absences'],
       ['2+ early absences', '5× risk', 'Vs a clean first month'],
     ],
+    chart: 'curve',
     chartLabel: 'Year-end chronic absence by first-month absences',
-    bars: [
-      ['0 absences', 15, '9%', false],
-      ['1', 28, '17%', false],
-      ['2', 56, '34%', true],
-      ['3–4', 86, '52%', true],
-      ['5+', 100, '71%', true],
-    ],
     read:
       'The strongest predictor is the earliest one. A student with two or more absences in the first month is five times more likely to end the year chronically absent. That is a list a principal can act on in September, not one they read in June.',
   },
@@ -277,25 +267,184 @@ const LENSES: Record<LensKey, Lens> = {
       ['Flagged this fall', '412', 'Across 14 sites'],
       ['Caught by attendance alone', '8 in 10', 'Weeks before the first F'],
     ],
+    chart: 'ranked',
     chartLabel: 'Flagged students by site · highest need first',
-    bars: [
-      ['North High', 88, '96', true],
-      ['Delta Vista', 61, '67', true],
-      ['Sierra Vista', 44, '48', false],
-      ['Creekside Elem', 30, '33', false],
-      ['Other sites', 52, '168', false],
-    ],
     read:
       'The dashboard ends where the work starts: a ranked, de-identified watchlist the district can turn back into real names on its own side. Each flag carries why it fired, so outreach is targeted, not district-wide.',
   },
 }
 
-function LensBars({ lens, reduceMotion }: { lens: Lens; reduceMotion: boolean }) {
+/* Column chart — the cliff, read as a rising wall of risk */
+const CLIFF_COLS: Array<[string, number, string, boolean]> = [
+  ['95–100%', 6, '6%', false],
+  ['90–94%', 14, '14%', false],
+  ['85–89%', 31, '31%', true],
+  ['Below 85%', 58, '58%', true],
+]
+
+function CliffColumns({ reduceMotion }: { reduceMotion: boolean }) {
+  const max = 62
+  const W = 340
+  const H = 170
+  const pad = 26
+  const baseY = H - 22
+  const colW = 46
+  const gap = (W - pad * 2 - colW * CLIFF_COLS.length) / (CLIFF_COLS.length - 1)
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" aria-hidden="true">
+      <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.12)" strokeWidth="1" />
+      {CLIFF_COLS.map(([label, val, tag, hot], i) => {
+        const x = pad + i * (colW + gap)
+        const h = ((baseY - 14) * val) / max
+        return (
+          <g key={label}>
+            <motion.rect
+              x={x}
+              width={colW}
+              rx={2}
+              initial={reduceMotion ? { y: baseY - h, height: h } : { y: baseY, height: 0 }}
+              animate={{ y: baseY - h, height: h }}
+              transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.1 + i * 0.09, ease: easeStandard }}
+              fill={hot ? 'rgba(165,71,49,0.72)' : 'rgba(30,42,74,0.6)'}
+            />
+            <motion.text
+              x={x + colW / 2}
+              y={baseY - h - 6}
+              textAnchor="middle"
+              fill={hot ? '#a54731' : '#1a1816'}
+              fontFamily="Montserrat, sans-serif"
+              fontSize="11"
+              fontWeight="700"
+              initial={reduceMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.5 + i * 0.09 }}
+            >
+              {tag}
+            </motion.text>
+            <text
+              x={x + colW / 2}
+              y={baseY + 14}
+              textAnchor="middle"
+              fill="rgba(110,99,85,0.85)"
+              fontFamily="Montserrat, sans-serif"
+              fontSize="8"
+              fontWeight="600"
+              letterSpacing="0.5"
+            >
+              {label}
+            </text>
+          </g>
+        )
+      })}
+    </svg>
+  )
+}
+
+/* Area + line curve — the early-warning ramp */
+const EARLY_PTS: Array<[string, number, string]> = [
+  ['0', 9, '9%'],
+  ['1', 17, '17%'],
+  ['2', 34, '34%'],
+  ['3–4', 52, '52%'],
+  ['5+', 71, '71%'],
+]
+
+function EarlyCurve({ reduceMotion }: { reduceMotion: boolean }) {
+  const W = 340
+  const H = 170
+  const pad = 26
+  const baseY = H - 22
+  const topY = 16
+  const max = 80
+  const stepX = (W - pad * 2) / (EARLY_PTS.length - 1)
+  const pts = EARLY_PTS.map(([, v], i) => {
+    const x = pad + i * stepX
+    const y = baseY - ((baseY - topY) * v) / max
+    return [x, y] as const
+  })
+  const line = pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x} ${y}`).join(' ')
+  const area = `${line} L ${pts[pts.length - 1][0]} ${baseY} L ${pts[0][0]} ${baseY} Z`
+  const inflection = pts[2]
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" aria-hidden="true">
+      <g stroke="rgba(26,24,22,0.07)" strokeWidth="1">
+        <line x1={pad} y1={topY + 28} x2={W - pad} y2={topY + 28} />
+        <line x1={pad} y1={(topY + baseY) / 2} x2={W - pad} y2={(topY + baseY) / 2} />
+      </g>
+      <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.12)" strokeWidth="1" />
+      <motion.path
+        d={area}
+        fill="rgba(165,71,49,0.1)"
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: reduceMotion ? 0 : 0.5 }}
+      />
+      <motion.path
+        d={line}
+        fill="none"
+        stroke="#a54731"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={reduceMotion ? false : { pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: reduceMotion ? 0 : 1, delay: reduceMotion ? 0 : 0.15, ease: easeStandard }}
+      />
+      {pts.map(([x, y], i) => (
+        <motion.circle
+          key={i}
+          cx={x}
+          cy={y}
+          r={i === 2 ? 4 : 2.6}
+          fill={i === 2 ? '#a54731' : '#fffcf7'}
+          stroke="#a54731"
+          strokeWidth="1.6"
+          initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.7 + i * 0.09 }}
+        />
+      ))}
+      <motion.text
+        x={inflection[0]}
+        y={inflection[1] - 12}
+        textAnchor="middle"
+        fill="#a54731"
+        fontFamily="Montserrat, sans-serif"
+        fontSize="8.5"
+        fontWeight="700"
+        letterSpacing="0.6"
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: reduceMotion ? 0 : 1.3 }}
+      >
+        INFLECTION
+      </motion.text>
+      <g fill="rgba(110,99,85,0.85)" fontFamily="Montserrat, sans-serif" fontSize="8" fontWeight="600" letterSpacing="0.5">
+        {EARLY_PTS.map(([label], i) => (
+          <text key={label} x={pad + i * stepX} y={baseY + 14} textAnchor="middle">
+            {label}
+          </text>
+        ))}
+      </g>
+    </svg>
+  )
+}
+
+/* Ranked horizontal bars — the watchlist by site */
+const RANKED_SITES: Array<[string, number, string, boolean]> = [
+  ['Harbor View High', 88, '96', true],
+  ['Grandview Middle', 61, '67', true],
+  ['Cedar Hollow Elem', 44, '48', false],
+  ['Northfield Middle', 30, '33', false],
+  ['Other sites', 52, '168', false],
+]
+
+function RankedBars({ reduceMotion }: { reduceMotion: boolean }) {
   return (
     <div className="grid gap-2.5">
-      {lens.bars.map(([label, width, value, hot], i) => (
-        <div key={label} className="grid grid-cols-[84px_minmax(0,1fr)_38px] items-center gap-3">
-          <span className="truncate font-label text-[9px] font-semibold uppercase tracking-[0.06em] text-[#1a1816]/70">
+      {RANKED_SITES.map(([label, width, value, hot], i) => (
+        <div key={label} className="grid grid-cols-[110px_minmax(0,1fr)_34px] items-center gap-3">
+          <span className="truncate font-label text-[9px] font-semibold uppercase tracking-[0.04em] text-[#1a1816]/70">
             {label}
           </span>
           <motion.i
@@ -316,14 +465,84 @@ function LensBars({ lens, reduceMotion }: { lens: Lens; reduceMotion: boolean })
   )
 }
 
+/* Donut — how each flag was caught */
+const DONUT_SEGMENTS: Array<[string, number, string]> = [
+  ['Attendance alone', 62, '#a54731'],
+  ['+ Grades', 26, '#a8802a'],
+  ['All three signals', 12, '#1e2a4a'],
+]
+
+function SignalDonut({ reduceMotion }: { reduceMotion: boolean }) {
+  const r = 34
+  const c = 2 * Math.PI * r
+  // Precompute each segment's cumulative offset so the render map stays pure.
+  const segments = DONUT_SEGMENTS.reduce<Array<{ label: string; pct: number; color: string; len: number; offset: number }>>(
+    (acc, [label, pct, color]) => {
+      const len = (c * pct) / 100
+      const offset = acc.length ? acc[acc.length - 1].offset + acc[acc.length - 1].len : 0
+      acc.push({ label, pct, color, len, offset })
+      return acc
+    },
+    [],
+  )
+  return (
+    <div className="flex items-center gap-4">
+      <svg viewBox="0 0 90 90" width="90" height="90" aria-hidden="true" className="shrink-0 -rotate-90">
+        <circle cx="45" cy="45" r={r} fill="none" stroke="rgba(26,24,22,0.08)" strokeWidth="11" />
+        {segments.map(({ label, color, len, offset }, i) => (
+          <motion.circle
+            key={label}
+            cx="45"
+            cy="45"
+            r={r}
+            fill="none"
+            stroke={color}
+            strokeWidth="11"
+            strokeDasharray={`${len} ${c - len}`}
+            strokeDashoffset={-offset}
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.2 + i * 0.15 }}
+          />
+        ))}
+      </svg>
+      <div className="grid gap-1.5">
+        {DONUT_SEGMENTS.map(([label, pct, color]) => (
+          <div key={label} className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-[1px]" style={{ background: color }} aria-hidden="true" />
+            <span className="font-label text-[9px] font-semibold uppercase tracking-[0.06em] text-[#1a1816]/70">
+              {label}
+            </span>
+            <b className="font-label text-[10px] font-bold text-[#1a1816]">{pct}%</b>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function LensChart({ lens, reduceMotion }: { lens: Lens; reduceMotion: boolean }) {
+  if (lens.chart === 'columns') return <CliffColumns reduceMotion={reduceMotion} />
+  if (lens.chart === 'curve') return <EarlyCurve reduceMotion={reduceMotion} />
+  return (
+    <div className="grid gap-4">
+      <RankedBars reduceMotion={reduceMotion} />
+      <div className="border-t border-[#1a1816]/[0.07] pt-3.5">
+        <div className="mb-2.5 font-label text-[9px] font-bold uppercase tracking-[0.2em] text-[#6e6355]">
+          How each flag was caught
+        </div>
+        <SignalDonut reduceMotion={reduceMotion} />
+      </div>
+    </div>
+  )
+}
+
 export function DashboardArtifact() {
   const [lensKey, setLensKey] = useState<LensKey>('cliff')
   const [built, setBuilt] = useState(false)
   const reduceMotion = Boolean(useReducedMotion())
   const lens = LENSES[lensKey]
 
-  /* The pipeline "runs" once on first view: sources light up, then the
-     dashboard resolves. Instant under reduced motion. */
   useEffect(() => {
     const t = setTimeout(() => setBuilt(true), reduceMotion ? 0 : 1400)
     return () => clearTimeout(t)
@@ -406,7 +625,7 @@ export function DashboardArtifact() {
               </div>
               <div className="rounded-[3px] border border-[#1a1816]/10 px-4 py-3.5">
                 <PanelLabel>{lens.chartLabel}</PanelLabel>
-                {built && <LensBars lens={lens} reduceMotion={reduceMotion} />}
+                {built && <LensChart lens={lens} reduceMotion={reduceMotion} />}
               </div>
             </div>
             <StreamedRead label="The read:" text={lens.read} active={built} />
@@ -417,15 +636,17 @@ export function DashboardArtifact() {
   )
 }
 
-/* ════════ 02 · Presentation — one source, recomposed per audience ════════ */
+/* ════════ 02 · Presentation — one source, recomposed per audience.
+   Craft modeled on the real LCAP board deck (hero-stat register, serif
+   numeral, editorial eyebrows); genericized, no district named. ════════ */
 
 type Audience = 'board' | 'staff' | 'families'
 
 interface AudienceSlide {
   label: string
   eyebrow: string
-  headlinePlain: string
-  headlineItalic: string
+  hero: string
+  heroCaption: string
   points: string[]
   foot: string
 }
@@ -434,8 +655,8 @@ const AUDIENCE_SLIDES: Record<Audience, AudienceSlide> = {
   board: {
     label: 'Board',
     eyebrow: 'Enrollment & facilities · Study session',
-    headlinePlain: 'Should we consolidate the two middle-school feeder patterns',
-    headlineItalic: 'next fall?',
+    hero: 'Year 2',
+    heroCaption: 'when the two feeder patterns cross.',
     points: [
       'Enrollment trend by feeder, five years, with the inflection named.',
       'Transportation and staffing implications, costed both ways.',
@@ -446,8 +667,8 @@ const AUDIENCE_SLIDES: Record<Audience, AudienceSlide> = {
   staff: {
     label: 'Staff',
     eyebrow: 'Feeder study · What it means for your site',
-    headlinePlain: 'What the feeder study means',
-    headlineItalic: 'for your school.',
+    hero: 'Zero',
+    heroCaption: 'involuntary transfers, in every scenario.',
     points: [
       'No involuntary transfers in any scenario under study.',
       'The decision timeline, with the dates that affect staffing first.',
@@ -458,15 +679,53 @@ const AUDIENCE_SLIDES: Record<Audience, AudienceSlide> = {
   families: {
     label: 'Families',
     eyebrow: 'Feeder study · A plain-language update',
-    headlinePlain: 'Two ways to keep both school communities',
-    headlineItalic: 'strong.',
+    hero: 'Two years',
+    heroCaption: 'to phase any change, with town halls first.',
     points: [
       'What stays the same either way: teachers, programs, and school names.',
-      'What could change: some bus routes and start times, phased over two years.',
+      'What could change: some bus routes and start times, phased in.',
       'How families weigh in: town halls at both schools before any vote.',
     ],
     foot: 'Translated versions available · Town hall dates attached',
   },
+}
+
+function FeederChart({ reduceMotion }: { reduceMotion: boolean }) {
+  return (
+    <svg viewBox="0 0 320 112" width="100%" aria-hidden="true">
+      <g stroke="rgba(30,42,74,0.1)" strokeWidth="1">
+        <line x1="0" y1="28" x2="320" y2="28" />
+        <line x1="0" y1="58" x2="320" y2="58" />
+        <line x1="0" y1="88" x2="320" y2="88" />
+      </g>
+      <motion.path
+        d="M10 40 C 70 44, 130 52, 190 62 S 290 82, 310 88"
+        fill="none"
+        stroke={NAVY}
+        strokeWidth="2"
+        initial={reduceMotion ? false : { pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: reduceMotion ? 0 : 1.1, delay: reduceMotion ? 0 : 0.15, ease: easeStandard }}
+      />
+      <motion.path
+        d="M10 62 C 70 60, 130 56, 190 50 S 290 36, 310 32"
+        fill="none"
+        stroke={BRASS}
+        strokeWidth="1.6"
+        strokeDasharray="3 5"
+        initial={reduceMotion ? false : { pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: reduceMotion ? 0 : 1.1, delay: reduceMotion ? 0 : 0.3, ease: easeStandard }}
+      />
+      <circle cx="310" cy="88" r="3" fill={NAVY} />
+      <circle cx="310" cy="32" r="3" fill={BRASS} />
+      <circle cx="196" cy="55" r="3.5" fill="none" stroke={BRASS} strokeWidth="1.4" />
+      <g fill="rgba(110,99,85,0.85)" fontFamily="Montserrat, sans-serif" fontSize="7.5" fontWeight="600" letterSpacing="1">
+        <text x="238" y="104">FEEDER A</text>
+        <text x="240" y="24">FEEDER B</text>
+      </g>
+    </svg>
+  )
 }
 
 export function PresentationArtifact() {
@@ -488,7 +747,7 @@ export function PresentationArtifact() {
       <div className="relative">
         <ArtifactFrame url="built-with-karst / board-study-session" chromeRight="One source · Three audiences">
           {/* audience recompose bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#1a1816]/10 bg-[#f6f4ec] px-6 py-3 md:px-14">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#1a1816]/10 bg-[#f6f4ec] px-6 py-3 md:px-12">
             <span className="font-label text-[9px] font-bold uppercase tracking-[0.24em] text-[#6e6355]">
               Same figures · Composed for
             </span>
@@ -517,57 +776,27 @@ export function PresentationArtifact() {
               animate={{ opacity: 1, y: 0 }}
               exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
               transition={{ duration: reduceMotion ? 0 : 0.35, ease: easeStandard }}
-              className="flex min-h-[330px] flex-col px-6 pb-5 pt-7 md:min-h-[400px] md:px-14 md:pb-8 md:pt-10"
+              className="flex min-h-[360px] flex-col px-6 pb-5 pt-8 md:min-h-[420px] md:px-12 md:pb-8 md:pt-12"
             >
-              <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
+              <div className="text-center font-label text-[9px] font-semibold uppercase tracking-[0.34em] text-[#a8802a] md:text-[10px]">
                 {slide.eyebrow}
               </div>
-              <div className="mb-auto mt-4 max-w-[24ch] font-headline text-[24px] font-light leading-[1.14] tracking-[-0.01em] text-[#1a1816] md:text-[38px]">
-                {slide.headlinePlain}{' '}
-                <span className="font-editorial italic text-[#6e6355]">{slide.headlineItalic}</span>
+
+              {/* hero stat — the LCAP register: one serif numeral does the work */}
+              <div className="mb-auto mt-6 text-center md:mt-8">
+                <div className="font-editorial text-[52px] font-normal italic leading-[0.95] text-[#1e2a4a] md:text-[76px]">
+                  {slide.hero}
+                </div>
+                <div className="mx-auto mt-4 max-w-[26ch] font-headline text-[19px] font-light leading-[1.2] text-[#1a1816] md:text-[26px]">
+                  {slide.heroCaption}
+                </div>
               </div>
 
-              <div className="mt-7 grid items-center gap-6 md:mt-9 md:grid-cols-[1.25fr_1fr] md:gap-12">
+              {/* supporting evidence — chart + the recomposed points */}
+              <div className="mt-8 grid items-center gap-6 border-t border-[#1a1816]/10 pt-6 md:mt-10 md:grid-cols-[0.85fr_1.15fr] md:gap-12">
                 <div>
                   <PanelLabel>Enrollment by feeder · five years</PanelLabel>
-                  <svg viewBox="0 0 320 112" width="100%" aria-hidden="true">
-                    <g stroke="rgba(30,42,74,0.1)" strokeWidth="1">
-                      <line x1="0" y1="28" x2="320" y2="28" />
-                      <line x1="0" y1="58" x2="320" y2="58" />
-                      <line x1="0" y1="88" x2="320" y2="88" />
-                    </g>
-                    <motion.path
-                      d="M10 40 C 70 44, 130 52, 190 62 S 290 82, 310 88"
-                      fill="none"
-                      stroke={NAVY}
-                      strokeWidth="2"
-                      initial={reduceMotion ? false : { pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: reduceMotion ? 0 : 1.1, delay: reduceMotion ? 0 : 0.15, ease: easeStandard }}
-                    />
-                    <motion.path
-                      d="M10 62 C 70 60, 130 56, 190 50 S 290 36, 310 32"
-                      fill="none"
-                      stroke={BRASS}
-                      strokeWidth="1.6"
-                      strokeDasharray="3 5"
-                      initial={reduceMotion ? false : { pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: reduceMotion ? 0 : 1.1, delay: reduceMotion ? 0 : 0.3, ease: easeStandard }}
-                    />
-                    <circle cx="310" cy="88" r="3" fill={NAVY} />
-                    <circle cx="310" cy="32" r="3" fill={BRASS} />
-                    <g
-                      fill="rgba(110,99,85,0.85)"
-                      fontFamily="Montserrat, sans-serif"
-                      fontSize="7.5"
-                      fontWeight="600"
-                      letterSpacing="1"
-                    >
-                      <text x="238" y="104">FEEDER A</text>
-                      <text x="240" y="24">FEEDER B</text>
-                    </g>
-                  </svg>
+                  <FeederChart reduceMotion={reduceMotion} />
                 </div>
                 <div className="grid content-center gap-3 font-body text-[13px] text-[#1a1816]/70 md:text-[13.5px]">
                   {slide.points.map((point, i) => (
@@ -739,30 +968,37 @@ export function ApplicationArtifact() {
             animate={{ opacity: 1 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
             transition={{ duration: reduceMotion ? 0 : 0.3, ease: easeStandard }}
-            className="mx-auto max-w-xl p-5 md:p-8"
+            className="mx-auto max-w-xl p-5 md:p-7"
           >
-            <div className="mb-5 flex items-center gap-2.5">
-              <i className="h-2 w-2 rounded-full bg-[#1e2a4a]" aria-hidden="true" />
-              <span className="font-label text-[10.5px] font-semibold text-[#1a1816] md:text-[11.5px]">
-                Site facilities request
+            <div className="mb-5 flex items-center justify-between gap-3 border-b border-[#1a1816]/10 pb-4">
+              <span className="flex items-center gap-2.5">
+                <i className="h-2 w-2 rounded-full bg-[#1e2a4a]" aria-hidden="true" />
+                <span className="font-label text-[10.5px] font-semibold text-[#1a1816] md:text-[11.5px]">
+                  Site facilities request
+                </span>
+              </span>
+              <span className="rounded-[3px] border border-[#1a1816]/12 px-2.5 py-1 font-label text-[8px] font-bold uppercase tracking-[0.16em] text-[#6e6355]">
+                Staff tool
               </span>
             </div>
             <div className="grid content-start gap-3.5">
-              {(
-                [
-                  ['Site', 'Sierra Vista Middle'],
-                  ['Location', 'Room 214 · Science wing'],
-                ] as const
-              ).map(([label, value]) => (
-                <div key={label} className="grid gap-1.5">
-                  <span className="font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]">
-                    {label}
-                  </span>
-                  <span className="rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-3.5 py-2.5 font-body text-[13.5px] text-[#1a1816]">
-                    {value}
-                  </span>
-                </div>
-              ))}
+              <div className="grid gap-3.5 sm:grid-cols-2">
+                {(
+                  [
+                    ['Site', 'Grandview Middle'],
+                    ['Location', 'Room 214 · Science wing'],
+                  ] as const
+                ).map(([label, value]) => (
+                  <div key={label} className="grid gap-1.5">
+                    <span className="font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]">
+                      {label}
+                    </span>
+                    <span className="rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-3.5 py-2.5 font-body text-[13.5px] text-[#1a1816]">
+                      {value}
+                    </span>
+                  </div>
+                ))}
+              </div>
               <div className="grid gap-1.5">
                 <span className="font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]">
                   Category
@@ -790,16 +1026,43 @@ export function ApplicationArtifact() {
                   No cooling since Tuesday. Two afternoon classes relocated.
                 </span>
               </div>
-              <button
-                type="button"
-                onClick={submit}
-                className="mt-1 inline-block justify-self-start rounded-[3px] bg-[#1a1816] px-6 py-3 font-label text-[10px] font-bold uppercase tracking-[0.22em] text-[#f0eee6] transition-all duration-300 hover:-translate-y-px hover:bg-[#0e0e0c]"
-              >
-                Submit request
-              </button>
+              <div className="mt-1 flex items-center gap-3.5">
+                <motion.button
+                  type="button"
+                  onClick={submit}
+                  className="group inline-flex items-center gap-2.5 rounded-[3px] bg-[#1a1816] px-6 py-3 font-label text-[10px] font-bold uppercase tracking-[0.22em] text-[#f0eee6]"
+                  animate={
+                    reduceMotion
+                      ? undefined
+                      : {
+                          boxShadow: [
+                            '0 0 0 0 rgba(168,128,42,0)',
+                            '0 0 0 7px rgba(168,128,42,0.14)',
+                            '0 0 0 0 rgba(168,128,42,0)',
+                          ],
+                        }
+                  }
+                  transition={reduceMotion ? undefined : { duration: 2.1, repeat: Infinity, ease: 'easeInOut' }}
+                  whileHover={{ y: -1, backgroundColor: '#0e0e0c' }}
+                >
+                  Submit request
+                  <span className="transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true">
+                    →
+                  </span>
+                </motion.button>
+                {!reduceMotion && (
+                  <motion.span
+                    className="flex items-center gap-1 font-body text-[11px] italic text-[#a8802a]"
+                    animate={{ opacity: [0.55, 1, 0.55], x: [0, 3, 0] }}
+                    transition={{ duration: 2.1, repeat: Infinity, ease: 'easeInOut' }}
+                  >
+                    <span aria-hidden="true">←</span> try it
+                  </motion.span>
+                )}
+              </div>
               <span className="font-body text-[11px] italic text-[#6e6355]/80">
-                Built by the operations team in a Fieldwork session, with AI-assisted coding. Try it;
-                nothing is sent.
+                Built by the operations team in a Fieldwork session, with AI-assisted coding. Nothing
+                is sent.
               </span>
             </div>
           </motion.div>
@@ -939,3 +1202,5 @@ export function ApplicationArtifact() {
     </ArtifactFrame>
   )
 }
+
+
