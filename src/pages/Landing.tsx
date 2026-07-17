@@ -6,11 +6,11 @@ import {
   easeStandard,
 } from '../lib/motion'
 import PageShell from '../components/layout/PageShell'
-import ParallaxImage from '../components/layout/ParallaxImage'
 import DashboardShowcase from '../components/sections/DashboardShowcase'
 import DistrictLeadershipProof from '../components/sections/DistrictLeadershipProof'
 import CapabilityGap from '../components/sections/CapabilityGap'
 import FieldworkMethod from '../components/sections/FieldworkMethod'
+import EngagementPaths from '../components/sections/EngagementPaths'
 import OperatingKitDiagram from '../components/art/OperatingKitDiagram'
 import AmbientParticles from '../components/art/AmbientParticles'
 import CinematicHomeHero from '../components/hero/CinematicHomeHero'
@@ -22,7 +22,6 @@ import {
 } from '../components/art/CapabilityVignettes'
 
 import { usePageMeta } from '../lib/usePageMeta'
-import pearlBg from '../assets/pearl-bg.webp'
 import gem4 from '../assets/gem4.webp'
 import birdOfParadise from '../assets/bird-of-paradise.webp'
 import koi from '../assets/koi.webp'
@@ -64,6 +63,7 @@ const offerings = [
     title: 'Build something real.',
     desc: 'One intensive day. One live district priority. A team ready to keep going.',
     image: birdOfParadise,
+    link: '/contact',
   },
   {
     label: 'The Insights Residency',
@@ -71,15 +71,14 @@ const offerings = [
     desc: 'A year of building, operating, and improving alongside your team.',
     image: koi,
     imagePosition: 'right bottom',
+    link: '/contact',
   },
   {
     label: 'Karst Platform',
     title: 'The platform behind the work.',
-    desc: 'Learning Studio, Data Studio, and Karst Frame—one system behind the practice.',
+    desc: 'Learning Studios, Basin, and Karst Frame—one system behind the practice.',
     image: gem4,
     link: '/studios',
-    linkLabel: 'See the Studios',
-    external: false,
   },
 ]
 
@@ -222,27 +221,37 @@ export default function Landing() {
 
 
       {/* ══════════ DEMONSTRATION BAND — DASHBOARD SHOWCASE ══════════ */}
-      <section className="relative py-28 md:py-36 px-6 bg-surface-container overflow-hidden">
+      <section
+        data-karst-nav-dark
+        className="relative overflow-hidden border-t border-white/8 bg-[#090908] px-6 py-24 text-[#fffcf7] md:px-10 md:py-32"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(196,154,67,0.12),transparent_31%),linear-gradient(145deg,rgba(255,255,255,0.025),transparent_42%)]"
+        />
         <motion.div
-          className="max-w-3xl mx-auto text-center mb-14 md:mb-16"
+          className="relative z-10 mx-auto mb-14 grid max-w-6xl gap-8 md:mb-16 lg:grid-cols-[0.9fr_1.1fr] lg:items-end lg:gap-24"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7, ease: easeStandard }}
         >
-          <p className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-tertiary mb-5">
-            In Practice
-          </p>
-          <h2 className="font-headline text-2xl md:text-3xl lg:text-4xl text-on-surface leading-snug mb-5">
-            A dashboard,<br className="hidden md:inline" /> ready for the board.
-          </h2>
-          <div className="w-10 h-px bg-tertiary/40 mx-auto mb-5" />
-          <p className="font-body text-sm md:text-base text-on-surface-variant leading-relaxed max-w-xl mx-auto">
+          <div>
+            <p className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#c49a43] md:text-[11px]">
+              In Practice
+            </p>
+            <h2 className="max-w-2xl font-headline text-3xl font-light leading-[1.14] text-[#fffcf7] md:text-5xl lg:text-[54px]">
+              A dashboard,{' '}
+              <span className="font-editorial font-normal italic text-[#e6d8b9]">ready for the board.</span>
+            </h2>
+          </div>
+          <p className="max-w-[48ch] font-body text-base leading-[1.85] text-[#fffcf7]/60 md:text-lg">
             Built on district data. Clear enough to act on.
           </p>
         </motion.div>
 
         <motion.div
+          className="relative z-10"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
@@ -324,69 +333,8 @@ export default function Landing() {
       </section>
 
 
-      {/* ══════════ OFFERINGS — EDITORIAL SPLITS ══════════ */}
-      {offerings.map((item, i) => {
-        const isFlipped = i % 2 === 1
-        return (
-        <section
-          key={item.label}
-          className="grid grid-cols-1 md:grid-cols-2 min-h-[650px]"
-        >
-          {/* Image — alternates sides */}
-          <ParallaxImage
-            src={item.image}
-            objectPosition={'imagePosition' in item ? (item.imagePosition as string) : undefined}
-            className={`min-h-[400px] md:min-h-0 ${isFlipped ? 'order-1 md:order-2' : ''}`}
-          />
-
-          {/* Content */}
-          <div
-            className={`relative flex items-center px-10 md:px-16 lg:px-20 py-16 md:py-0 ${
-              isFlipped ? 'order-2 md:order-1 bg-surface-container' : ''
-            }`}
-            style={!isFlipped ? { backgroundImage: `url(${pearlBg})`, backgroundSize: 'cover' } : undefined}
-          >
-            {!isFlipped && <div className="absolute inset-0 bg-surface/88" />}
-            <motion.div
-              className={`relative z-10 max-w-lg ${isFlipped ? 'md:ml-auto' : ''}`}
-              initial={{ opacity: 0, x: isFlipped ? -30 : 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.7, ease: easeStandard }}
-            >
-              <p className="font-label text-[10px] tracking-[0.3em] uppercase text-tertiary mb-4">
-                {item.label}
-              </p>
-              <h2 className="font-headline text-2xl md:text-3xl text-on-surface leading-snug mb-4">
-                {item.title}
-              </h2>
-              <div className="w-10 h-px bg-tertiary/40 mb-5" />
-              <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">
-                {item.desc}
-              </p>
-              {item.link &&
-                (item.external ? (
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-headline text-xs uppercase tracking-widest text-primary hover:text-primary-dim transition-colors inline-flex items-center gap-2"
-                  >
-                    {item.linkLabel} <span className="text-[10px]">↗</span>
-                  </a>
-                ) : (
-                  <Link
-                    to={item.link}
-                    className="font-headline text-xs uppercase tracking-widest text-primary hover:text-primary-dim transition-colors"
-                  >
-                    {item.linkLabel} →
-                  </Link>
-                ))}
-            </motion.div>
-          </div>
-        </section>
-        )
-      })}
+      {/* ══════════ OFFERINGS — one composed field, not three repeated splits ══════════ */}
+      <EngagementPaths paths={offerings} />
 
 
       {/* ══════════ DARK CTA — ambition + the leader who brought it ══════════ */}
