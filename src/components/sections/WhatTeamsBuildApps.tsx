@@ -443,49 +443,62 @@ function FacilitiesTool({ reduceMotion }: { reduceMotion: boolean }) {
   )
 }
 
-/* ════════ Tool B · Course proposal walkthrough — ed services ════════ */
+/* ════════ Tool B · Classroom observation walkthrough — instructional
+   rounds for ed services. Rooms and subjects only, never teacher names.
+   Finishing an observation lands it on the instructional-rounds board
+   the same team reads. ════════ */
 
-const WALK_STEPS = ['Course basics', 'Standards', 'Materials & cost', 'Review'] as const
-const DEPARTMENTS = ['Science', 'CTE', 'English', 'Math']
-const GRADE_BANDS = ['9–10', '10–11', '11–12']
-const STANDARDS: Array<[string, string]> = [
-  ['ENV-1', 'Analyze local ecosystem data across a full season'],
-  ['ENV-2', 'Model resource use with real consumption figures'],
-  ['DATA-3', 'Communicate findings to a public audience'],
-  ['CTE-7', 'Document fieldwork in an industry-standard portfolio'],
+const OBS_STEPS = ['The visit', 'Look-fors', 'Evidence', 'Review'] as const
+const OBS_SITES = ['Grandview Middle', 'Harbor View High', 'Cedar Hollow Elementary', 'Northfield Middle']
+const SUBJECTS = ['Math', 'ELA', 'Science', 'CTE']
+const PERIODS = ['Per. 1', 'Per. 3', 'Per. 5']
+
+const LOOK_FORS: Array<[string, string]> = [
+  ['LF-1', 'The learning objective is visible and students can say it'],
+  ['LF-2', 'Students are doing the thinking, not just receiving it'],
+  ['LF-3', 'The teacher checks for understanding before moving on'],
+  ['LF-4', 'Feedback lands in the moment, not just on the rubric'],
+  ['LF-5', 'Technology serves the task instead of replacing it'],
 ]
-const FUNDING = ['General fund', 'CTE grant', 'Site budget']
 
-interface ProposalRow {
+const STRENGTH_TAGS = ['Student discourse', 'Pacing', 'Questioning', 'Routines']
+
+interface ObsRow {
   id: string
-  title: string
-  dept: string
-  status: 'new' | 'review' | 'board' | 'adopted'
+  room: string
+  subject: string
+  lookFors: string
   when: string
+  status: 'new' | 'logged'
 }
 
-const PROPOSAL_ROWS: ProposalRow[] = [
-  { id: 'p1', title: 'Intro to Data Journalism', dept: 'English', status: 'review', when: 'Last week' },
-  { id: 'p2', title: 'Sports Medicine II', dept: 'CTE', status: 'board', when: '2 weeks' },
-  { id: 'p3', title: 'Statistics for Civic Life', dept: 'Math', status: 'adopted', when: 'Last month' },
+const OBS_ROWS: ObsRow[] = [
+  { id: 'o1', room: 'Room 32 · ELA', subject: 'ELA', lookFors: '4 of 5', when: 'This morning', status: 'logged' },
+  { id: 'o2', room: 'Room 07 · Science', subject: 'Science', lookFors: '3 of 5', when: 'Yesterday', status: 'logged' },
+  { id: 'o3', room: 'Shop B · CTE', subject: 'CTE', lookFors: '5 of 5', when: 'Yesterday', status: 'logged' },
+  { id: 'o4', room: 'Room 21 · Math', subject: 'Math', lookFors: '4 of 5', when: '2 days', status: 'logged' },
 ]
 
-const PROPOSAL_PILL: Record<ProposalRow['status'], [string, string]> = {
-  new: ['New', 'border-[#2d8a8a]/50 bg-[#2d8a8a]/[0.1] text-[#0f4c4c]'],
-  review: ['In review', 'border-[#2d5f8f]/40 text-[#2d5f8f]'],
-  board: ['Board queue', 'border-[#a66a06]/40 text-[#a66a06]'],
-  adopted: ['Adopted', 'border-[#10B981]/35 text-[#10B981]'],
-}
+const LOOKFOR_FREQ: Array<[string, number]> = [
+  ['Objective visible', 92],
+  ['Students thinking', 78],
+  ['Understanding checks', 71],
+  ['Live feedback', 64],
+  ['Tech serves the task', 58],
+]
 
-function WalkthroughTool({ reduceMotion }: { reduceMotion: boolean }) {
+function ObservationTool({ reduceMotion }: { reduceMotion: boolean }) {
   const [stage, setStage] = useState<'steps' | 'success' | 'done'>('steps')
   const [step, setStep] = useState(0)
-  const [title, setTitle] = useState('Environmental Field Science')
-  const [dept, setDept] = useState('Science')
-  const [bands, setBands] = useState<string[]>(['10–11'])
-  const [aligned, setAligned] = useState<string[]>(['ENV-1', 'ENV-2', 'DATA-3'])
-  const [cost, setCost] = useState('4,800')
-  const [funding, setFunding] = useState('CTE grant')
+  const [site, setSite] = useState(OBS_SITES[0])
+  const [subject, setSubject] = useState('Math')
+  const [period, setPeriod] = useState('Per. 3')
+  const [room, setRoom] = useState('Room 14')
+  const [seen, setSeen] = useState<string[]>(['LF-1', 'LF-2', 'LF-3', 'LF-4'])
+  const [strengths, setStrengths] = useState<string[]>(['Student discourse'])
+  const [note, setNote] = useState(
+    'Students explained their reasoning to each other before the teacher confirmed. Objective referenced twice mid-lesson.',
+  )
   const stageTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
@@ -514,9 +527,16 @@ function WalkthroughTool({ reduceMotion }: { reduceMotion: boolean }) {
     setStep(0)
   }
 
-  const rows: ProposalRow[] = [
-    { id: 'p0', title: title.trim() || 'Untitled course', dept, status: 'new', when: 'Just now' },
-    ...PROPOSAL_ROWS,
+  const rows: ObsRow[] = [
+    {
+      id: 'o0',
+      room: `${room.trim() || 'Room'} · ${subject}`,
+      subject,
+      lookFors: `${seen.length} of ${LOOK_FORS.length}`,
+      when: 'Just now',
+      status: 'new',
+    },
+    ...OBS_ROWS,
   ]
 
   if (stage === 'success') {
@@ -524,8 +544,8 @@ function WalkthroughTool({ reduceMotion }: { reduceMotion: boolean }) {
       <AnimatePresence mode="wait">
         <SuccessBeat
           key="success"
-          title="Proposal submitted."
-          detail={`${title.trim() || 'Untitled course'} · ${dept} · sent to Curriculum & Instruction. Routing now…`}
+          title="Observation logged."
+          detail={`${room.trim() || 'Room'} · ${subject} · ${site} · ${seen.length} of ${LOOK_FORS.length} look-fors observed.`}
         />
       </AnimatePresence>
     )
@@ -539,51 +559,109 @@ function WalkthroughTool({ reduceMotion }: { reduceMotion: boolean }) {
         transition={{ duration: reduceMotion ? 0 : 0.45, ease: easeStandard }}
         className="p-4 md:p-6"
       >
-        <LiveHeader label="Curriculum & Instruction · proposals" onReset={reset} />
-        <div className="overflow-hidden rounded-[3px] border border-[#1a1816]/10 bg-[#fffcf7]">
-          <div
-            className="grid grid-cols-[minmax(0,1.6fr)_70px_78px] gap-2 border-b border-[#1a1816]/[0.07] px-4 py-2 font-label text-[8px] font-bold uppercase tracking-[0.18em] text-[#6e6355]/70 sm:grid-cols-[minmax(0,1.6fr)_84px_100px_74px]"
-            aria-hidden="true"
-          >
-            <span>Course</span>
-            <span>Dept</span>
-            <span>Status</span>
-            <span className="hidden text-right sm:block">When</span>
-          </div>
-          {rows.map((row, i) => {
-            const [pillLabel, pillClass] = PROPOSAL_PILL[row.status]
-            return (
-              <motion.div
-                key={row.id}
-                initial={
-                  row.status === 'new' && !reduceMotion
-                    ? { opacity: 0, backgroundColor: 'rgba(45,138,138,0.14)' }
-                    : false
-                }
-                animate={{ opacity: 1, backgroundColor: 'rgba(45,138,138,0)' }}
-                transition={{ duration: reduceMotion ? 0 : 0.9, delay: reduceMotion ? 0 : 0.1 + i * 0.05, ease: easeStandard }}
-                className="grid grid-cols-[minmax(0,1.6fr)_70px_78px] items-center gap-2 border-b border-[#1a1816]/[0.05] px-4 py-2.5 last:border-b-0 sm:grid-cols-[minmax(0,1.6fr)_84px_100px_74px]"
+        <LiveHeader label="Instructional rounds · this month" onReset={reset} />
+        <div className="grid gap-3.5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+          <div className="grid content-start gap-3">
+            <div className="grid grid-cols-3 gap-2.5">
+              {(
+                [
+                  ['Observations', '48', '+1 just now', 'text-[#2d8a8a]'],
+                  ['Sites visited', '12 of 14', 'This month', 'text-[#10B981]'],
+                  ['Most-seen look-for', 'LF-1', 'Objective visible', 'text-[#2d5f8f]'],
+                ] as const
+              ).map(([label, value, noteText, tone], i) => (
+                <motion.div
+                  key={label}
+                  initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: reduceMotion ? 0 : 0.1 + i * 0.06, ease: easeStandard }}
+                  className="rounded-[3px] border border-[#1a1816]/10 px-3 py-2.5"
+                >
+                  <div className="font-label text-[7.5px] font-bold uppercase tracking-[0.14em] text-[#6e6355]">
+                    {label}
+                  </div>
+                  <div className="mt-1 font-label text-[19px] font-extrabold tracking-[-0.01em] text-[#1a1816]">
+                    {value}
+                  </div>
+                  <div className={`mt-0.5 font-body text-[10px] font-medium ${tone}`}>{noteText}</div>
+                </motion.div>
+              ))}
+            </div>
+            <div className="overflow-hidden rounded-[3px] border border-[#1a1816]/10 bg-[#fffcf7]">
+              <div
+                className="grid grid-cols-[minmax(0,1.4fr)_74px_66px] gap-2 border-b border-[#1a1816]/[0.07] px-4 py-2 font-label text-[8px] font-bold uppercase tracking-[0.18em] text-[#6e6355]/70 sm:grid-cols-[minmax(0,1.5fr)_90px_84px_70px]"
+                aria-hidden="true"
               >
-                <span className="truncate font-body text-[12.5px] text-[#1a1816]">{row.title}</span>
-                <span className="font-label text-[8.5px] font-semibold uppercase tracking-[0.08em] text-[#6e6355]">
-                  {row.dept}
-                </span>
-                <span>
-                  <em className={`rounded-[3px] border px-2 py-1 font-label text-[7.5px] font-bold not-italic uppercase tracking-[0.1em] ${pillClass}`}>
-                    {pillLabel}
-                  </em>
-                </span>
-                <span className="hidden text-right font-label text-[8.5px] uppercase tracking-[0.06em] text-[#6e6355]/80 sm:block">
-                  {row.when}
-                </span>
-              </motion.div>
-            )
-          })}
+                <span>Visit</span>
+                <span>Look-fors</span>
+                <span className="hidden sm:block">Status</span>
+                <span className="text-right">When</span>
+              </div>
+              {rows.map((row, i) => (
+                <motion.div
+                  key={row.id}
+                  initial={
+                    row.status === 'new' && !reduceMotion
+                      ? { opacity: 0, backgroundColor: 'rgba(45,138,138,0.14)' }
+                      : false
+                  }
+                  animate={{ opacity: 1, backgroundColor: 'rgba(45,138,138,0)' }}
+                  transition={{ duration: reduceMotion ? 0 : 0.9, delay: reduceMotion ? 0 : 0.1 + i * 0.04, ease: easeStandard }}
+                  className="grid grid-cols-[minmax(0,1.4fr)_74px_66px] items-center gap-2 border-b border-[#1a1816]/[0.05] px-4 py-2.5 last:border-b-0 sm:grid-cols-[minmax(0,1.5fr)_90px_84px_70px]"
+                >
+                  <span className="truncate font-body text-[12.5px] text-[#1a1816]">{row.room}</span>
+                  <span className="font-label text-[9px] font-semibold uppercase tracking-[0.08em] text-[#0f4c4c]">
+                    {row.lookFors}
+                  </span>
+                  <span className="hidden sm:block">
+                    <em
+                      className={`rounded-[3px] border px-2 py-1 font-label text-[7.5px] font-bold not-italic uppercase tracking-[0.1em] ${
+                        row.status === 'new'
+                          ? 'border-[#2d8a8a]/50 bg-[#2d8a8a]/[0.1] text-[#0f4c4c]'
+                          : 'border-[#10B981]/35 text-[#10B981]'
+                      }`}
+                    >
+                      {row.status === 'new' ? 'New' : 'Logged'}
+                    </em>
+                  </span>
+                  <span className="text-right font-label text-[8.5px] uppercase tracking-[0.06em] text-[#6e6355]/80">
+                    {row.when}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid content-start gap-3">
+            <div className="rounded-[3px] border border-[#1a1816]/10 px-4 py-3.5">
+              <PanelLabel>Look-fors observed · month to date</PanelLabel>
+              {LOOKFOR_FREQ.map(([label, pct], i) => (
+                <div key={label} className="my-2 grid grid-cols-[118px_minmax(0,1fr)_30px] items-center gap-2.5">
+                  <span className="truncate font-label text-[8px] font-semibold uppercase tracking-[0.03em] text-[#1a1816]/70">
+                    {label}
+                  </span>
+                  <motion.i
+                    initial={reduceMotion ? false : { width: 0 }}
+                    animate={{ width: `${pct}%` }}
+                    transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.25 + i * 0.07, ease: easeStandard }}
+                    className="block h-1.5 rounded-[2px]"
+                    style={{
+                      background:
+                        pct >= 75
+                          ? 'linear-gradient(90deg, rgba(16,185,129,0.7), rgba(16,185,129,0.4))'
+                          : 'linear-gradient(90deg, rgba(15,76,76,0.65), rgba(45,138,138,0.4))',
+                    }}
+                  />
+                  <b className="text-right font-label text-[10px] font-semibold text-[#6e6355]">{pct}%</b>
+                </div>
+              ))}
+            </div>
+            <p className="rounded-[3px] border-l-2 border-[#2d8a8a] bg-[#f6f4ec] px-3.5 py-3 font-body text-[11.5px] italic leading-relaxed text-[#6e6355]">
+              Every walkthrough feeds the same board. Patterns surface across sites in weeks, and no
+              individual teacher is named anywhere in the record.
+            </p>
+          </div>
         </div>
-        <p className="mt-3.5 rounded-[3px] border-l-2 border-[#2d8a8a] bg-[#f6f4ec] px-3.5 py-3 font-body text-[11.5px] italic leading-relaxed text-[#6e6355]">
-          The walkthrough carried your answers straight into the tracker: {aligned.length} standards
-          aligned, ${cost} against the {funding.toLowerCase()}, grades {bands.join(' and ') || 'TBD'}.
-        </p>
       </motion.div>
     )
   }
@@ -592,7 +670,7 @@ function WalkthroughTool({ reduceMotion }: { reduceMotion: boolean }) {
     <div className="p-5 md:p-7">
       {/* progress rail */}
       <div className="mb-6 flex items-center gap-0">
-        {WALK_STEPS.map((label, i) => (
+        {OBS_STEPS.map((label, i) => (
           <div key={label} className="flex flex-1 items-center">
             <button
               type="button"
@@ -618,7 +696,7 @@ function WalkthroughTool({ reduceMotion }: { reduceMotion: boolean }) {
                 {label}
               </span>
             </button>
-            {i < WALK_STEPS.length - 1 && (
+            {i < OBS_STEPS.length - 1 && (
               <span className={`mx-2 h-px flex-1 ${i < step ? 'bg-[#10B981]/50' : 'bg-[#1a1816]/10'}`} aria-hidden="true" />
             )}
           </div>
@@ -632,50 +710,71 @@ function WalkthroughTool({ reduceMotion }: { reduceMotion: boolean }) {
           animate={{ opacity: 1, x: 0 }}
           exit={reduceMotion ? { opacity: 1 } : { opacity: 0, x: -12 }}
           transition={{ duration: reduceMotion ? 0 : 0.3, ease: easeStandard }}
-          className="min-h-[240px]"
+          className="min-h-[250px]"
         >
           {step === 0 && (
             <div className="grid content-start gap-3.5">
-              <div className="grid gap-1.5">
-                <label className={FIELD_LABEL} htmlFor="walk-title">
-                  Course title
-                </label>
-                <input id="walk-title" value={title} onChange={(e) => setTitle(e.target.value)} className={INPUT_BOX} />
+              <div className="grid gap-3.5 sm:grid-cols-2">
+                <div className="grid gap-1.5">
+                  <label className={FIELD_LABEL} htmlFor="obs-site">
+                    Site
+                  </label>
+                  <select
+                    id="obs-site"
+                    value={site}
+                    onChange={(e) => setSite(e.target.value)}
+                    className={`${INPUT_BOX} cursor-pointer appearance-none pr-8`}
+                  >
+                    {OBS_SITES.map((s) => (
+                      <option key={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="grid gap-1.5">
+                  <label className={FIELD_LABEL} htmlFor="obs-room">
+                    Room
+                  </label>
+                  <input id="obs-room" value={room} onChange={(e) => setRoom(e.target.value)} className={INPUT_BOX} />
+                </div>
               </div>
               <div className="grid gap-1.5">
-                <span className={FIELD_LABEL}>Department</span>
+                <span className={FIELD_LABEL}>Subject</span>
                 <span className="flex flex-wrap gap-2">
-                  {DEPARTMENTS.map((d) => (
-                    <Chip key={d} label={d} active={dept === d} onClick={() => setDept(d)} />
+                  {SUBJECTS.map((s) => (
+                    <Chip key={s} label={s} active={subject === s} onClick={() => setSubject(s)} />
                   ))}
                 </span>
               </div>
               <div className="grid gap-1.5">
-                <span className={FIELD_LABEL}>Grade bands</span>
+                <span className={FIELD_LABEL}>Period</span>
                 <span className="flex flex-wrap gap-2">
-                  {GRADE_BANDS.map((b) => (
-                    <Chip key={b} label={b} active={bands.includes(b)} onClick={() => toggle(bands, b, setBands)} />
+                  {PERIODS.map((p) => (
+                    <Chip key={p} label={p} active={period === p} onClick={() => setPeriod(p)} />
                   ))}
                 </span>
               </div>
+              <p className="font-body text-[11.5px] italic leading-relaxed text-[#6e6355]">
+                Rooms and subjects only. The tool never records a teacher name; rounds are about
+                practice patterns, not personnel files.
+              </p>
             </div>
           )}
           {step === 1 && (
             <div className="grid content-start gap-3">
               <div className="flex items-baseline justify-between gap-3">
-                <span className={FIELD_LABEL}>Standards this course addresses</span>
-                <span className={`font-label text-[10px] font-bold ${aligned.length >= 3 ? 'text-[#10B981]' : 'text-[#a66a06]'}`}>
-                  {aligned.length} of {STANDARDS.length} aligned
+                <span className={FIELD_LABEL}>What did you see? Tap everything observed</span>
+                <span className={`font-label text-[10px] font-bold ${seen.length >= 3 ? 'text-[#10B981]' : 'text-[#a66a06]'}`}>
+                  {seen.length} of {LOOK_FORS.length} observed
                 </span>
               </div>
               <div className="grid gap-2">
-                {STANDARDS.map(([code, text]) => {
-                  const on = aligned.includes(code)
+                {LOOK_FORS.map(([code, text]) => {
+                  const on = seen.includes(code)
                   return (
                     <button
                       key={code}
                       type="button"
-                      onClick={() => toggle(aligned, code, setAligned)}
+                      onClick={() => toggle(seen, code, setSeen)}
                       className={`flex items-start gap-3 rounded-[3px] border px-3.5 py-2.5 text-left transition-colors ${
                         on ? 'border-[#2d8a8a]/50 bg-[#2d8a8a]/[0.05]' : 'border-[#1a1816]/12 hover:border-[#1a1816]/25'
                       }`}
@@ -704,52 +803,51 @@ function WalkthroughTool({ reduceMotion }: { reduceMotion: boolean }) {
           )}
           {step === 2 && (
             <div className="grid content-start gap-3.5">
-              <div className="grid gap-3.5 sm:grid-cols-2">
-                <div className="grid gap-1.5">
-                  <label className={FIELD_LABEL} htmlFor="walk-cost">
-                    First-year materials cost
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-body text-[13.5px] text-[#6e6355]">$</span>
-                    <input
-                      id="walk-cost"
-                      value={cost}
-                      onChange={(e) => setCost(e.target.value)}
-                      className={`${INPUT_BOX} w-full pl-7`}
-                    />
-                  </div>
-                </div>
-                <div className="grid gap-1.5">
-                  <span className={FIELD_LABEL}>Funding source</span>
-                  <span className="flex flex-wrap gap-2">
-                    {FUNDING.map((f) => (
-                      <Chip key={f} label={f} active={funding === f} onClick={() => setFunding(f)} />
-                    ))}
-                  </span>
-                </div>
+              <div className="grid gap-1.5">
+                <label className={FIELD_LABEL} htmlFor="obs-note">
+                  One thing worth sharing
+                </label>
+                <textarea
+                  id="obs-note"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  rows={3}
+                  className={`${INPUT_BOX} resize-none leading-[1.55]`}
+                />
+              </div>
+              <div className="grid gap-1.5">
+                <span className={FIELD_LABEL}>Strength spotted</span>
+                <span className="flex flex-wrap gap-2">
+                  {STRENGTH_TAGS.map((t) => (
+                    <Chip key={t} label={t} active={strengths.includes(t)} onClick={() => toggle(strengths, t, setStrengths)} />
+                  ))}
+                </span>
               </div>
               <p className="font-body text-[11.5px] italic leading-relaxed text-[#6e6355]">
-                The walkthrough checks the cost against the chosen fund and flags anything that needs a
-                second signature before it reaches Curriculum & Instruction.
+                Notes describe practice, never people. What you write here is visible to the
+                instructional team, not to evaluation files.
               </p>
             </div>
           )}
           {step === 3 && (
             <div className="grid content-start gap-3">
-              <PanelLabel>Assembled from your answers</PanelLabel>
+              <PanelLabel>Assembled from your visit</PanelLabel>
               <div className="rounded-[3px] border border-[#1a1816]/10 bg-[#f6f4ec] px-4 py-3.5">
-                <div className="font-headline text-[19px] font-normal text-[#1a1816]">{title.trim() || 'Untitled course'}</div>
-                <div className="mt-2 grid gap-1 font-body text-[12.5px] leading-relaxed text-[#1a1816]/70">
-                  <span>
-                    {dept} · grades {bands.length ? bands.join(', ') : 'TBD'}
-                  </span>
-                  <span>
-                    {aligned.length} of {STANDARDS.length} standards aligned
-                  </span>
-                  <span>
-                    ${cost || '0'} first-year materials · {funding}
-                  </span>
+                <div className="font-headline text-[19px] font-normal text-[#1a1816]">
+                  {room.trim() || 'Room'} · {subject} · {period}
                 </div>
+                <div className="mt-2 grid gap-1 font-body text-[12.5px] leading-relaxed text-[#1a1816]/70">
+                  <span>{site}</span>
+                  <span>
+                    {seen.length} of {LOOK_FORS.length} look-fors observed
+                  </span>
+                  <span>Strengths: {strengths.length ? strengths.join(', ') : 'none tagged'}</span>
+                </div>
+                {note.trim() && (
+                  <p className="mt-3 border-l-2 border-[#2d8a8a] pl-3 font-body text-[12px] italic leading-relaxed text-[#6e6355]">
+                    &ldquo;{note.trim().slice(0, 140)}&rdquo;
+                  </p>
+                )}
               </div>
             </div>
           )}
@@ -765,7 +863,7 @@ function WalkthroughTool({ reduceMotion }: { reduceMotion: boolean }) {
         >
           ← Back
         </button>
-        {step < WALK_STEPS.length - 1 ? (
+        {step < OBS_STEPS.length - 1 ? (
           <button
             type="button"
             onClick={() => setStep((s) => s + 1)}
@@ -774,7 +872,7 @@ function WalkthroughTool({ reduceMotion }: { reduceMotion: boolean }) {
             Next →
           </button>
         ) : (
-          <PulseSubmit label="Submit proposal" onClick={finish} reduceMotion={reduceMotion} />
+          <PulseSubmit label="Log observation" onClick={finish} reduceMotion={reduceMotion} />
         )}
       </div>
       <p className="mt-3 font-body text-[11px] italic text-[#6e6355]/80">
@@ -786,7 +884,7 @@ function WalkthroughTool({ reduceMotion }: { reduceMotion: boolean }) {
 
 /* ════════ The switcher ════════ */
 
-type ToolKey = 'facilities' | 'walkthrough'
+type ToolKey = 'facilities' | 'observation'
 
 const TOOLS: Record<ToolKey, { label: string; url: string; chromeRight: string }> = {
   facilities: {
@@ -794,10 +892,10 @@ const TOOLS: Record<ToolKey, { label: string; url: string; chromeRight: string }
     url: 'built-with-karst / facilities-tool',
     chromeRight: 'Staff-built · Front end to back end',
   },
-  walkthrough: {
-    label: 'Course proposal walkthrough',
-    url: 'built-with-karst / course-proposals',
-    chromeRight: 'Staff-built · Guided walkthrough',
+  observation: {
+    label: 'Classroom observation tool',
+    url: 'built-with-karst / instructional-rounds',
+    chromeRight: 'Staff-built · Instructional rounds',
   },
 }
 
@@ -834,8 +932,8 @@ export function ApplicationArtifact() {
         <div className={tool === 'facilities' ? '' : 'hidden'}>
           <FacilitiesTool reduceMotion={reduceMotion} />
         </div>
-        <div className={tool === 'walkthrough' ? '' : 'hidden'}>
-          <WalkthroughTool reduceMotion={reduceMotion} />
+        <div className={tool === 'observation' ? '' : 'hidden'}>
+          <ObservationTool reduceMotion={reduceMotion} />
         </div>
       </ArtifactFrame>
     </div>

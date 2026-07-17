@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { easeStandard } from '../../lib/motion'
+import strataImage from '../../assets/strata.webp'
+import mirrorPoolImage from '../../assets/mirror-pool.webp'
+import slotCanyonImage from '../../assets/slot-canyon.webp'
 
 /* ── The three build artifacts for the What Your Team Builds chapter.
    Each maps to work Karst actually delivers: raw district exports
@@ -233,6 +236,11 @@ const SOURCE_FILES: Array<[string, string]> = [
   ['roster · demographics', '18,600 students'],
 ]
 
+/* Depth system for the paper surfaces: resting cards sit just off the
+   page; hover lifts them toward the reader with a teal-tinted shadow. */
+const PANEL =
+  'rounded-[4px] border border-[#1a1816]/10 bg-white/70 shadow-[0_1px_2px_rgba(26,24,22,0.04),0_10px_30px_-20px_rgba(26,24,22,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#2d8a8a]/40 hover:shadow-[0_2px_5px_rgba(26,24,22,0.05),0_20px_44px_-20px_rgba(15,76,76,0.35)]'
+
 type LensKey = 'cliff' | 'early' | 'watchlist'
 type ChartKind = 'columns' | 'curve' | 'ranked'
 type StatTone = 'good' | 'watch'
@@ -290,74 +298,88 @@ const TONE_TEXT: Record<StatTone, string> = {
   watch: 'text-[#a66a06]',
 }
 
-/* Column chart — the cliff, teal holding ground until the edge gives way */
-const CLIFF_COLS: Array<[string, number, string, string]> = [
-  ['95–100%', 6, '6%', TEAL_BRIGHT],
-  ['90–94%', 14, '14%', TEAL],
-  ['85–89%', 31, '31%', AMBER],
-  ['Below 85%', 58, '58%', RED],
+/* Column chart — the cliff. Hovering a band brings it forward and dims
+   the rest, with the read for that band surfacing beneath. */
+const CLIFF_COLS: Array<[string, number, string, string, string]> = [
+  ['95–100%', 6, '6%', TEAL_BRIGHT, 'Near-perfect attendance: failure is rare.'],
+  ['90–94%', 14, '14%', TEAL, 'Still holding. This is the line to defend.'],
+  ['85–89%', 31, '31%', AMBER, 'The edge. Risk has already doubled.'],
+  ['Below 85%', 58, '58%', RED, 'Most of this cohort is failing something.'],
 ]
 
 function CliffColumns({ reduceMotion }: { reduceMotion: boolean }) {
+  const [hover, setHover] = useState<number | null>(null)
   const max = 62
   const W = 340
-  const H = 170
+  const H = 172
   const pad = 26
-  const baseY = H - 22
+  const baseY = H - 24
   const colW = 46
   const gap = (W - pad * 2 - colW * CLIFF_COLS.length) / (CLIFF_COLS.length - 1)
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" aria-hidden="true">
-      <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.12)" strokeWidth="1" />
-      {CLIFF_COLS.map(([label, val, tag, color], i) => {
-        const x = pad + i * (colW + gap)
-        const h = ((baseY - 14) * val) / max
-        return (
-          <g key={label}>
-            <motion.rect
-              x={x}
-              width={colW}
-              rx={2}
-              initial={reduceMotion ? { y: baseY - h, height: h } : { y: baseY, height: 0 }}
-              animate={{ y: baseY - h, height: h }}
-              transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.1 + i * 0.09, ease: easeStandard }}
-              fill={color}
-              fillOpacity={0.78}
-            />
-            <motion.text
-              x={x + colW / 2}
-              y={baseY - h - 6}
-              textAnchor="middle"
-              fill={color}
-              fontFamily="Montserrat, sans-serif"
-              fontSize="11"
-              fontWeight="700"
-              initial={reduceMotion ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.5 + i * 0.09 }}
+    <div>
+      <svg viewBox={`0 0 ${W} ${H}`} width="100%" aria-hidden="true" onMouseLeave={() => setHover(null)}>
+        <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.12)" strokeWidth="1" />
+        {CLIFF_COLS.map(([label, val, tag, color], i) => {
+          const x = pad + i * (colW + gap)
+          const h = ((baseY - 16) * val) / max
+          const dimmed = hover !== null && hover !== i
+          return (
+            <g
+              key={label}
+              onMouseEnter={() => setHover(i)}
+              style={{ cursor: 'default', opacity: dimmed ? 0.3 : 1, transition: 'opacity 0.25s ease' }}
             >
-              {tag}
-            </motion.text>
-            <text
-              x={x + colW / 2}
-              y={baseY + 14}
-              textAnchor="middle"
-              fill="rgba(110,99,85,0.85)"
-              fontFamily="Montserrat, sans-serif"
-              fontSize="8"
-              fontWeight="600"
-              letterSpacing="0.5"
-            >
-              {label}
-            </text>
-          </g>
-        )
-      })}
-    </svg>
+              {/* generous invisible hit area */}
+              <rect x={x - gap / 2} y={10} width={colW + gap} height={H - 10} fill="transparent" />
+              <motion.rect
+                x={x}
+                width={colW}
+                rx={2}
+                initial={reduceMotion ? { y: baseY - h, height: h } : { y: baseY, height: 0 }}
+                animate={{ y: baseY - h, height: h }}
+                transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.1 + i * 0.09, ease: easeStandard }}
+                fill={color}
+                fillOpacity={hover === i ? 0.95 : 0.78}
+              />
+              <motion.text
+                x={x + colW / 2}
+                y={baseY - h - 7}
+                textAnchor="middle"
+                fill={color}
+                fontFamily="Montserrat, sans-serif"
+                fontSize={hover === i ? 12.5 : 11}
+                fontWeight="700"
+                initial={reduceMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.5 + i * 0.09 }}
+              >
+                {tag}
+              </motion.text>
+              <text
+                x={x + colW / 2}
+                y={baseY + 15}
+                textAnchor="middle"
+                fill="rgba(110,99,85,0.85)"
+                fontFamily="Montserrat, sans-serif"
+                fontSize="8"
+                fontWeight="600"
+                letterSpacing="0.5"
+              >
+                {label}
+              </text>
+            </g>
+          )
+        })}
+      </svg>
+      <div className="mt-1 min-h-[1.4em] font-body text-[11.5px] italic text-[#6e6355]">
+        {hover !== null ? CLIFF_COLS[hover][4] : 'Hover a band to read it.'}
+      </div>
+    </div>
   )
 }
 
-/* Area + line curve — the early-warning ramp, sea-blue with the amber turn */
+/* Area + line curve — hovering a point surfaces its value */
 const EARLY_PTS: Array<[string, number, string]> = [
   ['0', 9, '9%'],
   ['1', 17, '17%'],
@@ -367,11 +389,12 @@ const EARLY_PTS: Array<[string, number, string]> = [
 ]
 
 function EarlyCurve({ reduceMotion }: { reduceMotion: boolean }) {
+  const [hover, setHover] = useState<number | null>(null)
   const W = 340
-  const H = 170
+  const H = 172
   const pad = 26
-  const baseY = H - 22
-  const topY = 16
+  const baseY = H - 24
+  const topY = 18
   const max = 80
   const stepX = (W - pad * 2) / (EARLY_PTS.length - 1)
   const pts = EARLY_PTS.map(([, v], i) => {
@@ -381,100 +404,119 @@ function EarlyCurve({ reduceMotion }: { reduceMotion: boolean }) {
   })
   const line = pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x} ${y}`).join(' ')
   const area = `${line} L ${pts[pts.length - 1][0]} ${baseY} L ${pts[0][0]} ${baseY} Z`
-  const inflection = pts[2]
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" aria-hidden="true">
-      <g stroke="rgba(26,24,22,0.07)" strokeWidth="1">
-        <line x1={pad} y1={topY + 28} x2={W - pad} y2={topY + 28} />
-        <line x1={pad} y1={(topY + baseY) / 2} x2={W - pad} y2={(topY + baseY) / 2} />
-      </g>
-      <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.12)" strokeWidth="1" />
-      <motion.path
-        d={area}
-        fill="rgba(45,95,143,0.1)"
-        initial={reduceMotion ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: reduceMotion ? 0 : 0.5 }}
-      />
-      <motion.path
-        d={line}
-        fill="none"
-        stroke={SEA}
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        initial={reduceMotion ? false : { pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: reduceMotion ? 0 : 1, delay: reduceMotion ? 0 : 0.15, ease: easeStandard }}
-      />
-      {pts.map(([x, y], i) => (
-        <motion.circle
-          key={i}
-          cx={x}
-          cy={y}
-          r={i === 2 ? 4 : 2.6}
-          fill={i === 2 ? AMBER : '#fffcf7'}
-          stroke={i === 2 ? AMBER : SEA}
-          strokeWidth="1.6"
-          initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.7 + i * 0.09 }}
+    <div>
+      <svg viewBox={`0 0 ${W} ${H}`} width="100%" aria-hidden="true" onMouseLeave={() => setHover(null)}>
+        <g stroke="rgba(26,24,22,0.07)" strokeWidth="1">
+          <line x1={pad} y1={topY + 28} x2={W - pad} y2={topY + 28} />
+          <line x1={pad} y1={(topY + baseY) / 2} x2={W - pad} y2={(topY + baseY) / 2} />
+        </g>
+        <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.12)" strokeWidth="1" />
+        <motion.path
+          d={area}
+          fill="rgba(45,95,143,0.1)"
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: reduceMotion ? 0 : 0.5 }}
         />
-      ))}
-      <motion.text
-        x={inflection[0]}
-        y={inflection[1] - 12}
-        textAnchor="middle"
-        fill={AMBER}
-        fontFamily="Montserrat, sans-serif"
-        fontSize="8.5"
-        fontWeight="700"
-        letterSpacing="0.6"
-        initial={reduceMotion ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: reduceMotion ? 0 : 1.3 }}
-      >
-        INFLECTION
-      </motion.text>
-      <g fill="rgba(110,99,85,0.85)" fontFamily="Montserrat, sans-serif" fontSize="8" fontWeight="600" letterSpacing="0.5">
-        {EARLY_PTS.map(([label], i) => (
-          <text key={label} x={pad + i * stepX} y={baseY + 14} textAnchor="middle">
-            {label}
-          </text>
-        ))}
-      </g>
-    </svg>
+        <motion.path
+          d={line}
+          fill="none"
+          stroke={SEA}
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={reduceMotion ? false : { pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: reduceMotion ? 0 : 1, delay: reduceMotion ? 0 : 0.15, ease: easeStandard }}
+        />
+        {pts.map(([x, y], i) => {
+          const active = hover === i
+          const inflection = i === 2
+          return (
+            <g key={i} onMouseEnter={() => setHover(i)}>
+              <rect x={x - stepX / 2} y={10} width={stepX} height={H - 10} fill="transparent" />
+              <motion.circle
+                cx={x}
+                cy={y}
+                r={active ? 5 : inflection ? 4 : 2.6}
+                fill={inflection ? AMBER : active ? SEA : '#fffcf7'}
+                stroke={inflection ? AMBER : SEA}
+                strokeWidth="1.6"
+                initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.7 + i * 0.09 }}
+                style={{ transition: 'r 0.2s ease' }}
+              />
+              {(active || (inflection && hover === null)) && (
+                <text
+                  x={x}
+                  y={y - 12}
+                  textAnchor="middle"
+                  fill={inflection ? AMBER : SEA}
+                  fontFamily="Montserrat, sans-serif"
+                  fontSize="10.5"
+                  fontWeight="700"
+                >
+                  {EARLY_PTS[i][2]}
+                </text>
+              )}
+            </g>
+          )
+        })}
+        <g fill="rgba(110,99,85,0.85)" fontFamily="Montserrat, sans-serif" fontSize="8" fontWeight="600" letterSpacing="0.5">
+          {EARLY_PTS.map(([label], i) => (
+            <text key={label} x={pad + i * stepX} y={baseY + 15} textAnchor="middle">
+              {label}
+            </text>
+          ))}
+        </g>
+      </svg>
+      <div className="mt-1 min-h-[1.4em] font-body text-[11.5px] italic text-[#6e6355]">
+        {hover !== null
+          ? `${EARLY_PTS[hover][0]} first-month absences → ${EARLY_PTS[hover][2]} end the year chronically absent.`
+          : 'Hover the curve. The turn comes at two absences.'}
+      </div>
+    </div>
   )
 }
 
-/* Ranked horizontal bars — the watchlist by site */
-const RANKED_SITES: Array<[string, number, string, boolean]> = [
-  ['Harbor View High', 88, '96', true],
-  ['Grandview Middle', 61, '67', true],
-  ['Cedar Hollow Elem', 44, '48', false],
-  ['Northfield Middle', 30, '33', false],
-  ['Other sites', 52, '168', false],
+/* Ranked horizontal bars — the watchlist by site, rows brighten on hover */
+const RANKED_SITES: Array<[string, number, string, boolean, string]> = [
+  ['Harbor View High', 88, '96', true, 'Fri afternoons drive it'],
+  ['Grandview Middle', 61, '67', true, 'One grade-7 cohort'],
+  ['Cedar Hollow Elem', 44, '48', false, 'Improving 6 weeks straight'],
+  ['Northfield Middle', 30, '33', false, 'Outreach cycle working'],
+  ['Other sites', 52, '168', false, 'Ten sites, thin tails'],
 ]
 
 function RankedBars({ reduceMotion }: { reduceMotion: boolean }) {
   return (
-    <div className="grid gap-2.5">
-      {RANKED_SITES.map(([label, width, value, hot], i) => (
-        <div key={label} className="grid grid-cols-[110px_minmax(0,1fr)_34px] items-center gap-3">
-          <span className="truncate font-label text-[9px] font-semibold uppercase tracking-[0.04em] text-[#1a1816]/70">
+    <div className="grid gap-1">
+      {RANKED_SITES.map(([label, width, value, hot, why], i) => (
+        <div
+          key={label}
+          className="group/row grid grid-cols-[110px_minmax(0,1fr)_34px] items-center gap-3 rounded-[3px] px-2 py-1.5 transition-colors duration-200 hover:bg-[#0f4c4c]/[0.045]"
+        >
+          <span className="truncate font-label text-[9px] font-semibold uppercase tracking-[0.04em] text-[#1a1816]/70 transition-colors group-hover/row:text-[#1a1816]">
             {label}
           </span>
-          <motion.i
-            initial={reduceMotion ? false : { width: 0 }}
-            animate={{ width: `${width}%` }}
-            transition={{ duration: reduceMotion ? 0 : 0.75, delay: reduceMotion ? 0 : 0.15 + i * 0.08, ease: easeStandard }}
-            className="block h-2 rounded-[2px]"
-            style={{
-              background: hot
-                ? 'linear-gradient(90deg, rgba(166,106,6,0.85), rgba(166,106,6,0.5))'
-                : 'linear-gradient(90deg, rgba(15,76,76,0.8), rgba(45,138,138,0.5))',
-            }}
-          />
+          <span className="relative">
+            <motion.i
+              initial={reduceMotion ? false : { width: 0 }}
+              animate={{ width: `${width}%` }}
+              transition={{ duration: reduceMotion ? 0 : 0.75, delay: reduceMotion ? 0 : 0.15 + i * 0.08, ease: easeStandard }}
+              className="block h-2 rounded-[2px] transition-[filter] duration-200 group-hover/row:brightness-110"
+              style={{
+                background: hot
+                  ? 'linear-gradient(90deg, rgba(166,106,6,0.85), rgba(166,106,6,0.5))'
+                  : 'linear-gradient(90deg, rgba(15,76,76,0.8), rgba(45,138,138,0.5))',
+              }}
+            />
+            <span className="pointer-events-none absolute left-0 top-full mt-0.5 hidden font-body text-[10.5px] italic text-[#6e6355] group-hover/row:block">
+              {why}
+            </span>
+          </span>
           <b className="text-right font-label text-[11px] font-semibold text-[#1a1816]">{value}</b>
         </div>
       ))}
@@ -482,7 +524,7 @@ function RankedBars({ reduceMotion }: { reduceMotion: boolean }) {
   )
 }
 
-/* Donut — how each flag was caught */
+/* Donut — hovering a segment brings it forward with its legend row */
 const DONUT_SEGMENTS: Array<[string, number, string]> = [
   ['Attendance alone', 62, TEAL],
   ['+ Grades', 26, TEAL_BRIGHT],
@@ -490,9 +532,9 @@ const DONUT_SEGMENTS: Array<[string, number, string]> = [
 ]
 
 function SignalDonut({ reduceMotion }: { reduceMotion: boolean }) {
+  const [hover, setHover] = useState<number | null>(null)
   const r = 34
   const c = 2 * Math.PI * r
-  // Precompute each segment's cumulative offset so the render map stays pure.
   const segments = DONUT_SEGMENTS.reduce<Array<{ label: string; pct: number; color: string; len: number; offset: number }>>(
     (acc, [label, pct, color]) => {
       const len = (c * pct) / 100
@@ -503,8 +545,8 @@ function SignalDonut({ reduceMotion }: { reduceMotion: boolean }) {
     [],
   )
   return (
-    <div className="flex items-center gap-4">
-      <svg viewBox="0 0 90 90" width="90" height="90" aria-hidden="true" className="shrink-0 -rotate-90">
+    <div className="flex items-center gap-4" onMouseLeave={() => setHover(null)}>
+      <svg viewBox="0 0 90 90" width="96" height="96" aria-hidden="true" className="shrink-0 -rotate-90">
         <circle cx="45" cy="45" r={r} fill="none" stroke="rgba(26,24,22,0.08)" strokeWidth="11" />
         {segments.map(({ label, color, len, offset }, i) => (
           <motion.circle
@@ -514,24 +556,33 @@ function SignalDonut({ reduceMotion }: { reduceMotion: boolean }) {
             r={r}
             fill="none"
             stroke={color}
-            strokeWidth="11"
+            strokeWidth={hover === i ? 14 : 11}
             strokeDasharray={`${len} ${c - len}`}
             strokeDashoffset={-offset}
+            onMouseEnter={() => setHover(i)}
             initial={reduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.2 + i * 0.15 }}
+            animate={{ opacity: hover === null || hover === i ? 1 : 0.35 }}
+            transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.2 + i * 0.12 }}
+            style={{ transition: 'stroke-width 0.2s ease' }}
           />
         ))}
       </svg>
       <div className="grid gap-1.5">
-        {DONUT_SEGMENTS.map(([label, pct, color]) => (
-          <div key={label} className="flex items-center gap-2">
+        {DONUT_SEGMENTS.map(([label, pct, color], i) => (
+          <button
+            type="button"
+            key={label}
+            onMouseEnter={() => setHover(i)}
+            className={`flex items-center gap-2 rounded-[3px] px-1.5 py-0.5 text-left transition-colors duration-200 ${
+              hover === i ? 'bg-[#0f4c4c]/[0.05]' : ''
+            }`}
+          >
             <span className="h-2 w-2 rounded-[1px]" style={{ background: color }} aria-hidden="true" />
             <span className="font-label text-[9px] font-semibold uppercase tracking-[0.06em] text-[#1a1816]/70">
               {label}
             </span>
             <b className="font-label text-[10px] font-bold text-[#1a1816]">{pct}%</b>
-          </div>
+          </button>
         ))}
       </div>
     </div>
@@ -567,9 +618,12 @@ export function DashboardArtifact() {
 
   return (
     <ArtifactFrame url="built-with-karst / early-warning" chromeRight="Raw exports · Processed with AI">
-      <div className="grid gap-4 p-4 md:p-6">
+      <div
+        className="grid gap-4 p-4 md:p-6"
+        style={{ background: 'linear-gradient(178deg, #fffcf7 0%, #fbf7ef 60%, #f8f3e9 100%)' }}
+      >
         {/* Provenance: the pile of data becomes one picture */}
-        <div className="flex flex-col gap-3 rounded-[3px] border border-[#1a1816]/10 bg-[#f6f4ec] px-4 py-3 md:flex-row md:items-center md:gap-5">
+        <div className="flex flex-col gap-3 rounded-[4px] border border-[#1a1816]/10 bg-[#f6f4ec] px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] md:flex-row md:items-center md:gap-5">
           <div className="flex flex-wrap gap-1.5">
             {SOURCE_FILES.map(([name, count], i) => (
               <motion.span
@@ -577,7 +631,7 @@ export function DashboardArtifact() {
                 initial={reduceMotion ? false : { opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: reduceMotion ? 0 : i * 0.12, ease: easeStandard }}
-                className="flex items-baseline gap-1.5 rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-2.5 py-1.5"
+                className="flex cursor-default items-baseline gap-1.5 rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-2.5 py-1.5 shadow-[0_1px_2px_rgba(26,24,22,0.05)] transition-all duration-200 hover:-translate-y-px hover:border-[#2d8a8a]/40 hover:shadow-[0_3px_8px_rgba(15,76,76,0.12)]"
               >
                 <span className="font-mono text-[10px] text-[#1a1816]/80">{name}</span>
                 <span className="font-label text-[8px] uppercase tracking-[0.1em] text-[#6e6355]">{count}</span>
@@ -605,10 +659,10 @@ export function DashboardArtifact() {
               key={key}
               type="button"
               onClick={() => setLensKey(key)}
-              className={`rounded-[3px] border px-3 py-2 font-label text-[9px] font-semibold uppercase tracking-[0.12em] transition-colors ${
+              className={`rounded-[3px] border px-3 py-2 font-label text-[9px] font-semibold uppercase tracking-[0.12em] transition-all duration-200 ${
                 key === lensKey
-                  ? 'border-[#0f4c4c] bg-[#0f4c4c]/[0.07] text-[#1a1816]'
-                  : 'border-[#1a1816]/12 text-[#6e6355] hover:text-[#1a1816]'
+                  ? 'border-[#0f4c4c] bg-[#0f4c4c]/[0.07] text-[#1a1816] shadow-[0_2px_6px_rgba(15,76,76,0.12)]'
+                  : 'border-[#1a1816]/12 text-[#6e6355] hover:-translate-y-px hover:border-[#1a1816]/25 hover:text-[#1a1816]'
               }`}
             >
               {LENSES[key].tab}
@@ -626,10 +680,10 @@ export function DashboardArtifact() {
             className="grid gap-3.5"
           >
             <div className="font-label text-[15px] font-semibold text-[#1a1816] md:text-[16px]">{lens.title}</div>
-            <div className="grid gap-2.5 sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)]">
-              <div className="grid content-start gap-2.5">
+            <div className="grid gap-3 sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)]">
+              <div className="grid content-start gap-3">
                 {lens.stats.map(([label, value, note, tone]) => (
-                  <div key={label} className="rounded-[3px] border border-[#1a1816]/10 px-3.5 py-3">
+                  <div key={label} className={`${PANEL} px-3.5 py-3`}>
                     <div className="font-label text-[8px] font-bold uppercase tracking-[0.16em] text-[#6e6355]">
                       {label}
                     </div>
@@ -640,7 +694,7 @@ export function DashboardArtifact() {
                   </div>
                 ))}
               </div>
-              <div className="rounded-[3px] border border-[#1a1816]/10 px-4 py-3.5">
+              <div className={`${PANEL} px-4 py-3.5`}>
                 <PanelLabel>{lens.chartLabel}</PanelLabel>
                 {built && <LensChart lens={lens} reduceMotion={reduceMotion} />}
               </div>
@@ -662,17 +716,55 @@ export function DashboardArtifact() {
   )
 }
 
-/* ════════ 02 · Presentation — a four-slide working deck, recomposed per
-   audience. Craft modeled on the real LCAP board-deck register (hero-stat
-   serif numeral, editorial eyebrows); genericized, no district named.
-   Click the slide to advance; glyphs draw themselves in. ════════ */
+/* ════════ 02 · Presentation — an eight-slide working deck in the board
+   register: image plates from the Karst set, serif hero stats, an
+   LCAP-style voices score-card, glyph triptychs, drawing charts, and a
+   slow color-cycling accent. Recomposed per audience; click to advance.
+   All figures and voices are invented; no district named. ════════ */
 
 type Audience = 'board' | 'staff' | 'families'
-type GlyphName = 'chart' | 'bus' | 'calendar' | 'survey' | 'people' | 'building' | 'seal' | 'coins'
+type GlyphName = 'chart' | 'bus' | 'calendar' | 'survey' | 'people' | 'building' | 'seal' | 'coins' | 'compass' | 'layers'
+
+/* The deck's accent breathes slowly through the data palette. Static
+   teal under reduced motion. */
+const CYCLE = [TEAL_BRIGHT, SEA, '#c49a43', TEAL_BRIGHT]
+
+function CycleText({
+  children,
+  reduceMotion,
+  className = '',
+}: {
+  children: React.ReactNode
+  reduceMotion: boolean
+  className?: string
+}) {
+  return (
+    <motion.span
+      className={className}
+      animate={reduceMotion ? undefined : { color: CYCLE }}
+      transition={reduceMotion ? undefined : { duration: 14, repeat: Infinity, ease: 'easeInOut' }}
+      style={reduceMotion ? { color: TEAL_BRIGHT } : undefined}
+    >
+      {children}
+    </motion.span>
+  )
+}
 
 /* Line glyphs in the deck's visual voice: 24×24, 1.5px stroke, drawn on
    slide entry. */
-function Glyph({ name, color = TEAL, delay = 0, reduceMotion }: { name: GlyphName; color?: string; delay?: number; reduceMotion: boolean }) {
+function Glyph({
+  name,
+  color = TEAL,
+  delay = 0,
+  size = 26,
+  reduceMotion,
+}: {
+  name: GlyphName
+  color?: string
+  delay?: number
+  size?: number
+  reduceMotion: boolean
+}) {
   const paths: Record<GlyphName, string[]> = {
     chart: ['M3 21h18', 'M6 21v-7', 'M11 21V10', 'M16 21v-11', 'M21 21V6'],
     bus: ['M4 5h16v11H4z', 'M4 12h16', 'M7 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z', 'M17 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z', 'M8 8h.01M16 8h.01'],
@@ -682,9 +774,11 @@ function Glyph({ name, color = TEAL, delay = 0, reduceMotion }: { name: GlyphNam
     building: ['M5 21V5l7-3 7 3v16', 'M3 21h18', 'M9 9h.01M13 9h.01M9 13h.01M13 13h.01', 'M10 21v-4h4v4'],
     seal: ['M12 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10z', 'M9.5 10.2l1.8 1.8 3.2-3.6', 'M8.5 14.5L7 21l5-2.5L17 21l-1.5-6.5'],
     coins: ['M8 10a5 3 0 1 0 0-6 5 3 0 0 0 0 6z', 'M3 7v5c0 1.7 2.2 3 5 3s5-1.3 5-3V7', 'M13 11c2.8 0 5 1.3 5 3v3c0 1.7-2.2 3-5 3s-5-1.3-5-3'],
+    compass: ['M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z', 'M15.5 8.5l-2 5-5 2 2-5z', 'M12 12h.01'],
+    layers: ['M12 3l9 5-9 5-9-5z', 'M3 13l9 5 9-5', 'M3 17l9 5 9-5'],
   }
   return (
-    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true" className="shrink-0">
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true" className="shrink-0">
       {paths[name].map((d, i) => (
         <motion.path
           key={i}
@@ -702,6 +796,11 @@ function Glyph({ name, color = TEAL, delay = 0, reduceMotion }: { name: GlyphNam
   )
 }
 
+interface VoiceList {
+  title: string
+  items: Array<[string, string]>
+}
+
 interface DeckContent {
   label: string
   coverEyebrow: string
@@ -710,9 +809,15 @@ interface DeckContent {
   coverNote: string
   hero: string
   heroCaption: string
+  voicesEyebrow: string
+  voicesTitle: string
+  voicesLeft: VoiceList
+  voicesRight: VoiceList
   evidencePoints: Array<[GlyphName, string]>
-  nextEyebrow: string
+  quote: string
+  quoteAttribution: string
   nextSteps: Array<[GlyphName, string, string]>
+  closeLine: string
 }
 
 const DECKS: Record<Audience, DeckContent> = {
@@ -721,20 +826,40 @@ const DECKS: Record<Audience, DeckContent> = {
     coverEyebrow: 'Board study session · Enrollment & facilities',
     coverPlain: 'The feeder question, with the',
     coverItalic: 'evidence attached.',
-    coverNote: 'Tonight: the five-year trend, the costs both ways, and a recommendation the room can act on.',
+    coverNote: 'Tonight: the five-year trend, what eleven hundred voices said, the costs both ways, and a recommendation the room can act on.',
     hero: 'Year 2',
     heroCaption: 'when the two feeder patterns cross.',
+    voicesEyebrow: 'Community voice · 1,120 responses',
+    voicesTitle: 'What we heard before tonight.',
+    voicesLeft: {
+      title: 'Strongest agreement',
+      items: [
+        ['Keep both school communities intact', '4.6'],
+        ['Decide with data, not anecdote', '4.4'],
+        ['Protect classroom staffing first', '4.3'],
+      ],
+    },
+    voicesRight: {
+      title: 'Sharpest concerns',
+      items: [
+        ['Bus ride length for the youngest', '3.9'],
+        ['Start-time changes for working families', '3.7'],
+        ['Losing site traditions', '3.4'],
+      ],
+    },
     evidencePoints: [
       ['chart', 'Enrollment trend by feeder, five years, with the inflection named.'],
       ['bus', 'Transportation and staffing implications, costed both ways.'],
       ['seal', 'A recommendation the room can accept, amend, or decline.'],
     ],
-    nextEyebrow: 'What happens next',
+    quote: 'No decision about a school community should move faster than the community can follow it.',
+    quoteAttribution: 'The commitment this study was built on',
     nextSteps: [
       ['calendar', 'Study session', 'Tonight, with the full packet attached.'],
       ['survey', 'Public comment', 'Open through the spring window.'],
       ['seal', 'Board action', 'A vote only after both readings.'],
     ],
+    closeLine: 'The full packet, every figure, and both cost models are attached to this deck.',
   },
   staff: {
     label: 'Staff',
@@ -744,17 +869,37 @@ const DECKS: Record<Audience, DeckContent> = {
     coverNote: 'The same figures the board sees, read for staffing, timelines, and your input window.',
     hero: 'Zero',
     heroCaption: 'involuntary transfers, in every scenario.',
+    voicesEyebrow: 'Staff voice · 480 responses',
+    voicesTitle: 'What your colleagues said.',
+    voicesLeft: {
+      title: 'Strongest agreement',
+      items: [
+        ['Tell us early, even without answers', '4.7'],
+        ['Protect prep time during any change', '4.5'],
+        ['Keep teams together where possible', '4.2'],
+      ],
+    },
+    voicesRight: {
+      title: 'Sharpest concerns',
+      items: [
+        ['Commute changes mid-year', '3.8'],
+        ['Room and materials moves', '3.6'],
+        ['Split-site assignments', '3.3'],
+      ],
+    },
     evidencePoints: [
       ['building', 'Site-by-site enrollment, so you can find your school in the trend.'],
       ['calendar', 'The decision timeline, with the dates that affect staffing first.'],
       ['survey', 'Your input window: the site survey stays open through February.'],
     ],
-    nextEyebrow: 'What happens next',
+    quote: 'Staff hear it first, in person, before any public agenda item posts.',
+    quoteAttribution: 'The sequencing rule for this study',
     nextSteps: [
       ['survey', 'Site survey', 'Ten minutes; every response is read.'],
       ['people', 'Site meetings', 'Your principal hosts, questions welcome.'],
       ['calendar', 'Decision', 'No staffing change before the timeline says so.'],
     ],
+    closeLine: 'Questions after today go to your principal or straight to the study team.',
   },
   families: {
     label: 'Families',
@@ -764,46 +909,99 @@ const DECKS: Record<Audience, DeckContent> = {
     coverNote: 'What is being studied, what would never change, and how your family weighs in.',
     hero: 'Two years',
     heroCaption: 'to phase any change, with town halls first.',
+    voicesEyebrow: 'Family voice · 640 responses',
+    voicesTitle: 'What families told us.',
+    voicesLeft: {
+      title: 'Strongest agreement',
+      items: [
+        ['Keep my child with their friends', '4.8'],
+        ['Keep the teachers we know', '4.6'],
+        ['Tell us in our home language', '4.5'],
+      ],
+    },
+    voicesRight: {
+      title: 'Sharpest concerns',
+      items: [
+        ['Longer bus rides', '4.0'],
+        ['Earlier start times', '3.8'],
+        ['New pickup logistics', '3.5'],
+      ],
+    },
     evidencePoints: [
       ['seal', 'What stays the same either way: teachers, programs, and school names.'],
       ['bus', 'What could change: some bus routes and start times, phased in.'],
       ['people', 'How families weigh in: town halls at both schools before any vote.'],
     ],
-    nextEyebrow: 'What happens next',
+    quote: 'Every town hall happens before the vote, not after it.',
+    quoteAttribution: 'The promise attached to this study',
     nextSteps: [
       ['people', 'Town halls', 'At both schools, evenings, translated.'],
       ['survey', 'Family survey', 'Five minutes, in your home language.'],
       ['calendar', 'The vote', 'Only after every town hall has met.'],
     ],
+    closeLine: 'Translated copies of every page are available at both school offices.',
   },
 }
 
-const SLIDE_COUNT = 4
+/* Shared option triptych — the three paths under study */
+const OPTIONS: Array<[GlyphName, string, string, string]> = [
+  ['layers', 'Consolidate', 'One feeder pattern next fall; transportation redesigned once.', '$310K one-time'],
+  ['compass', 'Phase', 'Two-year transition; routes and start times move in stages.', '$180K per year'],
+  ['coins', 'Hold', 'Keep both patterns; staffing follows the enrollment slide.', '$420K per year by Yr 3'],
+]
 
-function DeckSlide({ deck, slide, reduceMotion }: { deck: DeckContent; slide: number; reduceMotion: boolean }) {
+const SLIDE_COUNT = 8
+
+function DeckSlide({
+  deck,
+  slide,
+  reduceMotion,
+}: {
+  deck: DeckContent
+  slide: number
+  reduceMotion: boolean
+}) {
+  /* 01 · Cover — image plate right, editorial title left */
   if (slide === 0) {
     return (
-      <div className="flex min-h-[320px] flex-col justify-center px-6 py-10 md:min-h-[380px] md:px-14">
-        <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
-          {deck.coverEyebrow}
+      <div className="grid min-h-[340px] md:min-h-[420px] md:grid-cols-[1.15fr_0.85fr]">
+        <div className="flex flex-col justify-center px-6 py-10 md:px-12">
+          <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
+            {deck.coverEyebrow}
+          </div>
+          <div className="mt-5 max-w-[20ch] font-headline text-[30px] font-light leading-[1.12] tracking-[-0.015em] text-[#1a1816] md:text-[44px]">
+            {deck.coverPlain}{' '}
+            <CycleText reduceMotion={reduceMotion} className="font-editorial italic">
+              {deck.coverItalic}
+            </CycleText>
+          </div>
+          <motion.p
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.35 }}
+            className="mt-6 max-w-[46ch] font-body text-[13px] leading-[1.7] text-[#1a1816]/60 md:text-[14px]"
+          >
+            {deck.coverNote}
+          </motion.p>
         </div>
-        <div className="mt-5 max-w-[20ch] font-headline text-[30px] font-light leading-[1.12] tracking-[-0.015em] text-[#1a1816] md:text-[46px]">
-          {deck.coverPlain} <span className="font-editorial italic text-[#6e6355]">{deck.coverItalic}</span>
+        <div className="relative hidden overflow-hidden md:block">
+          <motion.img
+            src={strataImage}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+            initial={reduceMotion ? false : { scale: 1.06, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: reduceMotion ? 0 : 1.2, ease: easeStandard }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#fffcf7] via-[#fffcf7]/15 to-transparent" aria-hidden="true" />
         </div>
-        <motion.p
-          initial={reduceMotion ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.35 }}
-          className="mt-6 max-w-[52ch] font-body text-[13.5px] leading-[1.7] text-[#1a1816]/60 md:text-[14.5px]"
-        >
-          {deck.coverNote}
-        </motion.p>
       </div>
     )
   }
+  /* 02 · Hero stat */
   if (slide === 1) {
     return (
-      <div className="flex min-h-[320px] flex-col items-center justify-center px-6 py-10 text-center md:min-h-[380px]">
+      <div className="flex min-h-[340px] flex-col items-center justify-center px-6 py-10 text-center md:min-h-[420px]">
         <div className="font-label text-[9px] font-semibold uppercase tracking-[0.34em] text-[#a8802a] md:text-[10px]">
           {deck.coverEyebrow}
         </div>
@@ -811,19 +1009,83 @@ function DeckSlide({ deck, slide, reduceMotion }: { deck: DeckContent; slide: nu
           initial={reduceMotion ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: easeStandard }}
-          className="mt-7 font-editorial text-[54px] font-normal italic leading-[0.95] text-[#1e3a5f] md:text-[80px]"
         >
-          {deck.hero}
+          <CycleText
+            reduceMotion={reduceMotion}
+            className="mt-7 block font-editorial text-[58px] font-normal italic leading-[0.95] md:text-[86px]"
+          >
+            {deck.hero}
+          </CycleText>
         </motion.div>
-        <div className="mx-auto mt-4 max-w-[26ch] font-headline text-[19px] font-light leading-[1.2] text-[#1a1816] md:text-[26px]">
+        <div className="mx-auto mt-5 max-w-[26ch] font-headline text-[19px] font-light leading-[1.2] text-[#1a1816] md:text-[26px]">
           {deck.heroCaption}
         </div>
       </div>
     )
   }
+  /* 03 · Voices score-card, the LCAP register */
   if (slide === 2) {
     return (
-      <div className="flex min-h-[320px] flex-col justify-center px-6 py-9 md:min-h-[380px] md:px-14">
+      <div className="flex min-h-[340px] flex-col justify-center px-6 py-9 md:min-h-[420px] md:px-12">
+        <div className="flex items-center gap-3">
+          <Glyph name="people" color={TEAL_BRIGHT} size={20} reduceMotion={reduceMotion} />
+          <span className="font-label text-[9px] font-semibold uppercase tracking-[0.24em] text-[#6e6355]">
+            {deck.voicesEyebrow.split('·')[0].trim()}
+          </span>
+          <span className="hidden font-editorial text-[13px] italic text-[#1e3a5f] sm:block">
+            {deck.voicesEyebrow.split('·')[1]?.trim()}
+          </span>
+        </div>
+        <div className="mt-4 font-headline text-[24px] font-light leading-[1.15] text-[#1a1816] md:text-[32px]">
+          {deck.voicesTitle}
+        </div>
+        <div className="mt-7 grid gap-4 md:grid-cols-2 md:gap-6">
+          {[deck.voicesLeft, deck.voicesRight].map((list, li) => (
+            <motion.div
+              key={list.title}
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.15 + li * 0.12, ease: easeStandard }}
+              className="rounded-[4px] border border-[#1a1816]/[0.07] bg-white/80 px-5 py-4 shadow-[0_1px_2px_rgba(26,24,22,0.03),0_14px_34px_-24px_rgba(26,24,22,0.3)]"
+            >
+              <div className="mb-3 flex items-center gap-2.5">
+                <span
+                  className="h-2.5 w-2.5 rounded-full"
+                  style={{ background: li === 0 ? GREEN : AMBER }}
+                  aria-hidden="true"
+                />
+                <span className="font-label text-[9px] font-bold uppercase tracking-[0.2em] text-[#6e6355]">
+                  {list.title}
+                </span>
+              </div>
+              {list.items.map(([text, score], i) => (
+                <motion.div
+                  key={text}
+                  initial={reduceMotion ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.3 + li * 0.12 + i * 0.09 }}
+                  className="flex items-baseline gap-3 border-b border-[#1a1816]/[0.06] py-2 last:border-b-0"
+                >
+                  <span className="font-label text-[8.5px] font-bold text-[#6e6355]/60">{`0${i + 1}`}</span>
+                  <span className="flex-1 font-body text-[12.5px] leading-snug text-[#1a1816]/80">{text}</span>
+                  <span className="font-editorial text-[16px] italic" style={{ color: li === 0 ? TEAL : AMBER }}>
+                    {score}
+                  </span>
+                </motion.div>
+              ))}
+            </motion.div>
+          ))}
+        </div>
+        <p className="mt-4 font-editorial text-[11.5px] italic text-[#6e6355]">
+          Weighted means, 1.0–5.0 scale, all responses. Illustrative survey.
+        </p>
+      </div>
+    )
+  }
+  /* 04 · Evidence chart */
+  if (slide === 3) {
+    return (
+      <div className="flex min-h-[340px] flex-col justify-center px-6 py-9 md:min-h-[420px] md:px-12">
         <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
           The evidence
         </div>
@@ -882,30 +1144,138 @@ function DeckSlide({ deck, slide, reduceMotion }: { deck: DeckContent; slide: nu
       </div>
     )
   }
-  return (
-    <div className="flex min-h-[320px] flex-col justify-center px-6 py-9 md:min-h-[380px] md:px-14">
-      <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
-        {deck.nextEyebrow}
+  /* 05 · The options triptych */
+  if (slide === 4) {
+    return (
+      <div className="flex min-h-[340px] flex-col justify-center px-6 py-9 md:min-h-[420px] md:px-12">
+        <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
+          Three paths, costed
+        </div>
+        <div className="mt-7 grid gap-4 md:grid-cols-3 md:gap-5">
+          {OPTIONS.map(([glyph, title, detail, cost], i) => (
+            <motion.div
+              key={title}
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.12 + i * 0.13, ease: easeStandard }}
+              className="group rounded-[4px] border border-[#1a1816]/[0.07] bg-white/80 px-5 pb-5 pt-4 shadow-[0_1px_2px_rgba(26,24,22,0.03),0_14px_34px_-24px_rgba(26,24,22,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_2px_5px_rgba(26,24,22,0.05),0_22px_44px_-22px_rgba(15,76,76,0.35)]"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-label text-[9px] font-bold tracking-[0.2em] text-[#a8802a]">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <Glyph name={glyph} color={TEAL_BRIGHT} delay={0.2 + i * 0.13} size={30} reduceMotion={reduceMotion} />
+              </div>
+              <div className="mt-3.5 font-headline text-[20px] font-normal text-[#1a1816]">{title}</div>
+              <p className="mt-1.5 font-body text-[12.5px] leading-[1.6] text-[#1a1816]/62">{detail}</p>
+              <div className="mt-3.5 border-t border-[#1a1816]/[0.07] pt-2.5 font-editorial text-[14px] italic text-[#1e3a5f]">
+                {cost}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        <p className="mt-4 font-editorial text-[11.5px] italic text-[#6e6355]">
+          Cost models attached · figures are illustrative.
+        </p>
       </div>
-      <div className="mt-8 grid gap-6 md:grid-cols-3 md:gap-8">
-        {deck.nextSteps.map(([glyph, title, detail], i) => (
-          <motion.div
-            key={title}
+    )
+  }
+  /* 06 · Pull-quote with image plate */
+  if (slide === 5) {
+    return (
+      <div className="grid min-h-[340px] md:min-h-[420px] md:grid-cols-[0.85fr_1.15fr]">
+        <div className="relative hidden overflow-hidden md:block">
+          <motion.img
+            src={mirrorPoolImage}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+            initial={reduceMotion ? false : { scale: 1.06, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: reduceMotion ? 0 : 1.2, ease: easeStandard }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-l from-[#fffcf7] via-[#fffcf7]/15 to-transparent" aria-hidden="true" />
+        </div>
+        <div className="flex flex-col justify-center px-6 py-10 md:px-12">
+          <span className="font-editorial text-5xl not-italic leading-none text-[#a8802a]/40 select-none md:text-6xl" aria-hidden="true">
+            &ldquo;
+          </span>
+          <motion.blockquote
             initial={reduceMotion ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.15 + i * 0.14, ease: easeStandard }}
-            className="border-t border-[#1a1816]/12 pt-4"
+            transition={{ duration: 0.6, delay: reduceMotion ? 0 : 0.2, ease: easeStandard }}
+            className="mt-2 max-w-[24ch] font-editorial text-[22px] italic leading-[1.35] text-[#1a1816] md:text-[28px]"
           >
-            <div className="flex items-center justify-between gap-3">
-              <span className="font-label text-[9px] font-bold tracking-[0.2em] text-[#a8802a]">
-                {String(i + 1).padStart(2, '0')}
-              </span>
-              <Glyph name={glyph} color={TEAL_BRIGHT} delay={0.2 + i * 0.14} reduceMotion={reduceMotion} />
-            </div>
-            <div className="mt-3 font-headline text-[17px] font-normal text-[#1a1816]">{title}</div>
-            <p className="mt-1.5 font-body text-[12.5px] leading-[1.6] text-[#1a1816]/62">{detail}</p>
+            {deck.quote}
+          </motion.blockquote>
+          <motion.div
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.55 }}
+            className="mt-6 font-label text-[9px] font-semibold uppercase tracking-[0.22em] text-[#6e6355]"
+          >
+            {deck.quoteAttribution}
           </motion.div>
-        ))}
+        </div>
+      </div>
+    )
+  }
+  /* 07 · What happens next */
+  if (slide === 6) {
+    return (
+      <div className="flex min-h-[340px] flex-col justify-center px-6 py-9 md:min-h-[420px] md:px-12">
+        <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
+          What happens next
+        </div>
+        <div className="mt-8 grid gap-6 md:grid-cols-3 md:gap-8">
+          {deck.nextSteps.map(([glyph, title, detail], i) => (
+            <motion.div
+              key={title}
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.15 + i * 0.14, ease: easeStandard }}
+              className="border-t border-[#1a1816]/12 pt-4"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-label text-[9px] font-bold tracking-[0.2em] text-[#a8802a]">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <Glyph name={glyph} color={TEAL_BRIGHT} delay={0.2 + i * 0.14} reduceMotion={reduceMotion} />
+              </div>
+              <div className="mt-3 font-headline text-[17px] font-normal text-[#1a1816]">{title}</div>
+              <p className="mt-1.5 font-body text-[12.5px] leading-[1.6] text-[#1a1816]/62">{detail}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+  /* 08 · Close */
+  return (
+    <div className="relative flex min-h-[340px] flex-col items-center justify-center overflow-hidden px-6 py-12 text-center md:min-h-[420px]">
+      <motion.img
+        src={slotCanyonImage}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+        initial={reduceMotion ? false : { scale: 1.05, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: reduceMotion ? 0 : 1.3, ease: easeStandard }}
+      />
+      <div className="absolute inset-0 bg-[#0e0e0c]/55" aria-hidden="true" />
+      <div className="relative z-10">
+        <div className="font-label text-[9px] font-semibold uppercase tracking-[0.34em] text-[#e6d8b9] md:text-[10px]">
+          Thank you
+        </div>
+        <div className="mx-auto mt-5 max-w-[18ch] font-headline text-[30px] font-light leading-[1.12] text-[#fffcf7] md:text-[42px]">
+          Questions <span className="font-editorial italic text-[#e6d8b9]">welcome.</span>
+        </div>
+        <motion.p
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.4 }}
+          className="mx-auto mt-5 max-w-[44ch] font-body text-[12.5px] leading-[1.7] text-[#fffcf7]/70"
+        >
+          {deck.closeLine}
+        </motion.p>
       </div>
     </div>
   )
@@ -964,6 +1334,19 @@ export function PresentationArtifact() {
             </span>
           </div>
 
+          {/* cycling hairline — the deck breathes through the palette */}
+          <motion.div
+            className="h-[2px] origin-left"
+            animate={
+              reduceMotion
+                ? undefined
+                : { backgroundColor: CYCLE, scaleX: (slide + 1) / SLIDE_COUNT }
+            }
+            transition={reduceMotion ? undefined : { backgroundColor: { duration: 14, repeat: Infinity, ease: 'easeInOut' }, scaleX: { duration: 0.45, ease: easeStandard } }}
+            style={reduceMotion ? { backgroundColor: TEAL_BRIGHT, transform: `scaleX(${(slide + 1) / SLIDE_COUNT})` } : undefined}
+            aria-hidden="true"
+          />
+
           {/* the slide surface — click anywhere to advance */}
           <div
             role="button"
@@ -1011,7 +1394,7 @@ export function PresentationArtifact() {
             <span>
               <b className="font-semibold text-[#1a1816]">KARST</b> · Feeder study
             </span>
-            <span className="hidden md:block">Four-slide excerpt · Recomposed per audience</span>
+            <span className="hidden md:block">Eight-slide excerpt · Recomposed per audience</span>
             <span className="flex items-center gap-3">
               <span className="flex gap-1" aria-hidden="true">
                 {Array.from({ length: SLIDE_COUNT }, (_, i) => (
@@ -1029,7 +1412,7 @@ export function PresentationArtifact() {
                   />
                 ))}
               </span>
-              <span className="tabular-nums">{`0${slide + 1}`} / 04</span>
+              <span className="tabular-nums">{`0${slide + 1}`} / 08</span>
               <span className="flex gap-1">
                 <button
                   type="button"
