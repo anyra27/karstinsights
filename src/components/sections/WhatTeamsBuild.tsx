@@ -1,11 +1,8 @@
 import { useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { staggerContainerRelaxed, staggerChild } from '../../lib/motion'
-import {
-  ApplicationArtifact,
-  DashboardArtifact,
-  PresentationArtifact,
-} from './WhatTeamsBuildArtifacts'
+import { DashboardArtifact, PresentationArtifact } from './WhatTeamsBuildArtifacts'
+import { ApplicationArtifact } from './WhatTeamsBuildApps'
 
 /* ── What Your Team Builds — the homepage's concrete-evidence chapter.
    Three illustrative district artifacts (dashboard, presentation, application)
@@ -16,17 +13,17 @@ const TABS = [
   {
     id: 'dashboards',
     label: '01 · Dashboards',
-    line: 'A season of raw exports, processed with AI into an early-warning picture.',
+    line: 'A season of raw exports, processed with AI into an early-warning picture. Two live dashboards wait below.',
   },
   {
     id: 'presentations',
     label: '02 · Presentations',
-    line: 'One set of figures, recomposed for the board, staff, and families.',
+    line: 'A four-slide deck you can page through, recomposed for the board, staff, and families.',
   },
   {
     id: 'applications',
     label: '03 · Applications',
-    line: 'A working tool your staff builds, feeding the dashboards you already read.',
+    line: 'Two working tools. Edit anything, submit, and watch it land on the back end.',
   },
 ] as const
 
@@ -95,8 +92,8 @@ export default function WhatTeamsBuild() {
             className="max-w-[48ch] font-body text-base leading-[1.85] text-[#fffcf7]/62 md:text-lg"
           >
             Raw data turned into an early-warning dashboard. Presentations that recompose for each
-            audience. Tools your staff build that feed those dashboards. Built by your team, with
-            Karst, on your real work.
+            audience. Tools your staff build that feed those dashboards. Everything below is a
+            working demonstration. Click in; nothing is sent.
           </motion.p>
         </div>
 
