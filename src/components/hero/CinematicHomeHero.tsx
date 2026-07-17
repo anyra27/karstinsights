@@ -27,37 +27,37 @@ const STORY_BEATS = [
   {
     stage: 'Field',
     title: 'AI access is everywhere. Operating capability is not.',
-    body: 'The tools arrived before the shared practice required to turn them into trusted systems for real district work.',
+    body: 'Karst builds that capability with your team.',
   },
   {
     stage: 'Globe',
-    title: 'Capability begins with what one person can do.',
-    body: 'A leader turns work from their own role into a useful AI system they can operate, inspect, and improve.',
+    title: 'Capability starts with one person.',
+    body: 'One leader turns real work into a system they can run.',
   },
   {
     stage: 'Survey',
-    title: 'Build individual capability. Change the organization.',
-    body: 'When leaders can transform their own work, that capability begins to compound across the district.',
+    title: 'Then it compounds.',
+    body: 'Individual practice begins to change the organization.',
   },
   {
     stage: 'Strata',
-    title: 'What one person can do becomes how the organization works.',
-    body: 'Individual methods become shared workflows, standards, and institutional capacity.',
+    title: 'Practice becomes infrastructure.',
+    body: 'Methods become shared workflows and standards.',
   },
   {
     stage: 'Assembly',
-    title: 'Turn one live priority into a working system.',
-    body: 'Karst builds it beside the team closest to the work, transferring the method as the system takes shape.',
+    title: 'Build one live priority.',
+    body: 'Karst works beside the team closest to it.',
   },
   {
     stage: 'Constellation',
-    title: 'Many roles. One operating cadence.',
-    body: 'Leaders across the district can build, govern, and improve useful systems without waiting on one expert.',
+    title: 'Many roles. One cadence.',
+    body: 'Leaders build and govern together.',
   },
   {
     stage: 'Record',
     title: 'Keep the system. Keep the capability.',
-    body: 'The district owns the work, the method, and the ability to carry both forward.',
+    body: 'The district keeps the work and the method.',
   },
 ] as const
 
@@ -182,8 +182,7 @@ export default function CinematicHomeHero() {
               Set the <span className="font-editorial font-normal italic text-[#d9c39b]">tempo.</span>
             </h1>
             <p className="mx-auto mt-7 max-w-[66ch] font-body text-[14px] leading-[1.72] tracking-[0.01em] text-[#f3efe6]/64 md:text-[15.5px]">
-              AI access is everywhere. Operating capability is not. Karst helps district leaders
-              turn priorities into dashboards, workflows, and AI systems their teams can run and own.
+              AI access is everywhere. Operating capability is not. Karst builds it with your team.
             </p>
             {reduceMotion && (
               <Link
@@ -213,36 +212,36 @@ export default function CinematicHomeHero() {
               progress={scrollYProgress}
               range={[0.165, 0.196, 0.246, 0.277]}
               label="02 · Globe"
-              title="Capability begins with what one person can do."
-              body="A leader turns work from their own role into a useful AI system they can operate, inspect, and improve."
+              title="Capability starts with one person."
+              body="One leader turns real work into a system they can run."
             />
             <HeroBeat
               progress={scrollYProgress}
               range={[0.303, 0.334, 0.386, 0.417]}
               label="03 · Survey"
-              title="Build individual capability. Change the organization."
-              body="When leaders can transform their own work, that capability begins to compound across the district."
+              title="Then it compounds."
+              body="Individual practice begins to change the organization."
             />
             <HeroBeat
               progress={scrollYProgress}
               range={[0.442, 0.472, 0.525, 0.556]}
               label="04 · Strata"
-              title="What one person can do becomes how the organization works."
-              body="Individual methods become shared workflows, standards, and institutional capacity."
+              title="Practice becomes infrastructure."
+              body="Methods become shared workflows and standards."
             />
             <HeroBeat
               progress={scrollYProgress}
               range={[0.579, 0.61, 0.664, 0.694]}
               label="05 · Assembly"
-              title="Turn one live priority into a working system."
-              body="Karst builds it beside the team closest to the work, transferring the method as the system takes shape."
+              title="Build one live priority."
+              body="Karst works beside the team closest to it."
             />
             <HeroBeat
               progress={scrollYProgress}
               range={[0.719, 0.75, 0.802, 0.833]}
               label="06 · Constellation"
-              title="Many roles. One operating cadence."
-              body="Leaders across the district can build, govern, and improve useful systems without waiting on one expert."
+              title="Many roles. One cadence."
+              body="Leaders build and govern together."
             />
           </>
         )}
@@ -263,7 +262,7 @@ export default function CinematicHomeHero() {
               Keep the system. Keep the capability.
             </h2>
             <p className="mt-3 max-w-[48ch] font-body text-sm leading-[1.65] text-[#f3efe6]/58 md:text-[15.5px]">
-              The district owns the work, the method, and the ability to carry both forward.
+              The district keeps the work and the method.
             </p>
             <Link
               to="/contact"

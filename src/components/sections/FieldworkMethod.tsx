@@ -3,18 +3,18 @@ import { motion, useReducedMotion } from 'framer-motion'
 const STEPS = [
   {
     number: '01',
-    label: 'Begin with live work',
-    detail: 'One priority that matters now—not a generic exercise.',
+    label: 'Live priority',
+    detail: 'Work that matters now.',
   },
   {
     number: '02',
-    label: 'Build beside the team',
-    detail: 'The people closest to the work shape the system as it takes form.',
+    label: 'Build together',
+    detail: 'The team shapes the system.',
   },
   {
     number: '03',
-    label: 'Transfer the practice',
-    detail: 'The method becomes something the district can operate and improve.',
+    label: 'Keep the method',
+    detail: 'The practice stays with the district.',
   },
 ]
 
@@ -51,8 +51,8 @@ export default function FieldworkMethod() {
               Fieldwork
             </p>
             <h2 className="font-headline text-3xl font-light leading-[1.14] md:text-5xl">
-              Use the work to build the{' '}
-              <span className="font-editorial font-normal italic text-[#e6d8b9]">capability.</span>
+              Build capability{' '}
+              <span className="font-editorial font-normal italic text-[#e6d8b9]">in the work.</span>
             </h2>
           </motion.div>
 
@@ -63,9 +63,7 @@ export default function FieldworkMethod() {
             }}
             className="max-w-[56ch] self-end font-body text-base leading-[1.85] text-[#fffcf7]/62 md:text-lg"
           >
-            Karst does not arrive with a canned transformation plan. We work on one consequential
-            district priority with the people closest to it, so the system and the team’s judgment
-            mature together.
+            One live priority. The people closest to it. A system they can keep improving.
           </motion.p>
         </div>
 

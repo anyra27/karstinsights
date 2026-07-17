@@ -4,18 +4,18 @@ import { easeStandard, staggerChild, staggerContainerRelaxed } from '../../lib/m
 const SIGNALS = [
   {
     number: '01',
-    title: 'Access is widespread.',
-    detail: 'The tools are already in people’s hands, but access alone does not create a shared way of working.',
+    title: 'Tools are present.',
+    detail: 'Access does not create a shared practice.',
   },
   {
     number: '02',
-    title: 'Useful work stays isolated.',
-    detail: 'Promising experiments remain one-off wins instead of becoming trusted workflows the district can repeat.',
+    title: 'Work stays isolated.',
+    detail: 'One-off wins never become district practice.',
   },
   {
     number: '03',
-    title: 'Capability leaves with the expert.',
-    detail: 'When the method lives with one person or outside partner, the organization has to keep starting over.',
+    title: 'Progress depends on a few people.',
+    detail: 'When expertise leaves, the work resets.',
   },
 ]
 
@@ -39,22 +39,21 @@ export default function CapabilityGap() {
               variants={staggerChild}
               className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]"
             >
-              The Capability Gap
+              The Gap
             </motion.p>
             <motion.h2
               variants={staggerChild}
               className="max-w-2xl font-headline text-3xl font-light leading-[1.14] text-on-surface md:text-5xl lg:text-[54px]"
             >
-              AI access arrived before districts had a way to{' '}
-              <span className="font-editorial font-normal italic">work with it.</span>
+              Access is not{' '}
+              <span className="font-editorial font-normal italic">capability.</span>
             </motion.h2>
           </div>
 
           <motion.div variants={staggerChild} className="flex items-end">
             <p className="max-w-[54ch] font-body text-base leading-[1.85] text-on-surface-variant/75 md:text-lg">
-              District teams are experimenting. What is often missing is the operating practice that
-              turns those experiments into work people can trust, govern, improve, and carry forward
-              together.
+              Without a shared practice, useful experiments stay isolated—and the district keeps
+              starting over.
             </p>
           </motion.div>
         </div>

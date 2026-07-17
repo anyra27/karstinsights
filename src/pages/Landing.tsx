@@ -36,23 +36,23 @@ const SHOW_PROOF = true
 const capabilities = [
   {
     Vignette: DashboardVignette,
-    title: 'Decision intelligence from your own data.',
-    desc: 'A raw export becomes a clear, board-ready view of what matters. Built by your team, owned by your district.',
+    title: 'See what matters.',
+    desc: 'Turn raw district data into a board-ready view.',
   },
   {
     Vignette: SpeakVignette,
-    title: 'Write once. Speak everywhere.',
-    desc: 'One set of figures becomes a board memo, a family letter, and a public summary, each in your district’s voice.',
+    title: 'One source. Every audience.',
+    desc: 'Move from figures to memos, letters, and public updates.',
   },
   {
     Vignette: ConcertVignette,
-    title: 'The right intelligence for the question.',
-    desc: 'Not one tool, but several working in concert, matched to whatever your team needs to answer.',
+    title: 'Use the right intelligence.',
+    desc: 'Match the method to the question.',
   },
   {
     Vignette: ToolVignette,
-    title: 'A working tool, not a demonstration.',
-    desc: 'A form, a site, an application your team relies on. Not a prototype that gathers dust.',
+    title: 'Build what the work needs.',
+    desc: 'Forms, sites, and applications your team can use.',
   },
 ]
 
@@ -61,21 +61,21 @@ const capabilities = [
 const offerings = [
   {
     label: 'Executive Workshop',
-    title: 'Your team walks out able to build.',
-    desc: 'An on-site intensive for superintendents and their cabinets. Your team builds real, board-ready work on your own data, and keeps the capability.',
+    title: 'Build something real.',
+    desc: 'One intensive day. One live district priority. A team ready to keep going.',
     image: birdOfParadise,
   },
   {
     label: 'The Insights Residency',
-    title: 'A year working alongside your team.',
-    desc: 'When the work goes deeper, we partner with your team for a year: dashboards, design systems, operational rhythms, built together on your data. By Year 1’s end, your team owns the practice.',
+    title: 'Go deeper.',
+    desc: 'A year of building, operating, and improving alongside your team.',
     image: koi,
     imagePosition: 'right bottom',
   },
   {
     label: 'Karst Platform',
     title: 'The platform behind the work.',
-    desc: 'Learning Studio, Data Studio, and Karst Frame: the system that makes the practice compound.',
+    desc: 'Learning Studio, Data Studio, and Karst Frame—one system behind the practice.',
     image: gem4,
     link: '/studios',
     linkLabel: 'See the Studios',
@@ -147,9 +147,7 @@ export default function Landing() {
               variants={staggerChild}
               className="mt-7 max-w-[48ch] font-body text-sm leading-[1.85] text-[#fffcf7]/60 md:text-base"
             >
-              Fieldwork leaves behind more than a finished artifact. It becomes a district-owned
-              operating kit: the context, guardrails, workflows, tools, and patterns your team needs
-              to keep the capability moving.
+              Every engagement leaves a district-owned system for continuing the work.
             </motion.p>
 
             <motion.p
@@ -180,21 +178,15 @@ export default function Landing() {
             variants={staggerChild}
             className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-on-surface-variant/55 mb-6"
           >
-            What Your Team Delivers
+            What Teams Make
           </motion.p>
           <motion.h2
             variants={staggerChild}
             className="font-headline text-2xl md:text-3xl lg:text-4xl text-on-surface leading-snug mb-5"
           >
-            A new way to <span className="font-editorial italic font-normal">lead your district.</span>
+            Real work. <span className="font-editorial italic font-normal">Ready to use.</span>
           </motion.h2>
-          <motion.div variants={staggerChild} className="w-10 h-px bg-tertiary/40 mx-auto mb-6" />
-          <motion.p
-            variants={staggerChild}
-            className="font-label text-[10px] md:text-[11px] tracking-[0.28em] uppercase text-tertiary/70"
-          >
-            Insight · Direction · Clarity · Speed · Innovation
-          </motion.p>
+          <motion.div variants={staggerChild} className="w-10 h-px bg-tertiary/40 mx-auto" />
         </motion.div>
 
         <motion.div
@@ -226,16 +218,6 @@ export default function Landing() {
           })}
         </motion.div>
 
-        <motion.p
-          className="font-body text-base md:text-lg text-on-surface-variant leading-relaxed text-center max-w-2xl mx-auto mt-14"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.7, ease: easeStandard }}
-        >
-          The point was never the technology. It is the insight, the clarity, and the command it
-          puts in your team&rsquo;s hands.
-        </motion.p>
       </section>
 
 
@@ -249,15 +231,14 @@ export default function Landing() {
           transition={{ duration: 0.7, ease: easeStandard }}
         >
           <p className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-tertiary mb-5">
-            Built On Your Own Data
+            In Practice
           </p>
           <h2 className="font-headline text-2xl md:text-3xl lg:text-4xl text-on-surface leading-snug mb-5">
-            A working dashboard,<br className="hidden md:inline" /> ready for the board.
+            A dashboard,<br className="hidden md:inline" /> ready for the board.
           </h2>
           <div className="w-10 h-px bg-tertiary/40 mx-auto mb-5" />
           <p className="font-body text-sm md:text-base text-on-surface-variant leading-relaxed max-w-xl mx-auto">
-            The kind of working surface your team builds and owns, clear enough to show in the
-            boardroom, current enough to trust.
+            Built on district data. Clear enough to act on.
           </p>
         </motion.div>
 
@@ -308,8 +289,7 @@ export default function Landing() {
               variants={staggerChild}
               className="max-w-[56ch] self-end font-body text-base leading-[1.85] text-[#fffcf7]/62 md:text-lg"
             >
-              Real capability shows up in what happens next. The team can operate what it built,
-              improve it as conditions change, and apply the same judgment to the next priority.
+              Operate it. Improve it. Extend the practice.
             </motion.p>
           </div>
 
@@ -318,9 +298,9 @@ export default function Landing() {
             className="relative mt-16 grid border-y border-[#fffcf7]/10 md:mt-24 md:grid-cols-3"
           >
             {[
-              ['01', 'Operate', 'Use the system in the work it was built to serve.'],
-              ['02', 'Improve', 'Refine it as the district learns and conditions change.'],
-              ['03', 'Extend', 'Carry the practice into the next consequential priority.'],
+              ['01', 'Operate', 'Use it in the work.'],
+              ['02', 'Improve', 'Refine it as conditions change.'],
+              ['03', 'Extend', 'Carry the practice forward.'],
             ].map(([number, title, detail], index) => (
               <motion.div
                 key={number}
@@ -429,12 +409,9 @@ export default function Landing() {
               <h2 className="font-headline text-3xl md:text-4xl text-white/95 leading-snug mb-6 max-w-xl mx-auto">
                 Be the most capable district in your region.
               </h2>
-              <p className="font-body text-sm md:text-base text-white/45 leading-relaxed max-w-lg mx-auto mb-12">
-                The capability lives in your own people, and it stays there.
-              </p>
               <Link
                 to="/contact"
-                className="group inline-flex items-center gap-2.5 bg-white text-[#0e0e0c] py-4 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_44px_-14px_rgba(255,255,255,0.45)]"
+                className="group mt-6 inline-flex items-center gap-2.5 bg-white text-[#0e0e0c] py-4 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_44px_-14px_rgba(255,255,255,0.45)]"
               >
                 Request an Introduction
                 <span className="text-sm transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">

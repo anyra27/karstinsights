@@ -48,10 +48,10 @@ export default function DistrictLeadershipProof() {
       >
         <motion.div variants={staggerChild} className="mb-14 max-w-2xl md:mb-20">
           <p className="mb-5 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]">
-            In Their Words
+            District Voices
           </p>
           <h2 className="font-headline text-3xl font-light leading-tight text-on-surface md:text-4xl">
-            District leaders on what changes when capability becomes real.
+            What changes.
           </h2>
         </motion.div>
 
