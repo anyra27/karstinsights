@@ -8,18 +8,12 @@ import {
 import PageShell from '../components/layout/PageShell'
 import DashboardShowcase from '../components/sections/DashboardShowcase'
 import DistrictLeadershipProof from '../components/sections/DistrictLeadershipProof'
-import CapabilityGap from '../components/sections/CapabilityGap'
 import FieldworkMethod from '../components/sections/FieldworkMethod'
+import WhatTeamsBuild from '../components/sections/WhatTeamsBuild'
 import EngagementPaths from '../components/sections/EngagementPaths'
 import OperatingKitDiagram from '../components/art/OperatingKitDiagram'
 import AmbientParticles from '../components/art/AmbientParticles'
 import CinematicHomeHero from '../components/hero/CinematicHomeHero'
-import {
-  DashboardVignette,
-  SpeakVignette,
-  ConcertVignette,
-  ToolVignette,
-} from '../components/art/CapabilityVignettes'
 
 import { usePageMeta } from '../lib/usePageMeta'
 import gem4 from '../assets/gem4.webp'
@@ -30,45 +24,20 @@ import koi from '../assets/koi.webp'
    with each leader's current role and organization stated individually. */
 const SHOW_PROOF = true
 
-/* ── Capabilities — what the district's own team walks out able to deliver.
-   Framed as outcomes the team provides the district, never as mechanism. ── */
-const capabilities = [
-  {
-    Vignette: DashboardVignette,
-    title: 'See what matters.',
-    desc: 'Turn raw district data into a board-ready view.',
-  },
-  {
-    Vignette: SpeakVignette,
-    title: 'One source. Every audience.',
-    desc: 'Move from figures to memos, letters, and public updates.',
-  },
-  {
-    Vignette: ConcertVignette,
-    title: 'Use the right intelligence.',
-    desc: 'Match the method to the question.',
-  },
-  {
-    Vignette: ToolVignette,
-    title: 'Build what the work needs.',
-    desc: 'Forms, sites, and applications your team can use.',
-  },
-]
-
 /* ── Three ways into the work: focused workshops, sustained fieldwork,
    and role-specific learning platforms. ── */
 const offerings = [
   {
     label: 'Workshops',
-    title: 'Start with one real priority.',
-    desc: 'Build the first working result and begin the Operating Kit.',
+    title: 'Bring the work you already have.',
+    desc: 'Focused sessions. Your team builds its first working results with Karst.',
     image: birdOfParadise,
     link: '/contact',
   },
   {
     label: 'Fieldwork',
-    title: 'Protect the time. Build the capability.',
-    desc: 'Protected build time across a school year. Build and maintain the Operating Kit.',
+    title: 'Protect the time. Build all year.',
+    desc: 'Sustained build time across a school year, with Karst working beside your team.',
     image: koi,
     imagePosition: 'right bottom',
     link: '/cohort/',
@@ -99,15 +68,15 @@ export default function Landing() {
       />
 
 
-      {/* ══════════ THE PROBLEM — why access is not capability ══════════ */}
-      <CapabilityGap />
+      {/* ══════════ WHAT YOUR TEAM BUILDS — concrete evidence, straight after the hero ══════════ */}
+      <WhatTeamsBuild />
 
 
       {/* ══════════ PROOF — DISTRICT LEADERS ══════════ */}
       {SHOW_PROOF && <DistrictLeadershipProof />}
 
 
-      {/* ══════════ FIELDWORK — the response ══════════ */}
+      {/* ══════════ HOW THE PARTNERSHIP WORKS ══════════ */}
       <FieldworkMethod />
 
 
@@ -132,30 +101,32 @@ export default function Landing() {
               variants={staggerChild}
               className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#c49a43] md:text-[11px]"
             >
-              District AI Operating Kits
+              The District AI Operating Kit
             </motion.p>
 
             <motion.h2
               variants={staggerChild}
               className="max-w-xl font-headline text-3xl font-light leading-[1.14] text-[#fffcf7] md:text-5xl lg:text-[50px]"
             >
-              Built in the work.{' '}
-              <span className="font-editorial font-normal italic text-[#e6d8b9]">Kept by the district.</span>
+              Everything works,{' '}
+              <span className="font-editorial font-normal italic text-[#e6d8b9]">in one place.</span>
             </motion.h2>
 
             <motion.p
               variants={staggerChild}
               className="mt-7 max-w-[48ch] font-body text-sm leading-[1.85] text-[#fffcf7]/60 md:text-base"
             >
-              Each cycle adds a working system, operating instructions, and clear ownership to one
-              district-held record.
+              Every dashboard, presentation, and application your team builds lives in one organized
+              kit. Documented in plain language. Easy to find, easy to run again, easy to update,
+              and easy to hand to the next person. Karst maintains it with you through the
+              engagement, and the district owns it outright.
             </motion.p>
 
             <motion.p
               variants={staggerChild}
               className="mt-8 border-l border-[#c49a43]/45 pl-5 font-label text-[9px] uppercase leading-[1.8] tracking-[0.24em] text-[#fffcf7]/38"
             >
-              District-owned · Built with Karst · Ready to evolve
+              District-owned · Built with Karst · Easy to continue
             </motion.p>
           </div>
 
@@ -163,65 +134,6 @@ export default function Landing() {
             <OperatingKitDiagram />
           </motion.div>
         </motion.div>
-      </section>
-
-
-      {/* ══════════ WHAT YOUR TEAM DELIVERS — capabilities ══════════ */}
-      <section className="relative py-16 md:py-32 px-6 md:px-10 bg-surface overflow-hidden">
-        <motion.div
-          className="max-w-3xl mx-auto text-center mb-14 md:mb-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          variants={staggerContainerRelaxed}
-        >
-          <motion.p
-            variants={staggerChild}
-            className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-on-surface-variant/55 mb-6"
-          >
-            What Teams Make
-          </motion.p>
-          <motion.h2
-            variants={staggerChild}
-            className="font-headline text-2xl md:text-3xl lg:text-4xl text-on-surface leading-snug mb-5"
-          >
-            Real work. <span className="font-editorial italic font-normal">Ready to use.</span>
-          </motion.h2>
-          <motion.div variants={staggerChild} className="w-10 h-px bg-tertiary/40 mx-auto" />
-        </motion.div>
-
-        <motion.div
-          className="mx-auto grid max-w-6xl grid-cols-1 border-t border-on-surface/10 md:grid-cols-2"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
-          variants={staggerContainerRelaxed}
-        >
-          {capabilities.map((cap, index) => {
-            const Vignette = cap.Vignette
-            return (
-              <motion.article
-                key={cap.title}
-                variants={staggerChild}
-                className="group relative grid min-h-[250px] items-center gap-4 border-b border-on-surface/10 py-8 sm:grid-cols-[0.88fr_1.12fr] md:gap-6 md:px-8 md:py-10 md:odd:border-r md:odd:pl-0 md:even:pr-0"
-              >
-                <span className="absolute left-0 top-5 font-label text-[8px] tracking-[0.24em] text-[#a8802a]/65 md:top-7">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <Vignette className="w-full px-1 pt-5 sm:px-0 sm:pt-0" />
-                <div className="flex flex-col py-1">
-                  <h3 className="mb-3 font-headline text-lg leading-snug text-on-surface md:text-xl">
-                    {cap.title}
-                  </h3>
-                  <p className="max-w-[34ch] font-body text-sm leading-relaxed text-on-surface-variant/75">
-                    {cap.desc}
-                  </p>
-                </div>
-              </motion.article>
-            )
-          })}
-        </motion.div>
-
       </section>
 
 
@@ -251,7 +163,7 @@ export default function Landing() {
             </h2>
           </div>
           <p className="max-w-[48ch] font-body text-base leading-[1.85] text-[#fffcf7]/60 md:text-lg">
-            Built on district data. Clear enough to act on.
+            A working example, built on district data. Explore it yourself.
           </p>
         </motion.div>
 
@@ -289,7 +201,7 @@ export default function Landing() {
                 variants={staggerChild}
                 className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#c49a43] md:text-[11px]"
               >
-                The Test
+                What Lasts
               </motion.p>
               <motion.h2
                 variants={staggerChild}
@@ -357,10 +269,10 @@ export default function Landing() {
           >
             <div className="max-w-2xl mx-auto">
               <p className="font-label text-[10px] tracking-[0.3em] uppercase text-white/35 mb-6">
-                Start with the work
+                Start with your people
               </p>
               <h2 className="font-headline text-3xl md:text-4xl text-white/95 leading-snug mb-6 max-w-xl mx-auto">
-                Bring one district priority worth changing.
+                Bring your people and the work on their plates.
               </h2>
               <Link
                 to="/contact"
