@@ -16,7 +16,7 @@ const TABS = [
   {
     id: 'dashboards',
     label: '01 · Dashboards',
-    line: 'Ask in plain English. The analysis and the writing come back done.',
+    line: 'A season of raw exports, processed with AI into an early-warning picture.',
   },
   {
     id: 'presentations',
@@ -26,7 +26,7 @@ const TABS = [
   {
     id: 'applications',
     label: '03 · Applications',
-    line: 'The form is the easy part. The system reads it, routes it, and drafts the reply.',
+    line: 'A working tool your staff builds, feeding the dashboards you already read.',
   },
 ] as const
 
@@ -94,9 +94,9 @@ export default function WhatTeamsBuild() {
             variants={staggerChild}
             className="max-w-[48ch] font-body text-base leading-[1.85] text-[#fffcf7]/62 md:text-lg"
           >
-            Data that answers plain-English questions. Presentations that recompose for each
-            audience. Applications that read a request and draft the reply. Built by your team,
-            with Karst, on your real work.
+            Raw data turned into an early-warning dashboard. Presentations that recompose for each
+            audience. Tools your staff build that feed those dashboards. Built by your team, with
+            Karst, on your real work.
           </motion.p>
         </div>
 

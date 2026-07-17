@@ -3,12 +3,12 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { easeStandard } from '../../lib/motion'
 
 /* ── The three build artifacts for the What Your Team Builds chapter.
-   Each one demonstrates AI doing consequential work, not a surface a
-   district could already buy: data that answers plain-English questions
-   with the analysis written back, a deck that recomposes itself per
-   audience, and an intake app that reads the request and drafts the
-   reply. All content is synthetic demonstration data; the section
-   caption states so on-screen. ── */
+   Each maps to work Karst actually delivers: raw district exports
+   processed with AI into an early-warning dashboard, one set of figures
+   recomposed per audience, and a working tool the staff build that feeds
+   a live dashboard. The AI does the analysis and helps build the tools;
+   it is never shown as an agent living inside a shipped app. All content
+   is synthetic demonstration data; the section caption states so. ── */
 
 const BRASS = '#a8802a'
 const NAVY = '#1e2a4a'
@@ -211,304 +211,193 @@ function PanelLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
-/* ════════ 01 · Ask the data — plain-English questions, the analysis
-   and the writing come back done ════════ */
+/* ════════ 01 · Dashboards — a season of raw exports, processed with AI
+   into an early-warning picture. Directionally modeled on real district
+   work (attendance × outcomes, ABC early-warning framework); all numbers
+   here are illustrative, no live data. ════════ */
 
-interface AskAnswer {
-  question: string
-  chip: string
+const SOURCE_FILES: Array<[string, string]> = [
+  ['attendance.xlsx', '18,600 rows'],
+  ['grades · D/F list', '6,900 marks'],
+  ['discipline.xlsx', '22,400 rows'],
+  ['roster · demographics', '18,600 students'],
+]
+
+type LensKey = 'cliff' | 'early' | 'watchlist'
+
+interface Lens {
+  tab: string
+  title: string
   stats: Array<[string, string, string]>
-  visual: 'sites' | 'bars' | 'projection'
-  visualLabel: string
+  chartLabel: string
+  bars: Array<[string, number, string, boolean]>
   read: string
 }
 
-const ASKS: AskAnswer[] = [
-  {
-    question: 'Which sites need attention before spring?',
-    chip: 'Sites at risk',
+const LENSES: Record<LensKey, Lens> = {
+  cliff: {
+    tab: 'The cliff',
+    title: 'Where attendance turns into failure',
     stats: [
-      ['Sites off pace', '2 of 14', 'Both recoverable'],
-      ['Students affected', '164', 'Concentrated, not spread'],
+      ['Cliff edge', 'Below 90%', 'Risk doubles here'],
+      ['D/F rate under 85%', '58%', 'Vs 6% at near-perfect'],
     ],
-    visual: 'sites',
-    visualLabel: 'Ranked by projected gap · spring target',
+    chartLabel: 'Course-failure rate by attendance band',
+    bars: [
+      ['95–100%', 10, '6%', false],
+      ['90–94%', 24, '14%', false],
+      ['85–89%', 53, '31%', true],
+      ['Below 85%', 96, '58%', true],
+    ],
     read:
-      'Two sites are off pace. Creekside is driven by one second-grade cohort, not a school-wide slide; North High drifts after lunch on Fridays. At the current trend both clear the target if outreach holds through March.',
+      'The pattern hides in the join. Below 90 percent attendance, course-failure rates roughly double; below 85, most of a cohort is failing something. Attendance is not a side metric, it is the leading edge of the outcome.',
   },
-  {
-    question: 'What is driving the facilities backlog?',
-    chip: 'Facilities backlog',
+  early: {
+    tab: 'Early signal',
+    title: 'The flag that shows up in week four',
     stats: [
-      ['Share of aging requests', '71%', 'One trade: HVAC'],
-      ['Blocked by one part', '5 requests', 'Same fan relay'],
+      ['Earliest reliable flag', 'Week 4', 'First-month absences'],
+      ['2+ early absences', '5× risk', 'Vs a clean first month'],
     ],
-    visual: 'bars',
-    visualLabel: 'Aging requests by trade · past 30 days',
+    chartLabel: 'Year-end chronic absence by first-month absences',
+    bars: [
+      ['0 absences', 15, '9%', false],
+      ['1', 28, '17%', false],
+      ['2', 56, '34%', true],
+      ['3–4', 86, '52%', true],
+      ['5+', 100, '71%', true],
+    ],
     read:
-      'The backlog is not a staffing problem. HVAC holds 71 percent of aging requests, and five of them wait on the same fan relay. One bulk order clears half the aging list within a week.',
+      'The strongest predictor is the earliest one. A student with two or more absences in the first month is five times more likely to end the year chronically absent. That is a list a principal can act on in September, not one they read in June.',
   },
-  {
-    question: 'Project enrollment by feeder for the next three years.',
-    chip: 'Enrollment forecast',
+  watchlist: {
+    tab: 'Watchlist',
+    title: 'Named, ranked, and reachable',
     stats: [
-      ['Crossover point', 'Yr 2', 'Feeder B passes A'],
-      ['Range across scenarios', '±3%', 'Crossover holds in all'],
+      ['Flagged this fall', '412', 'Across 14 sites'],
+      ['Caught by attendance alone', '8 in 10', 'Weeks before the first F'],
     ],
-    visual: 'projection',
-    visualLabel: 'Five years observed · three projected',
+    chartLabel: 'Flagged students by site · highest need first',
+    bars: [
+      ['North High', 88, '96', true],
+      ['Delta Vista', 61, '67', true],
+      ['Sierra Vista', 44, '48', false],
+      ['Creekside Elem', 30, '33', false],
+      ['Other sites', 52, '168', false],
+    ],
     read:
-      'Feeder B passes Feeder A in year two. The crossover holds across all three birth-rate scenarios, which is why the consolidation question belongs on this spring’s board calendar rather than next year’s.',
+      'The dashboard ends where the work starts: a ranked, de-identified watchlist the district can turn back into real names on its own side. Each flag carries why it fired, so outreach is targeted, not district-wide.',
   },
-]
-
-const RISK_SITES: Array<[string, number, string, 'watch' | 'good']> = [
-  ['Creekside Elementary', 78, 'Gr. 2 cohort · 41 students', 'watch'],
-  ['North High', 54, 'Fri afternoons · 123 students', 'watch'],
-  ['Sierra Vista Middle', 22, 'Recovery holding 8 weeks', 'good'],
-  ['Delta Vista Middle', 15, 'Outreach cycle working', 'good'],
-]
-
-const TRADE_BARS: Array<[string, number, string]> = [
-  ['HVAC', 71, '71%'],
-  ['Electrical', 12, '12%'],
-  ['Grounds', 9, '9%'],
-  ['Plumbing', 8, '8%'],
-]
-
-function SitesVisual({ reduceMotion }: { reduceMotion: boolean }) {
-  return (
-    <div className="grid gap-2.5">
-      {RISK_SITES.map(([site, gap, note, status], i) => (
-        <motion.div
-          key={site}
-          initial={reduceMotion ? false : { opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.1 + i * 0.09, ease: easeStandard }}
-          className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] items-center gap-3 sm:grid-cols-[150px_minmax(0,1fr)_minmax(0,1fr)]"
-        >
-          <span className="truncate font-label text-[11px] font-semibold text-[#1a1816]">{site}</span>
-          <span className="flex items-center gap-2">
-            <motion.i
-              initial={reduceMotion ? false : { width: 0 }}
-              animate={{ width: `${gap}%` }}
-              transition={{ duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.2 + i * 0.09, ease: easeStandard }}
-              className="block h-1.5 rounded-[2px]"
-              style={{
-                background:
-                  status === 'watch'
-                    ? 'linear-gradient(90deg, rgba(165,71,49,0.8), rgba(165,71,49,0.45))'
-                    : 'linear-gradient(90deg, rgba(45,90,90,0.6), rgba(45,90,90,0.3))',
-              }}
-            />
-          </span>
-          <span className="hidden truncate font-body text-[11px] text-[#1a1816]/55 sm:block">{note}</span>
-        </motion.div>
-      ))}
-    </div>
-  )
 }
 
-function BarsVisual({ reduceMotion }: { reduceMotion: boolean }) {
+function LensBars({ lens, reduceMotion }: { lens: Lens; reduceMotion: boolean }) {
   return (
-    <div>
-      {TRADE_BARS.map(([label, width, share], i) => (
-        <div key={label} className="my-2.5 grid grid-cols-[74px_minmax(0,1fr)_34px] items-center gap-2.5">
-          <span className="truncate font-label text-[8.5px] font-semibold uppercase tracking-[0.04em] text-[#1a1816]/70">
+    <div className="grid gap-2.5">
+      {lens.bars.map(([label, width, value, hot], i) => (
+        <div key={label} className="grid grid-cols-[84px_minmax(0,1fr)_38px] items-center gap-3">
+          <span className="truncate font-label text-[9px] font-semibold uppercase tracking-[0.06em] text-[#1a1816]/70">
             {label}
           </span>
           <motion.i
             initial={reduceMotion ? false : { width: 0 }}
             animate={{ width: `${width}%` }}
-            transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.15 + i * 0.08, ease: easeStandard }}
-            className="block h-1.5 rounded-[2px]"
+            transition={{ duration: reduceMotion ? 0 : 0.75, delay: reduceMotion ? 0 : 0.15 + i * 0.08, ease: easeStandard }}
+            className="block h-2 rounded-[2px]"
             style={{
-              background:
-                i === 0
-                  ? 'linear-gradient(90deg, rgba(165,71,49,0.8), rgba(165,71,49,0.45))'
-                  : 'linear-gradient(90deg, rgba(30,42,74,0.6), rgba(30,42,74,0.35))',
+              background: hot
+                ? 'linear-gradient(90deg, rgba(165,71,49,0.85), rgba(165,71,49,0.5))'
+                : 'linear-gradient(90deg, rgba(30,42,74,0.7), rgba(30,42,74,0.4))',
             }}
           />
-          <b className="text-right font-label text-[10px] font-semibold text-[#6e6355]">{share}</b>
+          <b className="text-right font-label text-[11px] font-semibold text-[#1a1816]">{value}</b>
         </div>
       ))}
-      <motion.p
-        initial={reduceMotion ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.6 }}
-        className="mt-3 font-body text-[11px] italic text-[#6e6355]"
-      >
-        5 aging requests share one part: fan relay, in stock at two suppliers.
-      </motion.p>
     </div>
   )
 }
 
-function ProjectionVisual({ reduceMotion }: { reduceMotion: boolean }) {
-  return (
-    <svg viewBox="0 0 420 150" width="100%" aria-hidden="true">
-      <g stroke="rgba(30,42,74,0.08)" strokeWidth="1">
-        <line x1="0" y1="30" x2="420" y2="30" />
-        <line x1="0" y1="68" x2="420" y2="68" />
-        <line x1="0" y1="106" x2="420" y2="106" />
-      </g>
-      {/* today divider */}
-      <line x1="252" y1="14" x2="252" y2="132" stroke="rgba(110,99,85,0.35)" strokeWidth="1" strokeDasharray="2 4" />
-      <text x="245" y="10" fill="rgba(110,99,85,0.8)" fontFamily="Montserrat, sans-serif" fontSize="7.5" fontWeight="700" letterSpacing="1.5">
-        NOW
-      </text>
-      {/* confidence band for feeder B beyond now */}
-      <motion.path
-        d="M252 58 C 300 48, 360 34, 412 24 L 412 52 C 360 58, 300 66, 252 64 Z"
-        fill="rgba(168,128,42,0.1)"
-        initial={reduceMotion ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.7, delay: reduceMotion ? 0 : 1.1 }}
-      />
-      {/* observed */}
-      <motion.path
-        d="M8 66 C 70 70, 150 78, 200 84 S 240 90, 252 92"
-        fill="none"
-        stroke={NAVY}
-        strokeWidth="2"
-        initial={reduceMotion ? false : { pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: reduceMotion ? 0 : 0.9, delay: reduceMotion ? 0 : 0.1, ease: easeStandard }}
-      />
-      <motion.path
-        d="M8 96 C 70 94, 150 84, 200 74 S 240 64, 252 61"
-        fill="none"
-        stroke={BRASS}
-        strokeWidth="2"
-        initial={reduceMotion ? false : { pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: reduceMotion ? 0 : 0.9, delay: reduceMotion ? 0 : 0.25, ease: easeStandard }}
-      />
-      {/* projected */}
-      <motion.path
-        d="M252 92 C 300 96, 360 100, 412 103"
-        fill="none"
-        stroke={NAVY}
-        strokeWidth="1.8"
-        strokeDasharray="4 5"
-        initial={reduceMotion ? false : { pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 1.05, ease: easeStandard }}
-      />
-      <motion.path
-        d="M252 61 C 300 54, 360 44, 412 38"
-        fill="none"
-        stroke={BRASS}
-        strokeWidth="1.8"
-        strokeDasharray="4 5"
-        initial={reduceMotion ? false : { pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 1.2, ease: easeStandard }}
-      />
-      {/* crossover marker */}
-      <motion.circle
-        cx="318"
-        cy="72"
-        r="3.5"
-        fill="none"
-        stroke={BRASS}
-        strokeWidth="1.5"
-        initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.35, delay: reduceMotion ? 0 : 1.9 }}
-      />
-      <motion.text
-        x="300"
-        y="126"
-        fill="rgba(110,99,85,0.9)"
-        fontFamily="Montserrat, sans-serif"
-        fontSize="7.5"
-        fontWeight="700"
-        letterSpacing="1.2"
-        initial={reduceMotion ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: reduceMotion ? 0 : 2 }}
-      >
-        CROSSOVER · YR 2
-      </motion.text>
-      <g fill="rgba(110,99,85,0.7)" fontFamily="Montserrat, sans-serif" fontSize="8" letterSpacing="1.5">
-        <text x="8" y="146">5 YRS AGO</text>
-        <text x="238" y="146">TODAY</text>
-        <text x="382" y="146">+3 YRS</text>
-      </g>
-    </svg>
-  )
-}
-
 export function DashboardArtifact() {
-  const [ask, setAsk] = useState(0)
-  /* Which ask index has its answer revealed; switching asks derives back
-     to unanswered without a reset effect. */
-  const [answeredFor, setAnsweredFor] = useState(-1)
+  const [lensKey, setLensKey] = useState<LensKey>('cliff')
+  const [built, setBuilt] = useState(false)
   const reduceMotion = Boolean(useReducedMotion())
-  const active = ASKS[ask]
-  const { shown: typedQuestion, done: questionDone } = useTypeStream(active.question, true, 60)
-  const answered = answeredFor === ask
+  const lens = LENSES[lensKey]
 
+  /* The pipeline "runs" once on first view: sources light up, then the
+     dashboard resolves. Instant under reduced motion. */
   useEffect(() => {
-    if (!questionDone) return
-    const t = setTimeout(() => setAnsweredFor(ask), reduceMotion ? 0 : 350)
+    const t = setTimeout(() => setBuilt(true), reduceMotion ? 0 : 1400)
     return () => clearTimeout(t)
-  }, [questionDone, reduceMotion, ask])
+  }, [reduceMotion])
 
   return (
-    <ArtifactFrame url="built-with-karst / district-intelligence" chromeRight="Ask the data · Executive read">
+    <ArtifactFrame url="built-with-karst / early-warning" chromeRight="Raw exports · Processed with AI">
       <div className="grid gap-4 p-4 md:p-6">
-        {/* Ask bar */}
-        <div className="flex items-center gap-3 rounded-[3px] border border-[#1a1816]/14 bg-[#fffcf7] px-4 py-3 shadow-[inset_0_1px_3px_rgba(26,24,22,0.04)]">
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true" className="shrink-0">
-            <circle cx="5.5" cy="5.5" r="4.5" stroke="rgba(110,99,85,0.7)" strokeWidth="1.4" />
-            <path d="M9 9L12 12" stroke="rgba(110,99,85,0.7)" strokeWidth="1.4" strokeLinecap="round" />
-          </svg>
-          <span className="min-h-[1.3em] font-body text-[13.5px] text-[#1a1816] md:text-[14.5px]">
-            {typedQuestion}
-            {!questionDone && (
-              <span className="ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] animate-pulse bg-[#a8802a]" aria-hidden="true" />
-            )}
-          </span>
+        {/* Provenance: the pile of data becomes one picture */}
+        <div className="flex flex-col gap-3 rounded-[3px] border border-[#1a1816]/10 bg-[#f6f4ec] px-4 py-3 md:flex-row md:items-center md:gap-5">
+          <div className="flex flex-wrap gap-1.5">
+            {SOURCE_FILES.map(([name, count], i) => (
+              <motion.span
+                key={name}
+                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: reduceMotion ? 0 : i * 0.12, ease: easeStandard }}
+                className="flex items-baseline gap-1.5 rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-2.5 py-1.5"
+              >
+                <span className="font-mono text-[10px] text-[#1a1816]/80">{name}</span>
+                <span className="font-label text-[8px] uppercase tracking-[0.1em] text-[#6e6355]">{count}</span>
+              </motion.span>
+            ))}
+          </div>
+          <div className="flex items-center gap-2 md:ml-auto">
+            <span className="hidden text-[#a8802a] md:block" aria-hidden="true">→</span>
+            <motion.span
+              initial={reduceMotion ? false : { opacity: 0 }}
+              animate={{ opacity: built ? 1 : 0.4 }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center gap-2 font-label text-[9px] font-bold uppercase tracking-[0.16em] text-[#1a1816]"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-[#2d5a5a]" aria-hidden="true" />
+              De-identified · joined · analyzed
+            </motion.span>
+          </div>
         </div>
 
-        {/* Question chips */}
-        <div className="flex flex-wrap gap-2">
-          {ASKS.map((entry, i) => (
+        {/* Lens toggle */}
+        <div className="flex gap-1.5">
+          {(Object.keys(LENSES) as LensKey[]).map((key) => (
             <button
-              key={entry.chip}
+              key={key}
               type="button"
-              onClick={() => setAsk(i)}
+              onClick={() => setLensKey(key)}
               className={`rounded-[3px] border px-3 py-2 font-label text-[9px] font-semibold uppercase tracking-[0.12em] transition-colors ${
-                i === ask
+                key === lensKey
                   ? 'border-[#a8802a] bg-[#a8802a]/[0.08] text-[#1a1816]'
                   : 'border-[#1a1816]/12 text-[#6e6355] hover:text-[#1a1816]'
               }`}
             >
-              {entry.chip}
+              {LENSES[key].tab}
             </button>
           ))}
         </div>
 
-        {/* Answer */}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
-            key={ask}
-            initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: answered ? 1 : 0 }}
-            exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.35 }}
+            key={lensKey}
+            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
+            animate={{ opacity: built ? 1 : 0.35, y: 0 }}
+            exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -6 }}
+            transition={{ duration: reduceMotion ? 0 : 0.35, ease: easeStandard }}
             className="grid gap-3.5"
           >
-            <div className="grid gap-2.5 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.6fr)]">
+            <div className="font-label text-[15px] font-semibold text-[#1a1816] md:text-[16px]">{lens.title}</div>
+            <div className="grid gap-2.5 sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)]">
               <div className="grid content-start gap-2.5">
-                {active.stats.map(([label, value, note]) => (
+                {lens.stats.map(([label, value, note]) => (
                   <div key={label} className="rounded-[3px] border border-[#1a1816]/10 px-3.5 py-3">
                     <div className="font-label text-[8px] font-bold uppercase tracking-[0.16em] text-[#6e6355]">
                       {label}
                     </div>
-                    <div className="mt-1 font-label text-[22px] font-extrabold tracking-[-0.01em] text-[#1a1816] md:text-[24px]">
+                    <div className="mt-1 font-label text-[21px] font-extrabold tracking-[-0.01em] text-[#1a1816] md:text-[23px]">
                       {value}
                     </div>
                     <div className="mt-0.5 font-body text-[11px] font-medium text-[#a8802a]">{note}</div>
@@ -516,13 +405,11 @@ export function DashboardArtifact() {
                 ))}
               </div>
               <div className="rounded-[3px] border border-[#1a1816]/10 px-4 py-3.5">
-                <PanelLabel>{active.visualLabel}</PanelLabel>
-                {answered && active.visual === 'sites' && <SitesVisual reduceMotion={reduceMotion} />}
-                {answered && active.visual === 'bars' && <BarsVisual reduceMotion={reduceMotion} />}
-                {answered && active.visual === 'projection' && <ProjectionVisual reduceMotion={reduceMotion} />}
+                <PanelLabel>{lens.chartLabel}</PanelLabel>
+                {built && <LensBars lens={lens} reduceMotion={reduceMotion} />}
               </div>
             </div>
-            <StreamedRead label="The answer, written:" text={active.read} active={answered} />
+            <StreamedRead label="The read:" text={lens.read} active={built} />
           </motion.div>
         </AnimatePresence>
       </div>
@@ -722,182 +609,333 @@ export function PresentationArtifact() {
   )
 }
 
-/* ════════ 03 · Application — the intake reads the request and
-   drafts the reply ════════ */
+/* ════════ 03 · Applications — a working tool the staff build. Submit a
+   request, get a confirmation, and watch the front-end form flip into the
+   back-end operations dashboard the same team built. The AI helped BUILD
+   both sides and analyzes what they collect; it never sits inside the app
+   as an agent. ════════ */
 
-const TRIAGE_TAGS: Array<[string, string]> = [
-  ['Priority · Elevated', 'Two classes relocated'],
-  ['Trade · HVAC', 'Fan never engages'],
-  ['Likely part · Fan relay', 'Matched to 2 prior fixes at this site'],
+type AppStage = 'form' | 'success' | 'dashboard'
+
+interface OpsRow {
+  id: string
+  where: string
+  tag: string
+  when: string
+  status: 'new' | 'open' | 'progress' | 'closed'
+}
+
+const OPS_ROWS: OpsRow[] = [
+  { id: 'r1', where: 'Gym · court lights out', tag: 'Electrical', when: '2h ago', status: 'progress' },
+  { id: 'r2', where: 'Room 118 · sink leak', tag: 'Plumbing', when: 'Yesterday', status: 'open' },
+  { id: 'r3', where: 'Front lot · gate stuck', tag: 'Grounds', when: 'Yesterday', status: 'progress' },
+  { id: 'r4', where: 'Library · projector', tag: 'Electrical', when: '2 days', status: 'closed' },
+  { id: 'r5', where: 'Cafeteria · walk-in cooler', tag: 'HVAC', when: '3 days', status: 'progress' },
 ]
 
-const DRAFT_REPLY =
-  'Received. An HVAC tech is assigned for tomorrow morning. Based on the symptoms this is likely the fan relay, which we stock. Keep the afternoon classes relocated through then; you will get a confirmation when the unit is running.'
+const NEW_OPS_ROW: OpsRow = { id: 'r0', where: 'Room 214 · no cooling', tag: 'HVAC', when: 'Just now', status: 'new' }
+
+const OPS_KPIS: Array<[string, string, string]> = [
+  ['Open requests', '38', '+1 just now'],
+  ['Median time to close', '3.2d', 'Was 9 days'],
+  ['Aging past 30 days', '05', 'All parts-blocked'],
+]
+
+const OPS_TRADES: Array<[string, number, string]> = [
+  ['HVAC', 74, '14'],
+  ['Electrical', 46, '9'],
+  ['Grounds', 38, '7'],
+  ['Plumbing', 24, '4'],
+]
+
+const STATUS_PILL: Record<OpsRow['status'], string> = {
+  new: 'border-[#a8802a]/45 bg-[#a8802a]/[0.1] text-[#8a6a1f]',
+  open: 'border-[#1a1816]/15 text-[#6e6355]',
+  progress: 'border-[#2d5a5a]/35 text-[#2d5a5a]',
+  closed: 'border-[#1a1816]/12 text-[#1a1816]/40',
+}
+
+const STATUS_LABEL: Record<OpsRow['status'], string> = {
+  new: 'New',
+  open: 'Open',
+  progress: 'In progress',
+  closed: 'Closed',
+}
+
+function OpsTable({ rows, reduceMotion }: { rows: OpsRow[]; reduceMotion: boolean }) {
+  return (
+    <div className="overflow-hidden rounded-[3px] border border-[#1a1816]/10 bg-[#fffcf7]">
+      <div
+        className="grid grid-cols-[minmax(0,1.5fr)_84px_74px] gap-2 border-b border-[#1a1816]/[0.07] px-4 py-2 font-label text-[8px] font-bold uppercase tracking-[0.18em] text-[#6e6355]/70 sm:grid-cols-[minmax(0,1.6fr)_84px_92px_66px]"
+        aria-hidden="true"
+      >
+        <span>Request</span>
+        <span>Trade</span>
+        <span className="hidden sm:block">Status</span>
+        <span className="text-right">When</span>
+      </div>
+      {rows.map((row, i) => (
+        <motion.div
+          key={row.id}
+          initial={row.status === 'new' && !reduceMotion ? { opacity: 0, backgroundColor: 'rgba(168,128,42,0.16)' } : false}
+          animate={{ opacity: 1, backgroundColor: 'rgba(168,128,42,0)' }}
+          transition={{ duration: reduceMotion ? 0 : 0.9, delay: reduceMotion ? 0 : (row.status === 'new' ? 0.1 : 0.1 + i * 0.04), ease: easeStandard }}
+          className="grid grid-cols-[minmax(0,1.5fr)_84px_74px] items-center gap-2 border-b border-[#1a1816]/[0.05] px-4 py-2.5 last:border-b-0 sm:grid-cols-[minmax(0,1.6fr)_84px_92px_66px]"
+        >
+          <span className="truncate font-body text-[12.5px] text-[#1a1816]">{row.where}</span>
+          <span className="font-label text-[8.5px] font-semibold uppercase tracking-[0.08em] text-[#6e6355]">
+            {row.tag}
+          </span>
+          <span className="hidden sm:block">
+            <em className={`rounded-[3px] border px-2 py-1 font-label text-[7.5px] font-bold not-italic uppercase tracking-[0.1em] ${STATUS_PILL[row.status]}`}>
+              {STATUS_LABEL[row.status]}
+            </em>
+          </span>
+          <span className="text-right font-label text-[8.5px] uppercase tracking-[0.06em] text-[#6e6355]/80">
+            {row.when}
+          </span>
+        </motion.div>
+      ))}
+    </div>
+  )
+}
 
 export function ApplicationArtifact() {
-  const [submitted, setSubmitted] = useState(false)
+  const [stage, setStage] = useState<AppStage>('form')
   const reduceMotion = Boolean(useReducedMotion())
-  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const stageTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     return () => {
-      if (resetTimer.current) clearTimeout(resetTimer.current)
+      if (stageTimer.current) clearTimeout(stageTimer.current)
     }
   }, [])
 
   const submit = () => {
-    setSubmitted(true)
-    if (resetTimer.current) clearTimeout(resetTimer.current)
-    resetTimer.current = setTimeout(() => setSubmitted(false), 14000)
+    if (reduceMotion) {
+      setStage('dashboard')
+      return
+    }
+    setStage('success')
+    if (stageTimer.current) clearTimeout(stageTimer.current)
+    stageTimer.current = setTimeout(() => setStage('dashboard'), 1500)
   }
 
-  return (
-    <ArtifactFrame url="built-with-karst / facilities-requests" chromeRight="Staff-built · AI-assisted intake">
-      <div className="flex items-center justify-between gap-4 border-b border-[#1a1816]/10 bg-[#f6f4ec] px-5 py-3 md:px-7">
-        <span className="flex items-center gap-2.5 font-label text-[10.5px] font-semibold text-[#1a1816] md:text-[11.5px]">
-          <i className="h-2 w-2 rounded-full bg-[#1e2a4a]" aria-hidden="true" />
-          Site facilities request
-        </span>
-        <span className="font-label text-[9px] font-semibold uppercase tracking-[0.12em] text-[#6e6355] md:text-[10px]">
-          M. Alvarez · Sierra Vista Middle
-        </span>
-      </div>
+  const reset = () => {
+    if (stageTimer.current) clearTimeout(stageTimer.current)
+    setStage('form')
+  }
 
-      <div className="grid gap-6 p-5 md:grid-cols-[1.05fr_1fr] md:gap-9 md:p-7">
-        {/* the form — deliberately the easy part */}
-        <div className="grid content-start gap-3.5">
-          {(
-            [
-              ['Site', 'Sierra Vista Middle'],
-              ['Location', 'Room 214 · Science wing'],
-            ] as const
-          ).map(([label, value]) => (
-            <div key={label} className="grid gap-1.5">
-              <span className="font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]">
-                {label}
-              </span>
-              <span className="rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-3.5 py-2.5 font-body text-[13.5px] text-[#1a1816]">
-                {value}
+  const rows = [NEW_OPS_ROW, ...OPS_ROWS]
+
+  return (
+    <ArtifactFrame url="built-with-karst / facilities-tool" chromeRight="Staff-built · Front end to back end">
+      <AnimatePresence mode="wait" initial={false}>
+        {/* ---- FORM: the teacher-facing side ---- */}
+        {stage === 'form' && (
+          <motion.div
+            key="form"
+            initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: reduceMotion ? 0 : 0.3, ease: easeStandard }}
+            className="mx-auto max-w-xl p-5 md:p-8"
+          >
+            <div className="mb-5 flex items-center gap-2.5">
+              <i className="h-2 w-2 rounded-full bg-[#1e2a4a]" aria-hidden="true" />
+              <span className="font-label text-[10.5px] font-semibold text-[#1a1816] md:text-[11.5px]">
+                Site facilities request
               </span>
             </div>
-          ))}
-          <div className="grid gap-1.5">
-            <span className="font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]">
-              What happened?
-            </span>
-            <span className="min-h-[74px] rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-3.5 py-2.5 font-body text-[13.5px] leading-[1.55] text-[#1a1816]">
-              No cooling since Tuesday morning. Two afternoon classes relocated. Unit hums but the fan
-              never engages.
-            </span>
-            <span className="font-body text-[11px] italic text-[#6e6355]/80">
-              One plain-language field. No category picklists; the system works them out.
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={submit}
-            disabled={submitted}
-            className="mt-1 inline-block justify-self-start rounded-[3px] bg-[#1a1816] px-6 py-3 font-label text-[10px] font-bold uppercase tracking-[0.22em] text-[#f0eee6] transition-all duration-300 hover:-translate-y-px hover:bg-[#0e0e0c] disabled:translate-y-0 disabled:opacity-45"
-          >
-            {submitted ? 'Submitted' : 'Submit request'}
-          </button>
-          <span className="font-body text-[11px] italic text-[#6e6355]/80">
-            Try it. The submission is a demonstration; nothing is sent.
-          </span>
-        </div>
-
-        {/* the system reads it */}
-        <div className="grid content-start gap-4 border-t border-[#1a1816]/10 pt-6 md:border-l md:border-t-0 md:pl-8 md:pt-0">
-          <div className="font-label text-[9px] font-bold uppercase tracking-[0.24em] text-[#a8802a] md:text-[10px]">
-            {submitted ? 'The system reads it' : 'What happens on submit'}
-          </div>
-
-          {!submitted && (
-            <p className="max-w-[38ch] font-body text-[13px] leading-[1.6] text-[#1a1816]/55">
-              The request is read, classified, and routed. The likely fix is matched against past work
-              at the site, and a reply to the teacher is drafted for the trades lead to approve.
-            </p>
-          )}
-
-          <AnimatePresence>
-            {submitted && (
-              <motion.div
-                initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="grid gap-4"
-              >
-                <div className="grid gap-2">
-                  {TRIAGE_TAGS.map(([tag, evidence], i) => (
-                    <motion.div
-                      key={tag}
-                      initial={reduceMotion ? false : { opacity: 0, x: 10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.3 + i * 0.45, ease: easeStandard }}
-                      className="flex flex-wrap items-baseline gap-x-3 gap-y-1"
+            <div className="grid content-start gap-3.5">
+              {(
+                [
+                  ['Site', 'Sierra Vista Middle'],
+                  ['Location', 'Room 214 · Science wing'],
+                ] as const
+              ).map(([label, value]) => (
+                <div key={label} className="grid gap-1.5">
+                  <span className="font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]">
+                    {label}
+                  </span>
+                  <span className="rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-3.5 py-2.5 font-body text-[13.5px] text-[#1a1816]">
+                    {value}
+                  </span>
+                </div>
+              ))}
+              <div className="grid gap-1.5">
+                <span className="font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]">
+                  Category
+                </span>
+                <span className="flex flex-wrap gap-2">
+                  {['HVAC', 'Electrical', 'Plumbing', 'Grounds'].map((chip, i) => (
+                    <i
+                      key={chip}
+                      className={`rounded-[3px] border px-3 py-2 font-label text-[9.5px] font-semibold uppercase tracking-[0.14em] not-italic ${
+                        i === 0
+                          ? 'border-[#a8802a] bg-[#a8802a]/[0.08] text-[#1a1816]'
+                          : 'border-[#1a1816]/12 text-[#6e6355]'
+                      }`}
                     >
-                      <span className="rounded-[3px] border border-[#a8802a]/40 bg-[#a8802a]/[0.07] px-2.5 py-1.5 font-label text-[9px] font-bold uppercase tracking-[0.1em] text-[#1a1816]">
-                        {tag}
-                      </span>
-                      <span className="font-body text-[11px] italic text-[#6e6355]">&ldquo;{evidence}&rdquo;</span>
+                      {chip}
+                    </i>
+                  ))}
+                </span>
+              </div>
+              <div className="grid gap-1.5">
+                <span className="font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]">
+                  Details
+                </span>
+                <span className="min-h-[58px] rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-3.5 py-2.5 font-body text-[13px] leading-[1.55] text-[#1a1816]">
+                  No cooling since Tuesday. Two afternoon classes relocated.
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={submit}
+                className="mt-1 inline-block justify-self-start rounded-[3px] bg-[#1a1816] px-6 py-3 font-label text-[10px] font-bold uppercase tracking-[0.22em] text-[#f0eee6] transition-all duration-300 hover:-translate-y-px hover:bg-[#0e0e0c]"
+              >
+                Submit request
+              </button>
+              <span className="font-body text-[11px] italic text-[#6e6355]/80">
+                Built by the operations team in a Fieldwork session, with AI-assisted coding. Try it;
+                nothing is sent.
+              </span>
+            </div>
+          </motion.div>
+        )}
+
+        {/* ---- SUCCESS: the beat between ---- */}
+        {stage === 'success' && (
+          <motion.div
+            key="success"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex min-h-[420px] flex-col items-center justify-center gap-4 p-8 text-center"
+          >
+            <motion.span
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.45, ease: [0.22, 1.4, 0.4, 1] }}
+              className="flex h-14 w-14 items-center justify-center rounded-full border border-[#2d5a5a]/40 bg-[#2d5a5a]/[0.08]"
+            >
+              <motion.svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+                <motion.path
+                  d="M6 13.5L11 18.5L20 8"
+                  stroke="#2d5a5a"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.45, delay: 0.2, ease: easeStandard }}
+                />
+              </motion.svg>
+            </motion.span>
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.35 }}
+            >
+              <div className="font-headline text-2xl font-light text-[#1a1816]">Request submitted.</div>
+              <div className="mt-2 font-body text-[13px] text-[#1a1816]/60">
+                #4127 logged to District Operations. Routing now…
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {/* ---- DASHBOARD: the back-end the same team built ---- */}
+        {stage === 'dashboard' && (
+          <motion.div
+            key="dashboard"
+            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.45, ease: easeStandard }}
+            className="p-4 md:p-6"
+          >
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <span className="flex items-center gap-2.5">
+                <span className="relative flex h-2 w-2" aria-hidden="true">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2d5a5a]/60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#2d5a5a]" />
+                </span>
+                <span className="font-label text-[10px] font-bold uppercase tracking-[0.24em] text-[#1a1816]">
+                  District operations · live
+                </span>
+              </span>
+              <button
+                type="button"
+                onClick={reset}
+                className="flex items-center gap-1.5 font-label text-[9px] font-semibold uppercase tracking-[0.18em] text-[#6e6355] transition-colors hover:text-[#1a1816]"
+              >
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                  <path d="M8.5 5a3.5 3.5 0 1 1-1-2.45M8.5 1v2h-2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Log another
+              </button>
+            </div>
+
+            <div className="grid gap-3.5 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
+              <div className="grid content-start gap-3">
+                <div className="grid grid-cols-3 gap-2.5">
+                  {OPS_KPIS.map(([label, value, note], i) => (
+                    <motion.div
+                      key={label}
+                      initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35, delay: reduceMotion ? 0 : 0.1 + i * 0.06, ease: easeStandard }}
+                      className="rounded-[3px] border border-[#1a1816]/10 px-3 py-2.5"
+                    >
+                      <div className="font-label text-[7.5px] font-bold uppercase tracking-[0.14em] text-[#6e6355]">
+                        {label}
+                      </div>
+                      <div className="mt-1 font-label text-[20px] font-extrabold tracking-[-0.01em] text-[#1a1816]">
+                        {value}
+                      </div>
+                      <div className="mt-0.5 font-body text-[10px] font-medium text-[#a8802a]">{note}</div>
                     </motion.div>
                   ))}
                 </div>
+                <OpsTable rows={rows} reduceMotion={reduceMotion} />
+              </div>
 
-                <motion.div
-                  initial={reduceMotion ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4, delay: reduceMotion ? 0 : 1.7 }}
-                  className="rounded-[3px] border border-[#1a1816]/12 bg-[#f6f4ec] px-4 py-3.5"
-                >
-                  <div className="mb-2 flex items-center justify-between gap-3">
-                    <span className="font-label text-[8.5px] font-bold uppercase tracking-[0.2em] text-[#6e6355]">
-                      Draft reply to M. Alvarez
-                    </span>
-                    <span className="rounded-[3px] border border-[#2d5a5a]/35 px-2 py-0.5 font-label text-[7.5px] font-bold uppercase tracking-[0.12em] text-[#2d5a5a]">
-                      Ready for review
-                    </span>
-                  </div>
-                  <DraftReply active={submitted} reduceMotion={reduceMotion} />
-                </motion.div>
-
-                <motion.p
-                  initial={reduceMotion ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4, delay: reduceMotion ? 0 : 2 }}
-                  className="font-body text-[11px] italic text-[#6e6355]"
-                >
-                  The trades lead approves or edits before anything sends. On the district dashboard the
-                  moment it lands.
-                </motion.p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
+              <div className="grid content-start gap-3">
+                <div className="rounded-[3px] border border-[#1a1816]/10 px-4 py-3.5">
+                  <PanelLabel>Open requests by trade</PanelLabel>
+                  {OPS_TRADES.map(([label, width, count], i) => (
+                    <div key={label} className="my-2 grid grid-cols-[68px_minmax(0,1fr)_26px] items-center gap-2.5">
+                      <span className="truncate font-label text-[8.5px] font-semibold uppercase tracking-[0.04em] text-[#1a1816]/70">
+                        {label}
+                      </span>
+                      <motion.i
+                        initial={reduceMotion ? false : { width: 0 }}
+                        animate={{ width: `${width}%` }}
+                        transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.25 + i * 0.07, ease: easeStandard }}
+                        className="block h-1.5 rounded-[2px]"
+                        style={{
+                          background:
+                            i === 0
+                              ? 'linear-gradient(90deg, rgba(165,71,49,0.8), rgba(165,71,49,0.45))'
+                              : 'linear-gradient(90deg, rgba(30,42,74,0.6), rgba(30,42,74,0.35))',
+                        }}
+                      />
+                      <b className="text-right font-label text-[10px] font-semibold text-[#6e6355]">{count}</b>
+                    </div>
+                  ))}
+                </div>
+                <p className="rounded-[3px] border-l-2 border-[#a8802a] bg-[#f6f4ec] px-3.5 py-3 font-body text-[11.5px] italic leading-relaxed text-[#6e6355]">
+                  Same team, both sides. The teacher’s form and this operations view were built together
+                  in Fieldwork; every submission lands here the moment it is sent.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </ArtifactFrame>
-  )
-}
-
-function DraftReply({ active, reduceMotion }: { active: boolean; reduceMotion: boolean }) {
-  /* The component unmounts when the demo resets, so start only ever
-     needs to move forward; the delay leaves room for the triage tags. */
-  const [start, setStart] = useState(false)
-
-  useEffect(() => {
-    if (!active) return
-    const t = setTimeout(() => setStart(true), reduceMotion ? 0 : 2100)
-    return () => clearTimeout(t)
-  }, [active, reduceMotion])
-
-  const { shown, done } = useTypeStream(DRAFT_REPLY, start, 140)
-
-  return (
-    <p className="min-h-[4.6em] font-body text-[12.5px] leading-[1.6] text-[#1a1816]/78">
-      {shown}
-      {start && !done && (
-        <span className="ml-0.5 inline-block h-[1em] w-[2px] translate-y-[2px] animate-pulse bg-[#a8802a]" aria-hidden="true" />
-      )}
-    </p>
   )
 }
