@@ -11,7 +11,6 @@ import DashboardShowcase from '../components/sections/DashboardShowcase'
 import DistrictLeadershipProof from '../components/sections/DistrictLeadershipProof'
 import CapabilityGap from '../components/sections/CapabilityGap'
 import FieldworkMethod from '../components/sections/FieldworkMethod'
-import RecastSurface from '../components/art/RecastSurface'
 import OperatingKitDiagram from '../components/art/OperatingKitDiagram'
 import AmbientParticles from '../components/art/AmbientParticles'
 import CinematicHomeHero from '../components/hero/CinematicHomeHero'
@@ -273,53 +272,74 @@ export default function Landing() {
       </section>
 
 
-      {/* ══════════ THE STANDARD — marks of mastery ══════════ */}
+      {/* ══════════ CONTINUATION — the test of real capability ══════════ */}
       <section
-        className="relative py-32 md:py-44 px-6 overflow-hidden"
-        style={{ backgroundImage: `url(${pearlBg})`, backgroundSize: 'cover' }}
+        data-karst-nav-dark
+        className="relative overflow-hidden bg-[#0e0e0c] px-6 py-24 text-[#fffcf7] md:px-10 md:py-36"
       >
-        <div className="absolute inset-0 bg-surface/88" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_78%_26%,rgba(196,154,67,0.1),transparent_30%)]"
+        />
         <motion.div
-          className="relative z-10 max-w-3xl mx-auto text-center"
+          className="relative z-10 mx-auto max-w-6xl"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
           variants={staggerContainerRelaxed}
         >
-          <motion.p
-            variants={staggerChild}
-            className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-tertiary/75 mb-8"
-          >
-            The Standard
-          </motion.p>
-
-          <motion.h2
-            variants={staggerChild}
-            className="font-editorial italic text-4xl md:text-5xl lg:text-6xl text-on-surface leading-[1.18] pb-3 mb-3 tracking-tight"
-            style={{
-              backgroundImage: 'linear-gradient(135deg, #1e2a4a 0%, #4a6a8a 55%, #4a2d5a 100%)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-            }}
-          >
-            Mastery, not familiarity.
-          </motion.h2>
-
-          <motion.p
-            variants={staggerChild}
-            className="font-body text-lg md:text-xl lg:text-2xl text-on-surface-variant leading-relaxed max-w-2xl mx-auto mb-12"
-          >
-            Not passing familiarity with the tools. Genuine command of the work.
-          </motion.p>
+          <div className="grid gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:gap-24">
+            <div>
+              <motion.p
+                variants={staggerChild}
+                className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#c49a43] md:text-[11px]"
+              >
+                The Test
+              </motion.p>
+              <motion.h2
+                variants={staggerChild}
+                className="font-headline text-4xl font-light leading-[1.1] md:text-6xl"
+              >
+                The work keeps{' '}
+                <span className="font-editorial font-normal italic text-[#e6d8b9]">moving.</span>
+              </motion.h2>
+            </div>
+            <motion.p
+              variants={staggerChild}
+              className="max-w-[56ch] self-end font-body text-base leading-[1.85] text-[#fffcf7]/62 md:text-lg"
+            >
+              Real capability shows up in what happens next. The team can operate what it built,
+              improve it as conditions change, and apply the same judgment to the next priority.
+            </motion.p>
+          </div>
 
           <motion.div
             variants={staggerChild}
-            className="max-w-3xl mx-auto mb-10"
+            className="relative mt-16 grid border-y border-[#fffcf7]/10 md:mt-24 md:grid-cols-3"
           >
-            <RecastSurface className="w-full" />
+            {[
+              ['01', 'Operate', 'Use the system in the work it was built to serve.'],
+              ['02', 'Improve', 'Refine it as the district learns and conditions change.'],
+              ['03', 'Extend', 'Carry the practice into the next consequential priority.'],
+            ].map(([number, title, detail], index) => (
+              <motion.div
+                key={number}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.65, delay: index * 0.1, ease: easeStandard }}
+                className="relative border-b border-[#fffcf7]/10 py-8 last:border-b-0 md:border-b-0 md:border-r md:px-9 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
+              >
+                <span className="mb-10 block font-label text-[9px] tracking-[0.24em] text-[#c49a43]/75">
+                  {number}
+                </span>
+                <h3 className="mb-3 font-headline text-xl text-[#fffcf7]">{title}</h3>
+                <p className="max-w-[34ch] font-body text-sm leading-relaxed text-[#fffcf7]/50">
+                  {detail}
+                </p>
+              </motion.div>
+            ))}
           </motion.div>
-
         </motion.div>
       </section>
 
