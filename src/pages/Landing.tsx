@@ -103,10 +103,6 @@ export default function Landing() {
       <CapabilityGap />
 
 
-      {/* ══════════ THREE DOORS — strong imagery and the offer architecture ══════════ */}
-      <EngagementPaths paths={offerings} />
-
-
       {/* ══════════ PROOF — DISTRICT LEADERS ══════════ */}
       {SHOW_PROOF && <DistrictLeadershipProof />}
 
@@ -339,6 +335,10 @@ export default function Landing() {
           </motion.div>
         </motion.div>
       </section>
+
+
+      {/* ══════════ THREE DOORS — choose a way into the work after the story is earned ══════════ */}
+      <EngagementPaths paths={offerings} />
 
 
       {/* ══════════ DARK CTA — ambition + the leader who brought it ══════════ */}

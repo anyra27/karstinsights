@@ -4,18 +4,18 @@ import { easeStandard, staggerChild, staggerContainerRelaxed } from '../../lib/m
 const SIGNALS = [
   {
     number: '01',
-    title: 'Tools are present.',
-    detail: 'Access does not create a shared practice.',
+    title: 'Tools multiply.',
+    detail: 'Shared practice does not.',
   },
   {
     number: '02',
-    title: 'Work stays isolated.',
-    detail: 'One-off wins never become district practice.',
+    title: 'Generic systems.',
+    detail: 'District work bends to the product.',
   },
   {
     number: '03',
-    title: 'Progress depends on a few people.',
-    detail: 'When expertise leaves, the work resets.',
+    title: 'Dependence grows.',
+    detail: 'Every new need returns to a vendor.',
   },
 ]
 
@@ -39,21 +39,20 @@ export default function CapabilityGap() {
               variants={staggerChild}
               className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]"
             >
-              The Gap
+              Build or Buy
             </motion.p>
             <motion.h2
               variants={staggerChild}
               className="max-w-2xl font-headline text-3xl font-light leading-[1.14] text-on-surface md:text-5xl lg:text-[54px]"
             >
-              Access is not{' '}
-              <span className="font-editorial font-normal italic">capability.</span>
+              Buy less.{' '}
+              <span className="font-editorial font-normal italic">Build what fits.</span>
             </motion.h2>
           </div>
 
           <motion.div variants={staggerChild} className="flex items-end">
             <p className="max-w-[54ch] font-body text-base leading-[1.85] text-on-surface-variant/75 md:text-lg">
-              Without a shared practice, useful experiments stay isolated—and the district keeps
-              starting over.
+              The advantage is knowing what to buy, what to build, and what your district should own.
             </p>
           </motion.div>
         </div>
