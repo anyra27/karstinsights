@@ -23,41 +23,51 @@ const STAGE_NAMES = [
 
 const FINAL_STAGE = STAGE_NAMES.length - 1
 
+/* Scroll ranges for beats 2–6 (Globe → Constellation); beat 1 is the intro,
+   beat 7 is the final Record block. */
+const BEAT_RANGES: Array<[number, number, number, number]> = [
+  [0.165, 0.196, 0.246, 0.277],
+  [0.303, 0.334, 0.386, 0.417],
+  [0.442, 0.472, 0.525, 0.556],
+  [0.579, 0.61, 0.664, 0.694],
+  [0.719, 0.75, 0.802, 0.833],
+]
+
 const STORY_BEATS = [
   {
     stage: 'Field',
-    title: 'AI access is everywhere. Operating capability is not.',
-    body: 'Karst builds that capability with your team.',
+    title: 'An applied AI partnership for school districts.',
+    body: 'Your people, their real work, and the room to build.',
   },
   {
     stage: 'Globe',
-    title: 'Capability starts with one person.',
-    body: 'One leader turns real work into a system they can run.',
+    title: 'Everyone brings their own work.',
+    body: 'A communications lead, a data director, an operations chief. Each with real work on their plate.',
   },
   {
     stage: 'Survey',
-    title: 'Then it compounds.',
-    body: 'Individual practice begins to change the organization.',
+    title: 'Karst protects the time.',
+    body: 'Focused sessions where learning and building happen together.',
   },
   {
     stage: 'Strata',
-    title: 'Practice becomes infrastructure.',
-    body: 'Methods become shared workflows and standards.',
+    title: 'Different people build different things.',
+    body: 'Dashboards, presentations, applications. Work the district uses the next day.',
   },
   {
     stage: 'Assembly',
-    title: 'Build one live priority.',
-    body: 'Karst works beside the team closest to it.',
+    title: 'Karst builds beside them.',
+    body: 'Expert partnership in the room, on the district’s own work.',
   },
   {
     stage: 'Constellation',
-    title: 'Many roles. One cadence.',
-    body: 'Leaders build and govern together.',
+    title: 'The practice becomes shared.',
+    body: 'Methods carry across roles. The group develops one way of working.',
   },
   {
     stage: 'Record',
-    title: 'Keep the system. Keep the capability.',
-    body: 'The district keeps the work and the method.',
+    title: 'The district keeps everything.',
+    body: 'Organized, documented, and easy to continue. More capable, not more dependent.',
   },
 ] as const
 
@@ -182,7 +192,8 @@ export default function CinematicHomeHero() {
               Set the <span className="font-editorial font-normal italic text-[#d9c39b]">tempo.</span>
             </h1>
             <p className="mx-auto mt-7 max-w-[66ch] font-body text-[14px] leading-[1.72] tracking-[0.01em] text-[#f3efe6]/64 md:text-[15.5px]">
-              AI access is everywhere. Operating capability is not. Karst builds it with your team.
+              Karst is an applied AI partnership for school districts. Your people, their real
+              work, and the room to build.
             </p>
             {reduceMotion && (
               <Link
@@ -208,41 +219,19 @@ export default function CinematicHomeHero() {
 
         {!reduceMotion && (
           <>
-            <HeroBeat
-              progress={scrollYProgress}
-              range={[0.165, 0.196, 0.246, 0.277]}
-              label="02 · Globe"
-              title="Capability starts with one person."
-              body="One leader turns real work into a system they can run."
-            />
-            <HeroBeat
-              progress={scrollYProgress}
-              range={[0.303, 0.334, 0.386, 0.417]}
-              label="03 · Survey"
-              title="Then it compounds."
-              body="Individual practice begins to change the organization."
-            />
-            <HeroBeat
-              progress={scrollYProgress}
-              range={[0.442, 0.472, 0.525, 0.556]}
-              label="04 · Strata"
-              title="Practice becomes infrastructure."
-              body="Methods become shared workflows and standards."
-            />
-            <HeroBeat
-              progress={scrollYProgress}
-              range={[0.579, 0.61, 0.664, 0.694]}
-              label="05 · Assembly"
-              title="Build one live priority."
-              body="Karst works beside the team closest to it."
-            />
-            <HeroBeat
-              progress={scrollYProgress}
-              range={[0.719, 0.75, 0.802, 0.833]}
-              label="06 · Constellation"
-              title="Many roles. One cadence."
-              body="Leaders build and govern together."
-            />
+            {BEAT_RANGES.map((range, index) => {
+              const beat = STORY_BEATS[index + 1]
+              return (
+                <HeroBeat
+                  key={beat.stage}
+                  progress={scrollYProgress}
+                  range={range}
+                  label={`${String(index + 2).padStart(2, '0')} · ${beat.stage}`}
+                  title={beat.title}
+                  body={beat.body}
+                />
+              )
+            })}
           </>
         )}
 
@@ -259,10 +248,10 @@ export default function CinematicHomeHero() {
               07 · Record
             </p>
             <h2 className="max-w-[480px] font-headline text-[clamp(28px,3vw,42px)] font-medium leading-[1.14] text-[#f3efe6]">
-              Keep the system. Keep the capability.
+              The district keeps everything.
             </h2>
             <p className="mt-3 max-w-[48ch] font-body text-sm leading-[1.65] text-[#f3efe6]/58 md:text-[15.5px]">
-              The district keeps the work and the method.
+              Organized, documented, and easy to continue. More capable, not more dependent.
             </p>
             <Link
               to="/contact"
