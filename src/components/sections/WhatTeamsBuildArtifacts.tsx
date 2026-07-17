@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { easeStandard } from '../../lib/motion'
-import strataImage from '../../assets/strata.webp'
 import mirrorPoolImage from '../../assets/mirror-pool.webp'
 import slotCanyonImage from '../../assets/slot-canyon.webp'
+import karstCavernImage from '../../assets/karst-cavern.webp'
 
 /* ── The three build artifacts for the What Your Team Builds chapter.
    Each maps to work Karst actually delivers: raw district exports
@@ -224,10 +224,9 @@ export function PanelLabel({ children }: { children: React.ReactNode }) {
 }
 
 /* ════════ 01 · Dashboards — a season of raw exports, processed with AI
-   into an early-warning picture. Directionally modeled on real district
-   work (attendance × outcomes, ABC early-warning framework); all numbers
-   and site names here are invented, no live data, no district named.
-   Data ink matches the live dashboards further down the page. ════════ */
+   into an early-warning picture. Chart language: gradient ink, soft
+   colored glow, rounded caps, dot-grid fields, tabular numerals, and a
+   floating read card on hover. All numbers and site names invented. ════════ */
 
 const SOURCE_FILES: Array<[string, string]> = [
   ['attendance.xlsx', '18,600 rows'],
@@ -236,10 +235,85 @@ const SOURCE_FILES: Array<[string, string]> = [
   ['roster · demographics', '18,600 students'],
 ]
 
-/* Depth system for the paper surfaces: resting cards sit just off the
-   page; hover lifts them toward the reader with a teal-tinted shadow. */
 const PANEL =
-  'rounded-[4px] border border-[#1a1816]/10 bg-white/70 shadow-[0_1px_2px_rgba(26,24,22,0.04),0_10px_30px_-20px_rgba(26,24,22,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#2d8a8a]/40 hover:shadow-[0_2px_5px_rgba(26,24,22,0.05),0_20px_44px_-20px_rgba(15,76,76,0.35)]'
+  'relative rounded-[5px] border border-[#1a1816]/[0.08] bg-white/85 shadow-[0_1px_2px_rgba(26,24,22,0.04),0_12px_32px_-22px_rgba(26,24,22,0.3)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#2d8a8a]/35 hover:shadow-[0_2px_5px_rgba(26,24,22,0.05),0_22px_46px_-22px_rgba(15,76,76,0.38)]'
+
+/* Dot-grid field behind every chart — the drafting-table texture */
+const DOT_FIELD: React.CSSProperties = {
+  backgroundImage: 'radial-gradient(rgba(26,24,22,0.07) 1px, transparent 1px)',
+  backgroundSize: '14px 14px',
+}
+
+/* Shared SVG ink: vertical gradients + soft glow per hue */
+function ChartDefs() {
+  const stops: Array<[string, string, string]> = [
+    ['gradTealBright', '#3aa8a0', '#1a6b6b'],
+    ['gradTeal', '#2d8a8a', '#0f4c4c'],
+    ['gradAmber', '#c98a1e', '#8a5c06'],
+    ['gradRed', '#d4574a', '#9c2f24'],
+    ['gradSea', '#4a7fb5', '#1e3a5f'],
+    ['gradGreen', '#2fd4a0', '#0d9268'],
+  ]
+  return (
+    <defs>
+      {stops.map(([id, from, to]) => (
+        <linearGradient key={id} id={id} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor={from} />
+          <stop offset="1" stopColor={to} />
+        </linearGradient>
+      ))}
+      <linearGradient id="gradSeaArea" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="rgba(74,127,181,0.35)" />
+        <stop offset="1" stopColor="rgba(74,127,181,0)" />
+      </linearGradient>
+      <linearGradient id="gradSeaStroke" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stopColor="#2d8a8a" />
+        <stop offset="1" stopColor="#1e3a5f" />
+      </linearGradient>
+      <filter id="inkGlow" x="-40%" y="-40%" width="180%" height="180%">
+        <feDropShadow dx="0" dy="5" stdDeviation="7" floodColor="#0f4c4c" floodOpacity="0.28" />
+      </filter>
+      <filter id="lineGlow" x="-40%" y="-40%" width="180%" height="180%">
+        <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#2d5f8f" floodOpacity="0.35" />
+      </filter>
+    </defs>
+  )
+}
+
+/* Floating read card that surfaces over a chart on hover */
+function HoverCard({
+  show,
+  color,
+  title,
+  body,
+}: {
+  show: boolean
+  color: string
+  title: string
+  body: string
+}) {
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          initial={{ opacity: 0, y: 6, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 4, scale: 0.98 }}
+          transition={{ duration: 0.22, ease: easeStandard }}
+          className="pointer-events-none absolute right-3 top-3 z-10 w-[210px] rounded-[5px] border border-[#1a1816]/[0.08] bg-[#fffdf9]/95 px-3.5 py-3 shadow-[0_2px_4px_rgba(26,24,22,0.06),0_18px_40px_-16px_rgba(26,24,22,0.35)] backdrop-blur-sm"
+        >
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full" style={{ background: color }} aria-hidden="true" />
+            <span className="font-label text-[13px] font-extrabold tabular-nums tracking-[-0.01em] text-[#1a1816]">
+              {title}
+            </span>
+          </div>
+          <p className="mt-1.5 font-body text-[11px] leading-[1.55] text-[#1a1816]/65">{body}</p>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
 
 type LensKey = 'cliff' | 'early' | 'watchlist'
 type ChartKind = 'columns' | 'curve' | 'ranked'
@@ -294,75 +368,125 @@ const LENSES: Record<LensKey, Lens> = {
 }
 
 const TONE_TEXT: Record<StatTone, string> = {
-  good: 'text-[#10B981]',
+  good: 'text-[#0d9268]',
   watch: 'text-[#a66a06]',
 }
 
-/* Column chart — the cliff. Hovering a band brings it forward and dims
-   the rest, with the read for that band surfacing beneath. */
-const CLIFF_COLS: Array<[string, number, string, string, string]> = [
-  ['95–100%', 6, '6%', TEAL_BRIGHT, 'Near-perfect attendance: failure is rare.'],
-  ['90–94%', 14, '14%', TEAL, 'Still holding. This is the line to defend.'],
-  ['85–89%', 31, '31%', AMBER, 'The edge. Risk has already doubled.'],
-  ['Below 85%', 58, '58%', RED, 'Most of this cohort is failing something.'],
+/* A rect with only its top corners rounded, safe to height-animate */
+function TopRoundRect({
+  x,
+  width,
+  baseY,
+  height,
+  fill,
+  filter,
+  opacity,
+  delay,
+  reduceMotion,
+}: {
+  x: number
+  width: number
+  baseY: number
+  height: number
+  fill: string
+  filter?: string
+  opacity: number
+  delay: number
+  reduceMotion: boolean
+}) {
+  const r = Math.min(5, width / 2)
+  return (
+    <motion.path
+      initial={reduceMotion ? false : { d: `M ${x} ${baseY} L ${x} ${baseY} L ${x + width} ${baseY} L ${x + width} ${baseY} Z`, opacity: 0 }}
+      animate={{
+        d: `M ${x} ${baseY} L ${x} ${baseY - height + r} Q ${x} ${baseY - height} ${x + r} ${baseY - height} L ${x + width - r} ${baseY - height} Q ${x + width} ${baseY - height} ${x + width} ${baseY - height + r} L ${x + width} ${baseY} Z`,
+        opacity,
+      }}
+      transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : delay, ease: easeStandard }}
+      fill={fill}
+      filter={filter}
+    />
+  )
+}
+
+/* Column chart — the cliff */
+const CLIFF_COLS: Array<[string, number, string, string, string, string]> = [
+  ['95–100%', 6, '6%', 'url(#gradTealBright)', TEAL_BRIGHT, 'Near-perfect attendance: failure is rare.'],
+  ['90–94%', 14, '14%', 'url(#gradTeal)', TEAL, 'Still holding. This is the line to defend.'],
+  ['85–89%', 31, '31%', 'url(#gradAmber)', AMBER, 'The edge. Risk has already doubled.'],
+  ['Below 85%', 58, '58%', 'url(#gradRed)', RED, 'Most of this cohort is failing something.'],
 ]
 
 function CliffColumns({ reduceMotion }: { reduceMotion: boolean }) {
   const [hover, setHover] = useState<number | null>(null)
-  const max = 62
-  const W = 340
-  const H = 172
-  const pad = 26
-  const baseY = H - 24
-  const colW = 46
+  const max = 64
+  const W = 360
+  const H = 190
+  const pad = 30
+  const baseY = H - 26
+  const colW = 52
   const gap = (W - pad * 2 - colW * CLIFF_COLS.length) / (CLIFF_COLS.length - 1)
   return (
-    <div>
+    <div className="relative">
+      <HoverCard
+        show={hover !== null}
+        color={hover !== null ? CLIFF_COLS[hover][4] : TEAL}
+        title={hover !== null ? `${CLIFF_COLS[hover][2]} fail a course` : ''}
+        body={hover !== null ? CLIFF_COLS[hover][5] : ''}
+      />
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" aria-hidden="true" onMouseLeave={() => setHover(null)}>
-        <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.12)" strokeWidth="1" />
-        {CLIFF_COLS.map(([label, val, tag, color], i) => {
+        <ChartDefs />
+        {/* hairline grid + right-edge scale */}
+        {[0.25, 0.5, 0.75].map((f) => (
+          <line key={f} x1={pad} y1={baseY - (baseY - 18) * f} x2={W - pad} y2={baseY - (baseY - 18) * f} stroke="rgba(26,24,22,0.05)" strokeWidth="1" />
+        ))}
+        <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.14)" strokeWidth="1" />
+        {CLIFF_COLS.map(([label, val, tag, grad, solid], i) => {
           const x = pad + i * (colW + gap)
-          const h = ((baseY - 16) * val) / max
-          const dimmed = hover !== null && hover !== i
+          const h = ((baseY - 22) * val) / max
+          const dim = hover !== null && hover !== i
           return (
             <g
               key={label}
               onMouseEnter={() => setHover(i)}
-              style={{ cursor: 'default', opacity: dimmed ? 0.3 : 1, transition: 'opacity 0.25s ease' }}
+              style={{ opacity: dim ? 0.32 : 1, transition: 'opacity 0.25s ease', cursor: 'default' }}
             >
-              {/* generous invisible hit area */}
-              <rect x={x - gap / 2} y={10} width={colW + gap} height={H - 10} fill="transparent" />
-              <motion.rect
+              <rect x={x - gap / 2} y={8} width={colW + gap} height={H - 8} fill="transparent" />
+              <TopRoundRect
                 x={x}
                 width={colW}
-                rx={2}
-                initial={reduceMotion ? { y: baseY - h, height: h } : { y: baseY, height: 0 }}
-                animate={{ y: baseY - h, height: h }}
-                transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.1 + i * 0.09, ease: easeStandard }}
-                fill={color}
-                fillOpacity={hover === i ? 0.95 : 0.78}
+                baseY={baseY}
+                height={h}
+                fill={grad}
+                filter="url(#inkGlow)"
+                opacity={1}
+                delay={0.1 + i * 0.09}
+                reduceMotion={reduceMotion}
               />
+              {/* baseline tick */}
+              <line x1={x + colW / 2} y1={baseY} x2={x + colW / 2} y2={baseY + 4} stroke="rgba(26,24,22,0.25)" strokeWidth="1" />
               <motion.text
                 x={x + colW / 2}
-                y={baseY - h - 7}
+                y={baseY - h - 9}
                 textAnchor="middle"
-                fill={color}
+                fill={solid}
                 fontFamily="Montserrat, sans-serif"
-                fontSize={hover === i ? 12.5 : 11}
-                fontWeight="700"
+                fontSize={hover === i ? 13.5 : 12}
+                fontWeight="800"
                 initial={reduceMotion ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.5 + i * 0.09 }}
+                style={{ fontVariantNumeric: 'tabular-nums', transition: 'font-size 0.2s ease' }}
               >
                 {tag}
               </motion.text>
               <text
                 x={x + colW / 2}
-                y={baseY + 15}
+                y={baseY + 17}
                 textAnchor="middle"
-                fill="rgba(110,99,85,0.85)"
+                fill="rgba(110,99,85,0.9)"
                 fontFamily="Montserrat, sans-serif"
-                fontSize="8"
+                fontSize="8.5"
                 fontWeight="600"
                 letterSpacing="0.5"
               >
@@ -372,14 +496,11 @@ function CliffColumns({ reduceMotion }: { reduceMotion: boolean }) {
           )
         })}
       </svg>
-      <div className="mt-1 min-h-[1.4em] font-body text-[11.5px] italic text-[#6e6355]">
-        {hover !== null ? CLIFF_COLS[hover][4] : 'Hover a band to read it.'}
-      </div>
     </div>
   )
 }
 
-/* Area + line curve — hovering a point surfaces its value */
+/* Area + line curve — gradient stroke, glow, hover values */
 const EARLY_PTS: Array<[string, number, string]> = [
   ['0', 9, '9%'],
   ['1', 17, '17%'],
@@ -390,11 +511,11 @@ const EARLY_PTS: Array<[string, number, string]> = [
 
 function EarlyCurve({ reduceMotion }: { reduceMotion: boolean }) {
   const [hover, setHover] = useState<number | null>(null)
-  const W = 340
-  const H = 172
-  const pad = 26
-  const baseY = H - 24
-  const topY = 18
+  const W = 360
+  const H = 190
+  const pad = 30
+  const baseY = H - 26
+  const topY = 20
   const max = 80
   const stepX = (W - pad * 2) / (EARLY_PTS.length - 1)
   const pts = EARLY_PTS.map(([, v], i) => {
@@ -405,16 +526,26 @@ function EarlyCurve({ reduceMotion }: { reduceMotion: boolean }) {
   const line = pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'} ${x} ${y}`).join(' ')
   const area = `${line} L ${pts[pts.length - 1][0]} ${baseY} L ${pts[0][0]} ${baseY} Z`
   return (
-    <div>
+    <div className="relative">
+      <HoverCard
+        show={hover !== null}
+        color={hover === 2 ? AMBER : SEA}
+        title={hover !== null ? `${EARLY_PTS[hover][2]} chronic by June` : ''}
+        body={
+          hover !== null
+            ? `${EARLY_PTS[hover][0]} absence${EARLY_PTS[hover][0] === '1' ? '' : 's'} in the first month. ${hover >= 2 ? 'Past the turn: outreach now.' : 'Inside the safe range.'}`
+            : ''
+        }
+      />
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" aria-hidden="true" onMouseLeave={() => setHover(null)}>
-        <g stroke="rgba(26,24,22,0.07)" strokeWidth="1">
-          <line x1={pad} y1={topY + 28} x2={W - pad} y2={topY + 28} />
-          <line x1={pad} y1={(topY + baseY) / 2} x2={W - pad} y2={(topY + baseY) / 2} />
-        </g>
-        <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.12)" strokeWidth="1" />
+        <ChartDefs />
+        {[0.33, 0.66].map((f) => (
+          <line key={f} x1={pad} y1={baseY - (baseY - topY) * f} x2={W - pad} y2={baseY - (baseY - topY) * f} stroke="rgba(26,24,22,0.05)" strokeWidth="1" />
+        ))}
+        <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.14)" strokeWidth="1" />
         <motion.path
           d={area}
-          fill="rgba(45,95,143,0.1)"
+          fill="url(#gradSeaArea)"
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: reduceMotion ? 0 : 0.5 }}
@@ -422,41 +553,57 @@ function EarlyCurve({ reduceMotion }: { reduceMotion: boolean }) {
         <motion.path
           d={line}
           fill="none"
-          stroke={SEA}
-          strokeWidth="2.2"
+          stroke="url(#gradSeaStroke)"
+          strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
+          filter="url(#lineGlow)"
           initial={reduceMotion ? false : { pathLength: 0 }}
           animate={{ pathLength: 1 }}
-          transition={{ duration: reduceMotion ? 0 : 1, delay: reduceMotion ? 0 : 0.15, ease: easeStandard }}
+          transition={{ duration: reduceMotion ? 0 : 1.1, delay: reduceMotion ? 0 : 0.15, ease: easeStandard }}
         />
         {pts.map(([x, y], i) => {
           const active = hover === i
           const inflection = i === 2
           return (
             <g key={i} onMouseEnter={() => setHover(i)}>
-              <rect x={x - stepX / 2} y={10} width={stepX} height={H - 10} fill="transparent" />
+              <rect x={x - stepX / 2} y={8} width={stepX} height={H - 8} fill="transparent" />
+              {inflection && (
+                <motion.circle
+                  cx={x}
+                  cy={y}
+                  r={10}
+                  fill="none"
+                  stroke={AMBER}
+                  strokeWidth="1"
+                  strokeOpacity="0.45"
+                  initial={reduceMotion ? false : { scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.4, delay: reduceMotion ? 0 : 1.35 }}
+                />
+              )}
               <motion.circle
                 cx={x}
                 cy={y}
-                r={active ? 5 : inflection ? 4 : 2.6}
-                fill={inflection ? AMBER : active ? SEA : '#fffcf7'}
+                r={active ? 6 : inflection ? 4.5 : 3.2}
+                fill={inflection ? AMBER : '#fffcf7'}
                 stroke={inflection ? AMBER : SEA}
-                strokeWidth="1.6"
+                strokeWidth="2"
                 initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.7 + i * 0.09 }}
+                transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.75 + i * 0.09 }}
                 style={{ transition: 'r 0.2s ease' }}
               />
               {(active || (inflection && hover === null)) && (
                 <text
                   x={x}
-                  y={y - 12}
+                  y={y - 14}
                   textAnchor="middle"
                   fill={inflection ? AMBER : SEA}
                   fontFamily="Montserrat, sans-serif"
-                  fontSize="10.5"
-                  fontWeight="700"
+                  fontSize="11.5"
+                  fontWeight="800"
+                  style={{ fontVariantNumeric: 'tabular-nums' }}
                 >
                   {EARLY_PTS[i][2]}
                 </text>
@@ -464,24 +611,19 @@ function EarlyCurve({ reduceMotion }: { reduceMotion: boolean }) {
             </g>
           )
         })}
-        <g fill="rgba(110,99,85,0.85)" fontFamily="Montserrat, sans-serif" fontSize="8" fontWeight="600" letterSpacing="0.5">
+        <g fill="rgba(110,99,85,0.9)" fontFamily="Montserrat, sans-serif" fontSize="8.5" fontWeight="600" letterSpacing="0.5">
           {EARLY_PTS.map(([label], i) => (
-            <text key={label} x={pad + i * stepX} y={baseY + 15} textAnchor="middle">
+            <text key={label} x={pad + i * stepX} y={baseY + 17} textAnchor="middle">
               {label}
             </text>
           ))}
         </g>
       </svg>
-      <div className="mt-1 min-h-[1.4em] font-body text-[11.5px] italic text-[#6e6355]">
-        {hover !== null
-          ? `${EARLY_PTS[hover][0]} first-month absences → ${EARLY_PTS[hover][2]} end the year chronically absent.`
-          : 'Hover the curve. The turn comes at two absences.'}
-      </div>
     </div>
   )
 }
 
-/* Ranked horizontal bars — the watchlist by site, rows brighten on hover */
+/* Ranked bars — gradient ink, end dot, hover why */
 const RANKED_SITES: Array<[string, number, string, boolean, string]> = [
   ['Harbor View High', 88, '96', true, 'Fri afternoons drive it'],
   ['Grandview Middle', 61, '67', true, 'One grade-7 cohort'],
@@ -491,99 +633,178 @@ const RANKED_SITES: Array<[string, number, string, boolean, string]> = [
 ]
 
 function RankedBars({ reduceMotion }: { reduceMotion: boolean }) {
+  const [hover, setHover] = useState<number | null>(null)
   return (
-    <div className="grid gap-1">
+    <div className="grid gap-0.5" onMouseLeave={() => setHover(null)}>
       {RANKED_SITES.map(([label, width, value, hot, why], i) => (
         <div
           key={label}
-          className="group/row grid grid-cols-[110px_minmax(0,1fr)_34px] items-center gap-3 rounded-[3px] px-2 py-1.5 transition-colors duration-200 hover:bg-[#0f4c4c]/[0.045]"
+          onMouseEnter={() => setHover(i)}
+          className={`grid grid-cols-[112px_minmax(0,1fr)_38px] items-center gap-3 rounded-[4px] px-2 py-2 transition-colors duration-200 ${
+            hover === i ? 'bg-[#0f4c4c]/[0.05]' : ''
+          }`}
         >
-          <span className="truncate font-label text-[9px] font-semibold uppercase tracking-[0.04em] text-[#1a1816]/70 transition-colors group-hover/row:text-[#1a1816]">
+          <span className={`truncate font-label text-[9px] font-semibold uppercase tracking-[0.04em] transition-colors ${hover === i ? 'text-[#1a1816]' : 'text-[#1a1816]/65'}`}>
             {label}
           </span>
-          <span className="relative">
+          <span className="relative flex h-[10px] items-center">
             <motion.i
               initial={reduceMotion ? false : { width: 0 }}
               animate={{ width: `${width}%` }}
-              transition={{ duration: reduceMotion ? 0 : 0.75, delay: reduceMotion ? 0 : 0.15 + i * 0.08, ease: easeStandard }}
-              className="block h-2 rounded-[2px] transition-[filter] duration-200 group-hover/row:brightness-110"
+              transition={{ duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.15 + i * 0.08, ease: easeStandard }}
+              className="block h-[7px] rounded-full"
               style={{
                 background: hot
-                  ? 'linear-gradient(90deg, rgba(166,106,6,0.85), rgba(166,106,6,0.5))'
-                  : 'linear-gradient(90deg, rgba(15,76,76,0.8), rgba(45,138,138,0.5))',
+                  ? 'linear-gradient(90deg, #8a5c06, #c98a1e)'
+                  : 'linear-gradient(90deg, #0f4c4c, #3aa8a0)',
+                boxShadow: hot
+                  ? '0 3px 8px -2px rgba(166,106,6,0.45)'
+                  : '0 3px 8px -2px rgba(15,76,76,0.4)',
               }}
             />
-            <span className="pointer-events-none absolute left-0 top-full mt-0.5 hidden font-body text-[10.5px] italic text-[#6e6355] group-hover/row:block">
-              {why}
-            </span>
+            <motion.span
+              initial={reduceMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: reduceMotion ? 0 : 0.7 + i * 0.08 }}
+              className="absolute h-[13px] w-[13px] rounded-full border-2 border-[#fffcf7]"
+              style={{ left: `calc(${width}% - 7px)`, background: hot ? '#c98a1e' : '#2d8a8a', boxShadow: '0 2px 6px rgba(26,24,22,0.25)' }}
+              aria-hidden="true"
+            />
+            {hover === i && (
+              <span className="absolute left-0 top-full mt-1 font-body text-[10.5px] italic text-[#6e6355]">{why}</span>
+            )}
           </span>
-          <b className="text-right font-label text-[11px] font-semibold text-[#1a1816]">{value}</b>
+          <b className="text-right font-label text-[12px] font-extrabold tabular-nums text-[#1a1816]">{value}</b>
         </div>
       ))}
     </div>
   )
 }
 
-/* Donut — hovering a segment brings it forward with its legend row */
-const DONUT_SEGMENTS: Array<[string, number, string]> = [
-  ['Attendance alone', 62, TEAL],
-  ['+ Grades', 26, TEAL_BRIGHT],
-  ['All three signals', 12, SEA],
+/* Radial signal meter — rounded arcs with a center numeral */
+const DONUT_SEGMENTS: Array<[string, number, string, string]> = [
+  ['Attendance alone', 62, '#2d8a8a', 'url(#gradTeal)'],
+  ['+ Grades', 26, '#3aa8a0', 'url(#gradTealBright)'],
+  ['All three signals', 12, '#4a7fb5', 'url(#gradSea)'],
 ]
 
 function SignalDonut({ reduceMotion }: { reduceMotion: boolean }) {
   const [hover, setHover] = useState<number | null>(null)
-  const r = 34
+  const r = 36
   const c = 2 * Math.PI * r
-  const segments = DONUT_SEGMENTS.reduce<Array<{ label: string; pct: number; color: string; len: number; offset: number }>>(
-    (acc, [label, pct, color]) => {
-      const len = (c * pct) / 100
-      const offset = acc.length ? acc[acc.length - 1].offset + acc[acc.length - 1].len : 0
-      acc.push({ label, pct, color, len, offset })
+  const gapLen = 5
+  const segments = DONUT_SEGMENTS.reduce<Array<{ label: string; pct: number; solid: string; grad: string; len: number; offset: number }>>(
+    (acc, [label, pct, solid, grad]) => {
+      const len = (c * pct) / 100 - gapLen
+      const offset = acc.length ? acc[acc.length - 1].offset + acc[acc.length - 1].len + gapLen : 0
+      acc.push({ label, pct, solid, grad, len, offset })
       return acc
     },
     [],
   )
+  const centerPct = hover !== null ? `${DONUT_SEGMENTS[hover][1]}%` : '62%'
+  const centerLabel = hover !== null ? DONUT_SEGMENTS[hover][0] : 'Attendance alone'
   return (
-    <div className="flex items-center gap-4" onMouseLeave={() => setHover(null)}>
-      <svg viewBox="0 0 90 90" width="96" height="96" aria-hidden="true" className="shrink-0 -rotate-90">
-        <circle cx="45" cy="45" r={r} fill="none" stroke="rgba(26,24,22,0.08)" strokeWidth="11" />
-        {segments.map(({ label, color, len, offset }, i) => (
-          <motion.circle
-            key={label}
-            cx="45"
-            cy="45"
-            r={r}
-            fill="none"
-            stroke={color}
-            strokeWidth={hover === i ? 14 : 11}
-            strokeDasharray={`${len} ${c - len}`}
-            strokeDashoffset={-offset}
-            onMouseEnter={() => setHover(i)}
-            initial={reduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: hover === null || hover === i ? 1 : 0.35 }}
-            transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.2 + i * 0.12 }}
-            style={{ transition: 'stroke-width 0.2s ease' }}
-          />
-        ))}
-      </svg>
+    <div className="flex items-center gap-5" onMouseLeave={() => setHover(null)}>
+      <div className="relative shrink-0">
+        <svg viewBox="0 0 96 96" width="104" height="104" aria-hidden="true" className="-rotate-90">
+          <ChartDefs />
+          <circle cx="48" cy="48" r={r} fill="none" stroke="rgba(26,24,22,0.06)" strokeWidth="9" />
+          {segments.map(({ label, grad, len, offset }, i) => (
+            <motion.circle
+              key={label}
+              cx="48"
+              cy="48"
+              r={r}
+              fill="none"
+              stroke={grad}
+              strokeWidth={hover === i ? 12 : 9}
+              strokeLinecap="round"
+              strokeDasharray={`${len} ${c - len}`}
+              strokeDashoffset={-offset}
+              onMouseEnter={() => setHover(i)}
+              initial={reduceMotion ? false : { opacity: 0 }}
+              animate={{ opacity: hover === null || hover === i ? 1 : 0.3 }}
+              transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.2 + i * 0.12 }}
+              style={{ transition: 'stroke-width 0.2s ease' }}
+            />
+          ))}
+        </svg>
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+          <span className="font-label text-[19px] font-extrabold tabular-nums leading-none text-[#1a1816]">{centerPct}</span>
+        </div>
+      </div>
       <div className="grid gap-1.5">
-        {DONUT_SEGMENTS.map(([label, pct, color], i) => (
+        <span className="font-body text-[10.5px] italic text-[#6e6355]">{centerLabel}</span>
+        {DONUT_SEGMENTS.map(([label, pct, solid], i) => (
           <button
             type="button"
             key={label}
             onMouseEnter={() => setHover(i)}
-            className={`flex items-center gap-2 rounded-[3px] px-1.5 py-0.5 text-left transition-colors duration-200 ${
+            className={`flex items-center gap-2 rounded-[4px] px-1.5 py-0.5 text-left transition-colors duration-200 ${
               hover === i ? 'bg-[#0f4c4c]/[0.05]' : ''
             }`}
           >
-            <span className="h-2 w-2 rounded-[1px]" style={{ background: color }} aria-hidden="true" />
+            <span className="h-2 w-2 rounded-full" style={{ background: solid }} aria-hidden="true" />
             <span className="font-label text-[9px] font-semibold uppercase tracking-[0.06em] text-[#1a1816]/70">
               {label}
             </span>
-            <b className="font-label text-[10px] font-bold text-[#1a1816]">{pct}%</b>
+            <b className="font-label text-[10.5px] font-bold tabular-nums text-[#1a1816]">{pct}%</b>
           </button>
         ))}
+      </div>
+    </div>
+  )
+}
+
+/* Mini sparkline card — fills the left rail with a second read */
+function TrendSparkCard({ reduceMotion }: { reduceMotion: boolean }) {
+  const d = 'M4 30 C 20 28, 34 31, 48 26 S 78 15, 96 12 S 118 8, 128 7'
+  return (
+    <div className={`${PANEL} px-3.5 py-3`}>
+      <div className="flex items-center justify-between gap-2">
+        <div className="font-label text-[8px] font-bold uppercase tracking-[0.16em] text-[#6e6355]">
+          Reconnected · by month
+        </div>
+        <span className="rounded-full bg-[#10B981]/[0.12] px-2 py-0.5 font-label text-[8.5px] font-bold tabular-nums text-[#0d9268]">
+          ↑ 243
+        </span>
+      </div>
+      <svg viewBox="0 0 132 38" width="100%" height="34" aria-hidden="true" className="mt-1.5">
+        <ChartDefs />
+        <motion.path
+          d={`${d} L 128 36 L 4 36 Z`}
+          fill="url(#gradSeaArea)"
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, delay: reduceMotion ? 0 : 0.6 }}
+        />
+        <motion.path
+          d={d}
+          fill="none"
+          stroke="url(#gradGreen)"
+          strokeWidth="2.4"
+          strokeLinecap="round"
+          initial={reduceMotion ? false : { pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: reduceMotion ? 0 : 1, delay: reduceMotion ? 0 : 0.3, ease: easeStandard }}
+        />
+        <motion.circle
+          cx="128"
+          cy="7"
+          r="3.4"
+          fill="#10B981"
+          stroke="#fffcf7"
+          strokeWidth="1.6"
+          initial={reduceMotion ? false : { scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: reduceMotion ? 0 : 1.25 }}
+        />
+      </svg>
+      <div className="mt-1 flex justify-between font-label text-[7.5px] font-semibold uppercase tracking-[0.1em] text-[#6e6355]/60">
+        <span>Sep</span>
+        <span>Nov</span>
+        <span>Jan</span>
       </div>
     </div>
   )
@@ -623,7 +844,7 @@ export function DashboardArtifact() {
         style={{ background: 'linear-gradient(178deg, #fffcf7 0%, #fbf7ef 60%, #f8f3e9 100%)' }}
       >
         {/* Provenance: the pile of data becomes one picture */}
-        <div className="flex flex-col gap-3 rounded-[4px] border border-[#1a1816]/10 bg-[#f6f4ec] px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] md:flex-row md:items-center md:gap-5">
+        <div className="flex flex-col gap-3 rounded-[5px] border border-[#1a1816]/[0.08] bg-[#f6f4ec] px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] md:flex-row md:items-center md:gap-5">
           <div className="flex flex-wrap gap-1.5">
             {SOURCE_FILES.map(([name, count], i) => (
               <motion.span
@@ -631,7 +852,7 @@ export function DashboardArtifact() {
                 initial={reduceMotion ? false : { opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: reduceMotion ? 0 : i * 0.12, ease: easeStandard }}
-                className="flex cursor-default items-baseline gap-1.5 rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-2.5 py-1.5 shadow-[0_1px_2px_rgba(26,24,22,0.05)] transition-all duration-200 hover:-translate-y-px hover:border-[#2d8a8a]/40 hover:shadow-[0_3px_8px_rgba(15,76,76,0.12)]"
+                className="flex cursor-default items-baseline gap-1.5 rounded-[4px] border border-[#1a1816]/10 bg-[#fffcf7] px-2.5 py-1.5 shadow-[0_1px_2px_rgba(26,24,22,0.05)] transition-all duration-200 hover:-translate-y-px hover:border-[#2d8a8a]/40 hover:shadow-[0_3px_8px_rgba(15,76,76,0.12)]"
               >
                 <span className="font-mono text-[10px] text-[#1a1816]/80">{name}</span>
                 <span className="font-label text-[8px] uppercase tracking-[0.1em] text-[#6e6355]">{count}</span>
@@ -659,10 +880,10 @@ export function DashboardArtifact() {
               key={key}
               type="button"
               onClick={() => setLensKey(key)}
-              className={`rounded-[3px] border px-3 py-2 font-label text-[9px] font-semibold uppercase tracking-[0.12em] transition-all duration-200 ${
+              className={`rounded-[4px] px-3.5 py-2 font-label text-[9px] font-semibold uppercase tracking-[0.12em] transition-all duration-200 ${
                 key === lensKey
-                  ? 'border-[#0f4c4c] bg-[#0f4c4c]/[0.07] text-[#1a1816] shadow-[0_2px_6px_rgba(15,76,76,0.12)]'
-                  : 'border-[#1a1816]/12 text-[#6e6355] hover:-translate-y-px hover:border-[#1a1816]/25 hover:text-[#1a1816]'
+                  ? 'bg-gradient-to-b from-[#136060] to-[#0d3d3d] text-[#f0faf8] shadow-[0_5px_14px_-5px_rgba(15,76,76,0.55)]'
+                  : 'border border-[#1a1816]/12 bg-[#fffcf7] text-[#6e6355] hover:-translate-y-px hover:border-[#2d8a8a]/35 hover:text-[#1a1816]'
               }`}
             >
               {LENSES[key].tab}
@@ -684,19 +905,33 @@ export function DashboardArtifact() {
               <div className="grid content-start gap-3">
                 {lens.stats.map(([label, value, note, tone]) => (
                   <div key={label} className={`${PANEL} px-3.5 py-3`}>
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-x-0 top-0 h-[2px] rounded-t-[5px]"
+                      style={{
+                        background:
+                          tone === 'good'
+                            ? 'linear-gradient(90deg, #10B981, rgba(16,185,129,0))'
+                            : 'linear-gradient(90deg, #c98a1e, rgba(201,138,30,0))',
+                      }}
+                    />
                     <div className="font-label text-[8px] font-bold uppercase tracking-[0.16em] text-[#6e6355]">
                       {label}
                     </div>
-                    <div className="mt-1 font-label text-[21px] font-extrabold tracking-[-0.01em] text-[#1a1816] md:text-[23px]">
+                    <div className="mt-1 font-label text-[22px] font-extrabold tabular-nums tracking-[-0.01em] text-[#1a1816] md:text-[24px]">
                       {value}
                     </div>
                     <div className={`mt-0.5 font-body text-[11px] font-medium ${TONE_TEXT[tone]}`}>{note}</div>
                   </div>
                 ))}
+                <TrendSparkCard reduceMotion={reduceMotion} />
               </div>
               <div className={`${PANEL} px-4 py-3.5`}>
-                <PanelLabel>{lens.chartLabel}</PanelLabel>
-                {built && <LensChart lens={lens} reduceMotion={reduceMotion} />}
+                <div className="pointer-events-none absolute inset-2 rounded-[4px]" style={DOT_FIELD} aria-hidden="true" />
+                <div className="relative">
+                  <PanelLabel>{lens.chartLabel}</PanelLabel>
+                  {built && <LensChart lens={lens} reduceMotion={reduceMotion} />}
+                </div>
               </div>
             </div>
             <StreamedRead label="The read:" text={lens.read} active={built} />
@@ -943,6 +1178,117 @@ const DECKS: Record<Audience, DeckContent> = {
   },
 }
 
+/* 06 · The cost picture — grouped gradient columns, three paths over
+   three years */
+const COST_YEARS = ['Year 1', 'Year 2', 'Year 3']
+const COST_SERIES: Array<[string, string, string, number[]]> = [
+  ['Consolidate', 'url(#gradTeal)', '#0f4c4c', [310, 40, 40]],
+  ['Phase', 'url(#gradSea)', '#2d5f8f', [180, 180, 60]],
+  ['Hold', 'url(#gradAmber)', '#a66a06', [140, 280, 420]],
+]
+
+function CostSlide({ reduceMotion }: { reduceMotion: boolean }) {
+  const W = 560
+  const H = 210
+  const pad = 40
+  const baseY = H - 30
+  const max = 460
+  const groupW = (W - pad * 2) / COST_YEARS.length
+  const barW = 34
+  return (
+    <div className="flex min-h-[340px] flex-col justify-center px-6 py-9 md:min-h-[420px] md:px-12">
+      <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
+        The cost picture · three years out
+      </div>
+      <div className="mt-3 max-w-[26ch] font-headline text-[22px] font-light leading-[1.15] text-[#1a1816] md:text-[28px]">
+        Holding costs more than <span className="font-editorial italic text-[#6e6355]">moving.</span>
+      </div>
+      <div className="mt-5">
+        <svg viewBox={`0 0 ${W} ${H}`} width="100%" aria-hidden="true">
+          <ChartDefs />
+          {[0.33, 0.66].map((f) => (
+            <line
+              key={f}
+              x1={pad}
+              y1={baseY - (baseY - 20) * f}
+              x2={W - pad}
+              y2={baseY - (baseY - 20) * f}
+              stroke="rgba(26,24,22,0.05)"
+              strokeWidth="1"
+            />
+          ))}
+          <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.14)" strokeWidth="1" />
+          {COST_YEARS.map((year, yi) => {
+            const groupX = pad + yi * groupW + (groupW - barW * 3 - 16) / 2
+            return (
+              <g key={year}>
+                {COST_SERIES.map(([name, grad, solid, values], si) => {
+                  const val = values[yi]
+                  const h = ((baseY - 26) * val) / max
+                  const x = groupX + si * (barW + 8)
+                  return (
+                    <g key={name}>
+                      <TopRoundRect
+                        x={x}
+                        width={barW}
+                        baseY={baseY}
+                        height={h}
+                        fill={grad}
+                        filter="url(#inkGlow)"
+                        opacity={1}
+                        delay={0.15 + yi * 0.18 + si * 0.07}
+                        reduceMotion={reduceMotion}
+                      />
+                      <motion.text
+                        x={x + barW / 2}
+                        y={baseY - h - 7}
+                        textAnchor="middle"
+                        fill={solid}
+                        fontFamily="Montserrat, sans-serif"
+                        fontSize="9.5"
+                        fontWeight="800"
+                        initial={reduceMotion ? false : { opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.6 + yi * 0.18 + si * 0.07 }}
+                        style={{ fontVariantNumeric: 'tabular-nums' }}
+                      >
+                        {val}
+                      </motion.text>
+                    </g>
+                  )
+                })}
+                <text
+                  x={pad + yi * groupW + groupW / 2}
+                  y={baseY + 19}
+                  textAnchor="middle"
+                  fill="rgba(110,99,85,0.9)"
+                  fontFamily="Montserrat, sans-serif"
+                  fontSize="9"
+                  fontWeight="600"
+                  letterSpacing="0.8"
+                >
+                  {year}
+                </text>
+              </g>
+            )
+          })}
+        </svg>
+      </div>
+      <div className="mt-3 flex flex-wrap items-center gap-5">
+        {COST_SERIES.map(([name, , solid]) => (
+          <span key={name} className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full" style={{ background: solid }} aria-hidden="true" />
+            <span className="font-label text-[9px] font-semibold uppercase tracking-[0.1em] text-[#1a1816]/70">
+              {name}
+            </span>
+          </span>
+        ))}
+        <span className="font-editorial text-[11.5px] italic text-[#6e6355]">$ thousands · illustrative models</span>
+      </div>
+    </div>
+  )
+}
+
 /* Shared option triptych — the three paths under study */
 const OPTIONS: Array<[GlyphName, string, string, string]> = [
   ['layers', 'Consolidate', 'One feeder pattern next fall; transportation redesigned once.', '$310K one-time'],
@@ -950,7 +1296,7 @@ const OPTIONS: Array<[GlyphName, string, string, string]> = [
   ['coins', 'Hold', 'Keep both patterns; staffing follows the enrollment slide.', '$420K per year by Yr 3'],
 ]
 
-const SLIDE_COUNT = 8
+const SLIDE_COUNT = 9
 
 function DeckSlide({
   deck,
@@ -986,7 +1332,7 @@ function DeckSlide({
         </div>
         <div className="relative hidden overflow-hidden md:block">
           <motion.img
-            src={strataImage}
+            src={karstCavernImage}
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? false : { scale: 1.06, opacity: 0 }}
@@ -1180,8 +1526,12 @@ function DeckSlide({
       </div>
     )
   }
-  /* 06 · Pull-quote with image plate */
+  /* 06 · The cost picture */
   if (slide === 5) {
+    return <CostSlide reduceMotion={reduceMotion} />
+  }
+  /* 07 · Pull-quote with image plate */
+  if (slide === 6) {
     return (
       <div className="grid min-h-[340px] md:min-h-[420px] md:grid-cols-[0.85fr_1.15fr]">
         <div className="relative hidden overflow-hidden md:block">
@@ -1219,8 +1569,8 @@ function DeckSlide({
       </div>
     )
   }
-  /* 07 · What happens next */
-  if (slide === 6) {
+  /* 08 · What happens next */
+  if (slide === 7) {
     return (
       <div className="flex min-h-[340px] flex-col justify-center px-6 py-9 md:min-h-[420px] md:px-12">
         <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
@@ -1394,7 +1744,7 @@ export function PresentationArtifact() {
             <span>
               <b className="font-semibold text-[#1a1816]">KARST</b> · Feeder study
             </span>
-            <span className="hidden md:block">Eight-slide excerpt · Recomposed per audience</span>
+            <span className="hidden md:block">Nine-slide excerpt · Recomposed per audience</span>
             <span className="flex items-center gap-3">
               <span className="flex gap-1" aria-hidden="true">
                 {Array.from({ length: SLIDE_COUNT }, (_, i) => (
@@ -1412,7 +1762,7 @@ export function PresentationArtifact() {
                   />
                 ))}
               </span>
-              <span className="tabular-nums">{`0${slide + 1}`} / 08</span>
+              <span className="tabular-nums">{`0${slide + 1}`} / 09</span>
               <span className="flex gap-1">
                 <button
                   type="button"
@@ -1442,3 +1792,4 @@ export function PresentationArtifact() {
     </div>
   )
 }
+

@@ -18,7 +18,7 @@ const TABS = [
   {
     id: 'presentations',
     label: '02 · Presentations',
-    line: 'An eight-slide deck you can page through, recomposed for the board, staff, and families.',
+    line: 'A nine-slide deck you can page through, recomposed for the board, staff, and families.',
   },
   {
     id: 'applications',

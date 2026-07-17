@@ -13,7 +13,7 @@ import { ArtifactFrame, GREEN, PanelLabel, TEAL_BRIGHT } from './WhatTeamsBuildA
 
 const FIELD_LABEL = 'font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]'
 const INPUT_BOX =
-  'rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-3.5 py-2.5 font-body text-[13.5px] text-[#1a1816] focus:border-[#2d8a8a] focus:outline-none'
+  'rounded-[4px] border border-[#1a1816]/10 bg-[#fbf8f1] px-3.5 py-2.5 font-body text-[13.5px] text-[#1a1816] shadow-[inset_0_1px_3px_rgba(26,24,22,0.05)] transition-all duration-200 focus:border-[#2d8a8a] focus:bg-white focus:shadow-[0_0_0_3px_rgba(45,138,138,0.14)] focus:outline-none'
 
 function Chip({
   label,
@@ -28,10 +28,10 @@ function Chip({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-[3px] border px-3 py-2 font-label text-[9.5px] font-semibold uppercase tracking-[0.14em] transition-colors ${
+      className={`rounded-[4px] px-3 py-2 font-label text-[9.5px] font-semibold uppercase tracking-[0.14em] transition-all duration-200 ${
         active
-          ? 'border-[#0f4c4c] bg-[#0f4c4c]/[0.07] text-[#1a1816]'
-          : 'border-[#1a1816]/12 text-[#6e6355] hover:text-[#1a1816]'
+          ? 'bg-gradient-to-b from-[#136060] to-[#0d3d3d] text-[#f0faf8] shadow-[0_5px_14px_-5px_rgba(15,76,76,0.55)]'
+          : 'border border-[#1a1816]/12 bg-[#fffcf7] text-[#6e6355] shadow-[0_1px_2px_rgba(26,24,22,0.04)] hover:-translate-y-px hover:border-[#2d8a8a]/35 hover:text-[#1a1816]'
       }`}
     >
       {label}
@@ -184,10 +184,10 @@ const BASE_TRADES: Array<[string, number]> = [
 ]
 
 const STATUS_PILL: Record<OpsRow['status'], string> = {
-  new: 'border-[#2d8a8a]/50 bg-[#2d8a8a]/[0.1] text-[#0f4c4c]',
-  open: 'border-[#1a1816]/15 text-[#6e6355]',
-  progress: 'border-[#2d5f8f]/40 text-[#2d5f8f]',
-  closed: 'border-[#10B981]/35 text-[#10B981]',
+  new: 'border-transparent bg-[#2d8a8a] text-[#f0faf8] shadow-[0_3px_8px_-3px_rgba(15,76,76,0.5)]',
+  open: 'border-transparent bg-[#1a1816]/[0.06] text-[#6e6355]',
+  progress: 'border-transparent bg-[#2d5f8f]/[0.12] text-[#2d5f8f]',
+  closed: 'border-transparent bg-[#10B981]/[0.12] text-[#0d9268]',
 }
 
 const STATUS_LABEL: Record<OpsRow['status'], string> = {
@@ -610,15 +610,29 @@ function ObservationTool({ reduceMotion }: { reduceMotion: boolean }) {
                   className="grid grid-cols-[minmax(0,1.4fr)_74px_66px] items-center gap-2 border-b border-[#1a1816]/[0.05] px-4 py-2.5 last:border-b-0 sm:grid-cols-[minmax(0,1.5fr)_90px_84px_70px]"
                 >
                   <span className="truncate font-body text-[12.5px] text-[#1a1816]">{row.room}</span>
-                  <span className="font-label text-[9px] font-semibold uppercase tracking-[0.08em] text-[#0f4c4c]">
-                    {row.lookFors}
+                  <span className="flex items-center gap-1.5">
+                    <span className="flex gap-[3px]" aria-hidden="true">
+                      {Array.from({ length: 5 }, (_, si) => (
+                        <span
+                          key={si}
+                          className="h-[5px] w-[9px] rounded-full"
+                          style={{
+                            background:
+                              si < parseInt(row.lookFors, 10)
+                                ? 'linear-gradient(90deg, #0f4c4c, #2d8a8a)'
+                                : 'rgba(26,24,22,0.1)',
+                          }}
+                        />
+                      ))}
+                    </span>
+                    <span className="font-label text-[8.5px] font-bold tabular-nums text-[#0f4c4c]">{row.lookFors}</span>
                   </span>
                   <span className="hidden sm:block">
                     <em
                       className={`rounded-[3px] border px-2 py-1 font-label text-[7.5px] font-bold not-italic uppercase tracking-[0.1em] ${
                         row.status === 'new'
-                          ? 'border-[#2d8a8a]/50 bg-[#2d8a8a]/[0.1] text-[#0f4c4c]'
-                          : 'border-[#10B981]/35 text-[#10B981]'
+                          ? 'border-transparent bg-[#2d8a8a] text-[#f0faf8] shadow-[0_3px_8px_-3px_rgba(15,76,76,0.5)]'
+                          : 'border-transparent bg-[#10B981]/[0.12] text-[#0d9268]'
                       }`}
                     >
                       {row.status === 'new' ? 'New' : 'Logged'}
@@ -644,12 +658,13 @@ function ObservationTool({ reduceMotion }: { reduceMotion: boolean }) {
                     initial={reduceMotion ? false : { width: 0 }}
                     animate={{ width: `${pct}%` }}
                     transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.25 + i * 0.07, ease: easeStandard }}
-                    className="block h-1.5 rounded-[2px]"
+                    className="block h-[6px] rounded-full"
                     style={{
                       background:
                         pct >= 75
-                          ? 'linear-gradient(90deg, rgba(16,185,129,0.7), rgba(16,185,129,0.4))'
-                          : 'linear-gradient(90deg, rgba(15,76,76,0.65), rgba(45,138,138,0.4))',
+                          ? 'linear-gradient(90deg, #0d9268, #2fd4a0)'
+                          : 'linear-gradient(90deg, #0f4c4c, #3aa8a0)',
+                      boxShadow: '0 2px 6px -2px rgba(15,76,76,0.4)',
                     }}
                   />
                   <b className="text-right font-label text-[10px] font-semibold text-[#6e6355]">{pct}%</b>
@@ -682,7 +697,7 @@ function ObservationTool({ reduceMotion }: { reduceMotion: boolean }) {
                   i < step
                     ? 'border-[#10B981] bg-[#10B981]/[0.1] text-[#10B981]'
                     : i === step
-                      ? 'border-[#0f4c4c] bg-[#0f4c4c] text-[#fffcf7]'
+                      ? 'border-transparent bg-gradient-to-b from-[#136060] to-[#0d3d3d] text-[#f0faf8] shadow-[0_0_0_4px_rgba(45,138,138,0.15)]'
                       : 'border-[#1a1816]/15 text-[#6e6355]'
                 }`}
               >
@@ -697,7 +712,7 @@ function ObservationTool({ reduceMotion }: { reduceMotion: boolean }) {
               </span>
             </button>
             {i < OBS_STEPS.length - 1 && (
-              <span className={`mx-2 h-px flex-1 ${i < step ? 'bg-[#10B981]/50' : 'bg-[#1a1816]/10'}`} aria-hidden="true" />
+              <span className={`mx-2 h-px flex-1 ${i < step ? 'bg-gradient-to-r from-[#10B981]/70 to-[#2d8a8a]/50' : 'bg-[#1a1816]/10'}`} aria-hidden="true" />
             )}
           </div>
         ))}
@@ -781,7 +796,7 @@ function ObservationTool({ reduceMotion }: { reduceMotion: boolean }) {
                     >
                       <span
                         className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-[2px] border ${
-                          on ? 'border-[#0f4c4c] bg-[#0f4c4c] text-[#fffcf7]' : 'border-[#1a1816]/25'
+                          on ? 'border-transparent bg-gradient-to-b from-[#136060] to-[#0d3d3d] text-[#f0faf8] shadow-[0_0_0_4px_rgba(45,138,138,0.15)]' : 'border-[#1a1816]/25'
                         }`}
                         aria-hidden="true"
                       >
