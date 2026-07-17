@@ -139,6 +139,7 @@ export default function Landing() {
 
       {/* ══════════ DEMONSTRATION BAND — DASHBOARD SHOWCASE ══════════ */}
       <section
+        id="live-dashboards"
         data-karst-nav-dark
         className="relative overflow-hidden border-t border-white/8 bg-[#090908] px-6 py-24 text-[#fffcf7] md:px-10 md:py-32"
       >

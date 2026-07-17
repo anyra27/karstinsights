@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { easeStandard } from '../../lib/motion'
 
@@ -10,8 +10,17 @@ import { easeStandard } from '../../lib/motion'
    it is never shown as an agent living inside a shipped app. All content
    is synthetic demonstration data; the section caption states so. ── */
 
-const BRASS = '#a8802a'
-const NAVY = '#1e2a4a'
+/* Data-ink palette, matched to the live Strategic/CTE dashboards further
+   down the page so the mocks read as the same product family. Blues and
+   greens carry the positive story; amber is the watch color; red is
+   reserved for the single most acute signal on any surface. */
+export const TEAL = '#0f4c4c'
+export const TEAL_BRIGHT = '#2d8a8a'
+export const SEA = '#2d5f8f'
+export const DEEP_SEA = '#1e3a5f'
+export const GREEN = '#10B981'
+export const AMBER = '#a66a06'
+export const RED = '#b91c1c'
 
 /* ════════ Type-stream — text that writes itself in, instantly under
    reduced motion ════════ */
@@ -108,7 +117,7 @@ function ChromeBar({
   )
 }
 
-function ArtifactFrame({
+export function ArtifactFrame({
   url,
   chromeRight,
   children,
@@ -203,7 +212,7 @@ function ArtifactFrame({
   )
 }
 
-function PanelLabel({ children }: { children: React.ReactNode }) {
+export function PanelLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-2 font-label text-[9px] font-bold uppercase tracking-[0.2em] text-[#6e6355]">
       {children}
@@ -214,7 +223,8 @@ function PanelLabel({ children }: { children: React.ReactNode }) {
 /* ════════ 01 · Dashboards — a season of raw exports, processed with AI
    into an early-warning picture. Directionally modeled on real district
    work (attendance × outcomes, ABC early-warning framework); all numbers
-   and site names here are invented, no live data, no district named. ════════ */
+   and site names here are invented, no live data, no district named.
+   Data ink matches the live dashboards further down the page. ════════ */
 
 const SOURCE_FILES: Array<[string, string]> = [
   ['attendance.xlsx', '18,600 rows'],
@@ -225,11 +235,12 @@ const SOURCE_FILES: Array<[string, string]> = [
 
 type LensKey = 'cliff' | 'early' | 'watchlist'
 type ChartKind = 'columns' | 'curve' | 'ranked'
+type StatTone = 'good' | 'watch'
 
 interface Lens {
   tab: string
   title: string
-  stats: Array<[string, string, string]>
+  stats: Array<[string, string, string, StatTone]>
   chart: ChartKind
   chartLabel: string
   read: string
@@ -240,20 +251,20 @@ const LENSES: Record<LensKey, Lens> = {
     tab: 'The cliff',
     title: 'Where attendance turns into failure',
     stats: [
-      ['Cliff edge', 'Below 90%', 'Risk doubles here'],
-      ['D/F rate under 85%', '58%', 'Vs 6% at near-perfect'],
+      ['Cliff edge', 'Below 90%', 'Risk doubles here', 'watch'],
+      ['On track above 90%', '86%', 'Most of the district', 'good'],
     ],
     chart: 'columns',
     chartLabel: 'Course-failure rate by attendance band',
     read:
-      'The pattern hides in the join. Below 90 percent attendance, course-failure rates roughly double; below 85, most of a cohort is failing something. Attendance is not a side metric, it is the leading edge of the outcome.',
+      'The pattern hides in the join. Below 90 percent attendance, course-failure rates roughly double; below 85, most of a cohort is failing something. Above the line, outcomes hold strong, which is why protecting attendance protects everything else.',
   },
   early: {
     tab: 'Early signal',
     title: 'The flag that shows up in week four',
     stats: [
-      ['Earliest reliable flag', 'Week 4', 'First-month absences'],
-      ['2+ early absences', '5× risk', 'Vs a clean first month'],
+      ['Earliest reliable flag', 'Week 4', 'First-month absences', 'good'],
+      ['2+ early absences', '5× risk', 'Vs a clean first month', 'watch'],
     ],
     chart: 'curve',
     chartLabel: 'Year-end chronic absence by first-month absences',
@@ -264,8 +275,8 @@ const LENSES: Record<LensKey, Lens> = {
     tab: 'Watchlist',
     title: 'Named, ranked, and reachable',
     stats: [
-      ['Flagged this fall', '412', 'Across 14 sites'],
-      ['Caught by attendance alone', '8 in 10', 'Weeks before the first F'],
+      ['Flagged this fall', '412', 'Across 14 sites', 'watch'],
+      ['Reconnected by winter', '243', 'Outreach is working', 'good'],
     ],
     chart: 'ranked',
     chartLabel: 'Flagged students by site · highest need first',
@@ -274,12 +285,17 @@ const LENSES: Record<LensKey, Lens> = {
   },
 }
 
-/* Column chart — the cliff, read as a rising wall of risk */
-const CLIFF_COLS: Array<[string, number, string, boolean]> = [
-  ['95–100%', 6, '6%', false],
-  ['90–94%', 14, '14%', false],
-  ['85–89%', 31, '31%', true],
-  ['Below 85%', 58, '58%', true],
+const TONE_TEXT: Record<StatTone, string> = {
+  good: 'text-[#10B981]',
+  watch: 'text-[#a66a06]',
+}
+
+/* Column chart — the cliff, teal holding ground until the edge gives way */
+const CLIFF_COLS: Array<[string, number, string, string]> = [
+  ['95–100%', 6, '6%', TEAL_BRIGHT],
+  ['90–94%', 14, '14%', TEAL],
+  ['85–89%', 31, '31%', AMBER],
+  ['Below 85%', 58, '58%', RED],
 ]
 
 function CliffColumns({ reduceMotion }: { reduceMotion: boolean }) {
@@ -293,7 +309,7 @@ function CliffColumns({ reduceMotion }: { reduceMotion: boolean }) {
   return (
     <svg viewBox={`0 0 ${W} ${H}`} width="100%" aria-hidden="true">
       <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.12)" strokeWidth="1" />
-      {CLIFF_COLS.map(([label, val, tag, hot], i) => {
+      {CLIFF_COLS.map(([label, val, tag, color], i) => {
         const x = pad + i * (colW + gap)
         const h = ((baseY - 14) * val) / max
         return (
@@ -305,13 +321,14 @@ function CliffColumns({ reduceMotion }: { reduceMotion: boolean }) {
               initial={reduceMotion ? { y: baseY - h, height: h } : { y: baseY, height: 0 }}
               animate={{ y: baseY - h, height: h }}
               transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.1 + i * 0.09, ease: easeStandard }}
-              fill={hot ? 'rgba(165,71,49,0.72)' : 'rgba(30,42,74,0.6)'}
+              fill={color}
+              fillOpacity={0.78}
             />
             <motion.text
               x={x + colW / 2}
               y={baseY - h - 6}
               textAnchor="middle"
-              fill={hot ? '#a54731' : '#1a1816'}
+              fill={color}
               fontFamily="Montserrat, sans-serif"
               fontSize="11"
               fontWeight="700"
@@ -340,7 +357,7 @@ function CliffColumns({ reduceMotion }: { reduceMotion: boolean }) {
   )
 }
 
-/* Area + line curve — the early-warning ramp */
+/* Area + line curve — the early-warning ramp, sea-blue with the amber turn */
 const EARLY_PTS: Array<[string, number, string]> = [
   ['0', 9, '9%'],
   ['1', 17, '17%'],
@@ -374,7 +391,7 @@ function EarlyCurve({ reduceMotion }: { reduceMotion: boolean }) {
       <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.12)" strokeWidth="1" />
       <motion.path
         d={area}
-        fill="rgba(165,71,49,0.1)"
+        fill="rgba(45,95,143,0.1)"
         initial={reduceMotion ? false : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: reduceMotion ? 0 : 0.5 }}
@@ -382,7 +399,7 @@ function EarlyCurve({ reduceMotion }: { reduceMotion: boolean }) {
       <motion.path
         d={line}
         fill="none"
-        stroke="#a54731"
+        stroke={SEA}
         strokeWidth="2.2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -396,8 +413,8 @@ function EarlyCurve({ reduceMotion }: { reduceMotion: boolean }) {
           cx={x}
           cy={y}
           r={i === 2 ? 4 : 2.6}
-          fill={i === 2 ? '#a54731' : '#fffcf7'}
-          stroke="#a54731"
+          fill={i === 2 ? AMBER : '#fffcf7'}
+          stroke={i === 2 ? AMBER : SEA}
           strokeWidth="1.6"
           initial={reduceMotion ? false : { scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -408,7 +425,7 @@ function EarlyCurve({ reduceMotion }: { reduceMotion: boolean }) {
         x={inflection[0]}
         y={inflection[1] - 12}
         textAnchor="middle"
-        fill="#a54731"
+        fill={AMBER}
         fontFamily="Montserrat, sans-serif"
         fontSize="8.5"
         fontWeight="700"
@@ -454,8 +471,8 @@ function RankedBars({ reduceMotion }: { reduceMotion: boolean }) {
             className="block h-2 rounded-[2px]"
             style={{
               background: hot
-                ? 'linear-gradient(90deg, rgba(165,71,49,0.85), rgba(165,71,49,0.5))'
-                : 'linear-gradient(90deg, rgba(30,42,74,0.7), rgba(30,42,74,0.4))',
+                ? 'linear-gradient(90deg, rgba(166,106,6,0.85), rgba(166,106,6,0.5))'
+                : 'linear-gradient(90deg, rgba(15,76,76,0.8), rgba(45,138,138,0.5))',
             }}
           />
           <b className="text-right font-label text-[11px] font-semibold text-[#1a1816]">{value}</b>
@@ -467,9 +484,9 @@ function RankedBars({ reduceMotion }: { reduceMotion: boolean }) {
 
 /* Donut — how each flag was caught */
 const DONUT_SEGMENTS: Array<[string, number, string]> = [
-  ['Attendance alone', 62, '#a54731'],
-  ['+ Grades', 26, '#a8802a'],
-  ['All three signals', 12, '#1e2a4a'],
+  ['Attendance alone', 62, TEAL],
+  ['+ Grades', 26, TEAL_BRIGHT],
+  ['All three signals', 12, SEA],
 ]
 
 function SignalDonut({ reduceMotion }: { reduceMotion: boolean }) {
@@ -568,14 +585,14 @@ export function DashboardArtifact() {
             ))}
           </div>
           <div className="flex items-center gap-2 md:ml-auto">
-            <span className="hidden text-[#a8802a] md:block" aria-hidden="true">→</span>
+            <span className="hidden text-[#2d8a8a] md:block" aria-hidden="true">→</span>
             <motion.span
               initial={reduceMotion ? false : { opacity: 0 }}
               animate={{ opacity: built ? 1 : 0.4 }}
               transition={{ duration: 0.5 }}
               className="flex items-center gap-2 font-label text-[9px] font-bold uppercase tracking-[0.16em] text-[#1a1816]"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-[#2d5a5a]" aria-hidden="true" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#10B981]" aria-hidden="true" />
               De-identified · joined · analyzed
             </motion.span>
           </div>
@@ -590,7 +607,7 @@ export function DashboardArtifact() {
               onClick={() => setLensKey(key)}
               className={`rounded-[3px] border px-3 py-2 font-label text-[9px] font-semibold uppercase tracking-[0.12em] transition-colors ${
                 key === lensKey
-                  ? 'border-[#a8802a] bg-[#a8802a]/[0.08] text-[#1a1816]'
+                  ? 'border-[#0f4c4c] bg-[#0f4c4c]/[0.07] text-[#1a1816]'
                   : 'border-[#1a1816]/12 text-[#6e6355] hover:text-[#1a1816]'
               }`}
             >
@@ -611,7 +628,7 @@ export function DashboardArtifact() {
             <div className="font-label text-[15px] font-semibold text-[#1a1816] md:text-[16px]">{lens.title}</div>
             <div className="grid gap-2.5 sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)]">
               <div className="grid content-start gap-2.5">
-                {lens.stats.map(([label, value, note]) => (
+                {lens.stats.map(([label, value, note, tone]) => (
                   <div key={label} className="rounded-[3px] border border-[#1a1816]/10 px-3.5 py-3">
                     <div className="font-label text-[8px] font-bold uppercase tracking-[0.16em] text-[#6e6355]">
                       {label}
@@ -619,7 +636,7 @@ export function DashboardArtifact() {
                     <div className="mt-1 font-label text-[21px] font-extrabold tracking-[-0.01em] text-[#1a1816] md:text-[23px]">
                       {value}
                     </div>
-                    <div className="mt-0.5 font-body text-[11px] font-medium text-[#a8802a]">{note}</div>
+                    <div className={`mt-0.5 font-body text-[11px] font-medium ${TONE_TEXT[tone]}`}>{note}</div>
                   </div>
                 ))}
               </div>
@@ -631,107 +648,285 @@ export function DashboardArtifact() {
             <StreamedRead label="The read:" text={lens.read} active={built} />
           </motion.div>
         </AnimatePresence>
+
+        {/* the live pair below — this mock and those dashboards are one family */}
+        <a
+          href="#live-dashboards"
+          className="group -mt-0.5 inline-flex items-center gap-2 justify-self-start font-body text-[12px] italic text-[#6e6355] transition-colors hover:text-[#1a1816]"
+        >
+          Two live dashboards, built the same way, are further down this page.
+          <span className="transition-transform duration-300 group-hover:translate-y-0.5" aria-hidden="true">↓</span>
+        </a>
       </div>
     </ArtifactFrame>
   )
 }
 
-/* ════════ 02 · Presentation — one source, recomposed per audience.
-   Craft modeled on the real LCAP board deck (hero-stat register, serif
-   numeral, editorial eyebrows); genericized, no district named. ════════ */
+/* ════════ 02 · Presentation — a four-slide working deck, recomposed per
+   audience. Craft modeled on the real LCAP board-deck register (hero-stat
+   serif numeral, editorial eyebrows); genericized, no district named.
+   Click the slide to advance; glyphs draw themselves in. ════════ */
 
 type Audience = 'board' | 'staff' | 'families'
+type GlyphName = 'chart' | 'bus' | 'calendar' | 'survey' | 'people' | 'building' | 'seal' | 'coins'
 
-interface AudienceSlide {
-  label: string
-  eyebrow: string
-  hero: string
-  heroCaption: string
-  points: string[]
-  foot: string
+/* Line glyphs in the deck's visual voice: 24×24, 1.5px stroke, drawn on
+   slide entry. */
+function Glyph({ name, color = TEAL, delay = 0, reduceMotion }: { name: GlyphName; color?: string; delay?: number; reduceMotion: boolean }) {
+  const paths: Record<GlyphName, string[]> = {
+    chart: ['M3 21h18', 'M6 21v-7', 'M11 21V10', 'M16 21v-11', 'M21 21V6'],
+    bus: ['M4 5h16v11H4z', 'M4 12h16', 'M7 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z', 'M17 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z', 'M8 8h.01M16 8h.01'],
+    calendar: ['M4 6h16v14H4z', 'M4 10h16', 'M8 3v5', 'M16 3v5', 'M8 14h3'],
+    survey: ['M6 3h12v18H6z', 'M9 8h6', 'M9 12h6', 'M9 16h3', 'M15.5 15.5l2 2 3-3.5'],
+    people: ['M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z', 'M3 21a6 6 0 0 1 12 0', 'M16 10a2.5 2.5 0 1 0 0-5', 'M17 15a5 5 0 0 1 4 6'],
+    building: ['M5 21V5l7-3 7 3v16', 'M3 21h18', 'M9 9h.01M13 9h.01M9 13h.01M13 13h.01', 'M10 21v-4h4v4'],
+    seal: ['M12 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10z', 'M9.5 10.2l1.8 1.8 3.2-3.6', 'M8.5 14.5L7 21l5-2.5L17 21l-1.5-6.5'],
+    coins: ['M8 10a5 3 0 1 0 0-6 5 3 0 0 0 0 6z', 'M3 7v5c0 1.7 2.2 3 5 3s5-1.3 5-3V7', 'M13 11c2.8 0 5 1.3 5 3v3c0 1.7-2.2 3-5 3s-5-1.3-5-3'],
+  }
+  return (
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" aria-hidden="true" className="shrink-0">
+      {paths[name].map((d, i) => (
+        <motion.path
+          key={i}
+          d={d}
+          stroke={color}
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : delay + i * 0.08, ease: easeStandard }}
+        />
+      ))}
+    </svg>
+  )
 }
 
-const AUDIENCE_SLIDES: Record<Audience, AudienceSlide> = {
+interface DeckContent {
+  label: string
+  coverEyebrow: string
+  coverPlain: string
+  coverItalic: string
+  coverNote: string
+  hero: string
+  heroCaption: string
+  evidencePoints: Array<[GlyphName, string]>
+  nextEyebrow: string
+  nextSteps: Array<[GlyphName, string, string]>
+}
+
+const DECKS: Record<Audience, DeckContent> = {
   board: {
     label: 'Board',
-    eyebrow: 'Enrollment & facilities · Study session',
+    coverEyebrow: 'Board study session · Enrollment & facilities',
+    coverPlain: 'The feeder question, with the',
+    coverItalic: 'evidence attached.',
+    coverNote: 'Tonight: the five-year trend, the costs both ways, and a recommendation the room can act on.',
     hero: 'Year 2',
     heroCaption: 'when the two feeder patterns cross.',
-    points: [
-      'Enrollment trend by feeder, five years, with the inflection named.',
-      'Transportation and staffing implications, costed both ways.',
-      'A recommendation the room can accept, amend, or decline.',
+    evidencePoints: [
+      ['chart', 'Enrollment trend by feeder, five years, with the inflection named.'],
+      ['bus', 'Transportation and staffing implications, costed both ways.'],
+      ['seal', 'A recommendation the room can accept, amend, or decline.'],
     ],
-    foot: 'Evidence attached · Recommendation on slide 12',
+    nextEyebrow: 'What happens next',
+    nextSteps: [
+      ['calendar', 'Study session', 'Tonight, with the full packet attached.'],
+      ['survey', 'Public comment', 'Open through the spring window.'],
+      ['seal', 'Board action', 'A vote only after both readings.'],
+    ],
   },
   staff: {
     label: 'Staff',
-    eyebrow: 'Feeder study · What it means for your site',
+    coverEyebrow: 'Feeder study · For site staff',
+    coverPlain: 'What the feeder study means',
+    coverItalic: 'for your school.',
+    coverNote: 'The same figures the board sees, read for staffing, timelines, and your input window.',
     hero: 'Zero',
     heroCaption: 'involuntary transfers, in every scenario.',
-    points: [
-      'No involuntary transfers in any scenario under study.',
-      'The decision timeline, with the dates that affect staffing first.',
-      'Your input window: the site survey stays open through February.',
+    evidencePoints: [
+      ['building', 'Site-by-site enrollment, so you can find your school in the trend.'],
+      ['calendar', 'The decision timeline, with the dates that affect staffing first.'],
+      ['survey', 'Your input window: the site survey stays open through February.'],
     ],
-    foot: 'Site-level detail attached · Questions to your principal',
+    nextEyebrow: 'What happens next',
+    nextSteps: [
+      ['survey', 'Site survey', 'Ten minutes; every response is read.'],
+      ['people', 'Site meetings', 'Your principal hosts, questions welcome.'],
+      ['calendar', 'Decision', 'No staffing change before the timeline says so.'],
+    ],
   },
   families: {
     label: 'Families',
-    eyebrow: 'Feeder study · A plain-language update',
+    coverEyebrow: 'Feeder study · A plain-language update',
+    coverPlain: 'Two ways to keep both school communities',
+    coverItalic: 'strong.',
+    coverNote: 'What is being studied, what would never change, and how your family weighs in.',
     hero: 'Two years',
     heroCaption: 'to phase any change, with town halls first.',
-    points: [
-      'What stays the same either way: teachers, programs, and school names.',
-      'What could change: some bus routes and start times, phased in.',
-      'How families weigh in: town halls at both schools before any vote.',
+    evidencePoints: [
+      ['seal', 'What stays the same either way: teachers, programs, and school names.'],
+      ['bus', 'What could change: some bus routes and start times, phased in.'],
+      ['people', 'How families weigh in: town halls at both schools before any vote.'],
     ],
-    foot: 'Translated versions available · Town hall dates attached',
+    nextEyebrow: 'What happens next',
+    nextSteps: [
+      ['people', 'Town halls', 'At both schools, evenings, translated.'],
+      ['survey', 'Family survey', 'Five minutes, in your home language.'],
+      ['calendar', 'The vote', 'Only after every town hall has met.'],
+    ],
   },
 }
 
-function FeederChart({ reduceMotion }: { reduceMotion: boolean }) {
+const SLIDE_COUNT = 4
+
+function DeckSlide({ deck, slide, reduceMotion }: { deck: DeckContent; slide: number; reduceMotion: boolean }) {
+  if (slide === 0) {
+    return (
+      <div className="flex min-h-[320px] flex-col justify-center px-6 py-10 md:min-h-[380px] md:px-14">
+        <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
+          {deck.coverEyebrow}
+        </div>
+        <div className="mt-5 max-w-[20ch] font-headline text-[30px] font-light leading-[1.12] tracking-[-0.015em] text-[#1a1816] md:text-[46px]">
+          {deck.coverPlain} <span className="font-editorial italic text-[#6e6355]">{deck.coverItalic}</span>
+        </div>
+        <motion.p
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.35 }}
+          className="mt-6 max-w-[52ch] font-body text-[13.5px] leading-[1.7] text-[#1a1816]/60 md:text-[14.5px]"
+        >
+          {deck.coverNote}
+        </motion.p>
+      </div>
+    )
+  }
+  if (slide === 1) {
+    return (
+      <div className="flex min-h-[320px] flex-col items-center justify-center px-6 py-10 text-center md:min-h-[380px]">
+        <div className="font-label text-[9px] font-semibold uppercase tracking-[0.34em] text-[#a8802a] md:text-[10px]">
+          {deck.coverEyebrow}
+        </div>
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: easeStandard }}
+          className="mt-7 font-editorial text-[54px] font-normal italic leading-[0.95] text-[#1e3a5f] md:text-[80px]"
+        >
+          {deck.hero}
+        </motion.div>
+        <div className="mx-auto mt-4 max-w-[26ch] font-headline text-[19px] font-light leading-[1.2] text-[#1a1816] md:text-[26px]">
+          {deck.heroCaption}
+        </div>
+      </div>
+    )
+  }
+  if (slide === 2) {
+    return (
+      <div className="flex min-h-[320px] flex-col justify-center px-6 py-9 md:min-h-[380px] md:px-14">
+        <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
+          The evidence
+        </div>
+        <div className="mt-6 grid items-center gap-7 md:grid-cols-[0.95fr_1.05fr] md:gap-12">
+          <div>
+            <PanelLabel>Enrollment by feeder · five years</PanelLabel>
+            <svg viewBox="0 0 320 112" width="100%" aria-hidden="true">
+              <g stroke="rgba(30,42,74,0.1)" strokeWidth="1">
+                <line x1="0" y1="28" x2="320" y2="28" />
+                <line x1="0" y1="58" x2="320" y2="58" />
+                <line x1="0" y1="88" x2="320" y2="88" />
+              </g>
+              <motion.path
+                d="M10 40 C 70 44, 130 52, 190 62 S 290 82, 310 88"
+                fill="none"
+                stroke={DEEP_SEA}
+                strokeWidth="2"
+                initial={reduceMotion ? false : { pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: reduceMotion ? 0 : 1.1, delay: reduceMotion ? 0 : 0.15, ease: easeStandard }}
+              />
+              <motion.path
+                d="M10 62 C 70 60, 130 56, 190 50 S 290 36, 310 32"
+                fill="none"
+                stroke={TEAL_BRIGHT}
+                strokeWidth="1.8"
+                strokeDasharray="3 5"
+                initial={reduceMotion ? false : { pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: reduceMotion ? 0 : 1.1, delay: reduceMotion ? 0 : 0.3, ease: easeStandard }}
+              />
+              <circle cx="310" cy="88" r="3" fill={DEEP_SEA} />
+              <circle cx="310" cy="32" r="3" fill={TEAL_BRIGHT} />
+              <circle cx="196" cy="55" r="3.5" fill="none" stroke={AMBER} strokeWidth="1.4" />
+              <g fill="rgba(110,99,85,0.85)" fontFamily="Montserrat, sans-serif" fontSize="7.5" fontWeight="600" letterSpacing="1">
+                <text x="238" y="104">FEEDER A</text>
+                <text x="240" y="24">FEEDER B</text>
+              </g>
+            </svg>
+          </div>
+          <div className="grid content-center gap-4">
+            {deck.evidencePoints.map(([glyph, text], i) => (
+              <motion.div
+                key={text}
+                initial={reduceMotion ? false : { opacity: 0, x: 8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.45, delay: reduceMotion ? 0 : 0.2 + i * 0.14, ease: easeStandard }}
+                className="flex items-start gap-3.5"
+              >
+                <Glyph name={glyph} delay={0.25 + i * 0.14} reduceMotion={reduceMotion} />
+                <span className="font-body text-[13px] leading-[1.6] text-[#1a1816]/70 md:text-[13.5px]">{text}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
   return (
-    <svg viewBox="0 0 320 112" width="100%" aria-hidden="true">
-      <g stroke="rgba(30,42,74,0.1)" strokeWidth="1">
-        <line x1="0" y1="28" x2="320" y2="28" />
-        <line x1="0" y1="58" x2="320" y2="58" />
-        <line x1="0" y1="88" x2="320" y2="88" />
-      </g>
-      <motion.path
-        d="M10 40 C 70 44, 130 52, 190 62 S 290 82, 310 88"
-        fill="none"
-        stroke={NAVY}
-        strokeWidth="2"
-        initial={reduceMotion ? false : { pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: reduceMotion ? 0 : 1.1, delay: reduceMotion ? 0 : 0.15, ease: easeStandard }}
-      />
-      <motion.path
-        d="M10 62 C 70 60, 130 56, 190 50 S 290 36, 310 32"
-        fill="none"
-        stroke={BRASS}
-        strokeWidth="1.6"
-        strokeDasharray="3 5"
-        initial={reduceMotion ? false : { pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: reduceMotion ? 0 : 1.1, delay: reduceMotion ? 0 : 0.3, ease: easeStandard }}
-      />
-      <circle cx="310" cy="88" r="3" fill={NAVY} />
-      <circle cx="310" cy="32" r="3" fill={BRASS} />
-      <circle cx="196" cy="55" r="3.5" fill="none" stroke={BRASS} strokeWidth="1.4" />
-      <g fill="rgba(110,99,85,0.85)" fontFamily="Montserrat, sans-serif" fontSize="7.5" fontWeight="600" letterSpacing="1">
-        <text x="238" y="104">FEEDER A</text>
-        <text x="240" y="24">FEEDER B</text>
-      </g>
-    </svg>
+    <div className="flex min-h-[320px] flex-col justify-center px-6 py-9 md:min-h-[380px] md:px-14">
+      <div className="font-label text-[9px] font-semibold uppercase tracking-[0.32em] text-[#a8802a] md:text-[10px]">
+        {deck.nextEyebrow}
+      </div>
+      <div className="mt-8 grid gap-6 md:grid-cols-3 md:gap-8">
+        {deck.nextSteps.map(([glyph, title, detail], i) => (
+          <motion.div
+            key={title}
+            initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: reduceMotion ? 0 : 0.15 + i * 0.14, ease: easeStandard }}
+            className="border-t border-[#1a1816]/12 pt-4"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <span className="font-label text-[9px] font-bold tracking-[0.2em] text-[#a8802a]">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <Glyph name={glyph} color={TEAL_BRIGHT} delay={0.2 + i * 0.14} reduceMotion={reduceMotion} />
+            </div>
+            <div className="mt-3 font-headline text-[17px] font-normal text-[#1a1816]">{title}</div>
+            <p className="mt-1.5 font-body text-[12.5px] leading-[1.6] text-[#1a1816]/62">{detail}</p>
+          </motion.div>
+        ))}
+      </div>
+    </div>
   )
 }
 
 export function PresentationArtifact() {
   const [audience, setAudience] = useState<Audience>('board')
+  const [slide, setSlide] = useState(0)
+  const [hasAdvanced, setHasAdvanced] = useState(false)
   const reduceMotion = Boolean(useReducedMotion())
-  const slide = AUDIENCE_SLIDES[audience]
+  const deck = DECKS[audience]
+
+  const go = (delta: number) => {
+    setSlide((s) => (s + delta + SLIDE_COUNT) % SLIDE_COUNT)
+    setHasAdvanced(true)
+  }
+
+  const pickAudience = (key: Audience) => {
+    setAudience(key)
+    setSlide(0)
+  }
 
   return (
     <div className="relative">
@@ -752,455 +947,115 @@ export function PresentationArtifact() {
               Same figures · Composed for
             </span>
             <span className="flex gap-1.5">
-              {(Object.keys(AUDIENCE_SLIDES) as Audience[]).map((key) => (
+              {(Object.keys(DECKS) as Audience[]).map((key) => (
                 <button
                   key={key}
                   type="button"
-                  onClick={() => setAudience(key)}
+                  onClick={() => pickAudience(key)}
                   className={`rounded-[3px] border px-3 py-1.5 font-label text-[9px] font-semibold uppercase tracking-[0.12em] transition-colors ${
                     audience === key
-                      ? 'border-[#a8802a] bg-[#a8802a]/[0.08] text-[#1a1816]'
+                      ? 'border-[#0f4c4c] bg-[#0f4c4c]/[0.07] text-[#1a1816]'
                       : 'border-[#1a1816]/12 text-[#6e6355] hover:text-[#1a1816]'
                   }`}
                 >
-                  {AUDIENCE_SLIDES[key].label}
+                  {DECKS[key].label}
                 </button>
               ))}
             </span>
           </div>
 
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={audience}
-              initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
-              transition={{ duration: reduceMotion ? 0 : 0.35, ease: easeStandard }}
-              className="flex min-h-[360px] flex-col px-6 pb-5 pt-8 md:min-h-[420px] md:px-12 md:pb-8 md:pt-12"
-            >
-              <div className="text-center font-label text-[9px] font-semibold uppercase tracking-[0.34em] text-[#a8802a] md:text-[10px]">
-                {slide.eyebrow}
-              </div>
+          {/* the slide surface — click anywhere to advance */}
+          <div
+            role="button"
+            tabIndex={0}
+            aria-label={`Deck slide ${slide + 1} of ${SLIDE_COUNT}. Click or press the right arrow to advance.`}
+            onClick={() => go(1)}
+            onKeyDown={(event) => {
+              if (event.key === 'ArrowRight' || event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault()
+                go(1)
+              }
+              if (event.key === 'ArrowLeft') {
+                event.preventDefault()
+                go(-1)
+              }
+            }}
+            className="relative cursor-pointer select-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#2d8a8a]"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={`${audience}-${slide}`}
+                initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: 22 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={reduceMotion ? { opacity: 1 } : { opacity: 0, x: -16 }}
+                transition={{ duration: reduceMotion ? 0 : 0.35, ease: easeStandard }}
+              >
+                <DeckSlide deck={deck} slide={slide} reduceMotion={reduceMotion} />
+              </motion.div>
+            </AnimatePresence>
 
-              {/* hero stat — the LCAP register: one serif numeral does the work */}
-              <div className="mb-auto mt-6 text-center md:mt-8">
-                <div className="font-editorial text-[52px] font-normal italic leading-[0.95] text-[#1e2a4a] md:text-[76px]">
-                  {slide.hero}
-                </div>
-                <div className="mx-auto mt-4 max-w-[26ch] font-headline text-[19px] font-light leading-[1.2] text-[#1a1816] md:text-[26px]">
-                  {slide.heroCaption}
-                </div>
-              </div>
+            {/* click-to-advance cue, retires after first use */}
+            {!hasAdvanced && !reduceMotion && (
+              <motion.span
+                className="pointer-events-none absolute bottom-4 right-5 flex items-center gap-1.5 font-body text-[11px] italic text-[#2d8a8a]"
+                animate={{ opacity: [0.5, 1, 0.5], x: [0, 3, 0] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                click to advance <span aria-hidden="true">→</span>
+              </motion.span>
+            )}
+          </div>
 
-              {/* supporting evidence — chart + the recomposed points */}
-              <div className="mt-8 grid items-center gap-6 border-t border-[#1a1816]/10 pt-6 md:mt-10 md:grid-cols-[0.85fr_1.15fr] md:gap-12">
-                <div>
-                  <PanelLabel>Enrollment by feeder · five years</PanelLabel>
-                  <FeederChart reduceMotion={reduceMotion} />
-                </div>
-                <div className="grid content-center gap-3 font-body text-[13px] text-[#1a1816]/70 md:text-[13.5px]">
-                  {slide.points.map((point, i) => (
-                    <motion.span
-                      key={point}
-                      initial={reduceMotion ? false : { opacity: 0, x: 8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.45, delay: reduceMotion ? 0 : 0.2 + i * 0.12, ease: easeStandard }}
-                      className="block border-l-2 border-[#a8802a] pl-3.5"
-                    >
-                      {point}
-                    </motion.span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-8 flex items-baseline justify-between gap-3 border-t border-[#1a1816]/10 pt-4 font-label text-[8.5px] font-semibold uppercase tracking-[0.24em] text-[#6e6355] md:mt-10 md:text-[9.5px]">
-                <span>
-                  <b className="font-semibold text-[#1a1816]">KARST</b> · Feeder study
-                </span>
-                <span className="hidden md:block">{slide.foot}</span>
-                <span className="flex items-center gap-2">
-                  <span className="flex gap-1" aria-hidden="true">
-                    {Array.from({ length: 12 }, (_, i) => (
-                      <span
-                        key={i}
-                        className={`h-1 w-1 rounded-full ${i === 3 ? 'bg-[#a8802a]' : 'bg-[#1a1816]/15'}`}
-                      />
-                    ))}
-                  </span>
-                  04 / 12
-                </span>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+          {/* deck rail */}
+          <div className="flex items-center justify-between gap-3 border-t border-[#1a1816]/10 px-6 py-3.5 font-label text-[8.5px] font-semibold uppercase tracking-[0.24em] text-[#6e6355] md:px-12 md:text-[9.5px]">
+            <span>
+              <b className="font-semibold text-[#1a1816]">KARST</b> · Feeder study
+            </span>
+            <span className="hidden md:block">Four-slide excerpt · Recomposed per audience</span>
+            <span className="flex items-center gap-3">
+              <span className="flex gap-1" aria-hidden="true">
+                {Array.from({ length: SLIDE_COUNT }, (_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    tabIndex={-1}
+                    onClick={() => {
+                      setSlide(i)
+                      setHasAdvanced(true)
+                    }}
+                    className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
+                      i === slide ? 'bg-[#2d8a8a]' : 'bg-[#1a1816]/15 hover:bg-[#1a1816]/35'
+                    }`}
+                  />
+                ))}
+              </span>
+              <span className="tabular-nums">{`0${slide + 1}`} / 04</span>
+              <span className="flex gap-1">
+                <button
+                  type="button"
+                  onClick={() => go(-1)}
+                  aria-label="Previous slide"
+                  className="flex h-6 w-6 items-center justify-center rounded-[3px] border border-[#1a1816]/15 text-[#1a1816]/70 transition-colors hover:border-[#1a1816]/40 hover:text-[#1a1816]"
+                >
+                  <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+                    <path d="M6 1L2 4.5L6 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => go(1)}
+                  aria-label="Next slide"
+                  className="flex h-6 w-6 items-center justify-center rounded-[3px] border border-[#1a1816]/15 text-[#1a1816]/70 transition-colors hover:border-[#1a1816]/40 hover:text-[#1a1816]"
+                >
+                  <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+                    <path d="M3 1L7 4.5L3 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                  </svg>
+                </button>
+              </span>
+            </span>
+          </div>
         </ArtifactFrame>
       </div>
     </div>
   )
 }
-
-/* ════════ 03 · Applications — a working tool the staff build. Submit a
-   request, get a confirmation, and watch the front-end form flip into the
-   back-end operations dashboard the same team built. The AI helped BUILD
-   both sides and analyzes what they collect; it never sits inside the app
-   as an agent. ════════ */
-
-type AppStage = 'form' | 'success' | 'dashboard'
-
-interface OpsRow {
-  id: string
-  where: string
-  tag: string
-  when: string
-  status: 'new' | 'open' | 'progress' | 'closed'
-}
-
-const OPS_ROWS: OpsRow[] = [
-  { id: 'r1', where: 'Gym · court lights out', tag: 'Electrical', when: '2h ago', status: 'progress' },
-  { id: 'r2', where: 'Room 118 · sink leak', tag: 'Plumbing', when: 'Yesterday', status: 'open' },
-  { id: 'r3', where: 'Front lot · gate stuck', tag: 'Grounds', when: 'Yesterday', status: 'progress' },
-  { id: 'r4', where: 'Library · projector', tag: 'Electrical', when: '2 days', status: 'closed' },
-  { id: 'r5', where: 'Cafeteria · walk-in cooler', tag: 'HVAC', when: '3 days', status: 'progress' },
-]
-
-const NEW_OPS_ROW: OpsRow = { id: 'r0', where: 'Room 214 · no cooling', tag: 'HVAC', when: 'Just now', status: 'new' }
-
-const OPS_KPIS: Array<[string, string, string]> = [
-  ['Open requests', '38', '+1 just now'],
-  ['Median time to close', '3.2d', 'Was 9 days'],
-  ['Aging past 30 days', '05', 'All parts-blocked'],
-]
-
-const OPS_TRADES: Array<[string, number, string]> = [
-  ['HVAC', 74, '14'],
-  ['Electrical', 46, '9'],
-  ['Grounds', 38, '7'],
-  ['Plumbing', 24, '4'],
-]
-
-const STATUS_PILL: Record<OpsRow['status'], string> = {
-  new: 'border-[#a8802a]/45 bg-[#a8802a]/[0.1] text-[#8a6a1f]',
-  open: 'border-[#1a1816]/15 text-[#6e6355]',
-  progress: 'border-[#2d5a5a]/35 text-[#2d5a5a]',
-  closed: 'border-[#1a1816]/12 text-[#1a1816]/40',
-}
-
-const STATUS_LABEL: Record<OpsRow['status'], string> = {
-  new: 'New',
-  open: 'Open',
-  progress: 'In progress',
-  closed: 'Closed',
-}
-
-function OpsTable({ rows, reduceMotion }: { rows: OpsRow[]; reduceMotion: boolean }) {
-  return (
-    <div className="overflow-hidden rounded-[3px] border border-[#1a1816]/10 bg-[#fffcf7]">
-      <div
-        className="grid grid-cols-[minmax(0,1.5fr)_84px_74px] gap-2 border-b border-[#1a1816]/[0.07] px-4 py-2 font-label text-[8px] font-bold uppercase tracking-[0.18em] text-[#6e6355]/70 sm:grid-cols-[minmax(0,1.6fr)_84px_92px_66px]"
-        aria-hidden="true"
-      >
-        <span>Request</span>
-        <span>Trade</span>
-        <span className="hidden sm:block">Status</span>
-        <span className="text-right">When</span>
-      </div>
-      {rows.map((row, i) => (
-        <motion.div
-          key={row.id}
-          initial={row.status === 'new' && !reduceMotion ? { opacity: 0, backgroundColor: 'rgba(168,128,42,0.16)' } : false}
-          animate={{ opacity: 1, backgroundColor: 'rgba(168,128,42,0)' }}
-          transition={{ duration: reduceMotion ? 0 : 0.9, delay: reduceMotion ? 0 : (row.status === 'new' ? 0.1 : 0.1 + i * 0.04), ease: easeStandard }}
-          className="grid grid-cols-[minmax(0,1.5fr)_84px_74px] items-center gap-2 border-b border-[#1a1816]/[0.05] px-4 py-2.5 last:border-b-0 sm:grid-cols-[minmax(0,1.6fr)_84px_92px_66px]"
-        >
-          <span className="truncate font-body text-[12.5px] text-[#1a1816]">{row.where}</span>
-          <span className="font-label text-[8.5px] font-semibold uppercase tracking-[0.08em] text-[#6e6355]">
-            {row.tag}
-          </span>
-          <span className="hidden sm:block">
-            <em className={`rounded-[3px] border px-2 py-1 font-label text-[7.5px] font-bold not-italic uppercase tracking-[0.1em] ${STATUS_PILL[row.status]}`}>
-              {STATUS_LABEL[row.status]}
-            </em>
-          </span>
-          <span className="text-right font-label text-[8.5px] uppercase tracking-[0.06em] text-[#6e6355]/80">
-            {row.when}
-          </span>
-        </motion.div>
-      ))}
-    </div>
-  )
-}
-
-export function ApplicationArtifact() {
-  const [stage, setStage] = useState<AppStage>('form')
-  const reduceMotion = Boolean(useReducedMotion())
-  const stageTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  useEffect(() => {
-    return () => {
-      if (stageTimer.current) clearTimeout(stageTimer.current)
-    }
-  }, [])
-
-  const submit = () => {
-    if (reduceMotion) {
-      setStage('dashboard')
-      return
-    }
-    setStage('success')
-    if (stageTimer.current) clearTimeout(stageTimer.current)
-    stageTimer.current = setTimeout(() => setStage('dashboard'), 1500)
-  }
-
-  const reset = () => {
-    if (stageTimer.current) clearTimeout(stageTimer.current)
-    setStage('form')
-  }
-
-  const rows = [NEW_OPS_ROW, ...OPS_ROWS]
-
-  return (
-    <ArtifactFrame url="built-with-karst / facilities-tool" chromeRight="Staff-built · Front end to back end">
-      <AnimatePresence mode="wait" initial={false}>
-        {/* ---- FORM: the teacher-facing side ---- */}
-        {stage === 'form' && (
-          <motion.div
-            key="form"
-            initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -10 }}
-            transition={{ duration: reduceMotion ? 0 : 0.3, ease: easeStandard }}
-            className="mx-auto max-w-xl p-5 md:p-7"
-          >
-            <div className="mb-5 flex items-center justify-between gap-3 border-b border-[#1a1816]/10 pb-4">
-              <span className="flex items-center gap-2.5">
-                <i className="h-2 w-2 rounded-full bg-[#1e2a4a]" aria-hidden="true" />
-                <span className="font-label text-[10.5px] font-semibold text-[#1a1816] md:text-[11.5px]">
-                  Site facilities request
-                </span>
-              </span>
-              <span className="rounded-[3px] border border-[#1a1816]/12 px-2.5 py-1 font-label text-[8px] font-bold uppercase tracking-[0.16em] text-[#6e6355]">
-                Staff tool
-              </span>
-            </div>
-            <div className="grid content-start gap-3.5">
-              <div className="grid gap-3.5 sm:grid-cols-2">
-                {(
-                  [
-                    ['Site', 'Grandview Middle'],
-                    ['Location', 'Room 214 · Science wing'],
-                  ] as const
-                ).map(([label, value]) => (
-                  <div key={label} className="grid gap-1.5">
-                    <span className="font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]">
-                      {label}
-                    </span>
-                    <span className="rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-3.5 py-2.5 font-body text-[13.5px] text-[#1a1816]">
-                      {value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <div className="grid gap-1.5">
-                <span className="font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]">
-                  Category
-                </span>
-                <span className="flex flex-wrap gap-2">
-                  {['HVAC', 'Electrical', 'Plumbing', 'Grounds'].map((chip, i) => (
-                    <i
-                      key={chip}
-                      className={`rounded-[3px] border px-3 py-2 font-label text-[9.5px] font-semibold uppercase tracking-[0.14em] not-italic ${
-                        i === 0
-                          ? 'border-[#a8802a] bg-[#a8802a]/[0.08] text-[#1a1816]'
-                          : 'border-[#1a1816]/12 text-[#6e6355]'
-                      }`}
-                    >
-                      {chip}
-                    </i>
-                  ))}
-                </span>
-              </div>
-              <div className="grid gap-1.5">
-                <span className="font-label text-[9px] font-bold uppercase tracking-[0.22em] text-[#6e6355]">
-                  Details
-                </span>
-                <span className="min-h-[58px] rounded-[3px] border border-[#1a1816]/12 bg-[#fffcf7] px-3.5 py-2.5 font-body text-[13px] leading-[1.55] text-[#1a1816]">
-                  No cooling since Tuesday. Two afternoon classes relocated.
-                </span>
-              </div>
-              <div className="mt-1 flex items-center gap-3.5">
-                <motion.button
-                  type="button"
-                  onClick={submit}
-                  className="group inline-flex items-center gap-2.5 rounded-[3px] bg-[#1a1816] px-6 py-3 font-label text-[10px] font-bold uppercase tracking-[0.22em] text-[#f0eee6]"
-                  animate={
-                    reduceMotion
-                      ? undefined
-                      : {
-                          boxShadow: [
-                            '0 0 0 0 rgba(168,128,42,0)',
-                            '0 0 0 7px rgba(168,128,42,0.14)',
-                            '0 0 0 0 rgba(168,128,42,0)',
-                          ],
-                        }
-                  }
-                  transition={reduceMotion ? undefined : { duration: 2.1, repeat: Infinity, ease: 'easeInOut' }}
-                  whileHover={{ y: -1, backgroundColor: '#0e0e0c' }}
-                >
-                  Submit request
-                  <span className="transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true">
-                    →
-                  </span>
-                </motion.button>
-                {!reduceMotion && (
-                  <motion.span
-                    className="flex items-center gap-1 font-body text-[11px] italic text-[#a8802a]"
-                    animate={{ opacity: [0.55, 1, 0.55], x: [0, 3, 0] }}
-                    transition={{ duration: 2.1, repeat: Infinity, ease: 'easeInOut' }}
-                  >
-                    <span aria-hidden="true">←</span> try it
-                  </motion.span>
-                )}
-              </div>
-              <span className="font-body text-[11px] italic text-[#6e6355]/80">
-                Built by the operations team in a Fieldwork session, with AI-assisted coding. Nothing
-                is sent.
-              </span>
-            </div>
-          </motion.div>
-        )}
-
-        {/* ---- SUCCESS: the beat between ---- */}
-        {stage === 'success' && (
-          <motion.div
-            key="success"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="flex min-h-[420px] flex-col items-center justify-center gap-4 p-8 text-center"
-          >
-            <motion.span
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.45, ease: [0.22, 1.4, 0.4, 1] }}
-              className="flex h-14 w-14 items-center justify-center rounded-full border border-[#2d5a5a]/40 bg-[#2d5a5a]/[0.08]"
-            >
-              <motion.svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
-                <motion.path
-                  d="M6 13.5L11 18.5L20 8"
-                  stroke="#2d5a5a"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.45, delay: 0.2, ease: easeStandard }}
-                />
-              </motion.svg>
-            </motion.span>
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.35 }}
-            >
-              <div className="font-headline text-2xl font-light text-[#1a1816]">Request submitted.</div>
-              <div className="mt-2 font-body text-[13px] text-[#1a1816]/60">
-                #4127 logged to District Operations. Routing now…
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-
-        {/* ---- DASHBOARD: the back-end the same team built ---- */}
-        {stage === 'dashboard' && (
-          <motion.div
-            key="dashboard"
-            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.45, ease: easeStandard }}
-            className="p-4 md:p-6"
-          >
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <span className="flex items-center gap-2.5">
-                <span className="relative flex h-2 w-2" aria-hidden="true">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#2d5a5a]/60" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#2d5a5a]" />
-                </span>
-                <span className="font-label text-[10px] font-bold uppercase tracking-[0.24em] text-[#1a1816]">
-                  District operations · live
-                </span>
-              </span>
-              <button
-                type="button"
-                onClick={reset}
-                className="flex items-center gap-1.5 font-label text-[9px] font-semibold uppercase tracking-[0.18em] text-[#6e6355] transition-colors hover:text-[#1a1816]"
-              >
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
-                  <path d="M8.5 5a3.5 3.5 0 1 1-1-2.45M8.5 1v2h-2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Log another
-              </button>
-            </div>
-
-            <div className="grid gap-3.5 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
-              <div className="grid content-start gap-3">
-                <div className="grid grid-cols-3 gap-2.5">
-                  {OPS_KPIS.map(([label, value, note], i) => (
-                    <motion.div
-                      key={label}
-                      initial={reduceMotion ? false : { opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.35, delay: reduceMotion ? 0 : 0.1 + i * 0.06, ease: easeStandard }}
-                      className="rounded-[3px] border border-[#1a1816]/10 px-3 py-2.5"
-                    >
-                      <div className="font-label text-[7.5px] font-bold uppercase tracking-[0.14em] text-[#6e6355]">
-                        {label}
-                      </div>
-                      <div className="mt-1 font-label text-[20px] font-extrabold tracking-[-0.01em] text-[#1a1816]">
-                        {value}
-                      </div>
-                      <div className="mt-0.5 font-body text-[10px] font-medium text-[#a8802a]">{note}</div>
-                    </motion.div>
-                  ))}
-                </div>
-                <OpsTable rows={rows} reduceMotion={reduceMotion} />
-              </div>
-
-              <div className="grid content-start gap-3">
-                <div className="rounded-[3px] border border-[#1a1816]/10 px-4 py-3.5">
-                  <PanelLabel>Open requests by trade</PanelLabel>
-                  {OPS_TRADES.map(([label, width, count], i) => (
-                    <div key={label} className="my-2 grid grid-cols-[68px_minmax(0,1fr)_26px] items-center gap-2.5">
-                      <span className="truncate font-label text-[8.5px] font-semibold uppercase tracking-[0.04em] text-[#1a1816]/70">
-                        {label}
-                      </span>
-                      <motion.i
-                        initial={reduceMotion ? false : { width: 0 }}
-                        animate={{ width: `${width}%` }}
-                        transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.25 + i * 0.07, ease: easeStandard }}
-                        className="block h-1.5 rounded-[2px]"
-                        style={{
-                          background:
-                            i === 0
-                              ? 'linear-gradient(90deg, rgba(165,71,49,0.8), rgba(165,71,49,0.45))'
-                              : 'linear-gradient(90deg, rgba(30,42,74,0.6), rgba(30,42,74,0.35))',
-                        }}
-                      />
-                      <b className="text-right font-label text-[10px] font-semibold text-[#6e6355]">{count}</b>
-                    </div>
-                  ))}
-                </div>
-                <p className="rounded-[3px] border-l-2 border-[#a8802a] bg-[#f6f4ec] px-3.5 py-3 font-body text-[11.5px] italic leading-relaxed text-[#6e6355]">
-                  Same team, both sides. The teacher’s form and this operations view were built together
-                  in Fieldwork; every submission lands here the moment it is sent.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </ArtifactFrame>
-  )
-}
-
-
