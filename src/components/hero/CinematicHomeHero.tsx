@@ -51,7 +51,7 @@ const STORY_BEATS = [
   },
   {
     stage: 'Strata',
-    title: 'An executive director builds the board story.',
+    title: 'An assistant superintendent builds the board story.',
     body: 'One set of figures, recomposed for the board, staff, and families.',
   },
   {
