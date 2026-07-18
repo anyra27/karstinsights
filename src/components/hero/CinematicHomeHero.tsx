@@ -37,22 +37,22 @@ const STORY_BEATS = [
   {
     stage: 'Field',
     title: 'An applied AI partnership for school districts.',
-    body: 'Your people, their real work, and the room to build.',
+    body: 'Your team learns AI by building the district’s real work, with experts beside them.',
   },
   {
     stage: 'Globe',
     title: 'Everyone brings their own work.',
-    body: 'A communications lead, a data director, an operations chief. Each with real work on their plate.',
+    body: 'A communications lead, a data director, an operations chief. Real work, real plates.',
   },
   {
     stage: 'Survey',
-    title: 'Karst protects the time.',
-    body: 'Focused sessions where learning and building happen together.',
+    title: 'Guided sessions, inside the workday.',
+    body: 'Learning and building happen together, with Karst in the room.',
   },
   {
     stage: 'Strata',
-    title: 'Different people build different things.',
-    body: 'Dashboards, presentations, applications. Work the district uses the next day.',
+    title: 'They build things the district uses.',
+    body: 'Dashboards, presentations, applications. Layer by layer, the district’s own stack.',
   },
   {
     stage: 'Assembly',
@@ -192,8 +192,8 @@ export default function CinematicHomeHero() {
               Set the <span className="font-editorial font-normal italic text-[#d9c39b]">tempo.</span>
             </h1>
             <p className="mx-auto mt-7 max-w-[66ch] font-body text-[14px] leading-[1.72] tracking-[0.01em] text-[#f3efe6]/64 md:text-[15.5px]">
-              Karst is an applied AI partnership for school districts. Your people, their real
-              work, and the room to build.
+              Karst is an applied AI partnership for school districts. Your team learns AI by
+              building the district’s real work, with experts beside them.
             </p>
             {reduceMotion && (
               <Link
