@@ -902,20 +902,20 @@ function ObservationTool({ reduceMotion }: { reduceMotion: boolean }) {
 type ToolKey = 'facilities' | 'observation'
 
 const TOOLS: Record<ToolKey, { label: string; url: string; chromeRight: string }> = {
-  facilities: {
-    label: 'Facilities request',
-    url: 'built-with-karst / facilities-tool',
-    chromeRight: 'Staff-built · Front end to back end',
-  },
   observation: {
     label: 'Classroom observation tool',
     url: 'built-with-karst / instructional-rounds',
     chromeRight: 'Staff-built · Instructional rounds',
   },
+  facilities: {
+    label: 'Facilities request',
+    url: 'built-with-karst / facilities-tool',
+    chromeRight: 'Staff-built · Front end to back end',
+  },
 }
 
 export function ApplicationArtifact() {
-  const [tool, setTool] = useState<ToolKey>('facilities')
+  const [tool, setTool] = useState<ToolKey>('observation')
   const reduceMotion = Boolean(useReducedMotion())
   const active = TOOLS[tool]
 
