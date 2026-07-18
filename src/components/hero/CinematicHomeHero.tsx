@@ -36,38 +36,38 @@ const BEAT_RANGES: Array<[number, number, number, number]> = [
 const STORY_BEATS = [
   {
     stage: 'Field',
-    title: 'An applied AI partnership for school districts.',
-    body: 'Your team learns AI by building the district’s real work, with experts beside them.',
+    title: 'An applied AI partnership.',
+    body: 'Karst builds internal AI capability with school district leadership teams. The work is delivered during the engagement. The capability stays for good.',
   },
   {
     stage: 'Globe',
-    title: 'Everyone brings their own work.',
-    body: 'A communications lead, a data director, an operations chief. Real work, real plates.',
+    title: 'Expert partnership, in the room.',
+    body: 'Karst works beside your leaders on the work that actually matters: the board packet, the enrollment question, the data nobody has time to read.',
   },
   {
     stage: 'Survey',
-    title: 'Guided sessions, inside the workday.',
-    body: 'Learning and building happen together, with Karst in the room.',
+    title: 'A data director builds the early-warning dashboard.',
+    body: 'Raw exports become the flag that finds a struggling student in week four.',
   },
   {
     stage: 'Strata',
-    title: 'They build things the district uses.',
-    body: 'Dashboards, presentations, applications. Layer by layer, the district’s own stack.',
+    title: 'A communications chief builds the board story.',
+    body: 'One set of figures, recomposed for the board, staff, and families.',
   },
   {
     stage: 'Assembly',
-    title: 'Karst builds beside them.',
-    body: 'Expert partnership in the room, on the district’s own work.',
+    title: 'An operations lead builds a working tool.',
+    body: 'A request that routes itself and lands on the district dashboard.',
   },
   {
     stage: 'Constellation',
-    title: 'The practice becomes shared.',
-    body: 'Methods carry across roles. The group develops one way of working.',
+    title: 'None of them are engineers.',
+    body: 'Guided sessions inside the workday turn individual wins into shared practice.',
   },
   {
     stage: 'Record',
-    title: 'The district keeps everything.',
-    body: 'Organized, documented, and easy to continue. More capable, not more dependent.',
+    title: 'Capacity, not dependency.',
+    body: 'Everything built stays: documented, running, and owned by the district.',
   },
 ] as const
 
@@ -192,8 +192,8 @@ export default function CinematicHomeHero() {
               Set the <span className="font-editorial font-normal italic text-[#d9c39b]">tempo.</span>
             </h1>
             <p className="mx-auto mt-7 max-w-[66ch] font-body text-[14px] leading-[1.72] tracking-[0.01em] text-[#f3efe6]/64 md:text-[15.5px]">
-              Karst is an applied AI partnership for school districts. Your team learns AI by
-              building the district’s real work, with experts beside them.
+              Karst builds internal AI capability with school district leadership teams. The work
+              is delivered during the engagement. The capability stays for good.
             </p>
             {reduceMotion && (
               <Link
@@ -248,10 +248,10 @@ export default function CinematicHomeHero() {
               07 · Record
             </p>
             <h2 className="max-w-[480px] font-headline text-[clamp(28px,3vw,42px)] font-medium leading-[1.14] text-[#f3efe6]">
-              The district keeps everything.
+              Capacity, not dependency.
             </h2>
             <p className="mt-3 max-w-[48ch] font-body text-sm leading-[1.65] text-[#f3efe6]/58 md:text-[15.5px]">
-              Organized, documented, and easy to continue. More capable, not more dependent.
+              Everything built stays: documented, running, and owned by the district.
             </p>
             <Link
               to="/contact"
