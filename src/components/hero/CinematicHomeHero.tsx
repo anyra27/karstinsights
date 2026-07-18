@@ -51,12 +51,12 @@ const STORY_BEATS = [
   },
   {
     stage: 'Strata',
-    title: 'A communications chief builds the board story.',
+    title: 'An executive director builds the board story.',
     body: 'One set of figures, recomposed for the board, staff, and families.',
   },
   {
     stage: 'Assembly',
-    title: 'An operations lead builds a working tool.',
+    title: 'A cabinet chief builds a working tool.',
     body: 'A request that routes itself and lands on the district dashboard.',
   },
   {
@@ -193,7 +193,7 @@ export default function CinematicHomeHero() {
             </h1>
             <p className="mx-auto mt-7 max-w-[66ch] font-body text-[14px] leading-[1.72] tracking-[0.01em] text-[#f3efe6]/64 md:text-[15.5px]">
               Karst builds internal AI capability with school district leadership teams. The work
-              is delivered during the engagement. The capability stays for good.
+              is delivered during the engagement. The capability remains.
             </p>
             {reduceMotion && (
               <Link
