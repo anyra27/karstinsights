@@ -37,7 +37,7 @@ const STORY_BEATS = [
   {
     stage: 'Field',
     title: 'An applied AI partnership.',
-    body: 'Karst builds internal AI capability with school district leadership teams. The work is delivered during the engagement. The capability stays for good.',
+    body: 'Karst builds internal AI capability with school district leadership teams. The work is delivered during the engagement. The capability remains.',
   },
   {
     stage: 'Globe',
