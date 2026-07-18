@@ -32,7 +32,7 @@ function interpolate(a: number, b: number, mix: number) {
 
 function particleCount(width: number, coarse: boolean, saveData: boolean) {
   let count = coarse || width <= 720
-    ? 6200
+    ? 4200
     : width > 1600
       ? 19000
       : width > 1100
@@ -150,6 +150,17 @@ export default function KarstFormationCanvas({ progress, className = '' }: Karst
     }
 
     function drawAtmosphere(cx: number, cy: number, bodyRadius: number) {
+      if (coarse) {
+        // Phones skip the two drifting gradients: one static center wash
+        // costs a third of the fills and reads the same at this size.
+        const center = ctx.createRadialGradient(cx, cy, bodyRadius * 0.03, cx, cy, bodyRadius * 1.2)
+        center.addColorStop(0, 'rgba(236,232,222,0.05)')
+        center.addColorStop(0.5, 'rgba(202,193,177,0.018)')
+        center.addColorStop(1, 'rgba(202,193,177,0)')
+        ctx.fillStyle = center
+        ctx.fillRect(0, 0, width, height)
+        return
+      }
       const breath = 1 + Math.sin(elapsed * 0.11) * 0.08
       const warmX = cx + Math.cos(elapsed * 0.05) * bodyRadius * 1.15
       const warmY = cy + Math.sin(elapsed * 0.038) * bodyRadius * 0.7

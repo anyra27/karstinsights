@@ -236,7 +236,7 @@ const SOURCE_FILES: Array<[string, string]> = [
 ]
 
 const PANEL =
-  'relative rounded-[12px] border border-white/60 bg-white/45 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_1px_2px_rgba(26,24,22,0.04),0_14px_36px_-24px_rgba(26,24,22,0.32)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/70 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_2px_5px_rgba(26,24,22,0.05),0_24px_48px_-24px_rgba(15,76,76,0.4)]'
+  'relative rounded-[12px] border border-white/60 bg-white/85 backdrop-blur-none md:bg-white/45 md:backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_1px_2px_rgba(26,24,22,0.04),0_14px_36px_-24px_rgba(26,24,22,0.32)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/70 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_2px_5px_rgba(26,24,22,0.05),0_24px_48px_-24px_rgba(15,76,76,0.4)]'
 
 /* Dot-grid field behind every chart — the drafting-table texture */
 const DOT_FIELD: React.CSSProperties = {
@@ -852,7 +852,7 @@ export function DashboardArtifact() {
           }}
         />
         {/* Provenance: the pile of data becomes one picture */}
-        <div className="flex flex-col gap-3 rounded-[12px] border border-white/60 bg-white/45 px-4 py-3 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_10px_28px_-22px_rgba(26,24,22,0.3)] md:flex-row md:items-center md:gap-5">
+        <div className="flex flex-col gap-3 rounded-[12px] border border-white/60 bg-white/85 px-4 py-3 md:bg-white/45 md:backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_10px_28px_-22px_rgba(26,24,22,0.3)] md:flex-row md:items-center md:gap-5">
           <div className="flex flex-wrap gap-1.5">
             {SOURCE_FILES.map(([name, count], i) => (
               <motion.span
@@ -890,8 +890,8 @@ export function DashboardArtifact() {
               onClick={() => setLensKey(key)}
               className={`rounded-[4px] px-3.5 py-2 font-label text-[9px] font-semibold uppercase tracking-[0.12em] transition-all duration-200 ${
                 key === lensKey
-                  ? 'bg-[#0f4c4c]/90 text-[#f0faf8] backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_4px_10px_-4px_rgba(15,76,76,0.45)]'
-                  : 'border border-white/60 bg-white/50 text-[#6e6355] backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] hover:-translate-y-px hover:bg-white/70 hover:text-[#1a1816]'
+                  ? 'bg-[#0f4c4c] text-[#f0faf8] md:bg-[#0f4c4c]/90 md:backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_4px_10px_-4px_rgba(15,76,76,0.45)]'
+                  : 'border border-white/60 bg-white/85 text-[#6e6355] md:bg-white/50 md:backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] hover:-translate-y-px hover:bg-white/70 hover:text-[#1a1816]'
               }`}
             >
               {LENSES[key].tab}

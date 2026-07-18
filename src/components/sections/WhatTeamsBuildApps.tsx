@@ -55,21 +55,18 @@ function PulseSubmit({
       <motion.button
         type="button"
         onClick={onClick}
-        className="group inline-flex items-center gap-2.5 rounded-[3px] bg-[#1a1816] px-6 py-3 font-label text-[10px] font-bold uppercase tracking-[0.22em] text-[#f0eee6]"
-        animate={
-          reduceMotion
-            ? undefined
-            : {
-                boxShadow: [
-                  '0 0 0 0 rgba(45,138,138,0)',
-                  '0 0 0 7px rgba(45,138,138,0.15)',
-                  '0 0 0 0 rgba(45,138,138,0)',
-                ],
-              }
-        }
-        transition={reduceMotion ? undefined : { duration: 2.1, repeat: Infinity, ease: 'easeInOut' }}
+        className="group relative inline-flex items-center gap-2.5 rounded-[3px] bg-[#1a1816] px-6 py-3 font-label text-[10px] font-bold uppercase tracking-[0.22em] text-[#f0eee6]"
         whileHover={{ y: -1, backgroundColor: '#0e0e0c' }}
       >
+        {/* transform-only pulse ring; cheap on mobile GPUs */}
+        {!reduceMotion && (
+          <motion.span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 rounded-[3px] border-2 border-[#2d8a8a]/45"
+            animate={{ scale: [1, 1.14], opacity: [0.65, 0] }}
+            transition={{ duration: 1.7, repeat: Infinity, ease: 'easeOut' }}
+          />
+        )}
         {label}
         <span className="transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true">
           →
