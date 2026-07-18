@@ -206,7 +206,15 @@ export function ArtifactFrame({
                 actionIcon="close"
                 onAction={() => setIsOpen(false)}
               />
-              <div className="min-h-0 flex-1 overflow-y-auto bg-[#fffcf7] text-[#1a1816]">{children}</div>
+              <div
+                className="min-h-0 flex-1 overflow-y-auto text-[#1a1816]"
+                style={{
+                  background:
+                    'radial-gradient(560px 380px at 14% 18%, rgba(45,138,138,0.16), transparent 70%), radial-gradient(620px 420px at 86% 70%, rgba(201,138,30,0.12), transparent 70%), linear-gradient(178deg, #fffcf7 0%, #faf6ec 100%)',
+                }}
+              >
+                {children}
+              </div>
             </motion.div>
           </motion.div>
         )}
