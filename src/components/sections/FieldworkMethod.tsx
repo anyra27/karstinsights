@@ -3,18 +3,18 @@ import { motion, useReducedMotion } from 'framer-motion'
 const STEPS = [
   {
     number: '01',
-    label: 'Protect the time',
-    detail: 'The work earns real room on the calendar.',
+    label: 'Bring the work',
+    detail: 'The brief, the dashboard, the process that eats a week. Real items from real plates.',
   },
   {
     number: '02',
-    label: 'Build in the work',
-    detail: 'Different people build different things, with Karst beside them.',
+    label: 'Build beside Karst',
+    detail: 'Guided sessions inside the workday. Different people build different things.',
   },
   {
     number: '03',
-    label: 'Keep it going',
-    detail: 'Everything lands in one organized kit, easy to find and run again.',
+    label: 'Leave it running',
+    detail: 'Every build lands in the Operating Kit, documented and easy to run again.',
   },
 ]
 
@@ -51,8 +51,8 @@ export default function FieldworkMethod() {
               Fieldwork
             </p>
             <h2 className="font-headline text-3xl font-light leading-[1.14] md:text-5xl">
-              Protected time{' '}
-              <span className="font-editorial font-normal italic text-[#e6d8b9]">to build.</span>
+              Real work in.{' '}
+              <span className="font-editorial font-normal italic text-[#e6d8b9]">Working systems out.</span>
             </h2>
           </motion.div>
 
@@ -63,8 +63,8 @@ export default function FieldworkMethod() {
             }}
             className="max-w-[56ch] self-end font-body text-base leading-[1.85] text-[#fffcf7]/62 md:text-lg"
           >
-            Not time away from the work. Time to improve it. Your team brings the work already on
-            their plates, and Karst supplies the time, guidance, and methods to build with it.
+            A school year of guided build sessions, inside the workday. Your team brings the work
+            already on their plates, and Karst supplies the guidance and methods to build with it.
             Everyone leaves with working systems they can keep improving.
           </motion.p>
         </div>
