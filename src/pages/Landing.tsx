@@ -243,7 +243,7 @@ export default function Landing() {
                 Start with your people
               </p>
               <h2 className="font-headline text-3xl md:text-4xl text-white/95 leading-snug mb-6 max-w-xl mx-auto">
-                Bring your people and the work on their plates.
+                Bring your people and their real work.
               </h2>
               <Link
                 to="/contact"

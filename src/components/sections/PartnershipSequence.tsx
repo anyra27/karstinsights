@@ -27,17 +27,17 @@ interface Stage {
 const STAGES: Stage[] = [
   {
     number: '01',
-    label: 'The first day',
-    title: 'It opens with',
-    titleItalic: 'work.',
+    label: 'The Executive Workshop',
+    title: 'One day,',
+    titleItalic: 'one working artifact.',
     body: 'Most partnerships begin with a single Executive Workshop: one live district priority, one working artifact by the afternoon. Districts ready for the full year can begin there instead.',
     image: birdOfParadise,
   },
   {
     number: '02',
-    label: 'The fieldwork year',
-    title: 'A year of',
-    titleItalic: 'building.',
+    label: 'The Fieldwork Year',
+    title: 'Monthly build days,',
+    titleItalic: 'real systems.',
     body: 'One cross-functional team, protected build days across the school year, three to five operating systems in real use. The cabinet reviews evidence each quarter.',
     lanes: [
       { text: 'Leadership readbacks with the cabinet and Ed Services' },
@@ -53,9 +53,9 @@ const STAGES: Stage[] = [
   },
   {
     number: '03',
-    label: 'The layers',
-    title: 'The practice',
-    titleItalic: 'spreads.',
+    label: 'Learning Platforms',
+    title: 'The practice reaches',
+    titleItalic: 'every seat.',
     body: 'Learning Platforms extend the work to every seat: leaders, educators, students, and families. Governed publishing carries the artifacts. Everything lands in the District AI Operating Kit.',
     image: gem4,
     link: { label: 'See the Learning Studios', href: '/studios' },
@@ -99,7 +99,7 @@ export default function PartnershipSequence() {
             }}
             className="max-w-[34ch] font-body text-sm leading-relaxed text-[#1a1816]/60 md:text-right"
           >
-            Not a menu. A year of work with your leadership team, entered by introduction and
+            A year-long engagement with your leadership team, entered by introduction and
             referral.
           </motion.p>
         </div>

@@ -4,7 +4,7 @@ const STEPS = [
   {
     number: '01',
     label: 'Bring the work',
-    detail: 'The brief, the dashboard, the process that eats a week. Real items from real plates.',
+    detail: 'The brief, the dashboard, the process that eats a week. Chosen by your team.',
   },
   {
     number: '02',
@@ -64,7 +64,7 @@ export default function FieldworkMethod() {
             className="max-w-[56ch] self-end font-body text-base leading-[1.85] text-[#fffcf7]/62 md:text-lg"
           >
             A school year of guided build sessions, inside the workday. Your team brings the work
-            already on their plates, and Karst supplies the guidance and methods to build with it.
+            already in front of them, and Karst supplies the guidance and methods to build with it.
             Everyone leaves with working systems they can keep improving.
           </motion.p>
         </div>
