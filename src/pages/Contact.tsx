@@ -83,7 +83,7 @@ export default function Contact() {
 
             <div className="mt-8 flex flex-col gap-3 border-t border-outline-variant/15 pt-7 sm:flex-row sm:items-center sm:justify-between">
               <p className="font-body text-sm text-on-surface-variant/70">
-                Workshops · Fieldwork · Learning Platforms
+                A Workshop opens the work. Fieldwork builds the capability.
               </p>
               <p className="font-body text-xs text-on-surface-variant/55">
                 Read our{' '}

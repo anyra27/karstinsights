@@ -10,47 +10,17 @@ import DashboardShowcase from '../components/sections/DashboardShowcase'
 import DistrictLeadershipProof from '../components/sections/DistrictLeadershipProof'
 import FieldworkMethod from '../components/sections/FieldworkMethod'
 import WhatTeamsBuild from '../components/sections/WhatTeamsBuild'
-import EngagementPaths from '../components/sections/EngagementPaths'
+import PartnershipSequence from '../components/sections/PartnershipSequence'
 import OperatingKitDiagram from '../components/art/OperatingKitDiagram'
 import AmbientParticles from '../components/art/AmbientParticles'
 import CinematicHomeHero from '../components/hero/CinematicHomeHero'
 
 import { usePageMeta } from '../lib/usePageMeta'
-import gem4 from '../assets/gem4.webp'
-import birdOfParadise from '../assets/bird-of-paradise.webp'
-import koi from '../assets/koi.webp'
 
 /* District leadership proof — live testimonials provided for marketing use,
    with each leader's current role and organization stated individually. */
 const SHOW_PROOF = true
 
-/* ── Three ways into the work: focused workshops, sustained fieldwork,
-   and role-specific learning platforms. ── */
-const offerings = [
-  {
-    label: 'Workshops',
-    title: 'Bring the work you already have.',
-    desc: 'Focused sessions. Your team builds its first working results with Karst.',
-    image: birdOfParadise,
-    link: '/contact',
-  },
-  {
-    label: 'Fieldwork',
-    title: 'Protect the time. Build all year.',
-    desc: 'Sustained build time across a school year, with Karst working beside your team.',
-    image: koi,
-    imagePosition: 'right bottom',
-    link: '/cohort/',
-    native: true,
-  },
-  {
-    label: 'Learning Platforms',
-    title: 'Extend the practice.',
-    desc: 'Role-specific learning for leaders, educators, students, and families.',
-    image: gem4,
-    link: '/studios',
-  },
-]
 
 /* ════════════════════════════════════════ */
 
@@ -251,8 +221,8 @@ export default function Landing() {
       </section>
 
 
-      {/* ══════════ THREE DOORS — choose a way into the work after the story is earned ══════════ */}
-      <EngagementPaths paths={offerings} />
+      {/* ══════════ THE PARTNERSHIP — one engagement, built in sequence ══════════ */}
+      <PartnershipSequence />
 
 
       {/* ══════════ DARK CTA — ambition + the leader who brought it ══════════ */}
@@ -279,7 +249,7 @@ export default function Landing() {
                 to="/contact"
                 className="group mt-6 inline-flex items-center gap-2.5 bg-white text-[#0e0e0c] py-4 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_44px_-14px_rgba(255,255,255,0.45)]"
               >
-                Start the Conversation
+                Request an Introduction
                 <span className="text-sm transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
                   →
                 </span>

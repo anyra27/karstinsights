@@ -11,6 +11,14 @@ import { usePageMeta } from '../lib/usePageMeta'
    Only the month/year is shown; the day is just a sort key. */
 const BRIEFINGS = [
   {
+    slug: 'sonnet-5',
+    date: '2026-06-18',
+    eyebrow: 'Claude Sonnet 5 · June 2026',
+    title: 'For people who already build with Claude.',
+    dek: 'What the everyday tier now carries, and where it fits in a district practice.',
+    image: '/briefings/assets/sonnet-5.webp',
+  },
+  {
     slug: 'fable-5',
     date: '2026-06-09',
     eyebrow: 'Claude Fable 5 · June 2026',

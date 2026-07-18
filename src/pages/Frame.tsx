@@ -66,7 +66,7 @@ export default function Frame() {
               to="/contact"
               className="inline-block bg-[#1a1816] text-[#F0EEE6] py-3.5 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px] hover:bg-[#0e0e0c] transition-colors"
             >
-              Request a Conversation
+              Request an Introduction
             </Link>
             <a
               href="#in-action"
@@ -381,7 +381,7 @@ export default function Frame() {
               to="/contact"
               className="inline-block bg-white text-[#0e0e0c] py-3.5 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px] hover:bg-white/90 transition-colors"
             >
-              Request a Conversation
+              Request an Introduction
             </Link>
           </motion.div>
           <div className="w-16 h-px bg-white/10 mx-auto mb-20" />
