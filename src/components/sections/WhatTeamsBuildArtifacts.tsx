@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { easeStandard } from '../../lib/motion'
 import mirrorPoolImage from '../../assets/mirror-pool.webp'
 import slotCanyonImage from '../../assets/slot-canyon.webp'
-import karstCavernImage from '../../assets/karst-cavern.webp'
+import fishSchoolImage from '../../assets/fish-school.webp'
 
 /* ── The three build artifacts for the What Your Team Builds chapter.
    Each maps to work Karst actually delivers: raw district exports
@@ -1332,7 +1332,7 @@ function DeckSlide({
         </div>
         <div className="relative hidden overflow-hidden md:block">
           <motion.img
-            src={karstCavernImage}
+            src={fishSchoolImage}
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
             initial={reduceMotion ? false : { scale: 1.06, opacity: 0 }}
