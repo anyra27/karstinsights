@@ -28,9 +28,9 @@ const STAGES: Stage[] = [
   {
     number: '01',
     label: 'The Executive Workshop',
-    title: 'One day,',
-    titleItalic: 'one working artifact.',
-    body: 'Most partnerships begin with a single Executive Workshop: one live district priority, one working artifact by the afternoon. Districts ready for the full year can begin there instead.',
+    title: 'One day of',
+    titleItalic: 'real work.',
+    body: 'Most partnerships begin with a single Executive Workshop: your team builds against a live district priority and leaves with working artifacts the same day. Districts ready for the full year can begin there instead.',
     image: birdOfParadise,
   },
   {
@@ -53,12 +53,11 @@ const STAGES: Stage[] = [
   },
   {
     number: '03',
-    label: 'Learning Platforms',
-    title: 'The practice reaches',
-    titleItalic: 'every seat.',
-    body: 'Learning Platforms extend the work to every seat: leaders, educators, students, and families. Governed publishing carries the artifacts. Everything lands in the District AI Operating Kit.',
+    label: 'The Continuation',
+    title: 'The district',
+    titleItalic: 'runs it.',
+    body: 'Everything your team builds lands in the District AI Operating Kit, documented and owned outright. The district carries the work forward; Karst stays available as it grows.',
     image: gem4,
-    link: { label: 'See the Learning Studios', href: '/studios' },
   },
 ]
 
