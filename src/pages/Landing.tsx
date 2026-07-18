@@ -89,7 +89,7 @@ export default function Landing() {
               Every dashboard, presentation, and application your team builds lives in one organized
               kit. Documented in plain language. Easy to find, easy to run again, easy to update,
               and easy to hand to the next person. Karst maintains it with you through the
-              engagement, and the district owns it outright.
+              engagement, and the kit stays with the district.
             </motion.p>
 
             <motion.p

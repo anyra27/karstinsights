@@ -56,7 +56,7 @@ const STAGES: Stage[] = [
     label: 'The Continuation',
     title: 'The district',
     titleItalic: 'runs it.',
-    body: 'Everything your team builds lands in the District AI Operating Kit, documented and owned outright. The district carries the work forward; Karst stays available as it grows.',
+    body: 'Everything your team builds lands in the District AI Operating Kit, documented and district-owned. The district carries the work forward; Karst stays available as it grows.',
     image: gem4,
   },
 ]
