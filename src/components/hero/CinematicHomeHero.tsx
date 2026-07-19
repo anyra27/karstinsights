@@ -47,7 +47,7 @@ const STORY_BEATS = [
   {
     stage: 'Survey',
     title: 'Raw data becomes early answers.',
-    body: 'Attendance exports become the dashboard that flags a struggling student in week four.',
+    body: 'Attendance exports become the dashboard that flags a struggling student early.',
   },
   {
     stage: 'Strata',
