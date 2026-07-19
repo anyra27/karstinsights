@@ -47,12 +47,12 @@ const STORY_BEATS = [
   {
     stage: 'Survey',
     title: 'Insights that were out of reach.',
-    body: 'Your team already reads the data. Now it builds predictive solutions and analytics from it: work that once required outside help, or simply went undone.',
+    body: 'District data arrives segmented and unclear. Your team turns it into dashboards, predictive solutions, and analytics: answers that once required outside help, or simply went without.',
   },
   {
     stage: 'Strata',
-    title: 'The dashboard becomes the presentation.',
-    body: 'The same work, recomposed for the board, staff, and families. As many stories as the district needs to tell.',
+    title: 'Every build feeds the next.',
+    body: 'Datasets become dashboards. Dashboards become presentations, websites, and communications, recomposed for the board, staff, and families. One thread of work, carried to every audience.',
   },
   {
     stage: 'Assembly',
