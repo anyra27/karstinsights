@@ -46,23 +46,23 @@ const STORY_BEATS = [
   },
   {
     stage: 'Survey',
-    title: 'A data director builds the early-warning dashboard.',
-    body: 'Raw exports become the flag that finds a struggling student in week four.',
+    title: 'Raw data becomes early answers.',
+    body: 'Attendance exports become the dashboard that flags a struggling student in week four.',
   },
   {
     stage: 'Strata',
-    title: 'An assistant superintendent builds the board story.',
-    body: 'One set of figures, recomposed for the board, staff, and families.',
+    title: 'One story, every audience.',
+    body: 'The same figures, recomposed for the board, staff, and families.',
   },
   {
     stage: 'Assembly',
-    title: 'A cabinet chief builds a working tool.',
-    body: 'A request that routes itself and lands on the district dashboard.',
+    title: 'Recurring work becomes working tools.',
+    body: 'Requests that route themselves and land on the district dashboard.',
   },
   {
     stage: 'Constellation',
-    title: 'None of them are engineers.',
-    body: 'Guided sessions inside the workday turn individual wins into shared practice.',
+    title: 'No engineers needed.',
+    body: 'Your leadership team builds all of it in guided sessions, inside the workday.',
   },
   {
     stage: 'Record',
