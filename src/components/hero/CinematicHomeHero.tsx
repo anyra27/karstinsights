@@ -36,28 +36,28 @@ const BEAT_RANGES: Array<[number, number, number, number]> = [
 const STORY_BEATS = [
   {
     stage: 'Field',
-    title: 'An applied AI partnership.',
-    body: 'Karst builds internal AI capability with school district leadership teams. The work is delivered during the engagement. The capability remains.',
+    title: 'District-owned AI capability.',
+    body: 'Karst gives district teams protected build time and expert partnership: to build the systems their work requires, and the capability to keep improving them.',
   },
   {
     stage: 'Globe',
-    title: 'Expert partnership, in the room.',
-    body: 'Karst works beside your leaders on the work that actually matters: the board packet, the enrollment question, the data nobody has time to read.',
+    title: 'AI access is everywhere. Capability is not.',
+    body: 'Districts have the tools. What they lack is time, practice, and ownership. Karst works beside your executive team to build real capability with agentic AI systems.',
   },
   {
     stage: 'Survey',
-    title: 'Raw data becomes early answers.',
-    body: 'Attendance exports become the dashboard that flags a struggling student early.',
+    title: 'Your data, read by your team.',
+    body: 'Giant datasets, or several at once, become working dashboards. Built by your team, from the district’s own data.',
   },
   {
     stage: 'Strata',
-    title: 'One story, every audience.',
-    body: 'The same figures, recomposed for the board, staff, and families.',
+    title: 'The dashboard becomes the presentation.',
+    body: 'The same work, recomposed for the board, staff, and families. As many stories as the district needs to tell.',
   },
   {
     stage: 'Assembly',
-    title: 'Recurring work becomes working tools.',
-    body: 'Requests that route themselves and land on the district dashboard.',
+    title: 'One unified system.',
+    body: 'Not one tool for slides, another for data, another for design. Your team learns a modern, agentic way of working that carries the work end to end.',
   },
   {
     stage: 'Constellation',
@@ -67,7 +67,7 @@ const STORY_BEATS = [
   {
     stage: 'Record',
     title: 'Capacity, not dependency.',
-    body: 'Everything built stays: documented, running, and owned by the district.',
+    body: 'Everything built lives in the district’s Operating Kit: documented, running, branded in the district’s voice, and owned outright. Capability that sets a district apart.',
   },
 ] as const
 
@@ -189,11 +189,12 @@ export default function CinematicHomeHero() {
               For School District Executive Teams
             </p>
             <h1 className="font-headline text-[clamp(48px,7.4vw,104px)] font-light leading-[1.04] tracking-[-0.035em] text-[#f3efe6]">
-              Set the <span className="font-editorial font-normal italic text-[#d9c39b]">tempo.</span>
+              District-owned{' '}
+              <span className="font-editorial font-normal italic text-[#d9c39b]">AI capability.</span>
             </h1>
             <p className="mx-auto mt-7 max-w-[66ch] font-body text-[14px] leading-[1.72] tracking-[0.01em] text-[#f3efe6]/64 md:text-[15.5px]">
-              Karst builds internal AI capability with school district leadership teams. The work
-              is delivered during the engagement. The capability remains.
+              Karst gives district teams protected build time and expert partnership: to build the
+              systems their work requires, and the capability to keep improving them.
             </p>
             {reduceMotion && (
               <Link
@@ -251,7 +252,8 @@ export default function CinematicHomeHero() {
               Capacity, not dependency.
             </h2>
             <p className="mt-3 max-w-[48ch] font-body text-sm leading-[1.65] text-[#f3efe6]/58 md:text-[15.5px]">
-              Everything built stays: documented, running, and owned by the district.
+              Everything built lives in the district’s Operating Kit: documented, running, branded
+              in the district’s voice, and owned outright. Capability that sets a district apart.
             </p>
             <Link
               to="/contact"
