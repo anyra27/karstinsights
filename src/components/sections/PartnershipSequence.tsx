@@ -8,9 +8,9 @@ import gem4 from '../../assets/gem4.webp'
 
 /* ── The Partnership — one engagement told in sequence, staged as the
    full-bleed hover panels (the strongest interaction this section has
-   had). No pricing, no slot counts, and no quantifiers in the offer
-   copy: numbers read as ceilings. Scarcity reuses the approved
-   Fieldwork-page line verbatim. ── */
+   had). No pricing, no capacity counts, and no quantifiers anywhere in
+   the offer copy: numbers read as ceilings, and no capacity claim has
+   ever come from Kevin. Posture line: introduction and referral. ── */
 
 interface Stage {
   number: string
@@ -134,7 +134,7 @@ export default function PartnershipSequence() {
         transition={{ duration: reduceMotion ? 0 : 0.7, delay: reduceMotion ? 0 : 0.2 }}
       >
         <p className="font-editorial text-[15px] italic text-[#6e6355]">
-          One district team a year. By invitation.
+          Entered by introduction and referral.
         </p>
         <Link
           to="/contact"
