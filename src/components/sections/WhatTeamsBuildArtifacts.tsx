@@ -848,6 +848,22 @@ export function DashboardArtifact() {
       <div
         className="relative grid gap-4 bg-[#fbf8f1] p-4 md:p-6"
       >
+        {/* Masthead: this is a deliverable, not a widget */}
+        <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-b border-[#1a1816]/10 pb-4">
+          <div>
+            <p className="mb-1.5 font-label text-[8.5px] font-bold uppercase tracking-[0.28em] text-[#a8802a]">
+              Karst Demo
+            </p>
+            <h3 className="font-headline text-[20px] font-medium leading-tight tracking-[-0.01em] text-[#1a1816] md:text-[23px]">
+              Early-Warning{' '}
+              <span className="font-editorial font-normal italic text-[#a8802a]">Attendance.</span>
+            </h3>
+          </div>
+          <p className="pb-0.5 font-label text-[8px] font-semibold uppercase tracking-[0.2em] text-[#6e6355]/75">
+            Synthetic district data · For demonstration
+          </p>
+        </div>
+
         {/* Provenance: the pile of data becomes one picture */}
         <div className="flex flex-col gap-3 rounded-[8px] border border-[#1a1816]/10 bg-white px-4 py-3 shadow-[0_1px_2px_rgba(26,24,22,0.04)] md:flex-row md:items-center md:gap-5">
           <div className="flex flex-wrap gap-1.5">
@@ -905,7 +921,9 @@ export function DashboardArtifact() {
             transition={{ duration: reduceMotion ? 0 : 0.35, ease: easeStandard }}
             className="grid gap-3.5"
           >
-            <div className="font-label text-[15px] font-semibold text-[#1a1816] md:text-[16px]">{lens.title}</div>
+            <div className="font-headline text-[16.5px] font-medium tracking-[-0.005em] text-[#1a1816] md:text-[18px]">
+              {lens.title}
+            </div>
             <div className="grid gap-3 sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)]">
               <div className="grid content-start gap-3">
                 {lens.stats.map(([label, value, note, tone]) => (
