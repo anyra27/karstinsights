@@ -46,8 +46,8 @@ const STORY_BEATS = [
   },
   {
     stage: 'Survey',
-    title: 'Your data, read by your team.',
-    body: 'Giant datasets, or several at once, become working dashboards. Built by your team, from the district’s own data.',
+    title: 'Insights that were out of reach.',
+    body: 'Your team already reads the data. Now it builds predictive solutions and analytics from it: work that once required outside help, or simply went undone.',
   },
   {
     stage: 'Strata',
@@ -66,7 +66,7 @@ const STORY_BEATS = [
   },
   {
     stage: 'Record',
-    title: 'Change how the district works.',
+    title: 'The district you’ve wanted to run.',
     body: 'Leaders operating agentic AI. Teams that work differently. A culture of practical innovation the district carries forward. The partnership starts wherever you need it, and grows from there.',
   },
 ] as const
@@ -249,7 +249,7 @@ export default function CinematicHomeHero() {
               07 · Record
             </p>
             <h2 className="max-w-[480px] font-headline text-[clamp(28px,3vw,42px)] font-medium leading-[1.14] text-[#f3efe6]">
-              Change how the district works.
+              The district you’ve wanted to run.
             </h2>
             <p className="mt-3 max-w-[48ch] font-body text-sm leading-[1.65] text-[#f3efe6]/58 md:text-[15.5px]">
               Leaders operating agentic AI. Teams that work differently. A culture of practical
