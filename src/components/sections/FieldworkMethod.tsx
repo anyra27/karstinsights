@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
+import AmbientParticles from '../art/AmbientParticles'
 
 const STEPS = [
   {
@@ -21,14 +22,21 @@ const STEPS = [
   },
 ]
 
+/* The gold survey line draws over LINE_DURATION; each node activates as the
+   line's leading edge reaches its position (0%, 33.3%, 66.6% of the width). */
+const LINE_DELAY = 0.25
+const LINE_DURATION = 1.6
+const nodeArrival = (index: number) => LINE_DELAY + LINE_DURATION * (index / 3)
+
 export default function FieldworkMethod() {
   const reduceMotion = Boolean(useReducedMotion())
 
   return (
     <section className="relative overflow-hidden bg-[#fffcf7] px-6 py-24 text-[#1a1816] md:px-10 md:py-36">
+      <AmbientParticles />
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(168,128,42,0.06),transparent_34%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(168,128,42,0.06),transparent_34%)]"
       />
       <motion.div
         className="relative mx-auto max-w-6xl"
@@ -73,40 +81,81 @@ export default function FieldworkMethod() {
         </div>
 
         <div className="relative mt-16 grid gap-0 md:mt-24 md:grid-cols-3">
+          {/* The survey line, drawn left to right */}
           <motion.div
             aria-hidden="true"
             variants={{
               hidden: { scaleX: reduceMotion ? 1 : 0 },
               visible: {
                 scaleX: 1,
-                transition: { duration: reduceMotion ? 0 : 1.2, delay: reduceMotion ? 0 : 0.22 },
+                transition: {
+                  duration: reduceMotion ? 0 : LINE_DURATION,
+                  delay: reduceMotion ? 0 : LINE_DELAY,
+                  ease: 'linear',
+                },
               },
             }}
-            className="absolute left-0 right-0 top-0 hidden h-px origin-left bg-gradient-to-r from-[#a8802a]/70 via-[#1a1816]/15 to-[#a8802a]/30 md:block"
+            className="absolute left-0 right-0 top-0 hidden h-px origin-left bg-gradient-to-r from-[#a8802a]/70 via-[#a8802a]/35 to-[#a8802a]/25 md:block"
           />
-          {STEPS.map((step, index) => (
-            <motion.article
-              key={step.number}
-              variants={{
-                hidden: { opacity: 0, y: reduceMotion ? 0 : 26 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { duration: reduceMotion ? 0 : 0.75, delay: reduceMotion ? 0 : index * 0.1 },
-                },
-              }}
-              className="relative border-t border-[#1a1816]/12 py-8 md:border-t-0 md:border-r md:border-[#1a1816]/10 md:px-9 md:pt-10 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
-            >
-              <span className="absolute -top-1.5 left-0 hidden h-3 w-3 rounded-full border border-[#a8802a]/70 bg-[#fffcf7] md:block" />
-              <p className="mb-10 font-label text-[9px] tracking-[0.24em] text-[#a8802a]/85">
-                {step.number}
-              </p>
-              <h3 className="mb-3 font-headline text-xl text-[#1a1816]">{step.label}</h3>
-              <p className="max-w-[36ch] font-body text-sm leading-relaxed text-[#6e6355]">
-                {step.detail}
-              </p>
-            </motion.article>
-          ))}
+          {STEPS.map((step, index) => {
+            const arrival = reduceMotion ? 0 : nodeArrival(index)
+            return (
+              <motion.article
+                key={step.number}
+                variants={{
+                  hidden: { opacity: 0, y: reduceMotion ? 0 : 26 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: reduceMotion ? 0 : 0.75, delay: arrival },
+                  },
+                }}
+                className="relative border-t border-[#1a1816]/12 py-8 md:border-t-0 md:border-r md:border-[#1a1816]/10 md:px-9 md:pt-10 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
+              >
+                {/* Node: lights as the line arrives, with a one-shot ring pulse */}
+                <span className="absolute -top-1.5 left-0 hidden h-3 w-3 md:block" aria-hidden="true">
+                  <motion.span
+                    className="absolute inset-0 rounded-full bg-[#a8802a]/45"
+                    variants={{
+                      hidden: { scale: 1, opacity: 0 },
+                      visible: reduceMotion
+                        ? { opacity: 0 }
+                        : {
+                            scale: [1, 2.4],
+                            opacity: [0.55, 0],
+                            transition: { duration: 0.9, delay: arrival, ease: 'easeOut' },
+                          },
+                    }}
+                  />
+                  <motion.span
+                    className="absolute inset-0 rounded-full border"
+                    variants={{
+                      hidden: reduceMotion
+                        ? { scale: 1, backgroundColor: '#a8802a', borderColor: 'rgba(168,128,42,0.7)' }
+                        : {
+                            scale: 0.4,
+                            backgroundColor: '#fffcf7',
+                            borderColor: 'rgba(168,128,42,0.35)',
+                          },
+                      visible: {
+                        scale: 1,
+                        backgroundColor: '#a8802a',
+                        borderColor: 'rgba(168,128,42,0.7)',
+                        transition: { duration: reduceMotion ? 0 : 0.45, delay: arrival, ease: 'easeOut' },
+                      },
+                    }}
+                  />
+                </span>
+                <p className="mb-10 font-label text-[9px] tracking-[0.24em] text-[#a8802a]/85">
+                  {step.number}
+                </p>
+                <h3 className="mb-3 font-headline text-xl text-[#1a1816]">{step.label}</h3>
+                <p className="max-w-[36ch] font-body text-sm leading-relaxed text-[#6e6355]">
+                  {step.detail}
+                </p>
+              </motion.article>
+            )
+          })}
         </div>
       </motion.div>
     </section>
