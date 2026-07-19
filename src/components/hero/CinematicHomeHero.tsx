@@ -192,7 +192,7 @@ export default function CinematicHomeHero() {
               District-owned{' '}
               <span className="font-editorial font-normal italic text-[#d9c39b]">AI capability.</span>
             </h1>
-            <p className="mx-auto mt-7 max-w-[62ch] font-body text-[15.5px] leading-[1.72] tracking-[0.01em] text-[#f3efe6]/76 md:text-[17.5px]">
+            <p className="mx-auto mt-7 max-w-[62ch] font-body text-[15.5px] leading-[1.72] tracking-[0.01em] text-[#f3efe6] md:text-[17.5px]">
               Karst gives district teams protected build time and expert partnership: to build the
               systems their work requires, and the capability to keep improving them.
             </p>
