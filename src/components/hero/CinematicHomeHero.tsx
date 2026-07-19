@@ -119,10 +119,10 @@ function HeroBeat({
       <p className="mb-4 font-label text-[10px] uppercase tracking-[0.32em] text-[#c4a070]">
         {label}
       </p>
-      <h2 className="max-w-[480px] font-headline text-[clamp(24px,2.35vw,32px)] font-medium leading-[1.16] text-[#f3efe6]/95">
+      <h2 className="max-w-[480px] font-headline text-[clamp(27px,2.7vw,38px)] font-medium leading-[1.16] text-[#f3efe6]/95">
         {title}
       </h2>
-      <p className="mt-3 max-w-[46ch] font-body text-[14px] leading-[1.65] text-[#f3efe6]/56 md:text-[15.5px]">
+      <p className="mt-3 max-w-[46ch] font-body text-[15.5px] leading-[1.65] text-[#f3efe6]/72 md:text-[17px]">
         {body}
       </p>
     </motion.div>
@@ -192,7 +192,7 @@ export default function CinematicHomeHero() {
               District-owned{' '}
               <span className="font-editorial font-normal italic text-[#d9c39b]">AI capability.</span>
             </h1>
-            <p className="mx-auto mt-7 max-w-[66ch] font-body text-[14px] leading-[1.72] tracking-[0.01em] text-[#f3efe6]/64 md:text-[15.5px]">
+            <p className="mx-auto mt-7 max-w-[62ch] font-body text-[15.5px] leading-[1.72] tracking-[0.01em] text-[#f3efe6]/76 md:text-[17.5px]">
               Karst gives district teams protected build time and expert partnership: to build the
               systems their work requires, and the capability to keep improving them.
             </p>
@@ -251,7 +251,7 @@ export default function CinematicHomeHero() {
             <h2 className="max-w-[480px] font-headline text-[clamp(28px,3vw,42px)] font-medium leading-[1.14] text-[#f3efe6]">
               The district you’ve wanted to run.
             </h2>
-            <p className="mt-3 max-w-[48ch] font-body text-sm leading-[1.65] text-[#f3efe6]/58 md:text-[15.5px]">
+            <p className="mt-3 max-w-[48ch] font-body text-[15.5px] leading-[1.65] text-[#f3efe6]/72 md:text-[17px]">
               Leaders operating agentic AI. Teams that work differently. A culture of practical
               innovation the district carries forward. The partnership starts wherever you need
               it, and grows from there.
