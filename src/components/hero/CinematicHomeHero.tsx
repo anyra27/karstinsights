@@ -66,8 +66,8 @@ const STORY_BEATS = [
   },
   {
     stage: 'Record',
-    title: 'Capacity, not dependency.',
-    body: 'Everything built lives in the district’s Operating Kit: documented, running, branded in the district’s voice, and owned outright. Capability that sets a district apart.',
+    title: 'Bring the work.',
+    body: 'The board packet, the datasets, the story the district needs to tell, the systems you wish existed. The partnership starts wherever your district needs it, and grows from there.',
   },
 ] as const
 
@@ -249,11 +249,12 @@ export default function CinematicHomeHero() {
               07 · Record
             </p>
             <h2 className="max-w-[480px] font-headline text-[clamp(28px,3vw,42px)] font-medium leading-[1.14] text-[#f3efe6]">
-              Capacity, not dependency.
+              Bring the work.
             </h2>
             <p className="mt-3 max-w-[48ch] font-body text-sm leading-[1.65] text-[#f3efe6]/58 md:text-[15.5px]">
-              Everything built lives in the district’s Operating Kit: documented, running, branded
-              in the district’s voice, and owned outright. Capability that sets a district apart.
+              The board packet, the datasets, the story the district needs to tell, the systems
+              you wish existed. The partnership starts wherever your district needs it, and grows
+              from there.
             </p>
             <Link
               to="/contact"
