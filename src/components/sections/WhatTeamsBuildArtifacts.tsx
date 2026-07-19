@@ -208,10 +208,7 @@ export function ArtifactFrame({
               />
               <div
                 className="min-h-0 flex-1 overflow-y-auto text-[#1a1816]"
-                style={{
-                  background:
-                    'radial-gradient(560px 380px at 14% 18%, rgba(45,138,138,0.16), transparent 70%), radial-gradient(620px 420px at 86% 70%, rgba(201,138,30,0.12), transparent 70%), linear-gradient(178deg, #fffcf7 0%, #faf6ec 100%)',
-                }}
+                style={{ background: '#fbf8f1' }}
               >
                 {children}
               </div>
@@ -244,7 +241,7 @@ const SOURCE_FILES: Array<[string, string]> = [
 ]
 
 const PANEL =
-  'relative rounded-[12px] border border-white/60 bg-white/85 backdrop-blur-none md:bg-white/45 md:backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_1px_2px_rgba(26,24,22,0.04),0_14px_36px_-24px_rgba(26,24,22,0.32)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/70 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_2px_5px_rgba(26,24,22,0.05),0_24px_48px_-24px_rgba(15,76,76,0.4)]'
+  'relative rounded-[8px] border border-[#1a1816]/10 bg-white shadow-[0_1px_2px_rgba(26,24,22,0.04),0_10px_24px_-20px_rgba(26,24,22,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_2px_4px_rgba(26,24,22,0.05),0_16px_32px_-20px_rgba(26,24,22,0.32)]'
 
 /* Dot-grid field behind every chart — the drafting-table texture */
 const DOT_FIELD: React.CSSProperties = {
@@ -254,13 +251,14 @@ const DOT_FIELD: React.CSSProperties = {
 
 /* Shared SVG ink: vertical gradients + soft glow per hue */
 function ChartDefs() {
+  /* Flat ink — ids keep the historical "grad" names so usage sites stay stable */
   const stops: Array<[string, string, string]> = [
-    ['gradTealBright', '#39a49c', '#2b8a84'],
-    ['gradTeal', '#1f7272', '#135c5c'],
-    ['gradAmber', '#c08a26', '#a26f10'],
-    ['gradRed', '#cd574b', '#b13f34'],
-    ['gradSea', '#4478aa', '#31608f'],
-    ['gradGreen', '#25c493', '#12a377'],
+    ['gradTealBright', '#2f948d', '#2f948d'],
+    ['gradTeal', '#186767', '#186767'],
+    ['gradAmber', '#b17c1e', '#b17c1e'],
+    ['gradRed', '#c04b3f', '#c04b3f'],
+    ['gradSea', '#3a6c9c', '#3a6c9c'],
+    ['gradGreen', '#1bb485', '#1bb485'],
   ]
   return (
     <defs>
@@ -279,10 +277,10 @@ function ChartDefs() {
         <stop offset="1" stopColor="#1e3a5f" />
       </linearGradient>
       <filter id="inkGlow" x="-40%" y="-40%" width="180%" height="180%">
-        <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#0f4c4c" floodOpacity="0.14" />
+        <feDropShadow dx="0" dy="2" stdDeviation="2.5" floodColor="#0f4c4c" floodOpacity="0.07" />
       </filter>
       <filter id="lineGlow" x="-40%" y="-40%" width="180%" height="180%">
-        <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#2d5f8f" floodOpacity="0.18" />
+        <feDropShadow dx="0" dy="2" stdDeviation="2.5" floodColor="#2d5f8f" floodOpacity="0.08" />
       </filter>
     </defs>
   )
@@ -663,8 +661,8 @@ function RankedBars({ reduceMotion }: { reduceMotion: boolean }) {
               className="block h-[7px] rounded-full"
               style={{
                 background: hot
-                  ? 'linear-gradient(90deg, #a5731a, #c08a26)'
-                  : 'linear-gradient(90deg, #135c5c, #2b8a84)',
+                  ? '#b17c1e'
+                  : '#1f7272',
                 boxShadow: hot
                   ? '0 2px 6px -2px rgba(166,106,6,0.3)'
                   : '0 2px 6px -2px rgba(15,76,76,0.28)',
@@ -848,19 +846,10 @@ export function DashboardArtifact() {
   return (
     <ArtifactFrame url="built-with-karst / early-warning" chromeRight="Raw exports · Processed with AI">
       <div
-        className="relative grid gap-4 p-4 md:p-6"
-        style={{ background: 'linear-gradient(178deg, #fffcf7 0%, #fbf7ef 60%, #f8f3e9 100%)' }}
+        className="relative grid gap-4 bg-[#fbf8f1] p-4 md:p-6"
       >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(460px 340px at 16% 28%, rgba(45,138,138,0.22), transparent 70%), radial-gradient(520px 360px at 84% 58%, rgba(201,138,30,0.16), transparent 70%), radial-gradient(420px 320px at 52% 100%, rgba(74,127,181,0.15), transparent 70%)',
-          }}
-        />
         {/* Provenance: the pile of data becomes one picture */}
-        <div className="flex flex-col gap-3 rounded-[12px] border border-white/60 bg-white/85 px-4 py-3 md:bg-white/45 md:backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.85),0_10px_28px_-22px_rgba(26,24,22,0.3)] md:flex-row md:items-center md:gap-5">
+        <div className="flex flex-col gap-3 rounded-[8px] border border-[#1a1816]/10 bg-white px-4 py-3 shadow-[0_1px_2px_rgba(26,24,22,0.04)] md:flex-row md:items-center md:gap-5">
           <div className="flex flex-wrap gap-1.5">
             {SOURCE_FILES.map(([name, count], i) => (
               <motion.span
@@ -898,8 +887,8 @@ export function DashboardArtifact() {
               onClick={() => setLensKey(key)}
               className={`rounded-[4px] px-3.5 py-2 font-label text-[9px] font-semibold uppercase tracking-[0.12em] transition-all duration-200 ${
                 key === lensKey
-                  ? 'bg-[#0f4c4c] text-[#f0faf8] md:bg-[#0f4c4c]/90 md:backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_4px_10px_-4px_rgba(15,76,76,0.45)]'
-                  : 'border border-white/60 bg-white/85 text-[#6e6355] md:bg-white/50 md:backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] hover:-translate-y-px hover:bg-white/70 hover:text-[#1a1816]'
+                  ? 'bg-[#0f4c4c] text-[#f0faf8] shadow-[0_2px_6px_-2px_rgba(15,76,76,0.35)]'
+                  : 'border border-[#1a1816]/12 bg-white text-[#6e6355] hover:-translate-y-px hover:text-[#1a1816]'
               }`}
             >
               {LENSES[key].tab}
@@ -925,10 +914,7 @@ export function DashboardArtifact() {
                       aria-hidden="true"
                       className="absolute inset-x-0 top-0 h-[2px] rounded-t-[5px]"
                       style={{
-                        background:
-                          tone === 'good'
-                            ? 'linear-gradient(90deg, #10B981, rgba(16,185,129,0))'
-                            : 'linear-gradient(90deg, #c98a1e, rgba(201,138,30,0))',
+                        background: tone === 'good' ? '#10B981' : '#c98a1e',
                       }}
                     />
                     <div className="font-label text-[8px] font-bold uppercase tracking-[0.16em] text-[#6e6355]">
