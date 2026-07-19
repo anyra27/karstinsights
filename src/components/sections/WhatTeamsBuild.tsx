@@ -56,13 +56,10 @@ export default function WhatTeamsBuild() {
   }
 
   return (
-    <section
-      data-karst-nav-dark
-      className="relative overflow-hidden border-t border-[#fffcf7]/8 bg-[#090908] px-6 py-24 text-[#fffcf7] md:px-10 md:py-36"
-    >
+    <section className="relative overflow-hidden bg-[#f6f4ec] px-6 py-24 text-[#1a1816] md:px-10 md:py-36">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_12%,rgba(196,154,67,0.1),transparent_30%),linear-gradient(165deg,rgba(255,255,255,0.02),transparent_44%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_12%,rgba(168,128,42,0.07),transparent_30%),linear-gradient(165deg,rgba(255,255,255,0.5),transparent_44%)]"
       />
       <motion.div
         className="relative z-10 mx-auto max-w-6xl"
@@ -75,7 +72,7 @@ export default function WhatTeamsBuild() {
           <div>
             <motion.p
               variants={staggerChild}
-              className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#c49a43] md:text-[11px]"
+              className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]"
             >
               What Your Team Builds
             </motion.p>
@@ -84,12 +81,12 @@ export default function WhatTeamsBuild() {
               className="max-w-xl font-headline text-3xl font-light leading-[1.14] md:text-5xl lg:text-[54px]"
             >
               Your people can{' '}
-              <span className="font-editorial font-normal italic text-[#e6d8b9]">build this.</span>
+              <span className="font-editorial font-normal italic text-[#a8802a]">build this.</span>
             </motion.h2>
           </div>
           <motion.p
             variants={staggerChild}
-            className="max-w-[48ch] font-body text-base leading-[1.85] text-[#fffcf7]/62 md:text-lg"
+            className="max-w-[48ch] font-body text-base leading-[1.85] text-[#6e6355] md:text-lg"
           >
             Raw data turned into an early-warning dashboard. Presentations that recompose for each
             audience. Tools your staff build that feed those dashboards. Everything below is a
@@ -101,7 +98,7 @@ export default function WhatTeamsBuild() {
           variants={staggerChild}
           role="tablist"
           aria-label="What district teams build"
-          className="mt-14 flex border-y border-[#fffcf7]/14 md:mt-20"
+          className="mt-14 flex border-y border-[#1a1816]/14 md:mt-20"
         >
           {TABS.map((tab, index) => {
             const selected = tab.id === active
@@ -119,8 +116,8 @@ export default function WhatTeamsBuild() {
                 type="button"
                 onClick={() => setActive(tab.id)}
                 onKeyDown={(event) => onTabKeyDown(event, index)}
-                className={`relative border-r border-[#fffcf7]/10 px-4 py-4 font-label text-[9.5px] font-bold uppercase tracking-[0.22em] transition-colors duration-300 last:border-r-0 md:px-7 md:py-[18px] md:text-[11px] ${
-                  selected ? 'text-[#fffcf7]' : 'text-[#fffcf7]/50 hover:text-[#fffcf7]'
+                className={`relative border-r border-[#1a1816]/10 px-4 py-4 font-label text-[9.5px] font-bold uppercase tracking-[0.22em] transition-colors duration-300 last:border-r-0 md:px-7 md:py-[18px] md:text-[11px] ${
+                  selected ? 'text-[#1a1816]' : 'text-[#1a1816]/50 hover:text-[#1a1816]'
                 }`}
               >
                 <span className="hidden sm:inline">{tab.label}</span>
@@ -128,7 +125,7 @@ export default function WhatTeamsBuild() {
                 {selected && (
                   <span
                     aria-hidden="true"
-                    className="absolute inset-x-0 -bottom-px h-0.5 bg-[#c49a43]"
+                    className="absolute inset-x-0 -bottom-px h-0.5 bg-[#a8802a]"
                   />
                 )}
               </button>
@@ -153,10 +150,10 @@ export default function WhatTeamsBuild() {
           </AnimatePresence>
 
           <div className="mt-8 flex flex-col gap-3 md:mt-10 md:flex-row md:items-baseline md:justify-between">
-            <p className="max-w-[52ch] font-body text-sm leading-relaxed text-[#fffcf7]/55 md:text-base">
+            <p className="max-w-[52ch] font-body text-sm leading-relaxed text-[#6e6355] md:text-base">
               {activeTab.line}
             </p>
-            <p className="font-label text-[9px] font-semibold uppercase tracking-[0.26em] text-[#fffcf7]/35 md:text-[10px]">
+            <p className="font-label text-[9px] font-semibold uppercase tracking-[0.26em] text-[#6e6355]/70 md:text-[10px]">
               Illustrative district artifacts · No live data
             </p>
           </div>

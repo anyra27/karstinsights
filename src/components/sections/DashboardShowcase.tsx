@@ -77,15 +77,15 @@ export default function DashboardShowcase() {
       <div className="max-w-[1400px] mx-auto">
         {/* Dashboard switcher pills */}
         <div className="flex justify-center mb-8 md:mb-10">
-          <div className="inline-flex gap-1 rounded-[3px] border border-[#fffcf7]/10 bg-[#fffcf7]/[0.045] p-1 shadow-[0_12px_38px_rgba(0,0,0,0.22)]">
+          <div className="inline-flex gap-1 rounded-[3px] border border-[#1a1816]/12 bg-white/70 p-1 shadow-[0_10px_30px_-18px_rgba(26,24,22,0.35)]">
             {DASHBOARDS.map((d) => (
               <button
                 key={d.id}
                 onClick={() => setActiveId(d.id)}
                 className={`text-[10px] md:text-[11px] tracking-[0.22em] uppercase font-label font-semibold px-4 md:px-5 py-2 md:py-2.5 rounded-[3px] transition-colors ${
                   d.id === activeId
-                    ? 'bg-[#fffcf7] text-[#0e0e0c]'
-                    : 'text-[#fffcf7]/60 hover:text-[#fffcf7]'
+                    ? 'bg-[#1a1816] text-[#fffcf7]'
+                    : 'text-[#1a1816]/60 hover:text-[#1a1816]'
                 }`}
               >
                 {d.label}
@@ -96,10 +96,10 @@ export default function DashboardShowcase() {
 
         {/* Inline browser-framed iframe */}
         <div
-          className="relative overflow-hidden rounded-[4px] border border-[#fffcf7]/14 bg-[#0e0e0c]"
+          className="relative overflow-hidden rounded-[4px] border border-[#1a1816]/14 bg-[#0e0e0c]"
           style={{
             boxShadow:
-              '0 42px 120px -32px rgba(0, 0, 0, 0.88), 0 0 0 1px rgba(196, 154, 67, 0.05)',
+              '0 42px 100px -36px rgba(26, 24, 22, 0.45), 0 0 0 1px rgba(168, 128, 42, 0.06)',
           }}
         >
           <span className="pointer-events-none absolute left-0 top-0 z-10 h-8 w-8 border-l border-t border-[#c49a43]/45" aria-hidden="true" />
@@ -135,8 +135,8 @@ export default function DashboardShowcase() {
         </div>
 
         {/* Caption */}
-        <p className="mt-6 text-center font-editorial text-xs italic text-[#fffcf7]/55 md:text-sm">
-          Live ported dashboards · anonymized data · click <span className="font-label text-[10px] not-italic uppercase tracking-[0.2em] text-[#fffcf7]/70">Expand</span> for full screen.
+        <p className="mt-6 text-center font-editorial text-xs italic text-[#6e6355] md:text-sm">
+          Live ported dashboards · anonymized data · click <span className="font-label text-[10px] not-italic uppercase tracking-[0.2em] text-[#1a1816]/70">Expand</span> for full screen.
         </p>
       </div>
 

@@ -110,12 +110,11 @@ export default function Landing() {
       {/* ══════════ DEMONSTRATION BAND — DASHBOARD SHOWCASE ══════════ */}
       <section
         id="live-dashboards"
-        data-karst-nav-dark
-        className="relative overflow-hidden border-t border-white/8 bg-[#090908] px-6 py-24 text-[#fffcf7] md:px-10 md:py-32"
+        className="relative overflow-hidden border-t border-[#1a1816]/8 bg-[#fffcf7] px-6 py-24 text-[#1a1816] md:px-10 md:py-32"
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(196,154,67,0.12),transparent_31%),linear-gradient(145deg,rgba(255,255,255,0.025),transparent_42%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(168,128,42,0.07),transparent_31%),linear-gradient(145deg,rgba(255,255,255,0.5),transparent_42%)]"
         />
         <motion.div
           className="relative z-10 mx-auto mb-14 grid max-w-6xl gap-8 md:mb-16 lg:grid-cols-[0.9fr_1.1fr] lg:items-end lg:gap-24"
@@ -125,15 +124,15 @@ export default function Landing() {
           transition={{ duration: 0.7, ease: easeStandard }}
         >
           <div>
-            <p className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#c49a43] md:text-[11px]">
+            <p className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]">
               In Practice
             </p>
-            <h2 className="max-w-2xl font-headline text-3xl font-light leading-[1.14] text-[#fffcf7] md:text-5xl lg:text-[54px]">
+            <h2 className="max-w-2xl font-headline text-3xl font-light leading-[1.14] text-[#1a1816] md:text-5xl lg:text-[54px]">
               A dashboard,{' '}
-              <span className="font-editorial font-normal italic text-[#e6d8b9]">ready for the board.</span>
+              <span className="font-editorial font-normal italic text-[#a8802a]">ready for the board.</span>
             </h2>
           </div>
-          <p className="max-w-[48ch] font-body text-base leading-[1.85] text-[#fffcf7]/60 md:text-lg">
+          <p className="max-w-[48ch] font-body text-base leading-[1.85] text-[#6e6355] md:text-lg">
             A working example, built on district data. Explore it yourself.
           </p>
         </motion.div>
