@@ -73,10 +73,10 @@ export default function FieldworkMethod() {
             }}
             className="max-w-[56ch] self-end font-body text-base leading-[1.85] text-[#6e6355] md:text-lg"
           >
-            Fieldwork is the flagship of the partnership: protected build sessions inside the
-            workday, beside an expert partner. Your team works the backlog already in front of it,
-            learns a modern, agentic way of working, and leaves every session with working systems
-            the district keeps.
+            Fieldwork is where the change happens, person by person. Leaders who arrive using AI
+            to polish an email leave building and working agentically, directing a computer that
+            researches, drafts, and builds under their judgment. When your people work
+            differently, the district works differently.
           </motion.p>
         </div>
 
