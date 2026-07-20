@@ -511,7 +511,7 @@ export default function OperatingKitDiagram() {
                   onMouseEnter={() => setActive(index)}
                   className={`relative overflow-hidden rounded-[2px] border transition-colors duration-300 ${
                     isActive
-                      ? 'border-[#5a6aaa]/50 bg-[#5a6aaa]/[0.06]'
+                      ? 'border-[#2d5a5a]/45 bg-[#2fa8a0]/[0.04]'
                       : 'border-[#1a1816]/10 bg-white'
                   }`}
                 >
