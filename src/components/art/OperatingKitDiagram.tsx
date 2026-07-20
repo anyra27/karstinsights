@@ -33,9 +33,9 @@ const LAYERS = [
   {
     number: '04',
     title: 'Tools',
-    detail: 'Prompts · templates · working applications',
-    long: 'The prompts, templates, and working applications your teams build in Fieldwork, versioned and documented, with an owner named for each one.',
-    examples: ['Prompt library', 'Templates', 'Staff-built apps'],
+    detail: 'Agents · automations · working applications',
+    long: 'The agents, automations, and working applications your teams build in Fieldwork, versioned and documented, with an owner named for each one.',
+    examples: ['Agents', 'Automations', 'Staff-built apps'],
     mark: 'tools',
   },
   {
