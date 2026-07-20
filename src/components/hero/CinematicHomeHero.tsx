@@ -47,7 +47,7 @@ const STORY_BEATS = [
   {
     stage: 'Survey',
     title: 'Insights that were out of reach.',
-    body: 'District data arrives segmented and unclear. Your team turns it into dashboards, predictive solutions, and analytics: answers that once required outside help, or simply went without.',
+    body: 'District data arrives segmented and unclear. Your team begins turning it into dashboards, predictive solutions, and analytics: answers that once required outside help, or simply went without.',
   },
   {
     stage: 'Strata',
@@ -62,7 +62,7 @@ const STORY_BEATS = [
   {
     stage: 'Constellation',
     title: 'No engineers needed.',
-    body: 'Your leadership team builds all of it in guided sessions, inside the workday.',
+    body: 'Leaders rarely walk in believing they can do this work. Then they do it: your team builds all of it agentically, in guided sessions, inside the workday.',
   },
   {
     stage: 'Record',

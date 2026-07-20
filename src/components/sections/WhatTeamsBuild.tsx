@@ -81,7 +81,13 @@ export default function WhatTeamsBuild() {
               className="max-w-xl font-headline text-3xl font-light leading-[1.14] md:text-5xl lg:text-[54px]"
             >
               Your people can{' '}
-              <span className="font-editorial font-normal italic text-[#a8802a]">build this.</span>
+              <motion.span
+                className="font-editorial font-normal italic text-[#a8802a]"
+                animate={reduceMotion ? undefined : { color: ['#a8802a', '#3a6c9c', '#2f948d', '#a8802a'] }}
+                transition={reduceMotion ? undefined : { duration: 14, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                build this.
+              </motion.span>
             </motion.h2>
           </div>
           <motion.p
