@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import AmbientParticles from '../art/AmbientParticles'
+import FieldworkTransformDiagram from './FieldworkTransformDiagram'
 
 const STEPS = [
   {
@@ -66,18 +67,19 @@ export default function FieldworkMethod() {
             </h2>
           </motion.div>
 
-          <motion.p
+          <motion.div
             variants={{
               hidden: { opacity: 0, y: reduceMotion ? 0 : 18 },
               visible: { opacity: 1, y: 0, transition: { duration: reduceMotion ? 0 : 0.7 } },
             }}
-            className="max-w-[56ch] self-end font-body text-base leading-[1.85] text-[#6e6355] md:text-lg"
+            className="self-end"
           >
-            Fieldwork is where the change happens, person by person. Leaders who arrive using AI
-            to polish an email leave building and working agentically, directing a computer that
-            researches, drafts, and builds under their judgment. When your people work
-            differently, the district works differently.
-          </motion.p>
+            <p className="max-w-[52ch] font-body text-base leading-[1.85] text-[#6e6355] md:text-lg">
+              The change happens person by person. When your people work differently, the
+              district works differently.
+            </p>
+            <FieldworkTransformDiagram />
+          </motion.div>
         </div>
 
         <div className="relative mt-16 grid gap-0 md:mt-24 md:grid-cols-3">
