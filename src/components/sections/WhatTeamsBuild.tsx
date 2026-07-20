@@ -90,9 +90,8 @@ export default function WhatTeamsBuild() {
             variants={staggerChild}
             className="max-w-[48ch] font-body text-base leading-[1.85] text-[#6e6355] md:text-lg"
           >
-            Raw data turned into an early-warning dashboard. Presentations that recompose for each
-            audience. Tools your staff build that feed those dashboards. Everything below is a
-            working demonstration. Click in; nothing is sent.
+            Dashboards, presentations, and working tools, built the way your team will build them.
+            Everything below is a live demonstration. Click in; nothing is sent.
           </motion.p>
         </div>
 

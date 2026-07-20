@@ -17,13 +17,13 @@ import fishSchoolImage from '../../assets/fish-school.webp'
    down the page so the mocks read as the same product family. Blues and
    greens carry the positive story; amber is the watch color; red is
    reserved for the single most acute signal on any surface. */
-export const TEAL = '#0f4c4c'
-export const TEAL_BRIGHT = '#2d8a8a'
-export const SEA = '#2d5f8f'
+export const TEAL = '#12716c'
+export const TEAL_BRIGHT = '#2fa8a0'
+export const SEA = '#5a6aaa'
 export const DEEP_SEA = '#1e3a5f'
 export const GREEN = '#10B981'
-export const AMBER = '#a66a06'
-export const RED = '#b91c1c'
+export const AMBER = '#6b76b8'
+export const RED = '#2a3560'
 
 /* ════════ Type-stream — text that writes itself in, instantly under
    reduced motion ════════ */
@@ -251,14 +251,15 @@ const DOT_FIELD: React.CSSProperties = {
 
 /* Shared SVG ink: vertical gradients + soft glow per hue */
 function ChartDefs() {
-  /* Flat ink — ids keep the historical "grad" names so usage sites stay stable */
+  /* Flat ink — ids keep the historical "grad" names so usage sites stay stable.
+     Positive palette: sunset-indigo family + fresh teal + emerald. */
   const stops: Array<[string, string, string]> = [
-    ['gradTealBright', '#2f948d', '#2f948d'],
-    ['gradTeal', '#186767', '#186767'],
-    ['gradAmber', '#b17c1e', '#b17c1e'],
-    ['gradRed', '#c04b3f', '#c04b3f'],
-    ['gradSea', '#3a6c9c', '#3a6c9c'],
-    ['gradGreen', '#1bb485', '#1bb485'],
+    ['gradTealBright', '#2fa8a0', '#2fa8a0'],
+    ['gradTeal', '#12716c', '#12716c'],
+    ['gradAmber', '#6b76b8', '#6b76b8'],
+    ['gradRed', '#2a3560', '#2a3560'],
+    ['gradSea', '#5a6aaa', '#5a6aaa'],
+    ['gradGreen', '#10B981', '#10B981'],
   ]
   return (
     <defs>
@@ -269,18 +270,18 @@ function ChartDefs() {
         </linearGradient>
       ))}
       <linearGradient id="gradSeaArea" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="rgba(74,127,181,0.35)" />
-        <stop offset="1" stopColor="rgba(74,127,181,0)" />
+        <stop offset="0" stopColor="rgba(90,106,170,0.30)" />
+        <stop offset="1" stopColor="rgba(90,106,170,0)" />
       </linearGradient>
       <linearGradient id="gradSeaStroke" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stopColor="#2d8a8a" />
-        <stop offset="1" stopColor="#1e3a5f" />
+        <stop offset="0" stopColor="#8a8ec8" />
+        <stop offset="1" stopColor="#2a3560" />
       </linearGradient>
       <filter id="inkGlow" x="-40%" y="-40%" width="180%" height="180%">
-        <feDropShadow dx="0" dy="2" stdDeviation="2.5" floodColor="#0f4c4c" floodOpacity="0.07" />
+        <feDropShadow dx="0" dy="2" stdDeviation="2.5" floodColor="#2a3560" floodOpacity="0.07" />
       </filter>
       <filter id="lineGlow" x="-40%" y="-40%" width="180%" height="180%">
-        <feDropShadow dx="0" dy="2" stdDeviation="2.5" floodColor="#2d5f8f" floodOpacity="0.08" />
+        <feDropShadow dx="0" dy="2" stdDeviation="2.5" floodColor="#5a6aaa" floodOpacity="0.08" />
       </filter>
     </defs>
   )
@@ -375,7 +376,7 @@ const LENSES: Record<LensKey, Lens> = {
 
 const TONE_TEXT: Record<StatTone, string> = {
   good: 'text-[#0d9268]',
-  watch: 'text-[#a66a06]',
+  watch: 'text-[#5a6aaa]',
 }
 
 /* A rect with only its top corners rounded, safe to height-animate */
@@ -416,11 +417,12 @@ function TopRoundRect({
 }
 
 /* Column chart — the cliff */
+/* Sunset-indigo ramp — intensity carries the story, no hazard colors */
 const CLIFF_COLS: Array<[string, number, string, string, string, string]> = [
-  ['95–100%', 6, '6%', 'url(#gradTealBright)', TEAL_BRIGHT, 'Near-perfect attendance: failure is rare.'],
-  ['90–94%', 14, '14%', 'url(#gradTeal)', TEAL, 'Still holding. This is the line to defend.'],
-  ['85–89%', 31, '31%', 'url(#gradAmber)', AMBER, 'The edge. Risk has already doubled.'],
-  ['Below 85%', 58, '58%', 'url(#gradRed)', RED, 'Most of this cohort is failing something.'],
+  ['95–100%', 6, '6%', '#a0b8dc', '#5a6aaa', 'Near-perfect attendance: failure is rare.'],
+  ['90–94%', 14, '14%', '#8a8ec8', '#46508f', 'Still holding. This is the line to defend.'],
+  ['85–89%', 31, '31%', '#5a6aaa', '#39406e', 'The edge. Risk has already doubled.'],
+  ['Below 85%', 58, '58%', '#2a3560', '#2a3560', 'Most of this cohort is failing something.'],
 ]
 
 function CliffColumns({ reduceMotion }: { reduceMotion: boolean }) {
@@ -647,7 +649,7 @@ function RankedBars({ reduceMotion }: { reduceMotion: boolean }) {
           key={label}
           onMouseEnter={() => setHover(i)}
           className={`grid grid-cols-[112px_minmax(0,1fr)_38px] items-center gap-3 rounded-[4px] px-2 py-2 transition-colors duration-200 ${
-            hover === i ? 'bg-[#0f4c4c]/[0.05]' : ''
+            hover === i ? 'bg-[#2a3560]/[0.05]' : ''
           }`}
         >
           <span className={`truncate font-label text-[9px] font-semibold uppercase tracking-[0.04em] transition-colors ${hover === i ? 'text-[#1a1816]' : 'text-[#1a1816]/65'}`}>
@@ -661,11 +663,11 @@ function RankedBars({ reduceMotion }: { reduceMotion: boolean }) {
               className="block h-[7px] rounded-full"
               style={{
                 background: hot
-                  ? '#b17c1e'
-                  : '#1f7272',
+                  ? '#2a3560'
+                  : '#2fa8a0',
                 boxShadow: hot
-                  ? '0 2px 6px -2px rgba(166,106,6,0.3)'
-                  : '0 2px 6px -2px rgba(15,76,76,0.28)',
+                  ? '0 2px 6px -2px rgba(42,53,96,0.3)'
+                  : '0 2px 6px -2px rgba(47,168,160,0.28)',
               }}
             />
             <motion.span
@@ -673,7 +675,7 @@ function RankedBars({ reduceMotion }: { reduceMotion: boolean }) {
               animate={{ opacity: 1 }}
               transition={{ delay: reduceMotion ? 0 : 0.7 + i * 0.08 }}
               className="absolute h-[13px] w-[13px] rounded-full border-2 border-[#fffcf7]"
-              style={{ left: `calc(${width}% - 7px)`, background: hot ? '#c98a1e' : '#2d8a8a', boxShadow: '0 2px 6px rgba(26,24,22,0.25)' }}
+              style={{ left: `calc(${width}% - 7px)`, background: hot ? '#5a6aaa' : '#2fa8a0', boxShadow: '0 2px 6px rgba(26,24,22,0.25)' }}
               aria-hidden="true"
             />
             {hover === i && (
@@ -689,9 +691,9 @@ function RankedBars({ reduceMotion }: { reduceMotion: boolean }) {
 
 /* Radial signal meter — rounded arcs with a center numeral */
 const DONUT_SEGMENTS: Array<[string, number, string, string]> = [
-  ['Attendance alone', 62, '#2d8a8a', 'url(#gradTeal)'],
-  ['+ Grades', 26, '#3aa8a0', 'url(#gradTealBright)'],
-  ['All three signals', 12, '#4a7fb5', 'url(#gradSea)'],
+  ['Attendance alone', 62, '#12716c', 'url(#gradTeal)'],
+  ['+ Grades', 26, '#2fa8a0', 'url(#gradTealBright)'],
+  ['All three signals', 12, '#5a6aaa', 'url(#gradSea)'],
 ]
 
 function SignalDonut({ reduceMotion }: { reduceMotion: boolean }) {
@@ -748,7 +750,7 @@ function SignalDonut({ reduceMotion }: { reduceMotion: boolean }) {
             key={label}
             onMouseEnter={() => setHover(i)}
             className={`flex items-center gap-2 rounded-[4px] px-1.5 py-0.5 text-left transition-colors duration-200 ${
-              hover === i ? 'bg-[#0f4c4c]/[0.05]' : ''
+              hover === i ? 'bg-[#2a3560]/[0.05]' : ''
             }`}
           >
             <span className="h-2 w-2 rounded-full" style={{ background: solid }} aria-hidden="true" />
@@ -873,7 +875,7 @@ export function DashboardArtifact() {
                 initial={reduceMotion ? false : { opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: reduceMotion ? 0 : i * 0.12, ease: easeStandard }}
-                className="flex cursor-default items-baseline gap-1.5 rounded-[4px] border border-[#1a1816]/10 bg-[#fffcf7] px-2.5 py-1.5 shadow-[0_1px_2px_rgba(26,24,22,0.05)] transition-all duration-200 hover:-translate-y-px hover:border-[#2d8a8a]/40 hover:shadow-[0_3px_8px_rgba(15,76,76,0.12)]"
+                className="flex cursor-default items-baseline gap-1.5 rounded-[4px] border border-[#1a1816]/10 bg-[#fffcf7] px-2.5 py-1.5 shadow-[0_1px_2px_rgba(26,24,22,0.05)] transition-all duration-200 hover:-translate-y-px hover:border-[#5a6aaa]/40 hover:shadow-[0_3px_8px_rgba(42,53,96,0.12)]"
               >
                 <span className="font-mono text-[10px] text-[#1a1816]/80">{name}</span>
                 <span className="font-label text-[8px] uppercase tracking-[0.1em] text-[#6e6355]">{count}</span>
@@ -881,7 +883,7 @@ export function DashboardArtifact() {
             ))}
           </div>
           <div className="flex items-center gap-2 md:ml-auto">
-            <span className="hidden text-[#2d8a8a] md:block" aria-hidden="true">→</span>
+            <span className="hidden text-[#2fa8a0] md:block" aria-hidden="true">→</span>
             <motion.span
               initial={reduceMotion ? false : { opacity: 0 }}
               animate={{ opacity: built ? 1 : 0.4 }}
@@ -903,7 +905,7 @@ export function DashboardArtifact() {
               onClick={() => setLensKey(key)}
               className={`rounded-[4px] px-3.5 py-2 font-label text-[9px] font-semibold uppercase tracking-[0.12em] transition-all duration-200 ${
                 key === lensKey
-                  ? 'bg-[#0f4c4c] text-[#f0faf8] shadow-[0_2px_6px_-2px_rgba(15,76,76,0.35)]'
+                  ? 'bg-[#2a3560] text-[#eef1fb] shadow-[0_2px_6px_-2px_rgba(42,53,96,0.35)]'
                   : 'border border-[#1a1816]/12 bg-white text-[#6e6355] hover:-translate-y-px hover:text-[#1a1816]'
               }`}
             >
@@ -926,19 +928,23 @@ export function DashboardArtifact() {
             </div>
             <div className="grid gap-3 sm:grid-cols-[minmax(0,0.85fr)_minmax(0,1.6fr)]">
               <div className="grid content-start gap-3">
-                {lens.stats.map(([label, value, note, tone]) => (
+                {lens.stats.map(([label, value, note, tone], statIndex) => (
                   <div key={label} className={`${PANEL} px-3.5 py-3`}>
                     <span
                       aria-hidden="true"
                       className="absolute inset-x-0 top-0 h-[2px] rounded-t-[5px]"
                       style={{
-                        background: tone === 'good' ? '#10B981' : '#c98a1e',
+                        background: tone === 'good' ? '#10B981' : '#5a6aaa',
                       }}
                     />
                     <div className="font-label text-[8px] font-bold uppercase tracking-[0.16em] text-[#6e6355]">
                       {label}
                     </div>
-                    <div className="mt-1 font-label text-[22px] font-extrabold tabular-nums tracking-[-0.01em] text-[#1a1816] md:text-[24px]">
+                    <div
+                      className={`mt-1 font-label text-[22px] font-extrabold tabular-nums tracking-[-0.01em] md:text-[24px] ${
+                        statIndex === 0 ? 'text-sunset-cycle' : 'text-[#1a1816]'
+                      }`}
+                    >
                       {value}
                     </div>
                     <div className={`mt-0.5 font-body text-[11px] font-medium ${TONE_TEXT[tone]}`}>{note}</div>
@@ -1202,7 +1208,7 @@ const DECKS: Record<Audience, DeckContent> = {
    three years */
 const COST_YEARS = ['Year 1', 'Year 2', 'Year 3']
 const COST_SERIES: Array<[string, string, string, number[]]> = [
-  ['Consolidate', 'url(#gradTeal)', '#0f4c4c', [310, 40, 40]],
+  ['Consolidate', 'url(#gradTeal)', '#12716c', [310, 40, 40]],
   ['Phase', 'url(#gradSea)', '#2d5f8f', [180, 180, 60]],
   ['Hold', 'url(#gradAmber)', '#a66a06', [140, 280, 420]],
 ]
@@ -1694,7 +1700,7 @@ export function PresentationArtifact() {
                   onClick={() => pickAudience(key)}
                   className={`rounded-[3px] border px-3 py-1.5 font-label text-[9px] font-semibold uppercase tracking-[0.12em] transition-colors ${
                     audience === key
-                      ? 'border-[#0f4c4c] bg-[#0f4c4c]/[0.07] text-[#1a1816]'
+                      ? 'border-[#2a3560] bg-[#2a3560]/[0.07] text-[#1a1816]'
                       : 'border-[#1a1816]/12 text-[#6e6355] hover:text-[#1a1816]'
                   }`}
                 >
@@ -1733,7 +1739,7 @@ export function PresentationArtifact() {
                 go(-1)
               }
             }}
-            className="relative cursor-pointer select-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#2d8a8a]"
+            className="relative cursor-pointer select-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#2a3560]"
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
@@ -1750,7 +1756,7 @@ export function PresentationArtifact() {
             {/* click-to-advance cue, retires after first use */}
             {!hasAdvanced && !reduceMotion && (
               <motion.span
-                className="pointer-events-none absolute bottom-4 right-5 flex items-center gap-1.5 font-body text-[11px] italic text-[#2d8a8a]"
+                className="pointer-events-none absolute bottom-4 right-5 flex items-center gap-1.5 font-body text-[11px] italic text-[#2fa8a0]"
                 animate={{ opacity: [0.5, 1, 0.5], x: [0, 3, 0] }}
                 transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
               >
@@ -1777,7 +1783,7 @@ export function PresentationArtifact() {
                       setHasAdvanced(true)
                     }}
                     className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
-                      i === slide ? 'bg-[#2d8a8a]' : 'bg-[#1a1816]/15 hover:bg-[#1a1816]/35'
+                      i === slide ? 'bg-[#2fa8a0]' : 'bg-[#1a1816]/15 hover:bg-[#1a1816]/35'
                     }`}
                   />
                 ))}
