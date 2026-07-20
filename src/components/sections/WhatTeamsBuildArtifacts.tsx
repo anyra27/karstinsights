@@ -208,7 +208,7 @@ export function ArtifactFrame({
               />
               <div
                 className="min-h-0 flex-1 overflow-y-auto text-[#1a1816]"
-                style={{ background: '#fbf8f1' }}
+                style={{ background: '#f5f7fb' }}
               >
                 {children}
               </div>
@@ -245,7 +245,7 @@ const PANEL =
 
 /* Dot-grid field behind every chart — the drafting-table texture */
 const DOT_FIELD: React.CSSProperties = {
-  backgroundImage: 'radial-gradient(rgba(26,24,22,0.07) 1px, transparent 1px)',
+  backgroundImage: 'radial-gradient(rgba(42,53,96,0.08) 1px, transparent 1px)',
   backgroundSize: '14px 14px',
 }
 
@@ -449,6 +449,46 @@ function CliffColumns({ reduceMotion }: { reduceMotion: boolean }) {
           <line key={f} x1={pad} y1={baseY - (baseY - 18) * f} x2={W - pad} y2={baseY - (baseY - 18) * f} stroke="rgba(26,24,22,0.05)" strokeWidth="1" />
         ))}
         <line x1={pad} y1={baseY} x2={W - pad} y2={baseY} stroke="rgba(26,24,22,0.14)" strokeWidth="1" />
+        {/* FT-style threshold annotation — the story, written where it turns */}
+        {(() => {
+          const threshX = pad + 2 * (colW + gap) - gap / 2
+          return (
+            <g aria-hidden="true">
+              <line
+                x1={threshX}
+                y1={16}
+                x2={threshX}
+                y2={baseY}
+                stroke="#5a6aaa"
+                strokeWidth="1"
+                strokeDasharray="3 4"
+                opacity="0.55"
+              />
+              <text
+                x={threshX - 7}
+                y={24}
+                textAnchor="end"
+                fill="#5a6aaa"
+                fontFamily='"Libre Baskerville", Georgia, serif'
+                fontStyle="italic"
+                fontSize="9.5"
+              >
+                the line to defend
+              </text>
+              <text
+                x={threshX + 7}
+                y={24}
+                textAnchor="start"
+                fill="#39406e"
+                fontFamily='"Libre Baskerville", Georgia, serif'
+                fontStyle="italic"
+                fontSize="9.5"
+              >
+                risk doubles
+              </text>
+            </g>
+          )
+        })()}
         {CLIFF_COLS.map(([label, val, tag, grad, solid], i) => {
           const x = pad + i * (colW + gap)
           const h = ((baseY - 22) * val) / max
@@ -848,7 +888,7 @@ export function DashboardArtifact() {
   return (
     <ArtifactFrame url="built-with-karst / early-warning" chromeRight="Raw exports · Processed with AI">
       <div
-        className="relative grid gap-4 bg-[#fbf8f1] p-4 md:p-6"
+        className="relative grid gap-4 bg-[#f5f7fb] p-4 md:p-6"
       >
         {/* Masthead: this is a deliverable, not a widget */}
         <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-b border-[#1a1816]/10 pb-4">
