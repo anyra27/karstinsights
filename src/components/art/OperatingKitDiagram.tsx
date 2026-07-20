@@ -225,6 +225,208 @@ function LayerParticles({ type, active, reduceMotion }: { type: (typeof LAYERS)[
   )
 }
 
+/* ── Expanded-layer scenes — an opened layer plays its mechanism in the
+   briefing grammar: strokes draw in, elements pop staggered, then a quiet
+   loop keeps it alive. Koi palette. ── */
+const SC_BRIGHT = '#2fa8a0'
+const SC_PERI = '#5a6aaa'
+const SC_INK = 'rgba(26,24,22,0.4)'
+const SC_EASE = [0.22, 1, 0.36, 1] as const
+
+function LayerScene({ type, reduceMotion }: { type: (typeof LAYERS)[number]['mark']; reduceMotion: boolean }) {
+  const draw = (delay: number) =>
+    reduceMotion
+      ? {}
+      : {
+          initial: { pathLength: 0, opacity: 0 },
+          animate: { pathLength: 1, opacity: 1 },
+          transition: { duration: 0.7, delay, ease: SC_EASE },
+        }
+  const pop = (delay: number) =>
+    reduceMotion
+      ? {}
+      : {
+          initial: { scale: 0, opacity: 0 },
+          animate: { scale: 1, opacity: 1 },
+          transition: { duration: 0.45, delay, ease: SC_EASE },
+        }
+
+  if (type === 'context') {
+    /* scattered sources converge into one loaded center */
+    const pts: Array<[number, number]> = [
+      [24, 22], [62, 12], [104, 26], [150, 10], [196, 22],
+      [38, 100], [96, 106], [168, 100],
+    ]
+    return (
+      <svg viewBox="0 0 220 120" className="h-[104px] w-[196px]" aria-hidden="true">
+        {pts.map(([x, y], i) => (
+          <motion.line
+            key={`l-${i}`}
+            x1={x} y1={y} x2={110} y2={60}
+            stroke={SC_PERI} strokeOpacity="0.35" strokeWidth="1"
+            {...draw(0.2 + i * 0.06)}
+          />
+        ))}
+        {pts.map(([x, y], i) => (
+          <motion.circle key={`d-${i}`} cx={x} cy={y} r="2.2" fill={SC_INK} {...pop(i * 0.05)} style={{ transformOrigin: `${x}px ${y}px` }} />
+        ))}
+        <motion.circle cx="110" cy="60" r="4.5" fill={SC_BRIGHT} {...pop(0.75)} style={{ transformOrigin: '110px 60px' }} />
+        {!reduceMotion && (
+          <motion.circle
+            cx="110" cy="60" r="4.5" fill="none" stroke={SC_BRIGHT} strokeWidth="1"
+            initial={{ opacity: 0 }}
+            animate={{ scale: [1, 2.4], opacity: [0.5, 0] }}
+            style={{ transformOrigin: '110px 60px' }}
+            transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 1.4, ease: 'easeOut', delay: 1.2 }}
+          />
+        )}
+      </svg>
+    )
+  }
+
+  if (type === 'guardrails') {
+    /* the rails draw; work streams safely between them */
+    return (
+      <svg viewBox="0 0 220 120" className="h-[104px] w-[196px]" aria-hidden="true">
+        <motion.path d="M70 14v92" fill="none" stroke={SC_PERI} strokeOpacity="0.55" strokeWidth="1.4" {...draw(0.1)} />
+        <motion.path d="M150 14v92" fill="none" stroke={SC_PERI} strokeOpacity="0.55" strokeWidth="1.4" {...draw(0.25)} />
+        <motion.path d="M58 14h24M138 14h24M58 106h24M138 106h24" fill="none" stroke={SC_INK} strokeWidth="1" {...draw(0.45)} />
+        {[92, 110, 128].map((x, i) =>
+          reduceMotion ? (
+            <circle key={x} cx={x} cy={60} r={i === 1 ? 3 : 2.2} fill={i === 1 ? SC_BRIGHT : SC_INK} />
+          ) : (
+            <motion.circle
+              key={x}
+              cx={x}
+              r={i === 1 ? 3 : 2.2}
+              fill={i === 1 ? SC_BRIGHT : SC_INK}
+              initial={{ cy: 8, opacity: 0 }}
+              animate={{ cy: [8, 112], opacity: [0, 1, 1, 0] }}
+              transition={{
+                duration: 2.6,
+                times: [0, 0.15, 0.85, 1],
+                delay: 0.8 + i * 0.7,
+                repeat: Infinity,
+                repeatDelay: 0.6,
+                ease: 'linear',
+              }}
+            />
+          ),
+        )}
+      </svg>
+    )
+  }
+
+  if (type === 'workflows') {
+    /* the method draws once; the work travels it forever */
+    const wpts: Array<[number, number]> = [[16, 88], [64, 64], [112, 76], [160, 36], [204, 46]]
+    return (
+      <svg viewBox="0 0 220 120" className="h-[104px] w-[196px]" aria-hidden="true">
+        <motion.path
+          d="M16 88L64 64l48 12 48-40 44 10"
+          fill="none" stroke={SC_PERI} strokeOpacity="0.5" strokeWidth="1.2"
+          {...draw(0.1)}
+        />
+        {wpts.map(([x, y], i) => (
+          <motion.circle
+            key={x}
+            cx={x} cy={y} r={i === 3 ? 3.4 : 2.4}
+            fill={i === 3 ? SC_BRIGHT : '#fffdf9'}
+            stroke={i === 3 ? SC_BRIGHT : SC_INK}
+            strokeWidth="1.2"
+            {...pop(0.4 + i * 0.09)}
+            style={{ transformOrigin: `${x}px ${y}px` }}
+          />
+        ))}
+        {!reduceMotion && (
+          <motion.circle
+            r="2.8"
+            fill={SC_BRIGHT}
+            initial={{ cx: 16, cy: 88, opacity: 0 }}
+            animate={{
+              cx: wpts.map(([x]) => x),
+              cy: wpts.map(([, y]) => y),
+              opacity: [0, 1, 1, 1, 0],
+            }}
+            transition={{ duration: 3, delay: 1.1, repeat: Infinity, repeatDelay: 0.4, ease: 'linear' }}
+          />
+        )}
+      </svg>
+    )
+  }
+
+  if (type === 'tools') {
+    /* parts light in sequence and become working applications */
+    return (
+      <svg viewBox="0 0 220 120" className="h-[104px] w-[196px]" aria-hidden="true">
+        {[26, 46, 66].flatMap((x, xi) =>
+          [34, 60, 86].map((y, yi) => (
+            <motion.circle
+              key={`${x}-${y}`}
+              cx={x} cy={y} r="2.4" fill={SC_INK}
+              {...(reduceMotion
+                ? {}
+                : {
+                    initial: { opacity: 0 },
+                    animate: { opacity: [0.35, 1, 0.45] },
+                    transition: { duration: 2.4, delay: (xi + yi) * 0.18, repeat: Infinity, repeatDelay: 0.8 },
+                  })}
+            />
+          )),
+        )}
+        <motion.path d="M84 60h34m-6-5 6 5-6 5" fill="none" stroke={SC_PERI} strokeOpacity="0.7" strokeWidth="1.2" {...draw(0.5)} />
+        <motion.rect x="132" y="30" width="30" height="60" rx="2" fill="#fffdf9" stroke={SC_INK} strokeWidth="1.2" {...pop(0.8)} style={{ transformOrigin: '147px 60px' }} />
+        <motion.rect x="172" y="42" width="34" height="48" rx="2" fill="#fffdf9" stroke={SC_BRIGHT} strokeWidth="1.3" {...pop(0.95)} style={{ transformOrigin: '189px 66px' }} />
+        <motion.circle cx="189" cy="66" r="3" fill={SC_BRIGHT} {...pop(1.15)} style={{ transformOrigin: '189px 66px' }} />
+        {!reduceMotion && (
+          <motion.circle
+            cx="189" cy="66" r="3" fill="none" stroke={SC_BRIGHT} strokeWidth="1"
+            initial={{ opacity: 0 }}
+            animate={{ scale: [1, 2.6], opacity: [0.5, 0] }}
+            style={{ transformOrigin: '189px 66px' }}
+            transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 1.2, ease: 'easeOut', delay: 1.5 }}
+          />
+        )}
+      </svg>
+    )
+  }
+
+  /* ownership — everything settles into the district's vessel */
+  return (
+    <svg viewBox="0 0 220 120" className="h-[104px] w-[196px]" aria-hidden="true">
+      <motion.path
+        d="M110 34l64 18v22l-64 16-64-16V52l64-18Z"
+        fill="none" stroke={SC_INK} strokeWidth="1.2"
+        {...draw(0.1)}
+      />
+      <motion.path d="M46 52l64 16 64-16M110 68v22" fill="none" stroke={SC_PERI} strokeOpacity="0.6" strokeWidth="1" {...draw(0.4)} />
+      {([[84, 58], [102, 62], [122, 61], [138, 57]] as Array<[number, number]>).map(([x, y], i) =>
+        reduceMotion ? (
+          <circle key={x} cx={x} cy={y} r="2.2" fill={SC_INK} />
+        ) : (
+          <motion.circle
+            key={x}
+            cx={x} r="2.2" fill={SC_INK}
+            initial={{ cy: 10, opacity: 0 }}
+            animate={{ cy: y, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.7 + i * 0.14, ease: SC_EASE }}
+          />
+        ),
+      )}
+      <motion.circle cx="110" cy="78" r="3" fill={SC_BRIGHT} {...pop(1.2)} style={{ transformOrigin: '110px 78px' }} />
+      {!reduceMotion && (
+        <motion.circle
+          cx="110" cy="78" r="3" fill="none" stroke={SC_BRIGHT} strokeWidth="1"
+          initial={{ opacity: 0 }}
+          animate={{ scale: [1, 2.4], opacity: [0.5, 0] }}
+          style={{ transformOrigin: '110px 78px' }}
+          transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 1.6, ease: 'easeOut', delay: 1.6 }}
+        />
+      )}
+    </svg>
+  )
+}
+
 export default function OperatingKitDiagram() {
   const reduceMotion = Boolean(useReducedMotion())
   const [active, setActive] = useState<number | null>(null)
@@ -360,22 +562,27 @@ export default function OperatingKitDiagram() {
                         transition={{ duration: reduceMotion ? 0 : 0.38, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                       >
-                        <div className="grid gap-3 px-3 pb-4 pl-[52px] pr-4 md:pl-[60px]">
-                          <p className="max-w-[52ch] font-body text-[12px] leading-[1.7] text-[#6e6355] md:text-[12.5px]">
-                            {layer.long}
-                          </p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {layer.examples.map((example, ei) => (
-                              <motion.span
-                                key={example}
-                                initial={reduceMotion ? false : { opacity: 0, y: 4 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.15 + ei * 0.07 }}
-                                className="rounded-[2px] border border-[#2d5a5a]/30 bg-[#2d5a5a]/[0.06] px-2.5 py-1 font-label text-[8px] uppercase tracking-[0.14em] text-[#2d5a5a]"
-                              >
-                                {example}
-                              </motion.span>
-                            ))}
+                        <div className="grid gap-3 px-3 pb-4 pl-[52px] pr-4 md:grid-cols-[1fr_auto] md:items-center md:gap-8 md:pl-[60px] md:pr-6">
+                          <div className="grid gap-3">
+                            <p className="max-w-[52ch] font-body text-[12px] leading-[1.7] text-[#6e6355] md:text-[12.5px]">
+                              {layer.long}
+                            </p>
+                            <div className="flex flex-wrap gap-1.5">
+                              {layer.examples.map((example, ei) => (
+                                <motion.span
+                                  key={example}
+                                  initial={reduceMotion ? false : { opacity: 0, y: 4 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.15 + ei * 0.07 }}
+                                  className="rounded-[2px] border border-[#2d5a5a]/30 bg-[#2d5a5a]/[0.06] px-2.5 py-1 font-label text-[8px] uppercase tracking-[0.14em] text-[#2d5a5a]"
+                                >
+                                  {example}
+                                </motion.span>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="hidden md:block" aria-hidden="true">
+                            <LayerScene type={layer.mark} reduceMotion={reduceMotion} />
                           </div>
                         </div>
                       </motion.div>
