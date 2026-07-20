@@ -54,7 +54,7 @@ export default function Landing() {
       <section className="relative overflow-hidden border-t border-[#1a1816]/8 bg-[#f6f4ec] px-6 py-24 text-[#1a1816] md:px-10 md:py-36">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_26%,rgba(168,128,42,0.07),transparent_28%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_26%,rgba(45,90,90,0.06),transparent_28%)]"
         />
         <motion.div
           className="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20"
@@ -66,7 +66,7 @@ export default function Landing() {
           <div>
             <motion.p
               variants={staggerChild}
-              className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]"
+              className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#2d5a5a] md:text-[11px]"
             >
               The District AI Operating Kit
             </motion.p>
@@ -76,7 +76,9 @@ export default function Landing() {
               className="max-w-xl font-headline text-3xl font-light leading-[1.14] text-[#1a1816] md:text-5xl lg:text-[50px]"
             >
               Everything works,{' '}
-              <span className="font-editorial font-normal italic text-[#a8802a]">in one place.</span>
+              <span className="text-sunset-cycle inline-block pb-[0.1em] font-editorial font-normal italic">
+                in one place.
+              </span>
             </motion.h2>
 
             <motion.p
@@ -91,7 +93,7 @@ export default function Landing() {
 
             <motion.p
               variants={staggerChild}
-              className="mt-8 border-l border-[#a8802a]/45 pl-5 font-label text-[9px] uppercase leading-[1.8] tracking-[0.24em] text-[#6e6355]/80"
+              className="mt-8 border-l border-[#2d5a5a]/45 pl-5 font-label text-[9px] uppercase leading-[1.8] tracking-[0.24em] text-[#6e6355]/80"
             >
               District-owned · Built with Karst · Easy to continue
             </motion.p>
