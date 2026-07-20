@@ -22,8 +22,9 @@ const FAN_YS = [63, 129, 195, 261, 327]
 const CONVERGE = { x: 910, y: 195 }
 const FINAL = { x: 1095, y: 195 }
 
-/* One full wave of work through the run, in seconds */
-const PERIOD = 7
+/* The stream: every edge keeps a dot moving, offsets staggered so the
+   run shimmers continuously like the briefing's ultracode diagram */
+const FLOW = 2.4
 
 function smallCaps(x: number, y: number, text: string, fill: string = INK) {
   return (
@@ -92,17 +93,17 @@ export default function FieldworkTransformDiagram() {
           transition: { duration: 0.6, delay, ease: EASE },
         }
 
-  /* A dot that travels a straight edge once per PERIOD */
+  /* A dot in the stream — loops its edge continuously, phase-offset */
   const travel = (
     from: { x: number; y: number },
     to: { x: number; y: number },
     start: number,
-    duration: number,
     fill: string,
-    r = 3.5,
+    r = 3,
   ) =>
     reduceMotion ? null : (
       <motion.circle
+        key={`${from.x}-${from.y}-${to.x}-${to.y}-${start}`}
         r={r}
         fill={fill}
         initial={{ cx: from.x, cy: from.y, opacity: 0 }}
@@ -112,12 +113,12 @@ export default function FieldworkTransformDiagram() {
           opacity: [0, 1, 1, 0],
         }}
         transition={{
-          duration,
-          times: [0, 0.15, 0.85, 1],
-          delay: 1.8 + start,
+          duration: FLOW,
+          times: [0, 0.14, 0.86, 1],
+          delay: 1.2 + start,
           repeat: Infinity,
-          repeatDelay: PERIOD - duration,
-          ease: 'easeInOut',
+          repeatDelay: 0,
+          ease: 'linear',
         }}
       />
     )
@@ -245,14 +246,17 @@ export default function FieldworkTransformDiagram() {
           {/* Traveling work — one wave per period, only while the run is on */}
           {on && (
             <>
-              {travel({ x: LEADER.x + 34, y: LEADER.y }, { x: DIRECT.x - 42, y: DIRECT.y }, 0, 1.1, INK)}
+              {/* two dots per trunk edge, half a phase apart, so the line never empties */}
+              {travel({ x: LEADER.x + 34, y: LEADER.y }, { x: DIRECT.x - 42, y: DIRECT.y }, 0, INK, 3.5)}
+              {travel({ x: LEADER.x + 34, y: LEADER.y }, { x: DIRECT.x - 42, y: DIRECT.y }, FLOW / 2, INK, 3.5)}
               {FAN_YS.map((fy, i) =>
-                travel({ x: DIRECT.x + 40, y: DIRECT.y }, { x: FAN_X - 28, y: fy }, 1.3 + i * 0.14, 1.1, TEAL, 3),
+                travel({ x: DIRECT.x + 40, y: DIRECT.y }, { x: FAN_X - 28, y: fy }, i * (FLOW / 5), TEAL),
               )}
               {FAN_YS.map((fy, i) =>
-                travel({ x: FAN_X + 28, y: fy }, { x: CONVERGE.x - 40, y: CONVERGE.y }, 3.1 + i * 0.14, 1.1, BRONZE, 3),
+                travel({ x: FAN_X + 28, y: fy }, { x: CONVERGE.x - 40, y: CONVERGE.y }, FLOW / 2 + i * (FLOW / 5), BRONZE),
               )}
-              {travel({ x: CONVERGE.x + 40, y: CONVERGE.y }, { x: FINAL.x - 34, y: FINAL.y }, 4.9, 1, GOLD)}
+              {travel({ x: CONVERGE.x + 40, y: CONVERGE.y }, { x: FINAL.x - 34, y: FINAL.y }, 0.4, GOLD, 3.5)}
+              {travel({ x: CONVERGE.x + 40, y: CONVERGE.y }, { x: FINAL.x - 34, y: FINAL.y }, 0.4 + FLOW / 2, GOLD, 3.5)}
             </>
           )}
 
