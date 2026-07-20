@@ -98,7 +98,7 @@ export default function WhatTeamsBuild() {
           variants={staggerChild}
           role="tablist"
           aria-label="What district teams build"
-          className="mt-14 flex border-y border-[#1a1816]/14 md:mt-20"
+          className="mt-14 flex overflow-x-auto border-y border-[#1a1816]/14 md:mt-20 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           {TABS.map((tab, index) => {
             const selected = tab.id === active
@@ -116,7 +116,7 @@ export default function WhatTeamsBuild() {
                 type="button"
                 onClick={() => setActive(tab.id)}
                 onKeyDown={(event) => onTabKeyDown(event, index)}
-                className={`relative border-r border-[#1a1816]/10 px-4 py-4 font-label text-[9.5px] font-bold uppercase tracking-[0.22em] transition-colors duration-300 last:border-r-0 md:px-7 md:py-[18px] md:text-[11px] ${
+                className={`relative shrink-0 whitespace-nowrap border-r border-[#1a1816]/10 px-4 py-4 font-label text-[9.5px] font-bold uppercase tracking-[0.22em] transition-colors duration-300 last:border-r-0 md:px-7 md:py-[18px] md:text-[11px] ${
                   selected ? 'text-[#1a1816]' : 'text-[#1a1816]/50 hover:text-[#1a1816]'
                 }`}
               >
