@@ -51,13 +51,10 @@ export default function Landing() {
 
 
       {/* ══════════ THE OPERATING KIT — what Fieldwork leaves behind ══════════ */}
-      <section
-        data-karst-nav-dark
-        className="relative overflow-hidden border-t border-[#fffcf7]/8 bg-[#090908] px-6 py-24 text-[#fffcf7] md:px-10 md:py-36"
-      >
+      <section className="relative overflow-hidden border-t border-[#1a1816]/8 bg-[#f6f4ec] px-6 py-24 text-[#1a1816] md:px-10 md:py-36">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_26%,rgba(168,128,42,0.12),transparent_28%),linear-gradient(155deg,rgba(255,255,255,0.025),transparent_46%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_26%,rgba(168,128,42,0.07),transparent_28%)]"
         />
         <motion.div
           className="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20"
@@ -69,22 +66,22 @@ export default function Landing() {
           <div>
             <motion.p
               variants={staggerChild}
-              className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#c49a43] md:text-[11px]"
+              className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]"
             >
               The District AI Operating Kit
             </motion.p>
 
             <motion.h2
               variants={staggerChild}
-              className="max-w-xl font-headline text-3xl font-light leading-[1.14] text-[#fffcf7] md:text-5xl lg:text-[50px]"
+              className="max-w-xl font-headline text-3xl font-light leading-[1.14] text-[#1a1816] md:text-5xl lg:text-[50px]"
             >
               Everything works,{' '}
-              <span className="font-editorial font-normal italic text-[#e6d8b9]">in one place.</span>
+              <span className="font-editorial font-normal italic text-[#a8802a]">in one place.</span>
             </motion.h2>
 
             <motion.p
               variants={staggerChild}
-              className="mt-7 max-w-[48ch] font-body text-sm leading-[1.85] text-[#fffcf7]/60 md:text-base"
+              className="mt-7 max-w-[48ch] font-body text-sm leading-[1.85] text-[#6e6355] md:text-base"
             >
               Every dashboard, presentation, and application your team builds lives in one organized
               kit. Documented in plain language. Easy to find, easy to run again, easy to update,
@@ -94,7 +91,7 @@ export default function Landing() {
 
             <motion.p
               variants={staggerChild}
-              className="mt-8 border-l border-[#c49a43]/45 pl-5 font-label text-[9px] uppercase leading-[1.8] tracking-[0.24em] text-[#fffcf7]/38"
+              className="mt-8 border-l border-[#a8802a]/45 pl-5 font-label text-[9px] uppercase leading-[1.8] tracking-[0.24em] text-[#6e6355]/80"
             >
               District-owned · Built with Karst · Easy to continue
             </motion.p>
@@ -169,10 +166,10 @@ export default function Landing() {
           >
             <div className="max-w-2xl mx-auto">
               <p className="font-label text-[10px] tracking-[0.3em] uppercase text-white/35 mb-6">
-                Start with your people
+                The Partnership
               </p>
               <h2 className="font-headline text-3xl md:text-4xl text-white/95 leading-snug mb-6 max-w-xl mx-auto">
-                Bring your people and their real work.
+                Change how your district works.
               </h2>
               <Link
                 to="/contact"

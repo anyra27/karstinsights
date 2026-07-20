@@ -67,7 +67,7 @@ function LayerParticles({ type, active, reduceMotion }: { type: (typeof LAYERS)[
             cx={cx}
             cy={cy}
             r={r}
-            fill={index === 4 ? '#c49a43' : 'rgba(255,252,247,0.42)'}
+            fill={index === 4 ? '#a8802a' : 'rgba(26,24,22,0.42)'}
             animate={
               animate
                 ? { x: (48 - cx) * 0.28, y: (19 - cy) * 0.28, opacity: 1 }
@@ -85,9 +85,9 @@ function LayerParticles({ type, active, reduceMotion }: { type: (typeof LAYERS)[
       <svg viewBox="0 0 92 32" className="h-8 w-[92px]" aria-hidden="true">
         <motion.path
           d="M17 5v22M75 5v22"
-          stroke="rgba(196,154,67,0.52)"
+          stroke="rgba(168,128,42,0.52)"
           strokeWidth="1"
-          animate={animate ? { stroke: 'rgba(196,154,67,0.95)', strokeWidth: 1.4 } : { stroke: 'rgba(196,154,67,0.52)', strokeWidth: 1 }}
+          animate={animate ? { stroke: 'rgba(168,128,42,0.95)', strokeWidth: 1.4 } : { stroke: 'rgba(168,128,42,0.52)', strokeWidth: 1 }}
           transition={{ duration: 0.4 }}
         />
         {[28, 40, 52, 64].flatMap((cx, xi) =>
@@ -97,7 +97,7 @@ function LayerParticles({ type, active, reduceMotion }: { type: (typeof LAYERS)[
               cx={cx}
               cy={cy}
               r="1.35"
-              fill="rgba(255,252,247,0.46)"
+              fill="rgba(26,24,22,0.46)"
               animate={animate ? { y: 16 - cy, opacity: 0.9 } : { y: 0, opacity: 0.75 }}
               transition={{ duration: 0.5, delay: animate ? (xi * 2 + yi) * 0.05 : 0, ease: [0.22, 1, 0.36, 1] }}
             />
@@ -107,7 +107,7 @@ function LayerParticles({ type, active, reduceMotion }: { type: (typeof LAYERS)[
           cx="52"
           cy="11"
           r="2.2"
-          fill="#c49a43"
+          fill="#a8802a"
           animate={animate ? { y: 5, scale: 1.25 } : { y: 0, scale: 1 }}
           style={{ transformOrigin: '52px 11px' }}
           transition={{ duration: 0.5, delay: animate ? 0.2 : 0 }}
@@ -123,9 +123,9 @@ function LayerParticles({ type, active, reduceMotion }: { type: (typeof LAYERS)[
         <motion.path
           d="M8 22L20 18l12 2 12-9 12 3 12-5 14 4"
           fill="none"
-          stroke="rgba(255,252,247,0.18)"
+          stroke="rgba(26,24,22,0.18)"
           strokeWidth="1"
-          animate={animate ? { stroke: 'rgba(196,154,67,0.55)', pathLength: 1 } : { stroke: 'rgba(255,252,247,0.18)' }}
+          animate={animate ? { stroke: 'rgba(168,128,42,0.55)', pathLength: 1 } : { stroke: 'rgba(26,24,22,0.18)' }}
           initial={false}
           transition={{ duration: 0.5 }}
         />
@@ -135,7 +135,7 @@ function LayerParticles({ type, active, reduceMotion }: { type: (typeof LAYERS)[
             cx={cx}
             cy={cy}
             r={index === 3 ? 2.3 : 1.45}
-            fill={index === 3 ? '#c49a43' : 'rgba(255,252,247,0.48)'}
+            fill={index === 3 ? '#a8802a' : 'rgba(26,24,22,0.48)'}
             animate={animate ? { scale: [1, 1.5, 1], opacity: 1 } : { scale: 1, opacity: 0.8 }}
             transition={
               animate
@@ -159,7 +159,7 @@ function LayerParticles({ type, active, reduceMotion }: { type: (typeof LAYERS)[
               cx={cx}
               cy={cy}
               r="1.3"
-              fill="rgba(255,252,247,0.4)"
+              fill="rgba(26,24,22,0.4)"
               animate={animate ? { opacity: [0.4, 1, 0.55] } : { opacity: 0.7 }}
               transition={animate ? { duration: 0.6, delay: (xi + yi) * 0.06 } : { duration: 0.3 }}
             />
@@ -167,24 +167,24 @@ function LayerParticles({ type, active, reduceMotion }: { type: (typeof LAYERS)[
         )}
         <motion.path
           d="M39 16h13"
-          stroke="rgba(255,252,247,0.2)"
-          animate={animate ? { stroke: 'rgba(196,154,67,0.7)' } : { stroke: 'rgba(255,252,247,0.2)' }}
+          stroke="rgba(26,24,22,0.2)"
+          animate={animate ? { stroke: 'rgba(168,128,42,0.7)' } : { stroke: 'rgba(26,24,22,0.2)' }}
           transition={{ duration: 0.4, delay: animate ? 0.15 : 0 }}
         />
         <motion.rect
           x="57" y="7" width="10" height="18" rx="1" fill="none"
-          stroke="rgba(255,252,247,0.36)"
-          animate={animate ? { stroke: 'rgba(255,252,247,0.65)' } : { stroke: 'rgba(255,252,247,0.36)' }}
+          stroke="rgba(26,24,22,0.36)"
+          animate={animate ? { stroke: 'rgba(26,24,22,0.65)' } : { stroke: 'rgba(26,24,22,0.36)' }}
           transition={{ duration: 0.4 }}
         />
         <motion.rect
           x="72" y="10" width="11" height="15" rx="1" fill="none"
-          stroke="rgba(196,154,67,0.58)"
-          animate={animate ? { stroke: 'rgba(196,154,67,1)', strokeWidth: 1.4 } : { stroke: 'rgba(196,154,67,0.58)', strokeWidth: 1 }}
+          stroke="rgba(168,128,42,0.58)"
+          animate={animate ? { stroke: 'rgba(168,128,42,1)', strokeWidth: 1.4 } : { stroke: 'rgba(168,128,42,0.58)', strokeWidth: 1 }}
           transition={{ duration: 0.4, delay: animate ? 0.25 : 0 }}
         />
         <motion.circle
-          cx="77.5" cy="17.5" r="2" fill="#c49a43"
+          cx="77.5" cy="17.5" r="2" fill="#a8802a"
           animate={animate ? { scale: [1, 1.6, 1.2] } : { scale: 1 }}
           transition={{ duration: 0.55, delay: animate ? 0.3 : 0 }}
           style={{ transformOrigin: '77.5px 17.5px' }}
@@ -198,15 +198,15 @@ function LayerParticles({ type, active, reduceMotion }: { type: (typeof LAYERS)[
       <motion.path
         d="M46 3l28 9v11l-28 7-28-7V12l28-9Z"
         fill="none"
-        stroke="rgba(255,252,247,0.24)"
-        animate={animate ? { stroke: 'rgba(255,252,247,0.6)' } : { stroke: 'rgba(255,252,247,0.24)' }}
+        stroke="rgba(26,24,22,0.24)"
+        animate={animate ? { stroke: 'rgba(26,24,22,0.6)' } : { stroke: 'rgba(26,24,22,0.24)' }}
         transition={{ duration: 0.45 }}
       />
       <motion.path
         d="M18 12l28 8 28-8M46 20v10"
         fill="none"
-        stroke="rgba(196,154,67,0.38)"
-        animate={animate ? { stroke: 'rgba(196,154,67,0.9)' } : { stroke: 'rgba(196,154,67,0.38)' }}
+        stroke="rgba(168,128,42,0.38)"
+        animate={animate ? { stroke: 'rgba(168,128,42,0.9)' } : { stroke: 'rgba(168,128,42,0.38)' }}
         transition={{ duration: 0.45, delay: animate ? 0.1 : 0 }}
       />
       {([[31, 13], [40, 15.5], [52, 14.5], [60, 12.5], [46, 20]] as Array<[number, number]>).map(([cx, cy], index) => (
@@ -215,7 +215,7 @@ function LayerParticles({ type, active, reduceMotion }: { type: (typeof LAYERS)[
           cx={cx}
           cy={cy}
           r={index === 4 ? 2.5 : 1.3}
-          fill={index === 4 ? '#c49a43' : 'rgba(255,252,247,0.5)'}
+          fill={index === 4 ? '#a8802a' : 'rgba(26,24,22,0.5)'}
           animate={animate ? { scale: [1, 1.45, 1], opacity: 1 } : { scale: 1, opacity: 0.85 }}
           transition={animate ? { duration: 0.5, delay: 0.12 + index * 0.06 } : { duration: 0.3 }}
           style={{ transformOrigin: `${cx}px ${cy}px` }}
@@ -234,37 +234,37 @@ export default function OperatingKitDiagram() {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-90px' }}
-      className="relative overflow-hidden rounded-[3px] border border-[#fffcf7]/12 bg-[#171614]/92 shadow-[0_34px_100px_rgba(0,0,0,0.34)]"
+      className="relative overflow-hidden rounded-[3px] border border-[#1a1816]/12 bg-[#fffdf9] shadow-[0_24px_70px_-30px_rgba(26,24,22,0.35)]"
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.035),transparent_42%),radial-gradient(circle_at_86%_8%,rgba(196,154,67,0.11),transparent_31%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_86%_8%,rgba(168,128,42,0.06),transparent_31%)]"
       />
 
-      <div className="relative flex items-center justify-between border-b border-[#fffcf7]/10 px-5 py-4 md:px-7">
+      <div className="relative flex items-center justify-between border-b border-[#1a1816]/10 px-5 py-4 md:px-7">
         <div className="flex items-center gap-3">
           <motion.span
             variants={{
               hidden: { opacity: 0, scale: reduceMotion ? 1 : 0.6 },
               visible: { opacity: 1, scale: 1, transition: { duration: reduceMotion ? 0 : 0.6 } },
             }}
-            className="h-2 w-2 rounded-full bg-[#c49a43] shadow-[0_0_18px_rgba(196,154,67,0.55)]"
+            className="h-2 w-2 rounded-full bg-[#a8802a] shadow-[0_0_14px_rgba(168,128,42,0.45)]"
           />
-          <span className="font-label text-[9px] uppercase tracking-[0.3em] text-[#fffcf7]/56">
+          <span className="font-label text-[9px] uppercase tracking-[0.3em] text-[#6e6355]">
             District AI Operating Kit
           </span>
         </div>
-        <span className="hidden font-label text-[8px] uppercase tracking-[0.26em] text-[#fffcf7]/28 sm:block">
+        <span className="hidden font-label text-[8px] uppercase tracking-[0.26em] text-[#6e6355]/70 sm:block">
           District-owned
         </span>
       </div>
 
       <div className="relative p-5 md:p-7">
         <div className="mb-5 grid grid-cols-[1fr_auto] items-center gap-4 px-1">
-          <p className="font-label text-[8px] uppercase tracking-[0.24em] text-[#c49a43]/75">
+          <p className="font-label text-[8px] uppercase tracking-[0.24em] text-[#a8802a]">
             Assembled through Fieldwork
           </p>
-          <p className="font-label text-[8px] uppercase tracking-[0.24em] text-[#fffcf7]/25">
+          <p className="font-label text-[8px] uppercase tracking-[0.24em] text-[#6e6355]/60">
             Hover a layer · 01—05
           </p>
         </div>
@@ -279,7 +279,7 @@ export default function OperatingKitDiagram() {
                 transition: { duration: reduceMotion ? 0 : 1.25, delay: reduceMotion ? 0 : 0.18 },
               },
             }}
-            className="absolute bottom-5 left-[26px] top-5 z-10 w-px origin-top bg-gradient-to-b from-[#c49a43]/70 via-[#c49a43]/30 to-[#c49a43]/5 md:left-[32px]"
+            className="absolute bottom-5 left-[26px] top-5 z-10 w-px origin-top bg-gradient-to-b from-[#a8802a]/70 via-[#a8802a]/30 to-[#a8802a]/5 md:left-[32px]"
           />
 
           <ol className="relative space-y-2" onMouseLeave={() => setActive(null)}>
@@ -309,15 +309,15 @@ export default function OperatingKitDiagram() {
                   onMouseEnter={() => setActive(index)}
                   className={`relative overflow-hidden rounded-[2px] border transition-colors duration-300 ${
                     isActive
-                      ? 'border-[#c49a43]/45 bg-[#fffcf7]/[0.075]'
-                      : 'border-[#fffcf7]/10 bg-[#fffcf7]/[0.045]'
+                      ? 'border-[#a8802a]/50 bg-[#a8802a]/[0.06]'
+                      : 'border-[#1a1816]/10 bg-white'
                   }`}
                 >
                   <div
                     aria-hidden="true"
                     className={`absolute inset-y-0 left-0 w-[3px] transition-opacity duration-300 ${
                       isActive ? 'opacity-100' : 'opacity-70'
-                    } bg-gradient-to-b from-[#c49a43]/15 via-[#c49a43]/70 to-[#c49a43]/15`}
+                    } bg-gradient-to-b from-[#a8802a]/15 via-[#a8802a]/70 to-[#a8802a]/15`}
                   />
                   <button
                     type="button"
@@ -326,10 +326,10 @@ export default function OperatingKitDiagram() {
                     className="grid min-h-[76px] w-full grid-cols-[36px_1fr] items-center gap-4 px-3 py-3.5 text-left md:min-h-[84px] md:grid-cols-[44px_1fr_auto] md:px-4"
                   >
                     <span
-                      className={`relative z-20 flex h-7 w-7 items-center justify-center rounded-full border bg-[#171614] font-label text-[8px] tracking-[0.1em] transition-all duration-300 md:h-8 md:w-8 ${
+                      className={`relative z-20 flex h-7 w-7 items-center justify-center rounded-full border bg-[#fffdf9] font-label text-[8px] tracking-[0.1em] transition-all duration-300 md:h-8 md:w-8 ${
                         isActive
-                          ? 'border-[#c49a43] text-[#e9c87e] shadow-[0_0_16px_rgba(196,154,67,0.35)]'
-                          : 'border-[#c49a43]/45 text-[#d9b66b]'
+                          ? 'border-[#a8802a] text-[#8a6a1e] shadow-[0_0_14px_rgba(168,128,42,0.3)]'
+                          : 'border-[#a8802a]/50 text-[#8a6a1e]/85'
                       }`}
                     >
                       {layer.number}
@@ -337,16 +337,16 @@ export default function OperatingKitDiagram() {
                     <span>
                       <span
                         className={`block font-headline text-[15px] font-medium transition-colors duration-300 md:text-[16px] ${
-                          isActive ? 'text-[#fffcf7]' : 'text-[#fffcf7]/92'
+                          isActive ? 'text-[#1a1816]' : 'text-[#1a1816]/88'
                         }`}
                       >
                         {layer.title}
                       </span>
-                      <span className="mt-1 block font-body text-[11px] leading-relaxed text-[#fffcf7]/50 md:text-[12px]">
+                      <span className="mt-1 block font-body text-[11px] leading-relaxed text-[#6e6355] md:text-[12px]">
                         {layer.detail}
                       </span>
                     </span>
-                    <span aria-hidden="true" className="hidden text-[#fffcf7]/50 md:block">
+                    <span aria-hidden="true" className="hidden text-[#6e6355]/70 md:block">
                       <LayerParticles type={layer.mark} active={isActive} reduceMotion={reduceMotion} />
                     </span>
                   </button>
@@ -361,7 +361,7 @@ export default function OperatingKitDiagram() {
                         className="overflow-hidden"
                       >
                         <div className="grid gap-3 px-3 pb-4 pl-[52px] pr-4 md:pl-[60px]">
-                          <p className="max-w-[52ch] font-body text-[12px] leading-[1.7] text-[#fffcf7]/68 md:text-[12.5px]">
+                          <p className="max-w-[52ch] font-body text-[12px] leading-[1.7] text-[#6e6355] md:text-[12.5px]">
                             {layer.long}
                           </p>
                           <div className="flex flex-wrap gap-1.5">
@@ -371,7 +371,7 @@ export default function OperatingKitDiagram() {
                                 initial={reduceMotion ? false : { opacity: 0, y: 4 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.15 + ei * 0.07 }}
-                                className="rounded-[2px] border border-[#c49a43]/25 bg-[#c49a43]/[0.07] px-2.5 py-1 font-label text-[8px] uppercase tracking-[0.14em] text-[#e6d8b9]/85"
+                                className="rounded-[2px] border border-[#a8802a]/30 bg-[#a8802a]/[0.06] px-2.5 py-1 font-label text-[8px] uppercase tracking-[0.14em] text-[#8a6a1e]"
                               >
                                 {example}
                               </motion.span>
@@ -396,12 +396,12 @@ export default function OperatingKitDiagram() {
             transition: { duration: reduceMotion ? 0 : 0.8, delay: reduceMotion ? 0 : 0.88 },
           },
         }}
-        className="relative grid gap-3 border-t border-[#fffcf7]/10 bg-black/35 px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-center md:px-7"
+        className="relative grid gap-3 border-t border-[#1a1816]/10 bg-[#1a1816]/[0.03] px-5 py-4 sm:grid-cols-[1fr_auto] sm:items-center md:px-7"
       >
-        <p className="font-editorial text-[15px] italic text-[#e6d8b9]/90">
+        <p className="font-editorial text-[15px] italic text-[#a8802a]">
           One operating layer. Ready to keep evolving.
         </p>
-        <p className="font-label text-[8px] uppercase tracking-[0.22em] text-[#fffcf7]/42">
+        <p className="font-label text-[8px] uppercase tracking-[0.22em] text-[#6e6355]/70">
           Maintained by Karst
         </p>
       </motion.div>
