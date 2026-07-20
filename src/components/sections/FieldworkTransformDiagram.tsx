@@ -193,7 +193,6 @@ export default function FieldworkTransformDiagram() {
           <line x1={DIRECT.x - 10} y1={DIRECT.y} x2={DIRECT.x + 6} y2={DIRECT.y} stroke={INK} strokeOpacity="0.45" strokeWidth="1.5" strokeLinecap="round" />
           <line x1={DIRECT.x - 10} y1={DIRECT.y + 6} x2={DIRECT.x + 2} y2={DIRECT.y + 6} stroke={INK} strokeOpacity="0.25" strokeWidth="1.5" strokeLinecap="round" />
           {smallCaps(DIRECT.x, DIRECT.y + 62, 'ONE PROMPT AT A TIME')}
-          {subCaption(DIRECT.x, DIRECT.y + 84, 'polishing an email')}
           {!reduceMotion && !on && (
             <motion.circle
               cy={LEADER.y}
