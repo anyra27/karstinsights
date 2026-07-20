@@ -208,7 +208,7 @@ export function ArtifactFrame({
               />
               <div
                 className="min-h-0 flex-1 overflow-y-auto text-[#1a1816]"
-                style={{ background: '#f4f5f5' }}
+                style={{ background: '#ffffff' }}
               >
                 {children}
               </div>
@@ -888,7 +888,7 @@ export function DashboardArtifact() {
   return (
     <ArtifactFrame url="built-with-karst / early-warning" chromeRight="Raw exports · Processed with AI">
       <div
-        className="relative grid gap-4 bg-[#f4f5f5] p-4 md:p-6"
+        className="relative grid gap-4 bg-[#ffffff] p-4 md:p-6"
       >
         {/* Masthead: this is a deliverable, not a widget */}
         <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-b border-[#1a1816]/10 pb-4">
