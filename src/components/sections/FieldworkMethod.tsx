@@ -60,7 +60,7 @@ export default function FieldworkMethod() {
             </p>
             <h2 className="font-headline text-3xl font-light leading-[1.14] md:text-5xl">
               Not time away from the work.{' '}
-              <span className="font-editorial font-normal italic text-[#a8802a]">
+              <span className="text-sunset-cycle inline-block pb-[0.12em] font-editorial font-normal italic">
                 Time to improve it.
               </span>
             </h2>
