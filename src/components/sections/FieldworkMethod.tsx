@@ -1,5 +1,4 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import AmbientParticles from '../art/AmbientParticles'
 import FieldworkTransformDiagram from './FieldworkTransformDiagram'
 
 const STEPS = [
@@ -7,19 +6,19 @@ const STEPS = [
     number: '01',
     label: 'Bring the work',
     detail:
-      'The board packet, the enrollment question, the process that eats a week. A real backlog, chosen by your team, not workshop exercises.',
+      'The board packet, the enrollment question, the process that eats a week. Chosen by your team.',
   },
   {
     number: '02',
     label: 'Build beside Karst',
     detail:
-      'Guided sessions inside the workday, with an expert partner in the room. Different people build different things: dashboards, presentations, communications, workflow tools.',
+      'Guided sessions inside the workday, an expert partner in the room. Dashboards, presentations, communications, workflow tools.',
   },
   {
     number: '03',
     label: 'Leave it running',
     detail:
-      'Every build lands in the Operating Kit: documented, district-owned, easy to run again, and ready to keep improving.',
+      'Every build lands in the Operating Kit: documented, district-owned, ready to keep improving.',
   },
 ]
 
@@ -34,7 +33,6 @@ export default function FieldworkMethod() {
 
   return (
     <section className="relative overflow-hidden bg-[#fffcf7] px-6 py-24 text-[#1a1816] md:px-10 md:py-36">
-      <AmbientParticles />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_82%_18%,rgba(168,128,42,0.06),transparent_34%)]"
