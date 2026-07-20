@@ -548,8 +548,13 @@ export default function OperatingKitDiagram() {
                         {layer.detail}
                       </span>
                     </span>
-                    <span aria-hidden="true" className="hidden text-[#6e6355]/70 md:block">
-                      <LayerParticles type={layer.mark} active={isActive} reduceMotion={reduceMotion} />
+                    {/* row glyph hands off to the expanded scene when open */}
+                    <span
+                      aria-hidden="true"
+                      className="hidden text-[#6e6355]/70 transition-opacity duration-300 md:block"
+                      style={{ opacity: isActive ? 0 : 1 }}
+                    >
+                      <LayerParticles type={layer.mark} active={false} reduceMotion={reduceMotion} />
                     </span>
                   </button>
 
