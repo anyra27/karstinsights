@@ -223,6 +223,7 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .btn-cycle { animation: none; background-position: 30% 50%; }
+  .text-sunset-cycle { animation: none; background-position: 30% 50%; }
 }
 
 /* Keyboard focus — a visible brass ring on any focused interactive element.
