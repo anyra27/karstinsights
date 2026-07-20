@@ -97,6 +97,35 @@ export default function FieldworkMethod() {
             }}
             className="absolute left-0 right-0 top-0 hidden h-px origin-left bg-gradient-to-r from-[#a8802a]/70 via-[#a8802a]/35 to-[#a8802a]/25 md:block"
           />
+          {/* The work, traveling the line — briefing grammar: ink in, teal build,
+              gold when it lands in the kit. Loops like the Fable 5 model dot. */}
+          {!reduceMotion && (
+            <motion.span
+              aria-hidden="true"
+              className="absolute -top-[3px] hidden h-[7px] w-[7px] rounded-full md:block"
+              initial={{ left: '0%', opacity: 0 }}
+              animate={{
+                left: ['0%', '33.3%', '66.6%', '99.5%', '99.5%'],
+                backgroundColor: ['#1e2a4a', '#2d5a5a', '#5a6aaa', '#a8802a', '#a8802a'],
+                opacity: [0, 1, 1, 1, 0],
+                boxShadow: [
+                  '0 0 0 0 rgba(30,42,74,0)',
+                  '0 0 10px 1px rgba(45,90,90,0.35)',
+                  '0 0 10px 1px rgba(90,106,170,0.35)',
+                  '0 0 12px 2px rgba(168,128,42,0.45)',
+                  '0 0 0 0 rgba(168,128,42,0)',
+                ],
+              }}
+              transition={{
+                duration: 7,
+                times: [0, 0.36, 0.68, 0.9, 1],
+                delay: LINE_DELAY + LINE_DURATION + 0.4,
+                repeat: Infinity,
+                repeatDelay: 1.4,
+                ease: 'linear',
+              }}
+            />
+          )}
           {STEPS.map((step, index) => {
             const arrival = reduceMotion ? 0 : nodeArrival(index)
             return (
@@ -145,6 +174,21 @@ export default function FieldworkMethod() {
                       },
                     }}
                   />
+                  {/* Standing spark — the briefing's vSpark, staggered per node */}
+                  {!reduceMotion && (
+                    <motion.span
+                      className="absolute inset-0 rounded-full bg-[#a8802a]/40"
+                      initial={{ scale: 1, opacity: 0 }}
+                      animate={{ scale: [1, 1.9, 1], opacity: [0, 0.45, 0] }}
+                      transition={{
+                        duration: 4.5,
+                        delay: LINE_DELAY + LINE_DURATION + 1 + index * 1.5,
+                        repeat: Infinity,
+                        repeatDelay: 2.2,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                  )}
                 </span>
                 <p className="mb-10 font-label text-[9px] tracking-[0.24em] text-[#a8802a]/85">
                   {step.number}
