@@ -1,22 +1,62 @@
 import { motion, useReducedMotion } from 'framer-motion'
 
-/* The Fieldwork transformation, drawn in the briefing grammar: one person
-   polishing an email becomes the same person directing a computer that
-   researches, drafts, and builds under their judgment. Lines draw in,
-   task cards light in sequence, dots carry the work. */
+/* The Fieldwork transformation at briefing scale — the run-diagram grammar
+   from the Fable 5 briefing: large thin-stroke nodes, a parallel fan, one
+   story read left to right. A leader arrives, directs the work, the
+   computer runs it in parallel, their judgment converges it, and the
+   district keeps working systems. Dots travel the run in waves. */
 
 const INK = '#1e2a4a'
-const PERI = '#5a6aaa'
+const TEAL = '#2d5a5a'
+const BRONZE = '#74614a'
 const GOLD = '#a8802a'
 const MUT = '#6e6355'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
-const TASKS: Array<{ x: number; label: string }> = [
-  { x: 300, label: 'researches' },
-  { x: 400, label: 'drafts' },
-  { x: 500, label: 'builds' },
-]
+/* Geometry */
+const LEADER = { x: 90, y: 195 }
+const DIRECT = { x: 340, y: 195 }
+const FAN_X = 660
+const FAN_YS = [63, 129, 195, 261, 327]
+const CONVERGE = { x: 910, y: 195 }
+const FINAL = { x: 1095, y: 195 }
+
+/* One full wave of work through the run, in seconds */
+const PERIOD = 7
+
+function smallCaps(x: number, y: number, text: string, fill: string = INK) {
+  return (
+    <text
+      x={x}
+      y={y}
+      textAnchor="middle"
+      fill={fill}
+      fontSize="11"
+      fontWeight="700"
+      letterSpacing="0.16em"
+      fontFamily="Montserrat, sans-serif"
+    >
+      {text}
+    </text>
+  )
+}
+
+function subCaption(x: number, y: number, text: string) {
+  return (
+    <text
+      x={x}
+      y={y}
+      textAnchor="middle"
+      fill={MUT}
+      fontSize="13"
+      fontStyle="italic"
+      fontFamily='"Libre Baskerville", Georgia, serif'
+    >
+      {text}
+    </text>
+  )
+}
 
 export default function FieldworkTransformDiagram() {
   const reduceMotion = Boolean(useReducedMotion())
@@ -27,174 +67,251 @@ export default function FieldworkTransformDiagram() {
       : {
           initial: { pathLength: 0, opacity: 0 },
           whileInView: { pathLength: 1, opacity: 1 },
-          viewport: { once: true, margin: '-60px' },
-          transition: { duration: 0.7, delay, ease: EASE },
+          viewport: { once: true, margin: '-80px' },
+          transition: { duration: 0.9, delay, ease: EASE },
         }
 
   const pop = (delay: number) =>
     reduceMotion
       ? {}
       : {
-          initial: { scale: 0.7, opacity: 0 },
+          initial: { scale: 0.82, opacity: 0 },
           whileInView: { scale: 1, opacity: 1 },
-          viewport: { once: true, margin: '-60px' },
-          transition: { duration: 0.5, delay, ease: EASE },
+          viewport: { once: true, margin: '-80px' },
+          transition: { duration: 0.6, delay, ease: EASE },
         }
 
   const fade = (delay: number) =>
     reduceMotion
       ? {}
       : {
-          initial: { opacity: 0, y: 8 },
+          initial: { opacity: 0, y: 6 },
           whileInView: { opacity: 1, y: 0 },
-          viewport: { once: true, margin: '-60px' },
-          transition: { duration: 0.55, delay, ease: EASE },
+          viewport: { once: true, margin: '-80px' },
+          transition: { duration: 0.6, delay, ease: EASE },
         }
+
+  /* A dot that travels a straight edge once per PERIOD */
+  const travel = (
+    from: { x: number; y: number },
+    to: { x: number; y: number },
+    start: number,
+    duration: number,
+    fill: string,
+    r = 3.5,
+  ) =>
+    reduceMotion ? null : (
+      <motion.circle
+        r={r}
+        fill={fill}
+        initial={{ cx: from.x, cy: from.y, opacity: 0 }}
+        animate={{
+          cx: [from.x, to.x],
+          cy: [from.y, to.y],
+          opacity: [0, 1, 1, 0],
+        }}
+        transition={{
+          duration,
+          times: [0, 0.15, 0.85, 1],
+          delay: 1.8 + start,
+          repeat: Infinity,
+          repeatDelay: PERIOD - duration,
+          ease: 'easeInOut',
+        }}
+      />
+    )
 
   return (
     <svg
-      viewBox="0 0 560 218"
-      className="mt-8 hidden w-full max-w-[560px] md:block"
-      aria-label="One leader moves from polishing an email with AI to directing a computer that researches, drafts, and builds"
+      viewBox="0 0 1180 415"
+      className="mt-14 hidden w-full md:block"
       role="img"
+      aria-label="A leader directs the work; the computer researches, analyzes, drafts, builds, and documents in parallel; their judgment converges it into working systems the district keeps"
     >
-      {/* ── Before: one person, one chat exchange ── */}
-      <motion.circle cx="95" cy="52" r="7" fill="none" stroke={INK} strokeWidth="1.6" {...pop(0.1)} />
-      <motion.path d="M 95 62 L 95 96" fill="none" stroke={INK} strokeOpacity="0.35" strokeWidth="1.2" {...draw(0.25)} />
-      <motion.g {...pop(0.4)}>
-        <rect x="68" y="96" width="54" height="36" rx="4" fill="#fffdf9" stroke={INK} strokeOpacity="0.25" strokeWidth="1.1" />
-        <line x1="77" y1="109" x2="113" y2="109" stroke={MUT} strokeOpacity="0.55" strokeWidth="1.4" />
-        <line x1="77" y1="119" x2="102" y2="119" stroke={MUT} strokeOpacity="0.35" strokeWidth="1.4" />
+      {/* ══ Edges ══ */}
+      <motion.path
+        d={`M ${LEADER.x + 34} ${LEADER.y} L ${DIRECT.x - 42} ${DIRECT.y}`}
+        fill="none"
+        stroke={INK}
+        strokeWidth="1.5"
+        {...draw(0.15)}
+      />
+      {FAN_YS.map((fy, i) => (
+        <motion.path
+          key={`out-${fy}`}
+          d={`M ${DIRECT.x + 40} ${DIRECT.y} L ${FAN_X - 28} ${fy}`}
+          fill="none"
+          stroke={TEAL}
+          strokeOpacity="0.55"
+          strokeWidth="1.2"
+          {...draw(0.55 + i * 0.07)}
+        />
+      ))}
+      {FAN_YS.map((fy, i) => (
+        <motion.path
+          key={`in-${fy}`}
+          d={`M ${FAN_X + 28} ${fy} L ${CONVERGE.x - 40} ${CONVERGE.y}`}
+          fill="none"
+          stroke={BRONZE}
+          strokeOpacity="0.5"
+          strokeWidth="1.2"
+          {...draw(0.85 + i * 0.07)}
+        />
+      ))}
+      <motion.path
+        d={`M ${CONVERGE.x + 40} ${CONVERGE.y} L ${FINAL.x - 34} ${FINAL.y}`}
+        fill="none"
+        stroke={INK}
+        strokeWidth="1.5"
+        {...draw(1.2)}
+      />
+
+      {/* ══ Traveling work — one wave per period ══ */}
+      {travel({ x: LEADER.x + 34, y: LEADER.y }, { x: DIRECT.x - 42, y: DIRECT.y }, 0, 1.1, INK)}
+      {FAN_YS.map((fy, i) =>
+        travel({ x: DIRECT.x + 40, y: DIRECT.y }, { x: FAN_X - 28, y: fy }, 1.3 + i * 0.14, 1.1, TEAL, 3),
+      )}
+      {FAN_YS.map((fy, i) =>
+        travel({ x: FAN_X + 28, y: fy }, { x: CONVERGE.x - 40, y: CONVERGE.y }, 3.1 + i * 0.14, 1.1, BRONZE, 3),
+      )}
+      {travel({ x: CONVERGE.x + 40, y: CONVERGE.y }, { x: FINAL.x - 34, y: FINAL.y }, 4.9, 1, GOLD)}
+
+      {/* ══ The leader ══ */}
+      <motion.g {...pop(0)}>
+        <circle cx={LEADER.x} cy={LEADER.y} r="32" fill="none" stroke={INK} strokeWidth="1.6" />
+        <circle cx={LEADER.x} cy={LEADER.y - 7} r="5.5" fill="none" stroke={INK} strokeWidth="1.6" />
+        <path
+          d={`M ${LEADER.x - 11} ${LEADER.y + 12} Q ${LEADER.x} ${LEADER.y - 1} ${LEADER.x + 11} ${LEADER.y + 12}`}
+          fill="none"
+          stroke={INK}
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
       </motion.g>
-      {/* the one exchange, ping-ponging */}
-      {!reduceMotion && (
-        <motion.circle
-          r="2.6"
-          cx="95"
-          fill={PERI}
-          initial={{ cy: 66 }}
-          animate={{ cy: [66, 92, 66], opacity: [0.9, 0.5, 0.9] }}
-          transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-        />
-      )}
-      <motion.text
-        x="95"
-        y="162"
-        textAnchor="middle"
-        fill={MUT}
-        fontSize="11"
-        fontStyle="italic"
-        fontFamily='"Libre Baskerville", Georgia, serif'
-        {...fade(0.55)}
-      >
-        polishing an email
-      </motion.text>
+      <motion.g {...fade(0.4)}>
+        {smallCaps(LEADER.x, LEADER.y + 62, 'THE LEADER')}
+        {subCaption(LEADER.x + 26, LEADER.y + 84, 'arrives polishing an email')}
+      </motion.g>
 
-      {/* ── Fieldwork: the crossing ── */}
-      <motion.path d="M 150 108 L 236 108" fill="none" stroke={GOLD} strokeOpacity="0.55" strokeWidth="1.2" {...draw(0.7)} />
-      <motion.path d="M 230 103 L 240 108 L 230 113" fill="none" stroke={GOLD} strokeOpacity="0.7" strokeWidth="1.2" {...draw(1.0)} />
-      <motion.text
-        x="193"
-        y="93"
-        textAnchor="middle"
-        fill={GOLD}
-        fontSize="8"
-        fontWeight="700"
-        letterSpacing="0.18em"
-        fontFamily="Montserrat, sans-serif"
-        {...fade(0.9)}
-      >
-        FIELDWORK
-      </motion.text>
+      {/* ══ Directs the work ══ */}
+      <motion.g {...pop(0.45)}>
+        <circle cx={DIRECT.x} cy={DIRECT.y} r="46" fill="rgba(168,128,42,0.05)" stroke="none" />
+        <circle cx={DIRECT.x} cy={DIRECT.y} r="38" fill="#fffdf9" stroke={INK} strokeWidth="1.6" />
+        {Array.from({ length: 8 }, (_, i) => {
+          const a = (i * Math.PI) / 4
+          return (
+            <line
+              key={i}
+              x1={DIRECT.x + Math.cos(a) * 8}
+              y1={DIRECT.y + Math.sin(a) * 8}
+              x2={DIRECT.x + Math.cos(a) * 16}
+              y2={DIRECT.y + Math.sin(a) * 16}
+              stroke={INK}
+              strokeWidth="1.6"
+              strokeLinecap="round"
+            />
+          )
+        })}
+        <circle cx={DIRECT.x} cy={DIRECT.y} r="3" fill={INK} />
+      </motion.g>
       {!reduceMotion && (
         <motion.circle
-          r="3"
-          cy="108"
-          initial={{ cx: 152, opacity: 0 }}
-          animate={{ cx: [152, 234, 234], opacity: [0, 1, 0], fill: [INK, PERI, GOLD] }}
-          transition={{ duration: 2.8, times: [0, 0.82, 1], repeat: Infinity, repeatDelay: 1.1, ease: 'linear', delay: 1.4 }}
-        />
-      )}
-
-      {/* ── After: the same person, directing the work ── */}
-      <motion.circle cx="400" cy="44" r="7" fill="rgba(168,128,42,0.14)" stroke={GOLD} strokeWidth="1.6" {...pop(1.1)} />
-      {!reduceMotion && (
-        <motion.circle
-          cx="400"
-          cy="44"
-          r="7"
+          cx={DIRECT.x}
+          cy={DIRECT.y}
+          r="38"
           fill="none"
           stroke={GOLD}
+          strokeWidth="1"
           initial={{ opacity: 0 }}
-          animate={{ scale: [1, 1.8], opacity: [0.45, 0] }}
-          style={{ transformOrigin: '400px 44px' }}
-          transition={{ duration: 2.6, repeat: Infinity, repeatDelay: 1.6, ease: 'easeOut', delay: 2 }}
+          animate={{ scale: [1, 1.35], opacity: [0.4, 0] }}
+          style={{ transformOrigin: `${DIRECT.x}px ${DIRECT.y}px` }}
+          transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 2.2, ease: 'easeOut', delay: 2 }}
         />
       )}
-      {TASKS.map((task, i) => (
-        <g key={task.label}>
-          <motion.path
-            d={`M 400 54 L ${task.x} 104`}
-            fill="none"
-            stroke={PERI}
-            strokeOpacity="0.4"
-            strokeWidth="1.1"
-            {...draw(1.25 + i * 0.12)}
-          />
-          {/* work traveling down, staggered like the briefing sequence */}
-          {!reduceMotion && (
+      <motion.g {...fade(0.7)}>
+        {smallCaps(DIRECT.x, DIRECT.y + 70, 'DIRECTS THE WORK')}
+        {subCaption(DIRECT.x, DIRECT.y + 92, 'working agentically')}
+      </motion.g>
+
+      {/* ══ The parallel run ══ */}
+      {FAN_YS.map((fy, i) => (
+        <g key={`agent-${fy}`}>
+          <motion.g {...pop(0.75 + i * 0.08)}>
+            <circle cx={FAN_X} cy={fy} r="24" fill="#fffdf9" stroke={TEAL} strokeWidth="1.4" />
+            <line x1={FAN_X} y1={fy - 9} x2={FAN_X} y2={fy - 5} stroke={TEAL} strokeWidth="1.3" strokeLinecap="round" />
+            <line x1={FAN_X} y1={fy + 5} x2={FAN_X} y2={fy + 9} stroke={TEAL} strokeWidth="1.3" strokeLinecap="round" />
+            <line x1={FAN_X - 9} y1={fy} x2={FAN_X - 5} y2={fy} stroke={TEAL} strokeWidth="1.3" strokeLinecap="round" />
+            <line x1={FAN_X + 5} y1={fy} x2={FAN_X + 9} y2={fy} stroke={TEAL} strokeWidth="1.3" strokeLinecap="round" />
+          </motion.g>
+          {/* the agent's center, breathing while it works */}
+          {reduceMotion ? (
+            <circle cx={FAN_X} cy={fy} r="2.6" fill={TEAL} />
+          ) : (
             <motion.circle
-              r="2.4"
-              fill={PERI}
-              initial={{ cx: 400, cy: 56, opacity: 0 }}
-              animate={{ cx: [400, task.x], cy: [56, 102], opacity: [0, 0.9, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 2.6, ease: 'easeIn', delay: 2 + i * 0.55 }}
+              cx={FAN_X}
+              cy={fy}
+              r="2.6"
+              fill={TEAL}
+              animate={{ scale: [1, 1.7, 1], opacity: [0.7, 1, 0.7] }}
+              style={{ transformOrigin: `${FAN_X}px ${fy}px` }}
+              transition={{ duration: 2.2, repeat: Infinity, delay: 2.6 + i * 0.4, ease: 'easeInOut' }}
             />
           )}
-          <motion.g {...pop(1.4 + i * 0.12)}>
-            <rect x={task.x - 36} y="104" width="72" height="42" rx="4" fill="#fffdf9" stroke={INK} strokeOpacity="0.18" strokeWidth="1.1" />
-            {/* light-up loop, ic-seq style */}
-            {!reduceMotion && (
-              <motion.rect
-                x={task.x - 36}
-                y="104"
-                width="72"
-                height="42"
-                rx="4"
-                fill="none"
-                stroke={PERI}
-                strokeWidth="1.2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 0.85, 0] }}
-                transition={{ duration: 4.4, times: [0.1, 0.28, 0.5], repeat: Infinity, delay: 2.4 + i * 1.45 }}
-              />
-            )}
-            <text
-              x={task.x}
-              y="130"
-              textAnchor="middle"
-              fill={INK}
-              fontSize="10.5"
-              fontStyle="italic"
-              fontFamily='"Libre Baskerville", Georgia, serif'
-            >
-              {task.label}
-            </text>
-          </motion.g>
         </g>
       ))}
-      <motion.text
-        x="400"
-        y="180"
-        textAnchor="middle"
-        fill={MUT}
-        fontSize="11"
-        fontStyle="italic"
-        fontFamily='"Libre Baskerville", Georgia, serif'
-        {...fade(1.8)}
-      >
-        directing the work, under their judgment
-      </motion.text>
+      <motion.g {...fade(1.3)}>
+        {smallCaps(FAN_X, 393, 'RESEARCHES · ANALYZES · DRAFTS · BUILDS · DOCUMENTS', TEAL)}
+      </motion.g>
+
+      {/* ══ Their judgment ══ */}
+      <motion.g {...pop(1.15)}>
+        <circle cx={CONVERGE.x} cy={CONVERGE.y} r="38" fill="#fffdf9" stroke={BRONZE} strokeWidth="1.6" />
+        <path
+          d={`M ${CONVERGE.x - 15} ${CONVERGE.y - 9} h 13 m -4.5 -4.5 l 4.5 4.5 l -4.5 4.5`}
+          fill="none"
+          stroke={BRONZE}
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d={`M ${CONVERGE.x + 15} ${CONVERGE.y + 11} h -13 m 4.5 -4.5 l -4.5 4.5 l 4.5 4.5`}
+          fill="none"
+          stroke={BRONZE}
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d={`M ${CONVERGE.x - 3} ${CONVERGE.y + 1} l 3.5 3.5 l 7 -8`}
+          fill="none"
+          stroke={BRONZE}
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </motion.g>
+      <motion.g {...fade(1.5)}>
+        {smallCaps(CONVERGE.x, CONVERGE.y + 70, 'THEIR JUDGMENT', BRONZE)}
+        {subCaption(CONVERGE.x, CONVERGE.y + 92, 'review, redirect, approve')}
+      </motion.g>
+
+      {/* ══ Working systems ══ */}
+      <motion.g {...pop(1.4)}>
+        <circle cx={FINAL.x} cy={FINAL.y} r="32" fill="none" stroke={INK} strokeWidth="1.6" />
+        <path
+          d={`M ${FINAL.x - 11} ${FINAL.y} l 8 8 l 14 -16`}
+          fill="none"
+          stroke={INK}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </motion.g>
+      <motion.g {...fade(1.7)}>
+        {smallCaps(FINAL.x, FINAL.y + 62, 'WORKING SYSTEMS')}
+        {subCaption(FINAL.x - 15, FINAL.y + 84, 'kept by the district')}
+      </motion.g>
     </svg>
   )
 }
