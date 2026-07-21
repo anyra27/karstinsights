@@ -5,13 +5,23 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
    plain-language line with example artifacts expands beneath the title.
    Hover opens on desktop; tap toggles on touch. One layer open at a time. */
 
+/* Each artifact: [name, what it is, status]. Status is the credibility move —
+   these are real, named things the district owns, each actually running. */
+type ArtifactStatus = 'inuse' | 'current' | 'handed'
+type Artifact = readonly [string, string, ArtifactStatus]
+
 const LAYERS = [
   {
     number: '01',
     title: 'District context',
     detail: 'Priorities · brand · community voice',
     long: 'Your strategic plan, board priorities, brand identity, and the words your community actually uses. The context that shapes everything your team builds, so every tool speaks like your district instead of like a vendor.',
-    examples: ['Strategic plan', 'Brand identity', 'Community voice'],
+    artifacts: [
+      ['District voice guide', 'How the district writes, every audience', 'current'],
+      ['Priority map', 'The district’s goals, in plain language', 'current'],
+      ['Brand identity', 'Colors, voice, and marks', 'current'],
+      ['Site & program glossary', 'Local names, acronyms, structures', 'handed'],
+    ] as Artifact[],
     mark: 'context',
   },
   {
@@ -19,7 +29,12 @@ const LAYERS = [
     title: 'Guardrails',
     detail: 'Data rules · review gates · boundaries',
     long: 'What data can go where, who reviews what ships, and the boundaries that keep the work sound. Set with your team and adjusted as you learn, so speed stays matched to judgment.',
-    examples: ['Data classification', 'Review gates', 'Clear boundaries'],
+    artifacts: [
+      ['Data classification rules', 'What may touch AI, what stays out', 'current'],
+      ['Review gates', 'Who approves before anything sends', 'current'],
+      ['De-identification standard', 'How records are made safe to analyze', 'inuse'],
+      ['Vendor boundaries', 'Where district data stays put', 'current'],
+    ] as Artifact[],
     mark: 'guardrails',
   },
   {
@@ -27,7 +42,12 @@ const LAYERS = [
     title: 'Workflows',
     detail: 'Repeatable methods for consequential work',
     long: 'The repeatable methods behind consequential work: board-packet assembly, enrollment briefs, survey analysis. Written down plainly, so your team can run them again and pass them on.',
-    examples: ['Board packets', 'Enrollment briefs', 'Survey analysis'],
+    artifacts: [
+      ['Board-packet assembly', 'Runbook attached', 'inuse'],
+      ['Enrollment forecast refresh', 'Owner: data lead', 'inuse'],
+      ['Family communication pass', 'Same figures, every audience', 'inuse'],
+      ['Survey-to-brief pipeline', 'Raw responses to a readable brief', 'handed'],
+    ] as Artifact[],
     mark: 'workflows',
   },
   {
@@ -35,7 +55,12 @@ const LAYERS = [
     title: 'Tools',
     detail: 'Agents · automations · working applications',
     long: 'The agents, automations, and working applications your teams build in Fieldwork, versioned and documented, easy to hand off and manage because the how lives inside each one.',
-    examples: ['Agents', 'Automations', 'Staff-built apps'],
+    artifacts: [
+      ['Facilities intake app', 'Staff-facing, feeds operations', 'inuse'],
+      ['Classroom observation tool', 'Instructional rounds, no names', 'inuse'],
+      ['Agent library', 'Each agent with an owner', 'current'],
+      ['Dashboard starter', 'The house chart grammar', 'handed'],
+    ] as Artifact[],
     mark: 'tools',
   },
   {
@@ -43,10 +68,21 @@ const LAYERS = [
     title: 'Ownership',
     detail: 'Files · knowledge · capability',
     long: 'Files, accounts, and know-how in district hands. Owned outright, documented, and running on the district’s own terms.',
-    examples: ['District accounts', 'Runbooks', 'Handoff record'],
+    artifacts: [
+      ['Runbooks', 'Every workflow, in plain language', 'current'],
+      ['Handoff record', 'Who owns what, kept current', 'current'],
+      ['Decision log', 'Why things are built the way they are', 'current'],
+      ['Continuation plan', 'What the district carries forward', 'current'],
+    ] as Artifact[],
     mark: 'ownership',
   },
 ] as const
+
+const STATUS_META: Record<ArtifactStatus, { label: string; text: string; dot: string }> = {
+  inuse: { label: 'In use', text: 'text-[#0f6f68]', dot: 'bg-[#2fa8a0] shadow-[0_0_7px_rgba(47,168,160,0.6)]' },
+  current: { label: 'Current', text: 'text-[#0d9268]', dot: 'bg-[#10B981] shadow-[0_0_7px_rgba(16,185,129,0.5)]' },
+  handed: { label: 'Handed off', text: 'text-[#8a6a1e]', dot: 'bg-[#a8802a] shadow-[0_0_7px_rgba(168,128,42,0.5)]' },
+}
 
 /* Row glyphs, animated when their layer is active. Each has one idea:
    context gathers, guardrails hold the line, workflows travel, tools
@@ -567,27 +603,44 @@ export default function OperatingKitDiagram() {
                         transition={{ duration: reduceMotion ? 0 : 0.38, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                       >
-                        <div className="grid gap-3 px-3 pb-4 pl-[52px] pr-4 md:grid-cols-[1fr_auto] md:items-center md:gap-8 md:pl-[60px] md:pr-6">
-                          <div className="grid gap-3">
+                        <div className="px-3 pb-4 pl-[52px] pr-4 md:pl-[60px] md:pr-6">
+                          <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-center md:gap-8">
                             <p className="max-w-[52ch] font-body text-[12px] leading-[1.7] text-[#6e6355] md:text-[12.5px]">
                               {layer.long}
                             </p>
-                            <div className="flex flex-wrap gap-1.5">
-                              {layer.examples.map((example, ei) => (
-                                <motion.span
-                                  key={example}
-                                  initial={reduceMotion ? false : { opacity: 0, y: 4 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.15 + ei * 0.07 }}
-                                  className="rounded-[2px] border border-[#2d5a5a]/30 bg-[#2d5a5a]/[0.06] px-2.5 py-1 font-label text-[8px] uppercase tracking-[0.14em] text-[#2d5a5a]"
-                                >
-                                  {example}
-                                </motion.span>
-                              ))}
+                            <div className="hidden md:block" aria-hidden="true">
+                              <LayerScene type={layer.mark} reduceMotion={reduceMotion} />
                             </div>
                           </div>
-                          <div className="hidden md:block" aria-hidden="true">
-                            <LayerScene type={layer.mark} reduceMotion={reduceMotion} />
+
+                          {/* the real, named inventory — each thing actually running */}
+                          <div className="mt-4 grid gap-1.5 sm:grid-cols-2">
+                            {layer.artifacts.map((artifact, ai) => {
+                              const [name, meta, status] = artifact
+                              const s = STATUS_META[status]
+                              return (
+                                <motion.div
+                                  key={name}
+                                  initial={reduceMotion ? false : { opacity: 0, y: 5 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ duration: 0.32, delay: reduceMotion ? 0 : 0.12 + ai * 0.06 }}
+                                  className="rounded-[3px] border border-[#1a1816]/8 bg-white/70 px-3 py-2.5 transition-colors duration-200 hover:border-[#2d5a5a]/25 hover:bg-white"
+                                >
+                                  <div className="flex items-baseline justify-between gap-3">
+                                    <span className="font-label text-[11px] font-semibold tracking-[0.01em] text-[#1a1816]">
+                                      {name}
+                                    </span>
+                                    <span className={`flex shrink-0 items-center gap-1.5 font-label text-[7.5px] font-bold uppercase tracking-[0.16em] ${s.text}`}>
+                                      <span className={`h-[5px] w-[5px] rounded-full ${s.dot}`} aria-hidden="true" />
+                                      {s.label}
+                                    </span>
+                                  </div>
+                                  <div className="mt-1 font-body text-[10.5px] leading-[1.5] text-[#6e6355]">
+                                    {meta}
+                                  </div>
+                                </motion.div>
+                              )
+                            })}
                           </div>
                         </div>
                       </motion.div>
