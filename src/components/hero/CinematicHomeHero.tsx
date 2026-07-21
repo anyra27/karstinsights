@@ -46,13 +46,13 @@ const STORY_BEATS = [
   },
   {
     stage: 'Survey',
-    title: 'Insights that were out of reach.',
+    title: 'Gain insights traditionally out of reach.',
     body: 'District data arrives segmented and unclear. Your team begins turning it into dashboards, predictive solutions, and analytics: answers that once required outside help, or simply went without.',
   },
   {
     stage: 'Strata',
     title: 'Sharper decisions, every level.',
-    body: 'The board, the cabinet, a principal, a teacher. Each working from the same picture, each with the read that fits the call in front of them.',
+    body: 'The cabinet, executive teams, classified and certificated management. Each working from the same picture, each with the read that fits the call in front of them.',
   },
   {
     stage: 'Assembly',
@@ -67,7 +67,7 @@ const STORY_BEATS = [
   {
     stage: 'Record',
     title: 'The district you’ve wanted to run.',
-    body: 'Leaders operating agentic AI. Teams that work differently. A culture of practical innovation the district carries forward. The partnership starts wherever you need it, and grows from there.',
+    body: 'Clearer decisions. Deeper impact. A culture of practical innovation the district carries forward. The partnership starts wherever you need it, and grows from there.',
   },
 ] as const
 
