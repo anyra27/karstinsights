@@ -1,7 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-// Active Fieldwork visual. To revert to the run-diagram (production) version,
-// swap this import back to './FieldworkTransformDiagram' — the old file is kept intact.
-import FieldworkTransformDiagram from './FieldworkPartnershipDiagram'
+import FieldworkTransformDiagram from './FieldworkTransformDiagram'
 
 const STEPS = [
   {
