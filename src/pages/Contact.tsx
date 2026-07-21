@@ -56,10 +56,6 @@ export default function Contact() {
                   >
                     kevin@anyra.ai
                   </a>
-                  <p className="mt-6 max-w-xl font-body text-sm md:text-base leading-relaxed text-on-primary/65">
-                    Your note goes straight to Kevin. Karst does not collect it through a website
-                    form or store it in a site database.
-                  </p>
                 </div>
                 <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
                 <a
