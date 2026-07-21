@@ -189,12 +189,13 @@ export default function CinematicHomeHero() {
               For School District Executive Teams
             </p>
             <h1 className="font-headline text-[clamp(48px,7.4vw,104px)] font-light leading-[1.04] tracking-[-0.035em] text-[#f3efe6]">
-              District-owned{' '}
-              <span className="font-editorial font-normal italic text-[#d9c39b]">AI capability.</span>
+              Set the{' '}
+              <span className="text-sunset-cycle-light inline-block pb-[0.08em] font-editorial font-normal italic">
+                tempo.
+              </span>
             </h1>
-            <p className="mx-auto mt-7 max-w-[62ch] font-body text-[15.5px] leading-[1.72] tracking-[0.01em] text-[#f3efe6] md:text-[17.5px]">
-              Karst gives district teams protected build time and expert partnership: to build the
-              systems their work requires, and the capability to keep improving them.
+            <p className="mx-auto mt-7 max-w-[54ch] font-body text-[15.5px] leading-[1.72] tracking-[0.01em] text-[#f3efe6] md:text-[17.5px]">
+              Karst builds district-owned AI capability, and changes how your district works.
             </p>
             {reduceMotion && (
               <Link

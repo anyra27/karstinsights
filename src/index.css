@@ -203,6 +203,28 @@ body {
   animation: sunset-wave 12s linear infinite;
 }
 
+/* Brighter cycle for dark surfaces — periwinkle to pale water, always legible on near-black */
+.text-sunset-cycle-light {
+  background: linear-gradient(
+    90deg,
+    #8a8ec8,
+    #a0b8dc,
+    #c6d6ee,
+    #eaf1fb,
+    #c6d6ee,
+    #a0b8dc,
+    #8a8ec8
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: sunset-wave 12s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-sunset-cycle-light { animation: none; background-position: 30% 50%; }
+}
+
 .bg-sunset-cycle {
   animation: sunset-cycle-bg 12s ease-in-out infinite;
 }
