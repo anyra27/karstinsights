@@ -180,17 +180,17 @@ export default function Landing() {
             variants={staggerChild}
             className="mx-auto max-w-[20ch] font-headline text-[clamp(34px,5.2vw,68px)] font-light leading-[1.08] tracking-[-0.02em] text-[#f3efe6]"
           >
-            Most districts will rent this capability.{' '}
+            Few districts will ever build capability like this.{' '}
             <span className="text-sunset-cycle-light inline-block pb-[0.08em] font-editorial font-normal italic">
-              Yours can own it.
+              Yours can be one of them.
             </span>
           </motion.h2>
           <motion.p
             variants={staggerChild}
             className="mx-auto mt-8 max-w-[50ch] font-body text-[15px] leading-[1.8] text-[#f3efe6]/64 md:text-[16.5px]"
           >
-            The districts that build their own AI capability now are the ones that will set the pace
-            for the region. Karst is how a few of them get there first.
+            It takes protected time and a partner who builds beside you. Karst gives district teams
+            both, and the standing that comes with getting there first.
           </motion.p>
           <motion.div variants={staggerChild} className="mt-11">
             <Link

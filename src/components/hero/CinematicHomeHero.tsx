@@ -51,8 +51,8 @@ const STORY_BEATS = [
   },
   {
     stage: 'Strata',
-    title: 'Every build feeds the next.',
-    body: 'Datasets become dashboards. Dashboards become presentations, websites, and communications, recomposed for the board, staff, and families. One thread of work, carried to every audience.',
+    title: 'One source, every audience.',
+    body: 'A dataset becomes a dashboard. The dashboard becomes a board presentation, a staff website, a message home. The same work, recomposed for everyone who needs it.',
   },
   {
     stage: 'Assembly',
@@ -62,7 +62,7 @@ const STORY_BEATS = [
   {
     stage: 'Constellation',
     title: 'No engineers needed.',
-    body: 'Leaders rarely walk in believing they can do this work. Then they do it, and the district never depends on an outside vendor to build what it needs again.',
+    body: 'Leaders rarely walk in believing they can do this work. Then they do it, building tools shaped to the district’s own needs, and reshaping them as those needs change.',
   },
   {
     stage: 'Record',
@@ -194,8 +194,8 @@ export default function CinematicHomeHero() {
                 tempo.
               </span>
             </h1>
-            <p className="mx-auto mt-7 max-w-[54ch] font-body text-[15.5px] leading-[1.72] tracking-[0.01em] text-[#f3efe6] md:text-[17.5px]">
-              Karst builds district-owned AI capability, and changes how your district works.
+            <p className="mx-auto mt-7 max-w-[40ch] font-body text-[18px] leading-[1.6] tracking-[0.005em] text-[#f3efe6] md:text-[22px]">
+              Build a district ready for the next era of work.
             </p>
             {reduceMotion && (
               <Link
