@@ -346,7 +346,7 @@ const LENSES: Record<LensKey, Lens> = {
     chart: 'columns',
     chartLabel: 'Course-failure rate by attendance band',
     read:
-      'The pattern hides in the join. Below 90 percent attendance, course-failure rates roughly double; below 85, most of a cohort is failing something. Above the line, outcomes hold strong, which is why protecting attendance protects everything else.',
+      'The story is in the join. Below 90 percent — the district line — course-failure rates roughly double; below 85, most of a cohort is failing something. The students slipping on attendance and the students failing courses are largely the same students, which is why protecting attendance protects everything else.',
   },
   early: {
     tab: 'Early signal',
@@ -358,7 +358,7 @@ const LENSES: Record<LensKey, Lens> = {
     chart: 'curve',
     chartLabel: 'Year-end chronic absence by first-month absences',
     read:
-      'The strongest predictor is the earliest one. A student with two or more absences in the first month is five times more likely to end the year chronically absent. That is a list a principal can act on in September, not one they read in June.',
+      'The strongest predictor is the earliest one. A student with two or more absences in the first month is five times more likely to end the year chronically absent. Joined with early failing marks and last year’s pattern, the flag catches most of the students who will struggle — while there is still a full year to act, not a June report to read.',
   },
   watchlist: {
     tab: 'Watchlist',
@@ -370,7 +370,7 @@ const LENSES: Record<LensKey, Lens> = {
     chart: 'ranked',
     chartLabel: 'Flagged students by site · highest need first',
     read:
-      'The dashboard ends where the work starts: a ranked, de-identified watchlist the district can turn back into real names on its own side. Each flag carries why it fired, so outreach is targeted, not district-wide.',
+      'The dashboard ends where the work starts: a ranked, de-identified watchlist, kept short enough for a school team to actually work. Each flag carries why it fired — an absence pattern, a failing mark, a prior-year history — so outreach is targeted, not district-wide. The district turns the list back into real names on its own side.',
   },
 }
 
