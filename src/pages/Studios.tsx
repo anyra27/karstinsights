@@ -154,7 +154,7 @@ export default function Studios() {
               to="/contact"
               className="btn-cycle inline-block py-3.5 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px]"
             >
-              Request a Conversation
+              Request an Introduction
             </Link>
             <a
               href="#studios"
@@ -405,9 +405,9 @@ export default function Studios() {
             className="font-body text-base md:text-lg text-on-surface-variant leading-relaxed mb-4"
           >
             Districts bring the studios to their people, each with their own
-            login, configured to your district. Buy them on their own or fold
-            them into a fuller partnership. Either way, the capability stays with
-            your people.
+            login, configured to your district. The studios travel inside a
+            district partnership, extending the practice to every seat. The
+            capability stays with your people.
           </motion.p>
           <motion.p
             variants={staggerChild}
@@ -455,7 +455,7 @@ export default function Studios() {
               to="/contact"
               className="btn-cycle inline-block py-3.5 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px]"
             >
-              Request a Conversation
+              Request an Introduction
             </Link>
           </motion.div>
           <div className="w-16 h-px bg-white/10 mx-auto mb-20" />

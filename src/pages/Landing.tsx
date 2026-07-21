@@ -6,82 +6,22 @@ import {
   easeStandard,
 } from '../lib/motion'
 import PageShell from '../components/layout/PageShell'
-import ParallaxImage from '../components/layout/ParallaxImage'
 import DashboardShowcase from '../components/sections/DashboardShowcase'
+import ParallelAnalysisFan from '../components/sections/ParallelAnalysisFan'
 import DistrictLeadershipProof from '../components/sections/DistrictLeadershipProof'
-import RecastSurface from '../components/art/RecastSurface'
-import WorkingSurfaceGlyph from '../components/art/WorkingSurfaceGlyph'
+import FieldworkMethod from '../components/sections/FieldworkMethod'
+import WhatTeamsBuild from '../components/sections/WhatTeamsBuild'
+import PartnershipSequence from '../components/sections/PartnershipSequence'
+import OperatingKitDiagram from '../components/art/OperatingKitDiagram'
 import AmbientParticles from '../components/art/AmbientParticles'
 import CinematicHomeHero from '../components/hero/CinematicHomeHero'
-import {
-  DashboardVignette,
-  SpeakVignette,
-  ConcertVignette,
-  ToolVignette,
-} from '../components/art/CapabilityVignettes'
 
 import { usePageMeta } from '../lib/usePageMeta'
-import pearlBg from '../assets/pearl-bg.webp'
-import karstCavern from '../assets/karst-cavern.webp'
-import gem4 from '../assets/gem4.webp'
-import birdOfParadise from '../assets/bird-of-paradise.webp'
-import koi from '../assets/koi.webp'
 
 /* District leadership proof — live testimonials provided for marketing use,
    with each leader's current role and organization stated individually. */
 const SHOW_PROOF = true
 
-/* ── Capabilities — what the district's own team walks out able to deliver.
-   Framed as outcomes the team provides the district, never as mechanism. ── */
-const capabilities = [
-  {
-    Vignette: DashboardVignette,
-    title: 'Decision intelligence from your own data.',
-    desc: 'A raw export becomes a clear, board-ready view of what matters. Built by your team, owned by your district.',
-  },
-  {
-    Vignette: SpeakVignette,
-    title: 'Write once. Speak everywhere.',
-    desc: 'One set of figures becomes a board memo, a family letter, and a public summary, each in your district’s voice.',
-  },
-  {
-    Vignette: ConcertVignette,
-    title: 'The right intelligence for the question.',
-    desc: 'Not one tool, but several working in concert, matched to whatever your team needs to answer.',
-  },
-  {
-    Vignette: ToolVignette,
-    title: 'A working tool, not a demonstration.',
-    desc: 'A form, a site, an application your team relies on. Not a prototype that gathers dust.',
-  },
-]
-
-/* ── Offerings — Executive Workshop leads; the Residency is the mature state a
-   district grows into; the Platform is the engine behind both. ── */
-const offerings = [
-  {
-    label: 'Executive Workshop',
-    title: 'Your team walks out able to build.',
-    desc: 'An on-site intensive for superintendents and their cabinets. Your team builds real, board-ready work on your own data, and keeps the capability.',
-    image: birdOfParadise,
-  },
-  {
-    label: 'The Insights Residency',
-    title: 'A year working alongside your team.',
-    desc: 'When the work goes deeper, we partner with your team for a year: dashboards, design systems, operational rhythms, built together on your data. By Year 1’s end, your team owns the practice.',
-    image: koi,
-    imagePosition: 'right bottom',
-  },
-  {
-    label: 'Karst Platform',
-    title: 'The platform behind the work.',
-    desc: 'Learning Studio, Data Studio, and Karst Frame: the system that makes the practice compound.',
-    image: gem4,
-    link: '/studios',
-    linkLabel: 'See the Studios',
-    external: false,
-  },
-]
 
 /* ════════════════════════════════════════ */
 
@@ -99,167 +39,111 @@ export default function Landing() {
       />
 
 
-      {/* ══════════ THE PROMISE — capability your team reaches ══════════ */}
-      <section className="relative py-20 md:py-28 px-6 md:px-10 bg-surface overflow-hidden">
-        <motion.div
-          className="relative z-10 max-w-6xl mx-auto"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          variants={staggerContainerRelaxed}
-        >
-          <motion.p
-            variants={staggerChild}
-            className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-on-surface-variant/55 text-center mb-6"
-          >
-            Capability
-          </motion.p>
-
-          <motion.h2
-            variants={staggerChild}
-            className="font-headline text-2xl md:text-3xl lg:text-4xl text-on-surface leading-snug text-center max-w-3xl mx-auto mb-12 md:mb-14"
-          >
-            Your cabinet learns to build the systems, tools, and habits that make the district more capable.{' '}
-            <span className="font-editorial italic font-normal">Not just talk about AI.</span>
-          </motion.h2>
-
-          <motion.div
-            variants={staggerChild}
-            className="w-full max-w-3xl mx-auto"
-          >
-            <WorkingSurfaceGlyph />
-          </motion.div>
-        </motion.div>
-      </section>
-
-
-      {/* ══════════ BENEATH THE SURFACE — the karst story ══════════ */}
-      <section className="grid grid-cols-1 md:grid-cols-2 min-h-[560px]">
-        <ParallaxImage src={karstCavern} className="min-h-[360px] md:min-h-0" />
-        <div className="relative flex items-center px-10 md:px-16 lg:px-20 py-16 md:py-0 bg-surface-container">
-          <motion.div
-            className="relative z-10 max-w-lg"
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, ease: easeStandard }}
-          >
-            <p className="font-label text-[10px] tracking-[0.3em] uppercase text-tertiary mb-4">
-              Beneath the Surface
-            </p>
-            <h2 className="font-headline text-2xl md:text-3xl text-on-surface leading-snug mb-5">
-              The system beneath the surface.
-            </h2>
-            <div className="w-10 h-px bg-tertiary/40 mb-5" />
-            <p className="font-body text-sm md:text-base text-on-surface-variant leading-relaxed mb-6">
-              A karst is a landscape shaped from below: structure carved into stone, unseen
-              from above. A district holds the same hidden order. Your team learns to read
-              what&rsquo;s underneath, and to act on it.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      {/* ══════════ WHAT YOUR TEAM BUILDS — concrete evidence, straight after the hero ══════════ */}
+      <WhatTeamsBuild />
 
 
       {/* ══════════ PROOF — DISTRICT LEADERS ══════════ */}
       {SHOW_PROOF && <DistrictLeadershipProof />}
 
 
-      {/* ══════════ WHAT YOUR TEAM DELIVERS — capabilities ══════════ */}
-      <section className="relative py-16 md:py-32 px-6 md:px-10 bg-surface overflow-hidden">
+      {/* ══════════ HOW THE PARTNERSHIP WORKS ══════════ */}
+      <FieldworkMethod />
+
+
+      {/* ══════════ THE OPERATING KIT — what Fieldwork leaves behind ══════════ */}
+      <section className="relative overflow-hidden border-t border-[#1a1816]/8 bg-[#f6f4ec] px-6 py-24 text-[#1a1816] md:px-10 md:py-36">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_26%,rgba(45,90,90,0.06),transparent_28%)]"
+        />
         <motion.div
-          className="max-w-3xl mx-auto text-center mb-14 md:mb-16"
+          className="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
           variants={staggerContainerRelaxed}
         >
-          <motion.p
-            variants={staggerChild}
-            className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-on-surface-variant/55 mb-6"
-          >
-            What Your Team Delivers
-          </motion.p>
-          <motion.h2
-            variants={staggerChild}
-            className="font-headline text-2xl md:text-3xl lg:text-4xl text-on-surface leading-snug mb-5"
-          >
-            A new way to <span className="font-editorial italic font-normal">lead your district.</span>
-          </motion.h2>
-          <motion.div variants={staggerChild} className="w-10 h-px bg-tertiary/40 mx-auto mb-6" />
-          <motion.p
-            variants={staggerChild}
-            className="font-label text-[10px] md:text-[11px] tracking-[0.28em] uppercase text-tertiary/70"
-          >
-            Insight · Direction · Clarity · Speed · Innovation
-          </motion.p>
-        </motion.div>
+          <div>
+            <motion.p
+              variants={staggerChild}
+              className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#2d5a5a] md:text-[11px]"
+            >
+              The District AI Operating Kit
+            </motion.p>
 
-        <motion.div
-          className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-7"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
-          variants={staggerContainerRelaxed}
-        >
-          {capabilities.map((cap) => {
-            const Vignette = cap.Vignette
-            return (
-              <motion.div
-                key={cap.title}
-                variants={staggerChild}
-                className="ghost-border flex flex-col overflow-hidden"
-              >
-                <Vignette className="w-full border-b border-[#1e2a4a]/[0.08] bg-[#fffcf7] px-2 pt-3" />
-                <div className="p-6 md:p-7 flex flex-col flex-1">
-                  <h3 className="font-headline text-base md:text-lg text-on-surface leading-snug mb-3">
-                    {cap.title}
-                  </h3>
-                  <p className="font-body text-sm text-on-surface-variant leading-relaxed">
-                    {cap.desc}
-                  </p>
-                </div>
-              </motion.div>
-            )
-          })}
-        </motion.div>
+            <motion.h2
+              variants={staggerChild}
+              className="max-w-xl font-headline text-3xl font-light leading-[1.14] text-[#1a1816] md:text-5xl lg:text-[50px]"
+            >
+              Everything works,{' '}
+              <span className="text-sunset-cycle inline-block pb-[0.1em] font-editorial font-normal italic">
+                in one place.
+              </span>
+            </motion.h2>
 
-        <motion.p
-          className="font-body text-base md:text-lg text-on-surface-variant leading-relaxed text-center max-w-2xl mx-auto mt-14"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.7, ease: easeStandard }}
-        >
-          The point was never the technology. It is the insight, the clarity, and the command it
-          puts in your team&rsquo;s hands.
-        </motion.p>
+            <motion.p
+              variants={staggerChild}
+              className="mt-7 max-w-[48ch] font-body text-sm leading-[1.85] text-[#6e6355] md:text-base"
+            >
+              Every dashboard, presentation, and application your team builds lives in one organized
+              kit. Documented in plain language. Easy to find, easy to run again, easy to update,
+              and easy to hand to the next person. Karst maintains it with you through the
+              engagement, and the kit stays with the district.
+            </motion.p>
+
+            <motion.p
+              variants={staggerChild}
+              className="mt-8 border-l border-[#2d5a5a]/45 pl-5 font-label text-[9px] uppercase leading-[1.8] tracking-[0.24em] text-[#6e6355]/80"
+            >
+              District-owned · Built with Karst · Easy to continue
+            </motion.p>
+          </div>
+
+          <motion.div variants={staggerChild}>
+            <OperatingKitDiagram />
+          </motion.div>
+        </motion.div>
       </section>
 
 
       {/* ══════════ DEMONSTRATION BAND — DASHBOARD SHOWCASE ══════════ */}
-      <section className="relative py-28 md:py-36 px-6 bg-surface-container overflow-hidden">
+      <section
+        id="live-dashboards"
+        className="relative overflow-hidden border-t border-[#1a1816]/8 bg-[#fffcf7] px-6 py-24 text-[#1a1816] md:px-10 md:py-32"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(168,128,42,0.07),transparent_31%),linear-gradient(145deg,rgba(255,255,255,0.5),transparent_42%)]"
+        />
         <motion.div
-          className="max-w-3xl mx-auto text-center mb-14 md:mb-16"
+          className="relative z-10 mx-auto mb-14 grid max-w-6xl gap-8 md:mb-16 lg:grid-cols-[0.9fr_1.1fr] lg:items-end lg:gap-24"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.7, ease: easeStandard }}
         >
-          <p className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-tertiary mb-5">
-            Built On Your Own Data
-          </p>
-          <h2 className="font-headline text-2xl md:text-3xl lg:text-4xl text-on-surface leading-snug mb-5">
-            A working dashboard,<br className="hidden md:inline" /> ready for the board.
-          </h2>
-          <div className="w-10 h-px bg-tertiary/40 mx-auto mb-5" />
-          <p className="font-body text-sm md:text-base text-on-surface-variant leading-relaxed max-w-xl mx-auto">
-            The kind of working surface your team builds and owns, clear enough to show in the
-            boardroom, current enough to trust.
+          <div>
+            <p className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]">
+              In Practice
+            </p>
+            <h2 className="max-w-2xl font-headline text-3xl font-light leading-[1.14] text-[#1a1816] md:text-5xl lg:text-[54px]">
+              A dashboard,{' '}
+              <span className="font-editorial font-normal italic text-[#a8802a]">ready for the board.</span>
+            </h2>
+          </div>
+          <p className="max-w-[48ch] font-body text-base leading-[1.85] text-[#6e6355] md:text-lg">
+            A working example, built on district data. Explore it yourself.
           </p>
         </motion.div>
 
+        {/* the scale of looking behind the dashboard — the briefing's dot field */}
+        <div className="relative z-10">
+          <ParallelAnalysisFan />
+        </div>
+
         <motion.div
+          className="relative z-10"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
@@ -270,14 +154,23 @@ export default function Landing() {
       </section>
 
 
-      {/* ══════════ THE STANDARD — marks of mastery ══════════ */}
+
+      {/* ══════════ THE PARTNERSHIP — one engagement, built in sequence ══════════ */}
+      <PartnershipSequence />
+
+
+      {/* ══════════ THE STANDARD — big-picture close, bookend to the hero ══════════ */}
       <section
-        className="relative py-32 md:py-44 px-6 overflow-hidden"
-        style={{ backgroundImage: `url(${pearlBg})`, backgroundSize: 'cover' }}
+        data-karst-nav-dark
+        className="relative min-h-[86svh] flex items-center overflow-hidden bg-[#0e0e0c]"
       >
-        <div className="absolute inset-0 bg-surface/88" />
+        <AmbientParticles tone="white" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_46%,rgba(90,106,170,0.12),transparent_52%),radial-gradient(circle_at_50%_120%,rgba(14,14,12,0.9),transparent_60%)]"
+        />
         <motion.div
-          className="relative z-10 max-w-3xl mx-auto text-center"
+          className="relative z-10 mx-auto w-full max-w-4xl px-6 py-28 text-center md:py-36"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
@@ -285,143 +178,38 @@ export default function Landing() {
         >
           <motion.p
             variants={staggerChild}
-            className="font-label text-[10px] md:text-[11px] tracking-[0.32em] uppercase text-tertiary/75 mb-8"
+            className="mb-8 font-label text-[10px] uppercase tracking-[0.34em] text-[#8a8ec8]/70 md:text-[11px]"
           >
             The Standard
           </motion.p>
-
           <motion.h2
             variants={staggerChild}
-            className="font-editorial italic text-4xl md:text-5xl lg:text-6xl text-on-surface leading-[1.18] pb-3 mb-3 tracking-tight"
-            style={{
-              backgroundImage: 'linear-gradient(135deg, #1e2a4a 0%, #4a6a8a 55%, #4a2d5a 100%)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-            }}
+            className="mx-auto max-w-[20ch] font-headline text-[clamp(34px,5.2vw,68px)] font-light leading-[1.08] tracking-[-0.02em] text-[#f3efe6]"
           >
-            Mastery, not familiarity.
+            Few districts will ever build capability like this.{' '}
+            <span className="text-sunset-cycle-light inline-block pb-[0.08em] font-editorial font-normal italic">
+              Yours can be one of them.
+            </span>
           </motion.h2>
-
           <motion.p
             variants={staggerChild}
-            className="font-body text-lg md:text-xl lg:text-2xl text-on-surface-variant leading-relaxed max-w-2xl mx-auto mb-12"
+            className="mx-auto mt-8 max-w-[50ch] font-body text-[15px] leading-[1.8] text-[#f3efe6]/64 md:text-[16.5px]"
           >
-            Not passing familiarity with the tools. Genuine command of the work.
+            It takes protected time and a partner who builds beside you. Karst gives district teams
+            both, and the standing that comes with getting there first.
           </motion.p>
-
-          <motion.div
-            variants={staggerChild}
-            className="max-w-3xl mx-auto mb-10"
-          >
-            <RecastSurface className="w-full" />
-          </motion.div>
-
-        </motion.div>
-      </section>
-
-
-      {/* ══════════ OFFERINGS — EDITORIAL SPLITS ══════════ */}
-      {offerings.map((item, i) => {
-        const isFlipped = i % 2 === 1
-        return (
-        <section
-          key={item.label}
-          className="grid grid-cols-1 md:grid-cols-2 min-h-[650px]"
-        >
-          {/* Image — alternates sides */}
-          <ParallaxImage
-            src={item.image}
-            objectPosition={'imagePosition' in item ? (item.imagePosition as string) : undefined}
-            className={`min-h-[400px] md:min-h-0 ${isFlipped ? 'order-1 md:order-2' : ''}`}
-          />
-
-          {/* Content */}
-          <div
-            className={`relative flex items-center px-10 md:px-16 lg:px-20 py-16 md:py-0 ${
-              isFlipped ? 'order-2 md:order-1 bg-surface-container' : ''
-            }`}
-            style={!isFlipped ? { backgroundImage: `url(${pearlBg})`, backgroundSize: 'cover' } : undefined}
-          >
-            {!isFlipped && <div className="absolute inset-0 bg-surface/88" />}
-            <motion.div
-              className={`relative z-10 max-w-lg ${isFlipped ? 'md:ml-auto' : ''}`}
-              initial={{ opacity: 0, x: isFlipped ? -30 : 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.7, ease: easeStandard }}
+          <motion.div variants={staggerChild} className="mt-11">
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-2.5 rounded-[3px] bg-[#f3efe6] px-10 py-4 font-headline text-xs uppercase tracking-widest text-[#0e0e0c] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_14px_44px_-14px_rgba(255,255,255,0.45)]"
             >
-              <p className="font-label text-[10px] tracking-[0.3em] uppercase text-tertiary mb-4">
-                {item.label}
-              </p>
-              <h2 className="font-headline text-2xl md:text-3xl text-on-surface leading-snug mb-4">
-                {item.title}
-              </h2>
-              <div className="w-10 h-px bg-tertiary/40 mb-5" />
-              <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">
-                {item.desc}
-              </p>
-              {item.link &&
-                (item.external ? (
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-headline text-xs uppercase tracking-widest text-primary hover:text-primary-dim transition-colors inline-flex items-center gap-2"
-                  >
-                    {item.linkLabel} <span className="text-[10px]">↗</span>
-                  </a>
-                ) : (
-                  <Link
-                    to={item.link}
-                    className="font-headline text-xs uppercase tracking-widest text-primary hover:text-primary-dim transition-colors"
-                  >
-                    {item.linkLabel} →
-                  </Link>
-                ))}
-            </motion.div>
-          </div>
-        </section>
-        )
-      })}
-
-
-      {/* ══════════ DARK CTA — ambition + the leader who brought it ══════════ */}
-      <section className="relative bg-[#0e0e0c] overflow-hidden">
-        <AmbientParticles tone="white" />
-        <div className="relative z-10">
-          <div className="w-16 h-px bg-white/10 mx-auto mt-20" />
-
-          <motion.div
-            className="py-24 px-6 text-center"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.7, ease: easeStandard }}
-          >
-            <div className="max-w-2xl mx-auto">
-              <p className="font-label text-[10px] tracking-[0.3em] uppercase text-white/35 mb-6">
-                Reserved · By Introduction
-              </p>
-              <h2 className="font-headline text-3xl md:text-4xl text-white/95 leading-snug mb-6 max-w-xl mx-auto">
-                Be the most capable district in your region.
-              </h2>
-              <p className="font-body text-sm md:text-base text-white/45 leading-relaxed max-w-lg mx-auto mb-12">
-                The capability lives in your own people, and it stays there.
-              </p>
-              <Link
-                to="/contact"
-                className="group inline-flex items-center gap-2.5 bg-white text-[#0e0e0c] py-4 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_44px_-14px_rgba(255,255,255,0.45)]"
-              >
-                Request an Introduction
-                <span className="text-sm transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
-                  →
-                </span>
-              </Link>
-            </div>
+              Request an Introduction
+              <span className="text-sm transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
+                →
+              </span>
+            </Link>
           </motion.div>
-          <div className="w-16 h-px bg-white/10 mx-auto mb-20" />
-        </div>
+        </motion.div>
       </section>
 
     </PageShell>

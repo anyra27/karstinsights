@@ -23,41 +23,51 @@ const STAGE_NAMES = [
 
 const FINAL_STAGE = STAGE_NAMES.length - 1
 
+/* Scroll ranges for beats 2–6 (Globe → Constellation); beat 1 is the intro,
+   beat 7 is the final Record block. */
+const BEAT_RANGES: Array<[number, number, number, number]> = [
+  [0.165, 0.196, 0.246, 0.277],
+  [0.303, 0.334, 0.386, 0.417],
+  [0.442, 0.472, 0.525, 0.556],
+  [0.579, 0.61, 0.664, 0.694],
+  [0.719, 0.75, 0.802, 0.833],
+]
+
 const STORY_BEATS = [
   {
     stage: 'Field',
-    title: 'AI access is everywhere. Operating capability is not.',
-    body: 'The tools arrived before the shared practice required to turn them into trusted systems for real district work.',
+    title: 'District-owned AI capability.',
+    body: 'Karst gives district teams protected build time and expert partnership: to build the systems their work requires, and the capability to keep improving them.',
   },
   {
     stage: 'Globe',
-    title: 'Capability begins with what one person can do.',
-    body: 'A leader turns work from their own role into a useful AI system they can operate, inspect, and improve.',
+    title: 'AI access is everywhere. Capability is not.',
+    body: 'Districts have the tools. What they lack is time, practice, and ownership. Karst works beside your executive team to build real capability with agentic AI systems.',
   },
   {
     stage: 'Survey',
-    title: 'Build individual capability. Change the organization.',
-    body: 'When leaders can transform their own work, that capability begins to compound across the district.',
+    title: 'Gain insights traditionally out of reach.',
+    body: 'District data arrives segmented and unclear. Your team begins turning it into dashboards, predictive solutions, and analytics: answers that once required outside help, or simply went without.',
   },
   {
     stage: 'Strata',
-    title: 'What one person can do becomes how the organization works.',
-    body: 'Individual methods become shared workflows, standards, and institutional capacity.',
+    title: 'Sharper decisions, every level.',
+    body: 'The cabinet, executive teams, classified and certificated management. Each working from the same picture, each with the read that fits the call in front of them.',
   },
   {
     stage: 'Assembly',
-    title: 'Turn one live priority into a working system.',
-    body: 'Karst builds it beside the team closest to the work, transferring the method as the system takes shape.',
+    title: 'One unified system.',
+    body: 'Not one tool for slides, another for data, another for design. Your team learns a modern, agentic way of working that carries the work end to end.',
   },
   {
     stage: 'Constellation',
-    title: 'Many roles. One operating cadence.',
-    body: 'Leaders across the district can build, govern, and improve useful systems without waiting on one expert.',
+    title: 'No engineers needed.',
+    body: 'Leaders rarely walk in believing they can do this work. Then they do it, building tools shaped to the district’s own needs, and reshaping them as those needs change.',
   },
   {
     stage: 'Record',
-    title: 'Keep the system. Keep the capability.',
-    body: 'The district owns the work, the method, and the ability to carry both forward.',
+    title: 'The district you’ve wanted to run.',
+    body: 'Clearer decisions. Deeper impact. A culture of practical innovation the district carries forward. The partnership starts wherever you need it, and grows from there.',
   },
 ] as const
 
@@ -109,10 +119,10 @@ function HeroBeat({
       <p className="mb-4 font-label text-[10px] uppercase tracking-[0.32em] text-[#c4a070]">
         {label}
       </p>
-      <h2 className="max-w-[480px] font-headline text-[clamp(24px,2.35vw,32px)] font-medium leading-[1.16] text-[#f3efe6]/95">
+      <h2 className="max-w-[480px] font-headline text-[clamp(27px,2.7vw,38px)] font-medium leading-[1.16] text-[#f3efe6]/95">
         {title}
       </h2>
-      <p className="mt-3 max-w-[46ch] font-body text-[14px] leading-[1.65] text-[#f3efe6]/56 md:text-[15.5px]">
+      <p className="mt-3 max-w-[46ch] font-body text-[15.5px] leading-[1.65] text-[#f3efe6]/72 md:text-[17px]">
         {body}
       </p>
     </motion.div>
@@ -179,11 +189,13 @@ export default function CinematicHomeHero() {
               For School District Executive Teams
             </p>
             <h1 className="font-headline text-[clamp(48px,7.4vw,104px)] font-light leading-[1.04] tracking-[-0.035em] text-[#f3efe6]">
-              Set the <span className="font-editorial font-normal italic text-[#d9c39b]">tempo.</span>
+              Set the{' '}
+              <span className="text-sunset-cycle-light inline-block pb-[0.08em] font-editorial font-normal italic">
+                tempo.
+              </span>
             </h1>
-            <p className="mx-auto mt-7 max-w-[66ch] font-body text-[14px] leading-[1.72] tracking-[0.01em] text-[#f3efe6]/64 md:text-[15.5px]">
-              AI access is everywhere. Operating capability is not. Karst helps district leaders
-              turn priorities into dashboards, workflows, and AI systems their teams can run and own.
+            <p className="mx-auto mt-7 max-w-[40ch] font-body text-[18px] leading-[1.6] tracking-[0.005em] text-[#f3efe6] md:text-[22px]">
+              Build a district ready for the next era of work.
             </p>
             {reduceMotion && (
               <Link
@@ -209,41 +221,19 @@ export default function CinematicHomeHero() {
 
         {!reduceMotion && (
           <>
-            <HeroBeat
-              progress={scrollYProgress}
-              range={[0.165, 0.196, 0.246, 0.277]}
-              label="02 · Globe"
-              title="Capability begins with what one person can do."
-              body="A leader turns work from their own role into a useful AI system they can operate, inspect, and improve."
-            />
-            <HeroBeat
-              progress={scrollYProgress}
-              range={[0.303, 0.334, 0.386, 0.417]}
-              label="03 · Survey"
-              title="Build individual capability. Change the organization."
-              body="When leaders can transform their own work, that capability begins to compound across the district."
-            />
-            <HeroBeat
-              progress={scrollYProgress}
-              range={[0.442, 0.472, 0.525, 0.556]}
-              label="04 · Strata"
-              title="What one person can do becomes how the organization works."
-              body="Individual methods become shared workflows, standards, and institutional capacity."
-            />
-            <HeroBeat
-              progress={scrollYProgress}
-              range={[0.579, 0.61, 0.664, 0.694]}
-              label="05 · Assembly"
-              title="Turn one live priority into a working system."
-              body="Karst builds it beside the team closest to the work, transferring the method as the system takes shape."
-            />
-            <HeroBeat
-              progress={scrollYProgress}
-              range={[0.719, 0.75, 0.802, 0.833]}
-              label="06 · Constellation"
-              title="Many roles. One operating cadence."
-              body="Leaders across the district can build, govern, and improve useful systems without waiting on one expert."
-            />
+            {BEAT_RANGES.map((range, index) => {
+              const beat = STORY_BEATS[index + 1]
+              return (
+                <HeroBeat
+                  key={beat.stage}
+                  progress={scrollYProgress}
+                  range={range}
+                  label={`${String(index + 2).padStart(2, '0')} · ${beat.stage}`}
+                  title={beat.title}
+                  body={beat.body}
+                />
+              )
+            })}
           </>
         )}
 
@@ -260,10 +250,12 @@ export default function CinematicHomeHero() {
               07 · Record
             </p>
             <h2 className="max-w-[480px] font-headline text-[clamp(28px,3vw,42px)] font-medium leading-[1.14] text-[#f3efe6]">
-              Keep the system. Keep the capability.
+              The district you’ve wanted to run.
             </h2>
-            <p className="mt-3 max-w-[48ch] font-body text-sm leading-[1.65] text-[#f3efe6]/58 md:text-[15.5px]">
-              The district owns the work, the method, and the ability to carry both forward.
+            <p className="mt-3 max-w-[48ch] font-body text-[15.5px] leading-[1.65] text-[#f3efe6]/72 md:text-[17px]">
+              Leaders operating agentic AI. Teams that work differently. A culture of practical
+              innovation the district carries forward. The partnership starts wherever you need
+              it, and grows from there.
             </p>
             <Link
               to="/contact"

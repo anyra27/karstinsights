@@ -136,7 +136,7 @@ export default function Privacy() {
 
           <Section title="Students and children">
             <p>
-              This site is written for the adults who run school districts. Our student cohort
+              This site is written for the adults who run school districts. Our student Fieldwork
               page describes a program for high school students, but participation runs through
               the student's district, not through this website. This site is not directed to
               children under 13 and we do not knowingly collect information from them. If a

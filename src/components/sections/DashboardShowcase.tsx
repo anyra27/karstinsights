@@ -38,13 +38,13 @@ function BrowserChrome({
   rightSlot?: React.ReactNode
 }) {
   return (
-    <div className="bg-[#f0eee6] px-4 py-3 flex items-center gap-3 border-b border-[#1e2a4a]/8">
+    <div className="flex items-center gap-3 border-b border-[#fffcf7]/10 bg-[#151411] px-4 py-3">
       <div className="flex gap-1.5">
-        <div className="w-2.5 h-2.5 rounded-full bg-[#ef4444]/55" />
-        <div className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]/55" />
-        <div className="w-2.5 h-2.5 rounded-full bg-[#10b981]/55" />
+        <div className="h-2 w-2 rounded-full bg-[#c49a43]/80" />
+        <div className="h-2 w-2 rounded-full bg-[#fffcf7]/24" />
+        <div className="h-2 w-2 rounded-full bg-[#fffcf7]/12" />
       </div>
-      <div className="ml-2 text-[10px] md:text-[11px] font-mono text-[#3a3632]/55 truncate">
+      <div className="ml-2 truncate font-mono text-[10px] text-[#fffcf7]/34 md:text-[11px]">
         {url}
       </div>
       {rightSlot && <div className="ml-auto flex items-center">{rightSlot}</div>}
@@ -77,15 +77,15 @@ export default function DashboardShowcase() {
       <div className="max-w-[1400px] mx-auto">
         {/* Dashboard switcher pills */}
         <div className="flex justify-center mb-8 md:mb-10">
-          <div className="inline-flex gap-1 p-1 bg-[#fffcf7] border border-[#1e2a4a]/10 rounded-[3px] shadow-sm">
+          <div className="inline-flex gap-1 rounded-[3px] border border-[#1a1816]/12 bg-white/70 p-1 shadow-[0_10px_30px_-18px_rgba(26,24,22,0.35)]">
             {DASHBOARDS.map((d) => (
               <button
                 key={d.id}
                 onClick={() => setActiveId(d.id)}
                 className={`text-[10px] md:text-[11px] tracking-[0.22em] uppercase font-label font-semibold px-4 md:px-5 py-2 md:py-2.5 rounded-[3px] transition-colors ${
                   d.id === activeId
-                    ? 'bg-[#1e2a4a] text-[#fffcf7]'
-                    : 'text-[#3a3632]/65 hover:text-[#1a1816]'
+                    ? 'bg-[#1a1816] text-[#fffcf7]'
+                    : 'text-[#1a1816]/60 hover:text-[#1a1816]'
                 }`}
               >
                 {d.label}
@@ -96,18 +96,20 @@ export default function DashboardShowcase() {
 
         {/* Inline browser-framed iframe */}
         <div
-          className="bg-[#fffcf7] rounded-[6px] overflow-hidden border border-[#1e2a4a]/10"
+          className="relative overflow-hidden rounded-[4px] border border-[#1a1816]/14 bg-[#0e0e0c]"
           style={{
             boxShadow:
-              '0 30px 80px -20px rgba(30, 42, 74, 0.28), 0 6px 16px rgba(30, 42, 74, 0.06)',
+              '0 42px 100px -36px rgba(26, 24, 22, 0.45), 0 0 0 1px rgba(168, 128, 42, 0.06)',
           }}
         >
+          <span className="pointer-events-none absolute left-0 top-0 z-10 h-8 w-8 border-l border-t border-[#c49a43]/45" aria-hidden="true" />
+          <span className="pointer-events-none absolute right-0 top-0 z-10 h-8 w-8 border-r border-t border-[#c49a43]/45" aria-hidden="true" />
           <BrowserChrome
             url={dashboard.url}
             rightSlot={
               <button
                 onClick={() => setIsOpen(true)}
-                className="font-label text-[9px] md:text-[10px] tracking-[0.22em] uppercase font-semibold text-[#1e2a4a]/75 hover:text-[#1e2a4a] transition-colors flex items-center gap-1.5"
+                className="flex items-center gap-1.5 font-label text-[9px] font-semibold uppercase tracking-[0.22em] text-[#fffcf7]/48 transition-colors hover:text-[#fffcf7] md:text-[10px]"
               >
                 Expand
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -123,7 +125,7 @@ export default function DashboardShowcase() {
               title={dashboard.label}
               loading="lazy"
               className="w-full block bg-[#fffcf7]"
-              style={{ height: 'min(80vh, 820px)', border: 0 }}
+              style={{ height: 'min(68vh, 720px)', border: 0 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -133,8 +135,8 @@ export default function DashboardShowcase() {
         </div>
 
         {/* Caption */}
-        <p className="font-editorial italic text-center text-on-surface-variant/55 text-xs md:text-sm mt-6">
-          Live ported dashboards · anonymized data · click <span className="not-italic font-label tracking-[0.2em] uppercase text-[10px]">Expand</span> for full screen.
+        <p className="mt-6 text-center font-editorial text-xs italic text-[#6e6355] md:text-sm">
+          Live ported dashboards · anonymized data · click <span className="font-label text-[10px] not-italic uppercase tracking-[0.2em] text-[#1a1816]/70">Expand</span> for full screen.
         </p>
       </div>
 
@@ -154,7 +156,7 @@ export default function DashboardShowcase() {
               style={{ backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
             />
             <motion.div
-              className="relative bg-[#fffcf7] rounded-[6px] overflow-hidden border border-[#1e2a4a]/10 w-full"
+              className="relative w-full overflow-hidden rounded-[4px] border border-[#fffcf7]/14 bg-[#0e0e0c]"
               style={{
                 maxWidth: 'min(96vw, 1640px)',
                 height: 'min(94vh, 1100px)',
@@ -172,7 +174,7 @@ export default function DashboardShowcase() {
                 rightSlot={
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="font-label text-[9px] md:text-[10px] tracking-[0.22em] uppercase font-semibold text-[#3a3632]/65 hover:text-[#1a1816] transition-colors flex items-center gap-1.5"
+                    className="flex items-center gap-1.5 font-label text-[9px] font-semibold uppercase tracking-[0.22em] text-[#fffcf7]/48 transition-colors hover:text-[#fffcf7] md:text-[10px]"
                     aria-label="Close"
                   >
                     Close

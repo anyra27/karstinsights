@@ -29,11 +29,11 @@ const ACTIVITIES: { id: string; label: string; domain: string }[] = [
   { id: 'open-ended-project', label: 'Working on a project with no single right answer', domain: 'Artistic' },
   { id: 'follow-clear-steps', label: 'Following a well-defined checklist or process', domain: 'Conventional' },
   { id: 'help-someone-stuck', label: 'Helping someone who is stuck figure out the next step', domain: 'Social' },
-  { id: 'research-deep-dive', label: 'Going deep on a topic — reading, comparing, synthesizing', domain: 'Investigative' },
+  { id: 'research-deep-dive', label: 'Going deep on a topic: reading, comparing, synthesizing', domain: 'Investigative' },
   { id: 'persuade-audience', label: 'Pitching or persuading an audience', domain: 'Enterprising' },
   { id: 'organize-data', label: 'Organizing messy data into a clean system', domain: 'Conventional' },
   { id: 'physical-outdoor', label: 'Working outdoors or with your body', domain: 'Realistic' },
-  { id: 'make-something', label: 'Making something from scratch — art, writing, design, code', domain: 'Artistic' },
+  { id: 'make-something', label: 'Making something from scratch: art, writing, design, code', domain: 'Artistic' },
   { id: 'teach-explain', label: 'Teaching or explaining a concept until someone really gets it', domain: 'Social' },
   { id: 'rapid-iteration', label: 'Trying things fast, breaking them, figuring out why', domain: 'Investigative' },
   { id: 'plan-logistics', label: 'Planning out logistics so nothing falls through the cracks', domain: 'Conventional' },
@@ -69,7 +69,7 @@ function EnergyDrainSlide({ sorts, onCycle }: { sorts: Record<string, Sort>; onC
       <div className="ghost-border bg-[#F0EEE6] px-4 py-3.5 mb-5 flex items-start gap-3">
         <span className="text-[13px] leading-none mt-1" style={{ color: BRASS }} aria-hidden>▶</span>
         <p className="font-body text-sm text-on-surface-variant leading-relaxed m-0">
-          <strong className="text-on-surface">You at 22 — first week of a real job.</strong> Sort these
+          <strong className="text-on-surface">You at 22, first week of a real job.</strong> Sort these
           for the version of you two years past graduation. Click to mark energizing or draining;
           click again to undo.
         </p>
@@ -178,7 +178,7 @@ function ClusteringSlide({ sorts }: { sorts: Record<string, Sort> }) {
           </p>
         ) : (
           <p className="font-body text-base text-on-surface-variant leading-relaxed mb-5">
-            Mark a few activities as energizing on the last slide — the more you sort, the clearer
+            Mark a few activities as energizing on the last slide. The more you sort, the clearer
             the cluster reads.
           </p>
         )}

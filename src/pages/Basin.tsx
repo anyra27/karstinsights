@@ -146,7 +146,7 @@ export default function Basin() {
               to="/contact"
               className="btn-cycle inline-block py-3.5 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px]"
             >
-              Request a Conversation
+              Request an Introduction
             </Link>
             <a
               href="#compose"
@@ -373,7 +373,7 @@ export default function Basin() {
               to="/contact"
               className="btn-cycle inline-block py-3.5 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px]"
             >
-              Request a Conversation
+              Request an Introduction
             </Link>
           </motion.div>
           <div className="w-16 h-px bg-white/10 mx-auto mb-20" />

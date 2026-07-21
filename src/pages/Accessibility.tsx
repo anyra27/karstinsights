@@ -57,7 +57,7 @@ export default function Accessibility() {
 
           <Section title="Known limitations">
             <p>
-              Some decorative canvas scenes, including visualizations on the public cohort and
+              Some decorative canvas scenes, including visualizations on the public Fieldwork and
               student pages, are still being brought fully under reduced-motion and
               screen-reader support. We are also working through contrast on a few small caption
               labels. These are on our active list; email us if you need an equivalent way to
