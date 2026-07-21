@@ -7,6 +7,7 @@ import {
 } from '../lib/motion'
 import PageShell from '../components/layout/PageShell'
 import DashboardShowcase from '../components/sections/DashboardShowcase'
+import ParallelAnalysisFan from '../components/sections/ParallelAnalysisFan'
 import DistrictLeadershipProof from '../components/sections/DistrictLeadershipProof'
 import FieldworkMethod from '../components/sections/FieldworkMethod'
 import WhatTeamsBuild from '../components/sections/WhatTeamsBuild'
@@ -135,6 +136,11 @@ export default function Landing() {
             A working example, built on district data. Explore it yourself.
           </p>
         </motion.div>
+
+        {/* the scale of looking behind the dashboard — the briefing's dot field */}
+        <div className="relative z-10">
+          <ParallelAnalysisFan />
+        </div>
 
         <motion.div
           className="relative z-10"
