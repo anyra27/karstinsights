@@ -105,7 +105,7 @@ export default function ParallelAnalysisFan() {
           letterSpacing="0.16em"
           fontFamily="Montserrat, sans-serif"
         >
-          ONE QUESTION
+          YOUR QUESTION
         </text>
       </motion.g>
 
@@ -197,7 +197,7 @@ export default function ParallelAnalysisFan() {
           fontStyle="italic"
           fontFamily='"Libre Baskerville", Georgia, serif'
         >
-          one question, weighed against the whole picture at once
+          your question, weighed against the whole picture at once
         </text>
       </motion.g>
     </svg>
