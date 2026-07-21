@@ -51,8 +51,8 @@ const STORY_BEATS = [
   },
   {
     stage: 'Strata',
-    title: 'One source, every audience.',
-    body: 'A dataset becomes a dashboard. The dashboard becomes a board presentation, a staff website, a message home. The same work, recomposed for everyone who needs it.',
+    title: 'Sharper decisions, every level.',
+    body: 'The board, the cabinet, a principal, a teacher. Each working from the same picture, each with the read that fits the call in front of them.',
   },
   {
     stage: 'Assembly',

@@ -90,8 +90,8 @@ export default function WhatTeamsBuild() {
             variants={staggerChild}
             className="max-w-[48ch] font-body text-base leading-[1.85] text-[#6e6355] md:text-lg"
           >
-            Dashboards, presentations, and working tools, built the way your team will build them.
-            Everything below is a live demonstration. Click in; nothing is sent.
+            Dashboards, presentations, and working tools: the kind of work district teams build in
+            Fieldwork. Explore any of them below.
           </motion.p>
         </div>
 
