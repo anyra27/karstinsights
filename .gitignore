@@ -30,3 +30,8 @@ draft/
 
 # Temporary files
 *.tmp
+
+# package-lock omitted: cross-platform optional native deps (@emnapi via linux-x64
+# binaries) can't be captured in a macOS-generated lock, which broke Cloudflare's
+# npm ci. Pages falls back to npm install without it.
+package-lock.json
