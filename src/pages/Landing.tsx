@@ -153,39 +153,57 @@ export default function Landing() {
       <PartnershipSequence />
 
 
-      {/* ══════════ DARK CTA — ambition + the leader who brought it ══════════ */}
-      <section className="relative bg-[#0e0e0c] overflow-hidden">
+      {/* ══════════ THE STANDARD — big-picture close, bookend to the hero ══════════ */}
+      <section
+        data-karst-nav-dark
+        className="relative min-h-[86svh] flex items-center overflow-hidden bg-[#0e0e0c]"
+      >
         <AmbientParticles tone="white" />
-        <div className="relative z-10">
-          <div className="w-16 h-px bg-white/10 mx-auto mt-20" />
-
-          <motion.div
-            className="py-24 px-6 text-center"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.7, ease: easeStandard }}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_46%,rgba(90,106,170,0.12),transparent_52%),radial-gradient(circle_at_50%_120%,rgba(14,14,12,0.9),transparent_60%)]"
+        />
+        <motion.div
+          className="relative z-10 mx-auto w-full max-w-4xl px-6 py-28 text-center md:py-36"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={staggerContainerRelaxed}
+        >
+          <motion.p
+            variants={staggerChild}
+            className="mb-8 font-label text-[10px] uppercase tracking-[0.34em] text-[#8a8ec8]/70 md:text-[11px]"
           >
-            <div className="max-w-2xl mx-auto">
-              <p className="font-label text-[10px] tracking-[0.3em] uppercase text-white/35 mb-6">
-                The Partnership
-              </p>
-              <h2 className="font-headline text-3xl md:text-4xl text-white/95 leading-snug mb-6 max-w-xl mx-auto">
-                Change how your district works.
-              </h2>
-              <Link
-                to="/contact"
-                className="group mt-6 inline-flex items-center gap-2.5 bg-white text-[#0e0e0c] py-4 px-10 font-headline uppercase tracking-widest text-xs rounded-[3px] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_44px_-14px_rgba(255,255,255,0.45)]"
-              >
-                Request an Introduction
-                <span className="text-sm transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
-                  →
-                </span>
-              </Link>
-            </div>
+            The Standard
+          </motion.p>
+          <motion.h2
+            variants={staggerChild}
+            className="mx-auto max-w-[20ch] font-headline text-[clamp(34px,5.2vw,68px)] font-light leading-[1.08] tracking-[-0.02em] text-[#f3efe6]"
+          >
+            Most districts will rent this capability.{' '}
+            <span className="text-sunset-cycle-light inline-block pb-[0.08em] font-editorial font-normal italic">
+              Yours can own it.
+            </span>
+          </motion.h2>
+          <motion.p
+            variants={staggerChild}
+            className="mx-auto mt-8 max-w-[50ch] font-body text-[15px] leading-[1.8] text-[#f3efe6]/64 md:text-[16.5px]"
+          >
+            The districts that build their own AI capability now are the ones that will set the pace
+            for the region. Karst is how a few of them get there first.
+          </motion.p>
+          <motion.div variants={staggerChild} className="mt-11">
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-2.5 rounded-[3px] bg-[#f3efe6] px-10 py-4 font-headline text-xs uppercase tracking-widest text-[#0e0e0c] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_14px_44px_-14px_rgba(255,255,255,0.45)]"
+            >
+              Request an Introduction
+              <span className="text-sm transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">
+                →
+              </span>
+            </Link>
           </motion.div>
-          <div className="w-16 h-px bg-white/10 mx-auto mb-20" />
-        </div>
+        </motion.div>
       </section>
 
     </PageShell>

@@ -62,7 +62,7 @@ const STORY_BEATS = [
   {
     stage: 'Constellation',
     title: 'No engineers needed.',
-    body: 'Leaders rarely walk in believing they can do this work. Then they do it: your team builds all of it agentically, in guided sessions, inside the workday.',
+    body: 'Leaders rarely walk in believing they can do this work. Then they do it, and the district never depends on an outside vendor to build what it needs again.',
   },
   {
     stage: 'Record',

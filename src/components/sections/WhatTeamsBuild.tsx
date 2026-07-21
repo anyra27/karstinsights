@@ -80,7 +80,7 @@ export default function WhatTeamsBuild() {
               variants={staggerChild}
               className="max-w-xl font-headline text-3xl font-light leading-[1.14] md:text-5xl lg:text-[54px]"
             >
-              Your people can{' '}
+              Your team can{' '}
               <span className="text-sunset-cycle font-editorial font-normal italic">
                 build this.
               </span>
