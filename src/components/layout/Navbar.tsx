@@ -147,9 +147,7 @@ export default function Navbar({ activeNav }: { activeNav?: ActiveNav }) {
             <a href="/cohort/" className={linkClass(false)}>
               Fieldwork
             </a>
-            <a href="/students/" className={linkClass(false)}>
-              Students
-            </a>
+            {/* Students cohort unlinked from nav until it's field-proven; page stays live by URL */}
             <Link to="/about" className={linkClass(isActive('about'))}>
               About
             </Link>
@@ -219,13 +217,7 @@ export default function Navbar({ activeNav }: { activeNav?: ActiveNav }) {
               >
                 Fieldwork
               </a>
-              <a
-                href="/students/"
-                onClick={() => setMobileOpen(false)}
-                className="font-body text-lg text-on-surface py-3 border-b border-outline-variant/10"
-              >
-                Students
-              </a>
+              {/* Students cohort unlinked from nav until it's field-proven; page stays live by URL */}
               <Link
                 to="/about"
                 onClick={() => setMobileOpen(false)}
