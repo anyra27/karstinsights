@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import PageShell from '../components/layout/PageShell'
 import AmbientParticles from '../components/art/AmbientParticles'
+import KarstNameDiagram from '../components/art/KarstNameDiagram'
 import { fadeSlideUpDelayed, staggerContainerRelaxed, staggerChild, easeStandard } from '../lib/motion'
 import { usePageMeta } from '../lib/usePageMeta'
 import headshot from '../assets/kevin-bice.webp'
@@ -63,6 +64,68 @@ export default function About() {
             reserved, by introduction and referral.
           </motion.p>
         </div>
+      </section>
+
+      {/* ══════════ THE NAME — what a karst is, and why the firm carries it ══════════ */}
+      <section className="relative overflow-hidden bg-[#fffcf7] px-8 py-24 md:px-16 md:py-32">
+        <motion.div
+          className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={staggerContainerRelaxed}
+        >
+          <div>
+            <motion.p
+              variants={staggerChild}
+              className="mb-6 font-label text-[10px] uppercase tracking-[0.32em] text-[#a8802a] md:text-[11px]"
+            >
+              The Name
+            </motion.p>
+            <motion.p
+              variants={staggerChild}
+              className="mb-5 font-label text-[11px] tracking-[0.14em] text-on-surface-variant/60"
+            >
+              karst <span className="text-on-surface-variant/40">/ kärst /</span>{' '}
+              <span className="font-editorial italic tracking-normal">noun</span>
+            </motion.p>
+            <motion.h2
+              variants={staggerChild}
+              className="max-w-xl font-headline text-3xl font-light leading-[1.14] text-on-surface md:text-5xl"
+            >
+              A landscape shaped{' '}
+              <span className="text-sunset-cycle inline-block pb-[0.1em] font-editorial font-normal italic">
+                from below.
+              </span>
+            </motion.h2>
+            <motion.p
+              variants={staggerChild}
+              className="mt-7 max-w-[52ch] font-body text-sm leading-[1.85] text-on-surface-variant md:text-base"
+            >
+              A karst is terrain carved by water moving through stone: hidden channels, springs,
+              and standing towers. What shows at the surface is the record of what runs
+              underneath.
+            </motion.p>
+            <motion.p
+              variants={staggerChild}
+              className="mt-5 max-w-[52ch] font-body text-sm leading-[1.85] text-on-surface-variant md:text-base"
+            >
+              It is how the firm thinks about district work. The decisions that
+              matter live beneath the figures on the page: in the data, the systems, and the
+              practice of the people who run them. Karst reads the structure underneath, and
+              builds with it.
+            </motion.p>
+            <motion.p
+              variants={staggerChild}
+              className="mt-8 border-l border-[#a8802a]/45 pl-5 font-editorial text-base italic leading-relaxed text-on-surface md:text-lg"
+            >
+              The surface is the evidence. The work is below.
+            </motion.p>
+          </div>
+          <motion.div variants={staggerChild} className="justify-self-center lg:justify-self-end">
+            <KarstNameDiagram />
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* ══════════ THE PRINCIPAL ══════════ */}
